@@ -1375,5 +1375,43 @@
   "underpowered": false
  },
  "H-008": "SUPPORTED",
- "H-009": "SUPPORTED"
+ "H-009": "SUPPORTED",
+ "subject_cluster_bootstrap_ci95_median": {
+  "KV13_all": [
+   0.9472,
+   0.9947
+  ],
+  "KV14_all": [
+   0.0105,
+   0.0246
+  ],
+  "KVBOTH_all": [
+   0.9752,
+   1.0098
+  ],
+  "KV13_D": [
+   0.9383,
+   0.9955
+  ],
+  "KV13_T": [
+   0.0006,
+   0.0126
+  ],
+  "ATTN_25": [
+   0.6537,
+   0.8257
+  ],
+  "NOISE_ATTN25": [
+   0.1553,
+   0.3057
+  ],
+  "HEAD25_0": [
+   0.3262,
+   0.6009
+  ]
+ },
+ "split_check": {
+  "held_out_pairs_overlapping_in_sample_pairs": 0,
+  "held_out_R1_pairs_sharing_a_subject_with_in_sample": 12
+ }
 }

@@ -1,0 +1,484 @@
+{
+ "source_id": "LIT05-013",
+ "arxiv_id": "2312.04927",
+ "title": "Zoology: Measuring and Improving Recall in Efficient Language Models",
+ "chars": 288475,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 33,
+    "near": 1,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Zoology: Measuring and Improving Recall in Efficient Language Models",
+    "research_question": "Why do efficient gated-convolution language models underperform attention on language modeling, and can associative recall explain and help close this gap?",
+    "models_and_data": [
+     {
+      "item": "Pretrained language models",
+      "quote": "We pretrain and evaluate 17 language models across 4 scales (70M - 1.4Bn) and 5 architectures on the same data and infrastructure setup.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Sequence mixers compared",
+      "quote": "we compare attention to three state-of-the-art gated convolution sequence mixers: H3, Hyena, and RWKV",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Attention baseline",
+      "quote": "We use a strong Transformer attention baseline with rotary embeddings and SwiGLU MLPs following the Llama architecture",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Large-scale attention and Hyena models",
+      "quote": "we train two 1.4 billion parameter attention and Hyena models for 50 billion tokens on the Pile",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Synthetic Mqar data",
+      "quote": "We train and evaluate models on a synthetic Mqar with vocabulary size 8, 192, varying model dimension and sequence length from 64 to 512.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Hybrid BaseConv-attention models",
+      "quote": "We evaluate hybrids composed primarily of BaseConv layers and three attention layers",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pile data",
+      "quote": "The Pile data is tokenized using the GPT2BPETokenizer and all models see the data in the same order.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Pretrain on Pile",
+      "quote": "We pretrain a suite of large language models with different sequence mixers across 3 scales (70M-360M) for 10B tokens on the standard Pile language modeling setting",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Define AR Hits",
+      "quote": "An AR Hit is the last token of an n-gram repeated in context",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Stratify Pile tokens",
+      "quote": "We stratify Pile tokens into two slices based on this heuristic and report perplexity on each in Table 1",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Define Mqar",
+      "quote": "The task is to check, for every query 1 ≤ i < N , whether there exists a 0 ≤ j < i such that ui ≡ uj . If so, output uj+1 .",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Synthetic Mqar training",
+      "quote": "For each architecture, we sweep four learning rates from log(−4) to log(−2)} for each architecture, and report maximum test accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Hybrid selection",
+      "quote": "We evaluate four choices for f : (1) Full attention.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Theory BaseConv",
+      "quote": "to solve Mqar grows with the input sequence length",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Validation perplexity",
+      "definition": "Language modeling perplexity on Pile validation data, reported as log perplexity with NLL in parentheses.",
+      "quote": "we report log perplexity with negative log-likelihood in parentheses",
+      "quote_check": "exact"
+     },
+     {
+      "name": "AR Hits",
+      "definition": "Tokens in final position of a repeated bigram that appeared in context but ≤1250× during training.",
+      "quote": "An AR Hit is the last token of an n-gram repeated in context",
+      "quote_check": "exact"
+     },
+     {
+      "name": "% of gap due to AR Hits",
+      "definition": "Fraction of overall perplexity gap between a model and attention attributable to AR slice.",
+      "quote": "AR slice accounts for 82% of the average quality gap between the gated convolutions and attention",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Mqar accuracy",
+      "definition": "Maximum test accuracy on synthetic multi-query associative recall as model dimension and sequence length vary.",
+      "quote": "The x-axis is the model dimension and the y-axis is accuracy on Mqar.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "TFLOPs",
+      "definition": "Compute cost for inputs of 2048 tokens.",
+      "quote": "FLOPs are computed for inputs of 2048 tokens based on the equations in Appendix C.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Model dimension required for Mqar",
+      "definition": "Model width needed to reach high Mqar accuracy; compared across sequence lengths.",
+      "quote": "Mqar does not achieve accuracy > 0.9 unless d ≥ N .",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Gated-convolution models still trail attention on Pile perplexity.",
+      "numbers": "up to 2.1 perplexity points",
+      "quote": "SoTA gated-convolution architectures still underperform attention by up to 2.1 perplexity points on the Pile.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Most of the gap is explained by associative recall.",
+      "numbers": "82%",
+      "quote": "we find 82% of the gap is explained by each model’s ability to recall information that is previously mentioned in-context",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Small attention model beats much larger gated-convolution model on associative recall.",
+      "numbers": "70M; 1.4 billion",
+      "quote": "a 70M parameter attention model outperforms a 1.4 billion parameter gated-convolution model on associative recall.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Input-dependent sparse attention hybrids close most of gap.",
+      "numbers": "97.4%",
+      "quote": "hybrids with input-dependent sparse attention patterns can close 97.4% of the gap to attention, while maintaining sub-quadratic scaling.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Programmatic selection closes most AR gap at 360M.",
+      "numbers": "360M; 85%",
+      "quote": "At 360M parameters, programmatic selection closes 85% of the gap between pure BaseConv and attention on the AR slice",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Learned selection closes 72% with k=256.",
+      "numbers": "72%; k = 256",
+      "quote": "Learned selection closes 72% a of the gap using just k = 256 (sub-quadratic) attention positions per example.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Attention solves Mqar with constant dimension 64.",
+      "numbers": "64",
+      "quote": "attention solves Mqar perfectly at all sequence lengths using a constant model dimension of 64.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated convolutions need model dimension at least sequence length for Mqar.",
+      "numbers": "d ≥ N",
+      "quote": "Mqar does not achieve accuracy > 0.9 unless d ≥ N .",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Only exact repeated bigrams are measured; fuzzy/semantic recall is not measured.",
+      "quote": "we only measure explicit bigrams, i.e. bigrams are identified based on token ids in the sequence.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Fuzzy or higher-dimensional recall is not measured.",
+      "quote": "Our work does not measure such fuzzy (more abstract) recall instances.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Language models may need fuzzier recall than exact bigrams.",
+      "quote": "Note that language models often need to perform recall between fuzzier substrings (e.g. synonymous bigrams) or higher-dimensional concepts.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Theoretical BaseConv solution uses poly-log layers, undesirable in practice.",
+      "quote": "the poly-logarithmic number of layers in the above result is undesirable in practice.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Input-dependent filters are hard to make causal and may be expensive.",
+      "quote": "These input-dependent filters cannot easily be made to satisfy causality",
+      "quote_check": "exact"
+     },
+     {
+      "text": "AR measurement is hard because raw text does not label which predictions require recall.",
+      "quote": "we don’t know which next token predictions in raw text require associative recall.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The AR Hit heuristic uses exact repeated bigrams and a training-frequency threshold; it may miss semantic recall and may still conflate memorization with in-context recall.",
+     "The paper studies Pile/LLaMA-style models and gated-convolution mixers, not Gemma 4 E2B with KV-shared layers 15-34 or per-layer embeddings, so architecture-specific recall behavior is untested.",
+     "Synthetic Mqar uses small two-layer models and vocabulary size 8,192; scaling to large pretrained models and CPU tracing may change the observed dimension/recall requirements.",
+     "The analysis is behavioral and theoretical, not circuit-level; activation patching, logit lens, induction-head tracing, and factual-recall localization are not performed.",
+     "Hybrid selection uses raw token-id repeated bigrams, which may not transfer to subword tokenization, semantic matches, or Gemma's per-layer embedding structure.",
+     "Theoretical BaseConv results rely on assumptions such as one-hot embeddings, bounded distinct interaction distances, and arithmetic-circuit simulation that may not hold in Gemma.",
+     "Most experiments use Pile and up to 1.4B/7B open models; scale and data differences limit direct inference for Gemma 4 E2B on CPU."
+    ],
+    "code_or_data_url": "https://github.com/HazyResearch/zoology",
+    "relevance_to_lab": "Relevant to recall/induction tracing: Mqar and AR Hits give a framework for locating repeated-token recall and induction-head-like behavior; input-dependent sparse attention and BaseConv hybrids suggest hypotheses for KV-shared layers and per-layer embeddings, though the paper does not study Gemma 4 E2B or activation patching/logit lens on CPU."
+   },
+   "usage": {
+    "prompt_tokens": 26546,
+    "completion_tokens": 11107,
+    "total_tokens": 37653,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 9233
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 36,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Zoology: Measuring and Improving Recall in Efficient Language Models",
+    "research_question": "Why do gated-convolution language models underperform attention on real language modeling, how much of the gap is attributable to associative recall, and can input-dependent or attention-convolution hybrids close the gap while retaining sub-quadratic scaling?",
+    "models_and_data": [
+     {
+      "item": "A suite of 17 language models spanning four scales and five architectures, including attention and gated-convolution models.",
+      "quote": "We pretrain and evaluate 17 language models across 4 scales (70M - 1.4Bn) and 5 architectures on the same data and infrastructure setup.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "BaseConv, a minimal gated-convolution operator used as a canonical representation of gating-and-convolution architectures.",
+      "quote": "We first introduce a simple operator, BaseConv, that can provably simulate the class of architectures built from gating and convolution primitives. This includes architectures such as H3, Hyena, RWKV, and RetNet.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The Pile language-modeling benchmark, with main models pretrained on 10B tokens.",
+      "quote": "After pretraining on 10B tokens of Pile data, we report log perplexity with negative log-likelihood in parentheses.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Identical Pile tokenization and data ordering across models.",
+      "quote": "The Pile data is tokenized using the GPT2BPETokenizer and all models see the data in the same order.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Larger 1.4-billion-parameter attention and Hyena models trained on 50B Pile tokens.",
+      "quote": "To evaluate the AR capacity of larger models, we train two 1.4 billion parameter attention and Hyena models for 50 billion tokens on the Pile and repeat this analysis (see Table 5).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Synthetic multi-query associative-recall data with two vocabulary sizes and varied model dimensions and sequence lengths.",
+      "quote": "We train and evaluate models on a synthetic Mqar with vocabulary size 8, 192, varying model dimension and sequence length from 64 to 512.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "BaseConv-attention hybrids with full, random, programmatic, or learned attention selection.",
+      "quote": "We evaluate hybrids composed primarily of BaseConv layers and three attention layers (6.3% of layers at 354M parameters and 10% at 168M parameters).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Pretrain the model suite using a common data and infrastructure setup.",
+      "quote": "We pretrain and evaluate 17 language models across 4 scales (70M - 1.4Bn) and 5 architectures on the same data and infrastructure setup.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Hold the high-level architecture fixed while varying the sequence mixer.",
+      "quote": "Unless specified, our models adhere to the implementation details of the LLaMA architecture (except the sequence mixer, which we vary throughout) [Touvron et al., 2023].",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Identify associative-recall targets as final tokens of n-grams repeated in the context.",
+      "quote": "An AR Hit is the last token of an n-gram repeated in context (e.g. the second occurence of “Rice” in Fig. 1).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Account for possible training-set memorization when selecting AR targets.",
+      "quote": "However, some common n-grams (e.g. “of the”) could have been memorized during training, so we factor in the frequency with which an n-grams appeared in the training data.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Sweep learning rates on synthetic Mqar and report the best test accuracy.",
+      "quote": "For each architecture, we sweep four learning rates from log(−4) to log(−2)} for each architecture, and report maximum test accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Add input-dependent selection at three layers of 150M- and 360M-parameter BaseConv models.",
+      "quote": "We take BaseConv architectures at the 150M and 360M parameter scales and add input-dependent selection to three layers (details in Appendix C.2).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Construct programmatic attention masks from prior occurrences of raw token IDs.",
+      "quote": "Specifically, f (x[i, :]) is 1 if the token xi previously occurred in the sequence. In practice, we compare raw token ids, not token embeddings.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Learn sparse attention positions with a linear sigmoid scorer and top-k selection.",
+      "quote": "We fix a hyperparameter k and select the top-k tokens with the highest score in each batch. This allows us to compute attention in O(ndk) time.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Overall validation perplexity",
+      "definition": "Perplexity on the full Pile validation set, with negative log-likelihood reported in parentheses.",
+      "quote": "Language modeling validation perplexity on the Pile. After pretraining on 10B tokens of Pile data, we report log perplexity with negative log-likelihood in parentheses.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "AR Hits",
+      "definition": "Tokens ending a context-repeated bigram whose training frequency is at or below the stated cutoff.",
+      "quote": "AR Hits: (6.4% of tokens) Tokens in the final position of a bigram (a pair of consecutive tokens) which previously appeared in context, but ≤ 1250× during training.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Other tokens",
+      "definition": "Tokens ending a bigram that was not previously seen in context or appeared frequently in training.",
+      "quote": "Other tokens: (93.6% of tokens) Tokens in the final position of a bigram which did not previously appear in context or it appeared > 1, 250 times during training.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Percentage of quality gap due to AR",
+      "definition": "The portion of the model-to-attention quality gap attributable to associative-recall tokens.",
+      "quote": "This quantity can also be interpreted as the fraction of the overall gap that would close if a model matched attention on the AR slice.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Mqar test accuracy",
+      "definition": "Accuracy of sequence mixers on the synthetic multi-query associative-recall task.",
+      "quote": "The x-axis is the model dimension and the y-axis is accuracy on Mqar.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "FLOPs",
+      "definition": "Estimated inference FLOPs at a 2048-token input length.",
+      "quote": "FLOPs are computed for inputs of 2048 tokens based on the equations in Appendix C.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Associative-recall tokens account for most of the average perplexity gap despite representing only a small fraction of Pile tokens.",
+      "numbers": "82%; 6.4%",
+      "quote": "We find that errors on “AR Hits” (e.g. worries above) account for 82% of the perplexity gap to attention on average, despite only representing 6.4% of all tokens in the Pile dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A 70-million-parameter attention model has substantially better AR-slice perplexity than a 20-times-larger Hyena model.",
+      "numbers": "2.41 vs. 3.43 ppl.; 1.4B; 20×",
+      "quote": "Strikingly, a 70 million parameter attention model is a full perplexity point better in the AR slice than this 1.4B Hyena model that is 20× its size (2.41 vs. 3.43 ppl.).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On synthetic Mqar, attention solves the task across sequence lengths at constant width, whereas gated convolutions require width to scale with sequence length.",
+      "numbers": "64; > 0.9; d ≥ N",
+      "quote": "In the top row of Fig. 2, attention solves Mqar perfectly at all sequence lengths using a constant model dimension of 64. In contrast, Mqar does not achieve accuracy > 0.9 unless d ≥ N .",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The theoretical analysis gives input-dependent BaseConv kernels an O(1)-layer solution to a restricted Mqar case.",
+      "numbers": "O(t · N c); O(1)",
+      "quote": "there exists a BaseConv operator that uses input-dependent kernels to solve the above case of Mqar using O(t · N c) parameters and O(1) layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A full-attention BaseConv hybrid outperforms the attention-only model while reducing total FLOPs.",
+      "numbers": "0.85 perplexity points; 18%",
+      "quote": "Our hybrid attention-BaseConv models outperform attention only models by 0.85 perplexity points while enabling an 18% reduction in total FLOPs vs attention.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Programmatic sparse attention closes most of the AR-slice gap, unlike random selection.",
+      "numbers": "360M; 85%",
+      "quote": "At 360M parameters, programmatic selection closes 85% of the gap between pure BaseConv and attention on the AR slice, in contrast to the random selection control.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Learned top-k selection also closes a substantial portion of the AR-slice gap.",
+      "numbers": "72%; k = 256",
+      "quote": "Learned selection closes 72% a of the gap using just k = 256 (sub-quadratic) attention positions per example.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The abstract reports that input-dependent sparse-attention hybrids can close nearly all of the gap to attention while preserving sub-quadratic scaling.",
+      "numbers": "97.4%",
+      "quote": "hybrids with input-dependent sparse attention patterns can close 97.4% of the gap to attention, while maintaining sub-quadratic scaling.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The authors note that it is difficult to determine directly which real-text predictions require associative recall.",
+      "quote": "It is challenging to derive a quantitative measure of associative recall performance on the Pile because we don’t know which next token predictions in raw text require associative recall.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The real-data AR analysis is restricted to explicit token-ID bigrams.",
+      "quote": "We only measure explicit bigrams, i.e. bigrams are identified based on token ids in the sequence.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The heuristic does not capture recall involving synonyms, fuzzy substrings, or higher-dimensional concepts.",
+      "quote": "Note that language models often need to perform recall between fuzzier substrings (e.g. synonymous bigrams) or higher-dimensional concepts.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The best-performing full-attention hybrid does not provide sub-quadratic computation.",
+      "quote": "However, this uses full quadratic attention.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Input-dependent filters can be costly and difficult to make causal.",
+      "quote": "These input-dependent filters cannot easily be made to satisfy causality and using an O(N log N ) filter per gap could be expensive if each gap applies only to a small number of bigrams.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors acknowledge the difficulty of theoretically analyzing deep-learning architectures.",
+      "quote": "While theoretically analyzing deep learning architectures is challenging [Hahn, 2020, Merrill et al., 2022, Keles et al., 2023], the fact that gating and convolutions are polynomial operations facilitates our precise analysis.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Practically learned gated-convolution solutions appear to support only a subset of interaction distances.",
+      "quote": "In practice, gated-convolutions appear to encode approximate solutions to AR that support only a subset of token-interaction distances (which affects the ability to identify matching keys given Mqar queries).",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No experiments test Gemma 4 E2B or KV-shared layers 15–34, so transfer of the architecture-level explanation to that model is untested.",
+     "The evidence is aggregate and behavioral rather than mechanistic: no layers, heads, embeddings, or causal circuits implementing associative recall are localized.",
+     "The AR-Hit proxy depends on exact repeated token bigrams and a 1,250-occurrence cutoff, so it can miss semantic, paraphrased, and factual recall or misclassify non-associative repetitions.",
+     "Mqar uses synthetic random key-value maps and controlled distance distributions, so success on it may not transfer to natural factual recall, noisy contexts, or instruction following.",
+     "The main evidence comes from the Pile with a fixed tokenizer and training setup, leaving generalization to other corpora, tokenizers, and data mixtures unresolved.",
+     "The theoretical bounds characterize representational capacity rather than optimization, gradient-based learnability, robustness, or behavior at practical depths.",
+     "All reported experiments use A100 80GB GPUs, whereas the lab works on CPU, so comparable context lengths and repeated interventions may be computationally infeasible.",
+     "Programmatic selection uses the same exact-bigram cue employed to define the evaluation slice, creating possible metric-task coupling that could overstate its apparent benefit."
+    ],
+    "code_or_data_url": "https://github.com/HazyResearch/zoology",
+    "relevance_to_lab": "The paper has moderate conceptual relevance but low direct methodological relevance to Gemma 4 E2B internals. Its repeated-bigram AR-Hit analysis can identify candidate factual-recall failures, while Mqar provides a controlled multi-query probe for measuring retrieval capacity. These probes could be combined with activation patching at KV-shared layers 15–34, per-layer embedding and logit-lens inspection, and induction-head or factual-recall tracing to test whether shared layers implement content-addressable matching or whether failures instead reflect inadequate input-dependent mixing. However, the paper does not examine Gemma, shared-KV layers, per-layer representations, specific head circuits, or CPU feasibility, so any mechanistic localization to the lab model remains a hypothesis requiring direct testing."
+   },
+   "usage": {
+    "prompt_tokens": 26453,
+    "completion_tokens": 13196,
+    "total_tokens": 39649,
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 10076
+    }
+   }
+  }
+ }
+}

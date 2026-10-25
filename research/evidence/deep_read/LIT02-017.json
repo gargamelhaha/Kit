@@ -1,0 +1,460 @@
+{
+ "source_id": "LIT02-017",
+ "arxiv_id": "2311.17030",
+ "title": "Is This the Subspace You Are Looking for? An Interpretability Illusion for Subspace Activation Patching",
+ "chars": 189734,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 29,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.968,
+   "data": {
+    "title": "Is This the Subspace You Are Looking for? An Interpretability Illusion for Subspace Activation Patching",
+    "research_question": "Does the success of activation patching carry over from component-level analysis to finding the precise subspaces corresponding to features?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 Small",
+      "quote": "the decoder-only transformer language model GPT-2 Small (Radford et al., 2019) performs the indirect object identification task.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT2-XL",
+      "quote": "GPT2-XL Radford et al. (2019)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "COUNTERFACT dataset",
+      "quote": "edits extracted from the C OUNTER FACT dataset (Meng et al., 2022a)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "OpenWebText",
+      "quote": "how they generalize on the pre-training distribution (OpenWebText)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "toy linear network",
+      "quote": "consider a network M that takes in an input x ∈ R, computes a three-dimensional hidden representation h = xw1 , and then a real-valued output y = w2T h.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Store the activation of a chosen model component",
+      "quote": "Storing the activation of a chosen model component C , such as the output of an attention head, the hidden activations of an MLP layer, or an entire residual stream (a.k.a. bottleneck) layer;",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Patch activation from A into B",
+      "quote": "Running the model on e.g. B = ‘The Colosseum is in’, but with the activation of C taken from A.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Optimize a subspace with DAS",
+      "quote": "DAS optimizes for an activation subspace which, when activation patched from prompt B into prompt A, makes the model behave as if the relative position of the IO and S names in the sentence is as in prompt B.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Decompose direction into nullspace and rowspace",
+      "quote": "This suggests writing v = vnull + vrow where vnull ∈ ker Wout is the orthogonal projection on ker Wout , and vrow is the remainder, which is in (ker Wout )⊥ , the rowspace of Wout.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Compare patch along rowspace alone",
+      "quote": "compare the strength of the patch to patching along the subspace spanned by vrow alone, obtained by removing the causally disconnected part of v.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Find approximate subspace intervention for ROME edits",
+      "quote": "we run ROME for all the edits, and we find the approximate subspace intervention (defined by a vector v) corresponding to each ROME edit.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Logit difference",
+      "definition": "Difference between last-token logits for IO and S names.",
+      "quote": "logitdiff ( x ) := logitIO ( x ) − logitS ( x )",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Fractional logit difference decrease (FLDD)",
+      "definition": "Average fractional decrease in logit difference due to an intervention; higher means more successful patch.",
+      "quote": "Our main metric is the average fractional logit difference decrease (FLDD) due to the intervention ι",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Interchange accuracy",
+      "definition": "Fraction of patches where model predicts S (wrong) name.",
+      "quote": "We also measure the interchange accuracy of the intervention: the fraction of patches for which the model predicts the S (i.e., wrong) name for the patched run.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Rewrite score",
+      "definition": "Relative increase in probability of false target o′ after intervention.",
+      "quote": "the rewrite score is a relative measure of how well a change to the model (ROME or our subspace intervention) increases the probability of the false target o ′ we are trying to substitute for o.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cosine similarity",
+      "definition": "Similarity between subspace vector v and ROME vector b.",
+      "quote": "the cosine similarity of v and b measures how well the direction we are projecting the activation x on matches that from the ROME edit.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Variance ratio",
+      "definition": "Total variance introduced by subspace intervention as fraction of ROME edit variance.",
+      "quote": "This is the total variance introduced by this intervention as a fraction of the total variance introduced by the corresponding ROME edit.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Patching vMLP has significant FLDD effect.",
+      "numbers": "46.7%",
+      "quote": "patching the vMLP direction has a significant effect on the FLDD metric (46.7%)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Removing causally disconnected component reduces vMLP effect.",
+      "numbers": "13.5%",
+      "quote": "this effect is greatly diminished when we remove the component of vMLP in ker Wout whose activations are (provably) causally disconnected from model predictions (13.5%)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Full MLP patch increases confidence, FLDD -8%.",
+      "numbers": "−8%",
+      "quote": "or when we patch the entire MLP activation (−8%, actually increasing confidence)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "vresid ablations retain similar numbers.",
+      "numbers": "140.7%/127.5%/123.6%",
+      "quote": "performing analogous ablations on vresid leads to roughly the same numbers for the three analogous interventions (140.7%/127.5%/123.6%",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Factual recall illusory patches disappear when removing orthogonal-to-ker component.",
+      "numbers": "not stated",
+      "quote": "the directions we find have a strong causal effect (successfully changing o to o ′ ), but (ii) this effect disappears when we instead patch along the subspace spanned by the component orthogonal to ker Wout",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME and subspace intervention similar in layers 20-35.",
+      "numbers": "20-35",
+      "quote": "in layers 20-35 inclusive, the two interventions are very similar according to all metrics considered.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Rank-1 edits can work by activating dormant pathway without fact in edited weights.",
+      "numbers": "not stated",
+      "quote": "rank-1 model edits can also be achieved by activating a dormant pathway in the model, without necessarily relying on the presence of a fact in the weight being edited.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Only two empirical settings.",
+      "quote": "We only exhibit our illusion empirically in two settings: the IOI task and factual recall.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "ROME evaluation limited to rewrite score and variance.",
+      "quote": "we have evaluated the success of ROME and our approximately-equivalent subspace intervention only using the rewrite score metric and the measure of total variance implicit in the ROME algorithm.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Need other validations on related facts.",
+      "quote": "Ideally, there would be other validations of a fact edit that test the behavior of the intervened-upon model on other facts that should be changed by the edit.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Ground truth mechanistic explanation conceptually challenging.",
+      "quote": "We admit that a definition of a ‘ground truth’ mechanistic explanation is conceptually challenging.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Assumes model components meaningful boundaries.",
+      "quote": "A further implicit assumption in our work is that model components are meaningful boundaries for mechanistic explanation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Reparametrization weakens illusory label.",
+      "quote": "if we allow ourselves to arbitrarily reparametrize spaces of activations by crossing the boundaries between e.g. attention heads and MLP layers, calling the MLP subspace ‘illusory’ is much more tenuous.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Cannot conclusively rule out MLP layers.",
+      "quote": "even if we cannot conclusively rule out any given MLP layer on the path as not being meaningfully involved in the computation, it would be quite surprising if always all of them are involved.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper studies GPT-2 Small/XL, not Gemma 4 E2B; transfer to KV-shared layers 15-34 and per-layer embeddings is untested.",
+     "It does not analyze KV sharing or per-layer embedding interactions, which may change the dormant-pathway geometry.",
+     "It does not use logit lens, induction-head tracing, or CPU-only activation patching on Gemma, so lab-specific protocols are not validated.",
+     "DAS/ROME subspace illusions may depend on MLP down-projection kernels; Gemma's MLP dimensions and normalization may alter prevalence.",
+     "The paper's residual-stream recommendation may not directly apply to KV-shared layers where residual and KV pathways interact.",
+     "No evidence on whether factual-recall tracing in Gemma 4 E2B is vulnerable to the same illusory subspace effect."
+    ],
+    "code_or_data_url": "https://github.com/amakelov/activation-patching-illusion",
+    "relevance_to_lab": "Directly relevant as a caution for subspace activation patching: it shows MLP-in-the-middle patches can exploit dormant pathways and recommends residual-stream bottlenecks plus validations beyond end-to-end effects. For Gemma 4 E2B, this motivates checking KV-shared layers 15-34 and per-layer embeddings for similar nullspace/dormant decompositions when doing activation patching, logit lens, induction-head, and factual-recall tracing on CPU."
+   },
+   "usage": {
+    "prompt_tokens": 23194,
+    "completion_tokens": 10798,
+    "total_tokens": 33992,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8929
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 2,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.943,
+   "data": {
+    "title": "Is This the Subspace You Are Looking for? An Interpretability Illusion for Subspace Activation Patching",
+    "research_question": "Does the success of activation patching carry over from component-level analysis to finding the precise subspaces corresponding to features?",
+    "models_and_data": [
+     {
+      "item": "Toy three-dimensional linear network used to demonstrate causally disconnected, dormant, and faithful directions.",
+      "quote": "consider a network M that takes in an input x ∈ R, computes a three-dimensional hidden representation h = xw1 , and then a real-valued output y = w2T h.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 Small evaluated on the indirect object identification task.",
+      "quote": "In Wang et al. (2023), the authors analyze how the decoder-only transformer language model GPT-2 Small (Radford et al., 2019) performs the indirect object identification task.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Synthetic IOI templates with ABB and BAB name-order patterns.",
+      "quote": "For each choice of the IO and S names, there are two patterns the sentence can have: one where the IO name comes first (we call these ‘ABB examples’), and one where it comes second (we call these ‘BAB examples’).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT2-XL factual-recall experiments comparing ROME edits with 1-dimensional activation interventions.",
+      "quote": "for a wide range of layers in the middle of the model (GPT2-XL Radford et al. (2019)), rank-1 fact editing using the ROME method (Meng et al., 2022a) is approximately equivalent to a 1-dimensional subspace intervention that generalizes activation patching.",
+      "quote_check": "near"
+     },
+     {
+      "item": "CounterFact edits used to derive and evaluate ROME-equivalent subspace interventions.",
+      "quote": "We apply this method to find subspace interventions corresponding to edits extracted from the C OUNTER FACT dataset (Meng et al., 2022a); see Appendix D.1 for details.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "OpenWebText used to test generalization of the faithful IOI directions.",
+      "quote": "we further validate these directions’ faithfulness to the computation of the IOI circuit from Wang et al. (2020) by finding the model components that write to them and studying how they generalize on the pre-training distribution (OpenWebText)",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Use DAS to optimize a 1-dimensional subspace whose patched positional effect matches the source prompt.",
+      "quote": "DAS optimizes for an activation subspace which, when activation patched from prompt B into prompt A, makes the model behave as if the relative position of the IO and S names in the sentence is as in prompt B.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Find candidate directions in layer 8 MLP activations and the layer 8 residual stream at the last token.",
+      "quote": "We let vMLP and vresid be 1-dimensional subspaces found by DAS in the layer 8 MLP activations and layer 8 residual stream output at the last token, respectively (see Figure 3).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Patch matched ABB and BAB examples that differ only in the targeted name-position variable.",
+      "quote": "we perform all patches between examples that only differ in the variable we want to localize in the model, i.e. the position of the S and IO names in the first sentence.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Decompose each MLP direction into its causally disconnected nullspace and causally relevant rowspace components.",
+      "quote": "This suggests writing v = vnull + vrow where vnull ∈ ker Wout is the orthogonal projection on ker Wout , and vrow is the remainder, which is in (ker Wout )⊥ , the rowspace of Wout .",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Ablate the nullspace component and compare the rowspace-only intervention with the original subspace patch.",
+      "quote": "compare the strength of the patch to patching along the subspace spanned by vrow alone, obtained by removing the causally disconnected part of v.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Validate residual-stream directions through causal ablations, alignment with the name-mover gradient, and activation by position information.",
+      "quote": "removing it does not diminish the effect of the patch; we further show that vresid and vgrad are quite similar, and that vgrad is also strongly activated by position information.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For factual recall, compare DAS patches with rowspace-only and full-MLP interventions.",
+      "quote": "the directions we find have a strong causal effect (successfully changing o to o ′ ), but (ii) this effect disappears when we instead patch along the subspace spanned by the component orthogonal to ker Wout",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Derive an approximate 1-dimensional subspace intervention for every ROME edit and compare their effects.",
+      "quote": "we run ROME for all the edits, and we find the approximate subspace intervention (defined by a vector v) corresponding to each ROME edit.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Logit difference",
+      "definition": "The last-token logit assigned to the indirect object minus the logit assigned to the subject; positive values favor the indirect object.",
+      "quote": "Accordingly, we use the logit difference between the logits assigned to the IO and S names as our main measure of how well a patch performs.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Fractional logit difference decrease (FLDD)",
+      "definition": "FLDD(x←x′) = 1 − logitdiffι(x←x′)/logitdiff(x); larger positive values indicate stronger intervention effects, and values above 100% indicate a preference reversal on average.",
+      "quote": "Our main metric is the average fractional logit difference decrease (FLDD) due to the intervention ι",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Interchange accuracy",
+      "definition": "The fraction of patched examples for which the model predicts the subject, and therefore the wrong name.",
+      "quote": "We also measure the interchange accuracy of the intervention: the fraction of patches for which the model predicts the S (i.e., wrong) name for the patched run.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Rewrite score",
+      "definition": "(pintervention(o′) − pclean(o′))/(1 − pclean(o′)); a value of 1 means the intervention assigns probability 1 to the false target.",
+      "quote": "the rewrite score is a relative measure of how well a change to the model (ROME or our subspace intervention) increases the probability of the false target o ′ we are trying to substitute for o.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cosine similarity",
+      "definition": "The similarity between the subspace direction v and the ROME vector b, measuring whether the activation projection direction matches the ROME edit direction.",
+      "quote": "the cosine similarity of v and b measures how well the direction we are projecting the activation x on matches that from the ROME edit.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Variance ratio",
+      "definition": "Total variance introduced by the subspace intervention divided by the total variance introduced by the corresponding ROME edit.",
+      "quote": "This is the total variance introduced by this intervention as a fraction of the total variance introduced by the corresponding ROME edit.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "The DAS-found MLP direction has a substantial IOI patching effect, but removing its component in the MLP output kernel greatly reduces that effect.",
+      "numbers": "vMLP: 46.7% FLDD; ker-Wout-removed vMLP: 13.5% FLDD.",
+      "quote": "While patching the vMLP direction has a significant effect on the FLDD metric (46.7%), this effect is greatly diminished when we remove the component of vMLP in ker Wout whose activations are (provably) causally disconnected from model predictions (13.5%)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Patching the entire MLP activation does not reproduce the illusory vMLP effect and instead increases confidence in the original answer.",
+      "numbers": "−8% FLDD.",
+      "quote": "or when we patch the entire MLP activation (−8%, actually increasing confidence).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The activation-patching illusion is not restricted to one-dimensional subspaces.",
+      "numbers": "100-dimensional subspaces; effect slightly stronger than for 1-dimensional subspaces.",
+      "quote": "In Appendix B.6, we show that the illusion occurs when patching 100-dimensional subspaces as well, and the quantitative effect of the illusion is just a little stronger than that for 1-dimensional subspaces (as measured by the FLDD metric).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The faithful residual-stream direction vresid is strongly aligned with the name-mover gradient direction vgrad.",
+      "numbers": "cosine similarity ≈ 0.78.",
+      "quote": "Furthermore, we find that the cosine similarity between vresid and vgrad is ≈ 0.78, which is significant",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Both faithful residual-stream directions place most of their norm in the name-mover query nullspace.",
+      "numbers": "91% for vresid and 98% for vgrad.",
+      "quote": "Both vresid and vgrad have a significant fraction of their norm in the ker WQN M ⊤ subspace (91% and 98%, respectively).",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "In factual recall, DAS patches can change the object while their effect disappears when the causally disconnected component is removed.",
+      "numbers": "not stated",
+      "quote": "the directions we find have a strong causal effect (successfully changing o to o ′ ), but (ii) this effect disappears when we instead patch along the subspace spanned by the component orthogonal to ker Wout",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME edits and their approximate 1-dimensional subspace counterparts are very similar across the middle layers.",
+      "numbers": "layers 20-35 inclusive.",
+      "quote": "In conclusion, we observe that in layers 20-35 inclusive, the two interventions are very similar according to all metrics considered.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME-equivalent subspace interventions rely strongly on the nullspace component rather than the rowspace component.",
+      "numbers": "all rewrite scores less than 10−3.",
+      "quote": "When using the rowspace intervention, all rewrite scores are less than 10−3 , indicating a strong reliance on the nullspace component.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The empirical demonstration is limited to the IOI task and factual recall.",
+      "quote": "We only exhibit our illusion empirically in two settings: the IOI task and factual recall.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors acknowledge that defining a ground-truth mechanistic explanation is conceptually difficult.",
+      "quote": "We admit that a definition of a ‘ground truth’ mechanistic explanation is conceptually challenging.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "DAS can overfit when trained with a small number of names.",
+      "quote": "We investigated overfitting in DAS further in Appendix B.7, and found that when DAS is trained on a dataset with a small number of names, overfitting is a real concern.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "A one-dimensional intervention might not adequately characterize a higher-dimensional positional representation.",
+      "quote": "Another potential concerns is that the model could be somehow representing the position information in the MLP layer in a higher-dimensional subspace, and that our 1-dimensional intervention is perhaps not fit to illuminate the properties of that larger representation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Fact-edit validation is restricted to rewrite score and the variance measure implicit in ROME.",
+      "quote": "Ideally, there would be other validations of a fact edit that test the behavior of the intervened-upon model on other facts that should be changed by the edit.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Calling an MLP subspace illusory is less certain if activation spaces can be arbitrarily reparametrized across component boundaries.",
+      "quote": "if we allow ourselves to arbitrarily reparametrize spaces of activations by crossing the boundaries between e.g. attention heads and MLP layers, calling the MLP subspace ‘illusory’ is much more tenuous.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The norm constraints on ROME and activation interventions cause their effect magnitudes not to be exactly equivalent.",
+      "quote": "In particular, the vectors a, b are not norm-constrained, unlike v. This restricts the magnitude of the contribution of a patch, and we find this matters in practice.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No experiments use Gemma 4 E2B, so transfer of the reported MLP-in-the-middle effect to the lab's target model is unknown.",
+     "The analysis does not examine KV-shared layers, shared attention readouts, or per-layer embeddings, so the paper's single-Wout nullspace and rowspace decomposition may not apply directly.",
+     "No CPU runtime, peak-memory, or sampling-cost measurements are reported for scaling the interventions to wider residual dimensions.",
+     "The provided results do not quantify repeated-run variability, confidence intervals, or systematic sensitivity to DAS initialization and random seeds.",
+     "Off-distribution patches could induce generic norm or covariate-shift effects; nullspace and rowspace ablations alone do not isolate a semantically meaningful dormant pathway.",
+     "No induction-head experiments are reported, despite induction behavior being a separate focus of the lab's tracing methodology."
+    ],
+    "code_or_data_url": "https://github.com/amakelov/activation-patching-illusion",
+    "relevance_to_lab": "The paper is highly relevant as a methodological warning: a successful subspace patch in layers 15-34 may reflect a correlated but causally disconnected direction that activates an off-distribution dormant readout rather than a feature normally used by the model. For Gemma 4 E2B, the lab should complement activation patching with nullspace/rowspace-style causal decompositions where applicable, patch residual-stream bottlenecks, and validate candidate directions through writers, readers, logit-lens effects, induction-head tests, and factual-recall traces rather than end-to-end patch success alone. Direct transfer is limited because the experiments use GPT-2 Small/XL and MLP post-GELU down-projections; the paper does not establish how KV sharing or per-layer embeddings alter the geometry and supplies no Gemma 4 E2B or CPU-specific evidence."
+   },
+   "usage": {
+    "prompt_tokens": 22978,
+    "completion_tokens": 17837,
+    "total_tokens": 40815,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 14707
+    }
+   }
+  }
+ }
+}

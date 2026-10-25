@@ -1,0 +1,248 @@
+{
+ "source_id": "LIT02-002",
+ "arxiv_id": "2202.05262",
+ "title": "Locating and Editing Factual Associations in GPT",
+ "chars": 132064,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 0,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.903,
+   "data": {
+    "title": "Locating and Editing Factual Associations in GPT",
+    "research_question": "Where does a large language model store its facts?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 XL (1.5B)",
+      "quote": "Figure 2 plots the AIE of the internal components of GPT-2 XL (1.5B parameters).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-J (6B)",
+      "quote": "Table 4 showcases quantitative results on GPT-2 XL (1.5B) and GPT-J (6B)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-NeoX (20B)",
+      "quote": "We conduct the causal trace experiment using on GPT-NeoX (20 billion parameters) as well as GPT-J (6 billion parameters).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "zsRE evaluation slice",
+      "quote": "Our evaluation slice contains 10,000 records, each containing one factual statement, its paraphrase, and one unrelated factual statement.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "COUNTERFACT dataset",
+      "quote": "Containing 21,919 records with a diverse set of subjects, relations, and linguistic variations",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Wikipedia text for second moment statistics",
+      "quote": "Our second moment statistics C ∝ E[kk T ] are computed using 100,000 samples of hidden states k computed from tokens sampled from all Wikipedia text in-context.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Run clean, corrupted, and corrupted-with-restoration passes to compute causal traces.",
+      "quote": "we observe all of G’s internal activations during three runs: a clean run that predicts the fact, a corrupted run where the prediction is damaged, and a corrupted-with-restoration run that tests the ability of a single state to restore the prediction.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Define indirect effect for a mediating hidden state.",
+      "quote": "The indirect effect (IE) of a specific mediating state hi is defined as the difference between the probability of o under the corrupted version and the probability when that state is set to its clean version",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Choose ROME key k* from MLP activations at the last subject token.",
+      "quote": "we compute k∗ by collecting activations: We pass text x containing the subject s through G; then at layer l∗ and last subject token index i, we read the value after the non-linearity inside the MLP",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Optimize ROME value vector v* using objective L(z).",
+      "quote": "We set v∗ = argminz L(z), where the objective L(z) is:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Insert the new key-value association with a rank-one MLP weight update.",
+      "quote": "we apply Eqn. 2, updating the MLP weights Wproj with a rank-one update that inserts the new key–value association directly.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Test ROME across layers and token positions.",
+      "quote": "we test ROME’s effectiveness when targeted at various layers and tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run human evaluation comparing ROME and FT+L generations.",
+      "quote": "we ask 15 volunteers to evaluate models by comparing generated text samples on the basis of both fluency and consistency with the inserted fact.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Average Indirect Effect (AIE)",
+      "definition": "average indirect effect for each hidden state variable",
+      "quote": "Averaging over a sample of statements, we obtain the average total effect (ATE) and average indirect effect (AIE) for each hidden state variable.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Efficacy Score (ES)",
+      "definition": "portion of cases for which P[o∗] > P[oc] post-edit",
+      "quote": "Our Efficacy Score (ES) is the portion of cases for which we have P[o∗ ] > P[oc ] post-edit",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Efficacy Magnitude (EM)",
+      "definition": "mean difference P[o∗] − P[oc]",
+      "quote": "Efficacy Magnitude (EM) is the mean difference P[o∗ ] − P[oc ].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Paraphrase Scores (PS)",
+      "definition": "computed similarly to ES and EM",
+      "quote": "report Paraphrase Scores (PS) and (PM), computed similarly to ES and EM.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Neighborhood Score (NS)",
+      "definition": "success fraction P[oc] > P[o∗]",
+      "quote": "we test P[oc ] > P[o∗ ], reporting the success fraction as Neighborhood Score (NS) and difference as (NM).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Score (S)",
+      "definition": "harmonic mean of ES, PS, NS",
+      "quote": "To test the generalization–specificity tradeoff, we report the harmonic mean of ES, PS, NS as Score (S).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Fluency (GE)",
+      "definition": "weighted average of bi- and tri-gram entropies",
+      "quote": "we monitor fluency degradations by measuring the weighted average of bi- and tri-gram entropies (Zhang et al., 2018)",
+      "quote_check": "unverified"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Causal tracing finds strong causal states at the last subject token in middle layers.",
+      "numbers": "ATE 18.6%; AIE=8.7% at layer 15",
+      "quote": "The ATE of this experiment is 18.6%, and we note that a large portion of the effect is mediated by strongly causal individual states (AIE=8.7% at layer 15) at the last subject token.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MLP contributions dominate at the early site; attention is more important at the last token.",
+      "numbers": "MLP AIE 6.6%; attention AIE 1.6%",
+      "quote": "MLP contributions peak at AIE 6.6%, while attention at the last subject token is only AIE 1.6%; attention is more important at the last token of the prompt.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME is effective on zsRE.",
+      "numbers": "99.8 (±0.0), 88.1 (±0.5), 24.2 (±0.5)",
+      "quote": "ROME            99.8 (±0.0) 88.1 (±0.5) 24.2 (±0.5)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Human evaluators rate ROME more consistent with the inserted fact than FT+L.",
+      "numbers": "1.8 times more likely",
+      "quote": "evaluators are 1.8 times more likely to rate ROME as more consistent with the inserted fact than the FT+L model",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Human evaluators find ROME less fluent than FT+L.",
+      "numbers": "1.3 times less likely",
+      "quote": "rating ROME as 1.3 times less likely to be more fluent than the FT+L model",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Corrupting subject embeddings reduces the correct object token score.",
+      "numbers": "8.47%",
+      "quote": "On average, this reduces the correct object token score to 8.47%, less than one third the original score.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "ROME only edits a single fact at a time and is not intended for large-scale training.",
+      "quote": "it only edits a single fact at a time, and it is not intended as a practical method for large-scale model training.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Edited associations are directional; altering both directions requires two edits.",
+      "quote": "Associations edited by ROME are directional, for example, “The iconic landmark in Seattle is the Space Needle” is stored separately from “The Space Needle is the iconic landmark in Seattle,” so altering both requires two edits.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Other kinds of learned beliefs were not investigated.",
+      "quote": "we have not investigated other kinds of learned beliefs such as logical, spatial, or numerical knowledge.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Understanding of vector spaces for learned attributes remains incomplete.",
+      "quote": "our understanding of the structure of the vector spaces that represent learned attributes remains incomplete.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Model may guess plausible but false new facts.",
+      "quote": "Even when a model’s stored factual association is changed successfully, the model will guess plausible new facts that have no basis in evidence and that are likely to be false.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Architecture mismatch: GPT-2/GPT-J/GPT-NeoX findings may not transfer to Gemma 4 E2B with KV-shared layers 15-34 and per-layer embeddings.",
+     "Causal tracing corruption via Gaussian noise on subject embeddings may create off-distribution activations and restoration artifacts in Gemma.",
+     "ROME assumes a single-layer linear associative MLP memory; KV-shared layers and per-layer embeddings may distribute factual associations across layers.",
+     "The last-subject-token localization may not hold for Gemma tokenization, multi-token entities, or per-layer embedding schemes.",
+     "CPU-only evaluation may be computationally expensive for causal tracing over many prompts and ROME optimization, which the paper runs on GPU.",
+     "zsRE and COUNTERFACT are English/Wikidata-centric and may not capture induction-head or factual-recall tracing behavior relevant to the lab."
+    ],
+    "code_or_data_url": "https://rome.baulab.info/",
+    "relevance_to_lab": "The paper’s causal tracing and ROME provide a template for activation patching and factual-recall tracing: test whether mid-layer MLP states at the last subject token are decisive in Gemma 4 E2B, especially across KV-shared layers 15-34 and per-layer embeddings; adapt logit lens and induction-head analyses to compare localization and editing effects on CPU."
+   },
+   "usage": {
+    "prompt_tokens": 25442,
+    "completion_tokens": 13248,
+    "total_tokens": 38690,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 11302
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": false,
+   "error": null,
+   "quote_stats": {
+    "exact": 0,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": null,
+   "data": null,
+   "usage": {
+    "prompt_tokens": 25388,
+    "completion_tokens": 24161,
+    "total_tokens": 49549,
+    "prompt_tokens_details": {
+     "cached_tokens": 198
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 20375
+    }
+   }
+  }
+ }
+}

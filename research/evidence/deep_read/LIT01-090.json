@@ -1,0 +1,459 @@
+{
+ "source_id": "LIT01-090",
+ "arxiv_id": "2310.10348",
+ "title": "Attribution Patching Outperforms Automated Circuit Discovery",
+ "chars": 51565,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 29,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Attribution Patching Outperforms Automated Circuit Discovery",
+    "research_question": "Does a simple attribution-patching-based method outperform existing automated circuit discovery methods, and what are its limitations?",
+    "models_and_data": [
+     {
+      "item": "Indirect Object Identification (IOI), Docstring, and Greater-Than tasks",
+      "quote": "We compare Edge Attribution Patching (EAP) and ACDC on the Indirect Object Identification (IOI), Docstring, and Greater-Than tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 small models used for IOI and Greater-Than",
+      "quote": "Activation patching was not included in the other tasks as it was too computationally expensive to run on the GPT-2 small models used by IOI and Greater-Than.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Ground-truth circuits from prior studies",
+      "quote": "For each of these tasks, previous studies identified a subgraph (circuit) relevant for solving the task.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Docstring task case study",
+      "quote": "We use the docstring task as a case study due to the small model size used.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Define activation patching as replacing activations from one forward pass with activations from a different forward pass.",
+      "quote": "Activation patching refers to replacing the activations from one model forward pass with the activations from a different forward pass.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use attribution patching to estimate activation patching effects for many edges with two forward passes and one backward pass.",
+      "quote": "Attribution patching [20] is a technique for estimating Equation (1) for many different edges E using only two forward passes and one backward pass.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run EAP by computing absolute attribution scores for all edges, sorting them, and keeping the top k edges.",
+      "quote": "i) use Equation (2) to obtain absolute attribution scores for the importance of all edges in the computational graph and then ii) sort these scores and keep the top k edges in a circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compare EAP and ACDC on IOI, Docstring, and Greater-Than tasks.",
+      "quote": "We compare Edge Attribution Patching (EAP) and ACDC on the Indirect Object Identification (IOI), Docstring, and Greater-Than tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run EAP first, then ACDC on the pruned subgraph for the Docstring task.",
+      "quote": "We ran EAP first, then ACDC on the resulting subgraph for the Docstring task, varying pruning thresholds for EAP and ACDC independently.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use task-specific metrics rather than KL divergence to avoid zero-gradient issues.",
+      "quote": "In this work we use the ‘task-specific metrics’ (not KL divergence) from [10] so avoid this issue.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "AUC from circuit recovery",
+      "definition": "Area under the ROC curve for recovering known circuits, averaged over tasks.",
+      "quote": "averaged over all tasks our method has greater AUC from circuit recovery than other methods.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Absolute attribution score",
+      "definition": "Absolute value of the linear approximation to the metric change caused by corrupting an edge.",
+      "quote": "which we call the absolute attribution score for the rest of this paper.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Activation patching score",
+      "definition": "Change in metric under activation patching an edge.",
+      "quote": "we use the change in metric under activation patching",
+      "quote_check": "exact"
+     },
+     {
+      "name": "R2 correlation",
+      "definition": "Correlation between activation patching and attribution patching scores.",
+      "quote": "we find a fairly weak correlation between activation and attribution patching scores (R2 = 0.27).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "TPR and FPR",
+      "definition": "True positive rate and false positive rate for circuit recovery.",
+      "quote": "Figure 5 compares the TPR and FPR for the combined methods with the ROC curve of EAP only.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Logit difference",
+      "definition": "A task-specific metric often used as L.",
+      "quote": "L often represents loss or logit difference [3].",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "EAP achieved AUC 0.904 on the IOI task.",
+      "numbers": "0.904",
+      "quote": "EAP Only; (AUC = 0.904)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EAP achieved AUC 0.896 on the Greater-Than task.",
+      "numbers": "0.896",
+      "quote": "EAP Only; (AUC = 0.896)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EAP achieved AUC 0.976 on the Docstring task.",
+      "numbers": "0.976",
+      "quote": "EAP Only; (AUC = 0.976)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ACDC with KL divergence achieved AUC 0.982 on the Docstring task, outperforming EAP there.",
+      "numbers": "0.982",
+      "quote": "ACDC w/ KL Divergence metric; (AUC = 0.982)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EAP requires just two forward passes and a backward pass.",
+      "numbers": "two forward passes and a backward pass",
+      "quote": "requiring just two forward passes and a backward pass.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Attribution patching scores have a weak correlation with activation patching scores, R2 = 0.27.",
+      "numbers": "R2 = 0.27",
+      "quote": "we find a fairly weak correlation between activation and attribution patching scores (R2 = 0.27).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Combining EAP then ACDC increased performance compared to EAP only.",
+      "numbers": "not stated",
+      "quote": "The combined methods show increased performance compared to EAP only.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Attribution patching fails when the metric gradient is the zero vector.",
+      "quote": "one limitation of attribution patching is that it will not work when the gradient of the metric is the zero vector.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attribution patching approximations correlate only weakly with activation patching scores.",
+      "quote": "we find a fairly weak correlation between activation and attribution patching scores (R2 = 0.27).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attribution patching can overestimate the effect of activation patching.",
+      "quote": "suggesting that attribution patching estimates the effect of activation patching as twice as important as it really is.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The linear approximation is inaccurate for some docstring circuit edges.",
+      "quote": "Figure 4b shows the result for one edge in the docstring circuit where the linear approximation to activation patching is not accurate.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Interpretability metrics do not precisely capture meaningful human understanding.",
+      "quote": "the metrics used for interpretability do not precisely capture meaningful human understanding.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Human-found circuits are imperfect and add noise to evaluation.",
+      "quote": "human-found circuits are imperfect, increasing the noise in this measurement.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "EAP is evaluated on GPT-2 small and a small docstring model, not on Gemma 4 E2B; transfer to KV-shared layers 15-34 and per-layer embeddings is untested.",
+     "The edge-level computational graph may not directly represent KV-sharing or per-layer embedding pathways, so attribution scores could miss or misattribute importance in those components.",
+     "AUC against prior human circuits is a proxy; it does not establish causal faithfulness for induction-head or factual-recall tracing.",
+     "The linear approximation can fail for nonlinear or concave effects, especially embedding edges, which may misrank edges in factual-recall tasks.",
+     "The paper does not test CPU-only feasibility or memory/runtime for large models; backward passes on Gemma 4 E2B may be costly.",
+     "Top-k and threshold selection are only lightly explored, and the EAP+ACDC combination is tested only on the Docstring task."
+    ],
+    "code_or_data_url": "https://github.com/Aaquib111/acdcpp",
+    "relevance_to_lab": "EAP is directly relevant as a cheap edge-attribution and circuit-discovery baseline for Gemma 4 E2B activation patching, logit lens, induction-head, and factual-recall tracing; however, the paper does not address KV-shared layers, per-layer embeddings, or CPU constraints."
+   },
+   "usage": {
+    "prompt_tokens": 9394,
+    "completion_tokens": 10426,
+    "total_tokens": 19820,
+    "prompt_tokens_details": {
+     "cached_tokens": 9344
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8456
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 34,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.972,
+   "data": {
+    "title": "Attribution Patching Outperforms Automated Circuit Discovery",
+    "research_question": "Does Edge Attribution Patching recover task-relevant model circuits more accurately and efficiently than activation-patching-based ACDC and other automated circuit-discovery methods, and how faithful are its edge-level attribution scores to activation patching?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 Small on the Indirect Object Identification (IOI) task",
+      "quote": "Activation patching was not included in the other tasks as it was too computationally expensive to run on the GPT-2 small models used by IOI and Greater-Than.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 Small on the Greater-Than task",
+      "quote": "Activation patching was not included in the other tasks as it was too computationally expensive to run on the GPT-2 small models used by IOI and Greater-Than.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "4-layer attention-only transformer on the Python Docstring task",
+      "quote": "A circuit for Python docstrings in a 4-layer attention-only transformer.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Previously identified IOI, Docstring, and Greater-Than circuits used as benchmark ground truth",
+      "quote": "For each of these tasks, previous studies identified a subgraph (circuit) relevant for solving the task. We use their results as a ground truth for benchmarking both methods.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Paired clean and corrupted prompts",
+      "quote": "In this work we always compute this score across a set of (xclean , xcorr ) pairs and take the mean.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Represent each language model as a directed acyclic computational graph.",
+      "quote": "We view language models as directed, acyclic graphs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute attribution information for many candidate edges using two forward passes and one backward pass.",
+      "quote": "Attribution patching [20] is a technique for estimating Equation (1) for many different edges E using only two forward passes and one backward pass.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Linearly approximate activation-patching effects with a first-order Taylor expansion of the task metric.",
+      "quote": "It linearly approximates the metric difference after corrupting a single edge in the computational graph (Figure 1) by expanding L as a function of the edge activation as a Taylor series with terms up to the first order:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Score all graph edges, sort the scores, and retain the top-k edges as the discovered circuit.",
+      "quote": "This takes two steps: i) use Equation (2) to obtain absolute attribution scores for the importance of all edges in the computational graph and then ii) sort these scores and keep the top k edges in a circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use task-specific metrics rather than KL divergence for the main EAP method.",
+      "quote": "In this work we use the ‘task-specific metrics’ (not KL divergence) from [10] so avoid this issue.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Benchmark EAP and ACDC against previous circuits on IOI, Greater-Than, and Docstring, with activation patching additionally evaluated on Docstring.",
+      "quote": "We compare Edge Attribution Patching (EAP) and ACDC on the Indirect Object Identification (IOI), Docstring, and Greater-Than tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For Docstring, run EAP first and then apply ACDC to the pruned subgraph using independently varied pruning thresholds.",
+      "quote": "We ran EAP first, then ACDC on the resulting subgraph for the Docstring task, varying pruning thresholds for EAP and ACDC independently.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Task statistic L",
+      "definition": "The model statistic measured for a task, commonly loss or logit difference.",
+      "quote": "For example, L often represents loss or logit difference [3].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Activation-patching metric change",
+      "definition": "The change in the task metric produced by replacing a clean edge activation with its corrupted counterpart, as defined by Equation (1).",
+      "quote": "In this work, we use the change in metric under activation patching",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Absolute attribution score",
+      "definition": "The magnitude of the first-order attribution score, used as the approximation to activation-patching impact.",
+      "quote": "A simple rearrangement implies that Equation (1) is approximately equal to |∆e L| (3) which we call the absolute attribution score for the rest of this paper.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Mean absolute attribution score",
+      "definition": "The absolute attribution score averaged over clean-corrupted prompt pairs.",
+      "quote": "In this work we always compute this score across a set of (xclean , xcorr ) pairs and take the mean.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "ROC AUC",
+      "definition": "Area under the receiver operating characteristic curve for ranking circuit edges against the benchmark ground truth.",
+      "quote": "The ROC curves in Figure 2 suggest the performance of EAP is better than ACDC overall: it has the maximal AUC in Figure 2a-2b, while ACDC used with the KL Divergence metric outperforms EAP in Figure 2c.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KL divergence",
+      "definition": "An alternative ACDC metric that is nonnegative and equals zero at the unablated model, causing all gradients there to be zero.",
+      "quote": "Conmy et al. [10] recommended the use of KL divergence as a metric, which is i) equal to 0 when we run the model without ablations and ii) a non-negative metric.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Youdens-J statistic",
+      "definition": "The maximum true-positive rate minus false-positive rate.",
+      "quote": "Youdens-J statistic (maximum TPR minus FPR value) for combining EAP and ACDC methods on the docstring task.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "R2",
+      "definition": "The goodness-of-fit measure for the relationship between activation-patching and attribution-patching scores.",
+      "quote": "Surprisingly, we find a fairly weak correlation between activation and attribution patching scores (R2 = 0.27).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "EAP had the highest reported circuit-recovery AUC on IOI.",
+      "numbers": "EAP Only AUC = 0.904; ACDC w/ IOI Metric AUC = 0.588; ACDC w/ KL Divergence Metric AUC = 0.868",
+      "quote": "EAP Only; (AUC = 0.904)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EAP had the highest reported circuit-recovery AUC on Greater-Than.",
+      "numbers": "EAP Only AUC = 0.896; ACDC w/ GreaterThan Metric AUC = 0.458; ACDC w/ KL Divergence Metric AUC = 0.849",
+      "quote": "EAP Only; (AUC = 0.896)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On Docstring, EAP slightly trailed Activation Patching and ACDC with KL divergence while nearly matching ACDC with the task metric.",
+      "numbers": "EAP Only AUC = 0.976; Activation Patching AUC = 0.978; ACDC w/ Docstring Metric AUC = 0.972; ACDC w/ KL Divergence metric AUC = 0.982",
+      "quote": "The ROC curves in Figure 2 suggest the performance of EAP is better than ACDC overall: it has the maximal AUC in Figure 2a-2b, while ACDC used with the KL Divergence metric outperforms EAP in Figure 2c.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EAP estimated effects for many edges using two forward passes and one backward pass, while ACDC's required forward-pass count scaled exponentially with graph size.",
+      "numbers": "two forward passes and one backward pass",
+      "quote": "Attribution patching [20] is a technique for estimating Equation (1) for many different edges E using only two forward passes and one backward pass.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Applying ACDC after EAP pruning improved circuit recovery over EAP alone on Docstring.",
+      "numbers": "not stated",
+      "quote": "The combined methods show increased performance compared to EAP only.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Attribution-patching and activation-patching scores had a weak correspondence.",
+      "numbers": "R2 = 0.27",
+      "quote": "Surprisingly, we find a fairly weak correlation between activation and attribution patching scores (R2 = 0.27).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The best-fit slope indicated that EAP estimated activation-patching effects as twice as large.",
+      "numbers": "gradient 0.531; twice as important",
+      "quote": "Moreover, the line of best fit has gradient 0.531, suggesting that attribution patching estimates the effect of activation patching as twice as important as it really is.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Only six edges outside the IOI circuit had attribution scores outside the reported central interval.",
+      "numbers": "6 edges; [−0.25, 0.25]",
+      "quote": "Furthermore, there are only 6 edges outside of the interval [−0.25, 0.25] that aren’t part of the IOI circuit.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Attribution patching cannot work when the metric gradient is the zero vector.",
+      "quote": "Note that one limitation of attribution patching is that it will not work when the gradient of the metric is the zero vector.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The first-order attribution scores are only weakly correlated with activation-patching scores.",
+      "quote": "Surprisingly, we find a fairly weak correlation between activation and attribution patching scores (R2 = 0.27).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "For nonlinear, concave corruption paths, the linear approximation can substantially overestimate the actual effect.",
+      "quote": "We find that interpolating towards the corrupted input creates a concave curve (Figure 4b) such that the linear approximation at λ = 0 overestimates the effect of activation patching this edge.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The documented additional approximation failures involve edges originating from positional or token embeddings.",
+      "quote": "These cases all involve an edge that comes from the model’s embeddings (positional and tokens).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The interpretability metrics do not precisely capture meaningful human understanding.",
+      "quote": "Finally, one further limitation of this research is that the metrics used for interpretability do not precisely capture meaningful human understanding.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Ground-truth recovery is difficult for not-yet-understood tasks, and previously found human circuits introduce measurement noise.",
+      "quote": "Recovering a subgraph that humans previously recovered is limited because i) we can’t evaluate this metric for interpretability tasks that we don’t yet understand and ii) human-found circuits are imperfect, increasing the noise in this measurement.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "A direct activation-patching comparison was omitted for IOI and Greater-Than because it was too computationally expensive.",
+      "quote": "Activation patching was not included in the other tasks as it was too computationally expensive to run on the GPT-2 small models used by IOI and Greater-Than.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The detailed approximation case study used the small-model Docstring task.",
+      "quote": "We use the docstring task as a case study due to the small model size used.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The evaluation does not include Gemma 4 E2B, shared-KV architectures, or models of comparable scale, so EAP ranking quality in the lab setting is unverified.",
+     "No CPU-specific runtime, peak-memory, or backward-pass resource measurements are reported; counting forward and backward passes alone may hide substantial memory and kernel costs.",
+     "Only three narrow benchmarks and small models are studied, leaving task- and scale-generalization unestablished.",
+     "No repeated-run variability, confidence intervals, or significance tests are reported for the AUC differences.",
+     "Ground-truth circuit overlap is the primary endpoint; the paper does not independently establish that recovered subgraphs are causally sufficient for behavior on held-out inputs.",
+     "Shared-KV query, key, and value pathways are not treated explicitly, so attribution can be ambiguous when several components interact through shared paths.",
+     "The study does not validate per-layer embeddings as an interpretability object or reproduce factual-recall and induction-head tracing protocols.",
+     "Threshold selection and known-circuit benchmarking may favor methods tuned to the evaluation topology; no held-out circuit or newly discovered circuit is used as an end-to-end benchmark."
+    ],
+    "code_or_data_url": "https://github.com/Aaquib111/acdcpp",
+    "relevance_to_lab": "The paper provides a directly relevant cheap-first-pass method: EAP estimates graph-edge importance with two forward passes and one backward pass, and the authors recommend running EAP before ACDC. For Gemma 4 E2B, instantiate a computational graph for the KV-shared paths in layers 15-34 and per-layer embedding activations, then use task-specific metrics such as logit difference to avoid the zero-gradient problem identified with KL divergence at the clean baseline. Use EAP rankings to pre-prune candidate edges, then confirm high-scoring edges with activation patching, logit lens, induction-head tracing, and factual-recall tracing rather than treating the ranking as causal proof. The paper reports neither CPU resource measurements nor shared-KV or per-layer-embedding validation, so those remain lab-specific work."
+   },
+   "usage": {
+    "prompt_tokens": 9390,
+    "completion_tokens": 20705,
+    "total_tokens": 30095,
+    "prompt_tokens_details": {
+     "cached_tokens": 9389
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 17740
+    }
+   }
+  }
+ }
+}

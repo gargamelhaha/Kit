@@ -1,0 +1,535 @@
+{
+ "source_id": "LIT02-128",
+ "arxiv_id": "2606.13705",
+ "title": "When Can One Neuron Fix Repetition Loops in LLMs?",
+ "chars": 137801,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 2,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.925,
+   "data": {
+    "title": "When Can One Neuron Fix Repetition Loops in LLMs?",
+    "research_question": "Can targeted static weight edits to a small number of internal components reduce repetition loops in Gemma 4 without retraining, rather than relying on repetition penalties?",
+    "models_and_data": [
+     {
+      "item": "Gemma 4 instruction-tuned models",
+      "quote": "The Gemma 4 instruction-tuned models share a reproducible failure: on long factual enumeration prompts,",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Eight enumeration probes",
+      "quote": "We use eight enumeration probes: firefly_list, wire_episodes, pokemon_gen1, mcu_films, noble_gases, constellations, us_presidents, and eu_member_states.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Initial loop evaluation grid",
+      "quote": "For each model variant, the initial loop evaluation consists of these 8 probes × 8 fixed seeds (0-7) × 2 thinking modes (thinking on or off), for 128 generations per model variant.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Generation settings",
+      "quote": "We generate up to 1536 new tokens with temperature=0.7, top_p=0.95, top_k=64, and no repetition penalty.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Regression benchmarks",
+      "quote": "For regression checks, we report IFEval (Zhou et al. 2023), TruthfulQA (Lin, Hilton, and Evans 2022), ARC-Easy and ARC-Challenge (Clark et al. 2018), and GSM8K (Cobbe et al. 2021).",
+      "quote_check": "near"
+     },
+     {
+      "item": "Untouched no-thinking benchmarks",
+      "quote": "We also run three untouched, no-thinking benchmarks that were not used to select variants: HellaSwag (Zellers et al. 2019), WinoGrande (Sakaguchi et al. 2020), and BoolQ (Clark et al. 2019); 500 examples each.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen3.5-4B cross-family data",
+      "quote": "To test whether the approach transfers beyond Gemma, we screened prompts from Antidoom’s released training mixture (Liquid AI 2026b) with Qwen3.5-4B (Qwen Team 2026), then froze a fresh 400-prompt Qwen confirmation set after trigger discovery.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "LFM2.5-1.2B-Thinking cross-family data",
+      "quote": "A smaller LFM2.5-1.2B-Thinking experiment (Liquid AI 2026a) provides a second cross-family feasibility result: a 100-neuron edit reduces held-out loops from 4/9 to 1/9.",
+      "quote_check": "unverified"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Per-layer ablation sweep",
+      "quote": "The first localization step is a per-layer ablation sweep, i.e. testing every layer in turn.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Gradient-times-activation neuron ranking",
+      "quote": "We rank all neurons in a candidate layer by the gradient-times-activation score",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Confirm candidates with exact edits and full-generation sweeps",
+      "quote": "We confirm top-K candidates with exact weight edits and full-generation sweeps.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate static weight intervention classes",
+      "quote": "We evaluate four classes of static weight interventions on the top-K selected units:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Frozen held-out evaluation",
+      "quote": "After freezing the selected interventions, we evaluate behavior on unseen seeds 8–15 and six prompts not used for intervention selection:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Deterministic loop detector",
+      "quote": "To classify outputs, we created a deterministic, prompt-agnostic detector.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Matched random-intervention controls",
+      "quote": "For selectivity, we additionally freeze five matched random interventions per model.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Long-budget doom-loop evaluation",
+      "quote": "Table 10 reports outcome shares for the two doom-prone models (26B and 31B) on the three doom-prone prompts (wire_episodes, firefly_list, constellations), pooled over both 4k and 8k budgets with think=yes.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Detected loop incidence",
+      "definition": "Fraction of held-out generations classified as loops by the detector.",
+      "quote": "Our main held-out outcome is the fraction of generations classified as loops by the detector.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Tight loop",
+      "definition": "Exact 5–40-token period repeated at least three times at the generation tail.",
+      "quote": "A tight loop requires an exact 5–40-token period repeated at least three times at the generation tail.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Soft loop",
+      "definition": "At least four consecutive lines with identical normalized content after list-marker stripping, lowercasing, and whitespace normalization.",
+      "quote": "A soft loop requires at least four consecutive lines with identical normalized content after stripping list markers, lowercasing, and normalizing whitespace.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Natural EOS and list diagnostics",
+      "definition": "Natural end-of-sequence completion, budget exhaustion, and unique/duplicate list items.",
+      "quote": "We also measure natural EOS, budget exhaustion, unique and duplicate list items",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Unique items and duplicate rate",
+      "definition": "Behavior-preservation diagnostics from parsed numbered list items after removing the thinking channel.",
+      "quote": "We parse numbered list items after removing Gemma’s thinking channel, then report unique items and duplicate rate as behavior-preservation diagnostics.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Coverage",
+      "definition": "Exact matching against a 50-item key for the U.S.-states control.",
+      "quote": "For the U.S.-states control, exact matching against a 50-item key additionally measures coverage.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Benchmark delta",
+      "definition": "Selected-minus-baseline benchmark change in percentage points.",
+      "quote": "Selected-minus-baseline changes range from −3.4 to +0.4 pp for E2B, +0.6 to +4.0 pp for E4B, 0.0 to +1.4 pp for 26B, and −0.8 to +0.2 pp for 31B.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Detector audit precision/recall/F1",
+      "definition": "Detector performance against a blinded human audit sample.",
+      "quote": "On a stratified 81-output blinded human audit, the detector has precision 0.878, recall 0.818, and F1 0.847",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Held-out detected loops fall across all four Gemma models.",
+      "numbers": "46/384 to 12/384",
+      "quote": "Across all four Gemma models, detected loops fall from 46/384 to 12/384 on frozen held-out prompts and seeds",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A single sign-inverted neuron suffices in E2B on the development set.",
+      "numbers": "one neuron",
+      "quote": "in the Gemma 4 E2B model, for example, one sign-inverted neuron suffices.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The selected E2B two-neuron variant reaches zero development loops with small worst-case benchmark change.",
+      "numbers": "0/128; −0.74 pp",
+      "quote": "The selected two-neuron edit (bold border) reaches 0/128 loops with a −0.74 pp worst-case benchmark change.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "E4B held-out loops fall substantially.",
+      "numbers": "18/96 to 2/96; 16.7 pp; CI [8.3, 25.0]",
+      "quote": "E4B falls from 18/96 to 2/96 (paired reduction 16.7 pp, 95% bootstrap CI [8.3, 25.0])",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "31B held-out loops fall substantially.",
+      "numbers": "13/96 to 3/96; 10.4 pp; CI [4.2, 16.7]",
+      "quote": "and 31B from 13/96 to 3/96 (10.4 pp [4.2, 16.7])",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "26B held-out effect is not distinguishable from zero.",
+      "numbers": "9/96 to 6/96; 3.1 pp; CI [−3.1, 9.4]",
+      "quote": "while 26B falls from 9/96 to 6/96 (3.1 pp [−3.1, 9.4])",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A sparse Qwen3.5-4B edit reduces detector positives.",
+      "numbers": "181 to 104",
+      "quote": "A 100-neuron L12 sign-inversion edit reduces positives from 181 to 104 under Antidoom’s repeated-span detector",
+      "quote_check": "near"
+     },
+     {
+      "claim": "At long budgets, larger models shift toward doom looping.",
+      "numbers": "not stated",
+      "quote": "At longer generation budgets, the edits remain effective for the smaller (E2B, E4B) models, but in the larger models (26B, 31B), the remaining failures shift toward doom looping",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The study is exploratory, not an exhaustive search over intervention types, layers, and unit counts.",
+      "quote": "This study is exploratory rather than an exhaustive search over intervention types, layers, and unit counts.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors do not claim a single family-independent loop circuit.",
+      "quote": "we therefore do not claim that these models share a single family-independent loop circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Intervention selection and initial reported outcomes use the same prompts and seeds.",
+      "quote": "Moreover, intervention selection and the initial reported outcomes use the same prompts and seeds.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Task-level generalization remains uncertain because four of six held-out prompts are paraphrases of development triggers.",
+      "quote": "Because four of its six prompts are paraphrases of development triggers, task-level generalization remains uncertain even when generation-level paired effects are strong.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Detector-negative outputs may still be incomplete or incorrect, and finite capability tests cannot exclude untested effects.",
+      "quote": "Detector-negative outputs may still be incomplete or incorrect, and finite capability tests cannot exclude effects on untested behaviors.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The Rust side-effect check uses one prompt, and the Qwen detector comparison lacks independent human labels.",
+      "quote": "The Rust check uses one prompt, and the Qwen confirmation-set detector comparison does not include independent human labels.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "E2B is treated as a loop-completion trade-off rather than an unqualified fix.",
+      "quote": "We therefore treat E2B as a loop-completion trade-off rather than an unqualified fix.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Selected components differ and attribution rankings are unstable.",
+      "quote": "However, the selected components differ and attribution rankings are unstable;",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No CPU-only runtime, memory, or latency measurements are reported, so the practical cost of the static edits for a CPU lab is unknown.",
+     "The paper does not analyze KV-shared layers 15–34, per-layer embeddings, or use activation patching/logit lens/induction-head tracing, so its mechanistic claims do not directly cover those internals.",
+     "Evaluation is concentrated on English factual enumeration and a small benchmark set; multilingual behavior, broader code generation, and long-form reasoning remain largely untested.",
+     "The intervention search may overfit the small development grid despite held-out seeds; the paper does not report multiple independent selection pipelines or search-run variance.",
+     "Static unconditional edits could have unmeasured effects on routing or downstream computation; the paper does not isolate whether loop reduction comes from changed token probabilities, expert routing, or compensatory circuits."
+    ],
+    "code_or_data_url": "https://huggingface.co/edgerunner-ai/gemma-4-E2B-it-noloop; https://huggingface.co/edgerunner-ai/gemma-4-E4B-it-noloop; https://huggingface.co/edgerunner-ai/gemma-4-26B-A4B-it-noloop; https://huggingface.co/edgerunner-ai/gemma-4-31B-it-noloop",
+    "relevance_to_lab": "Directly relevant: it studies Gemma 4 E2B repetition loops, per-layer ablation/attribution, and MLP-neuron weight edits (L10/L12; L13–L15 signal), with a deterministic loop detector and held-out protocol. It does not cover KV-shared layers 15–34, per-layer embeddings, activation patching, logit lens, induction heads, factual-recall tracing, or CPU feasibility, so it can serve as a behavioral/weight-edit baseline and caution for those internal analyses."
+   },
+   "usage": {
+    "prompt_tokens": 24391,
+    "completion_tokens": 13569,
+    "total_tokens": 37960,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 10992
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 38,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.975,
+   "data": {
+    "title": "When Can One Neuron Fix Repetition Loops in LLMs?",
+    "research_question": "Can targeted static weight edits to a small set of internal components reduce repetition loops in Gemma 4 and related model families without retraining, and do those edits generalize beyond the prompts and seeds used for selection?",
+    "models_and_data": [
+     {
+      "item": "gemma-4-E2B-it: selected L10/L12 MLP-neuron intervention",
+      "quote": "two neurons in E2B (0.0009%): L10:3513 is sign-inverted with α = −0.8 and L12:3838 is amplified with α = 3.0.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "gemma-4-E4B-it: three-neuron L18 MLP-stripping edit",
+      "quote": "three L18 neurons in E4B (0.0007%)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "gemma-4-31B-it: 1,062-neuron L36 MLP-stripping edit",
+      "quote": "1,062 unique L36 neurons in 31B (0.082% of FFN neurons)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "gemma-4-26B-A4B-it: routed-expert masking model",
+      "quote": "The 26B model has 30 layers with 128 routed expert slots per layer.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen3.5-4B cross-family confirmation dataset",
+      "quote": "with Qwen3.5-4B (Qwen Team 2026), then froze a fresh 400-prompt Qwen confirmation set after trigger discovery.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "LFM2.5-1.2B-Thinking cross-family experiment",
+      "quote": "A smaller LFM2.5-1.2B-Thinking experiment (Liquid AI 2026a) provides a second cross-family feasibility result",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Eight-probe factual enumeration suite",
+      "quote": "We use eight enumeration probes: firefly_list, wire_episodes, pokemon_gen1, mcu_films, noble_gases, constellations, us_presidents, and eu_member_states.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "General-purpose regression benchmarks",
+      "quote": "For regression checks, we report IFEval (Zhou et al. 2023), TruthfulQA (Lin, Hilton, and Evans 2022), ARC-Easy and ARC-Challenge (Clark et al. 2018), and GSM8K (Cobbe et al. 2021).",
+      "quote_check": "near"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Construct the development grid with eight probes, eight fixed seeds, and both thinking modes",
+      "quote": "For each model variant, the initial loop evaluation consists of these 8 probes × 8 fixed seeds (0-7) × 2 thinking modes (thinking on or off), for 128 generations per model variant.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Generate development responses with fixed sampling parameters",
+      "quote": "We generate up to 1536 new tokens with temperature=0.7, top_p=0.95, top_k=64, and no repetition penalty.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Freeze interventions and evaluate unseen seeds and held-out prompts",
+      "quote": "The suite uses unseen sampling seeds 8–15 and six prompts: four rephrasings of firefly_list, wire_episodes, constellations, and pokemon_gen1, plus new controls that request all 50 U.S. states and all 118 chemical elements.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Classify tight repetition loops with a deterministic detector",
+      "quote": "A tight loop requires an exact 5–40-token period repeated at least three times at the generation tail.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Localize candidate layers through component ablation",
+      "quote": "The first localization step is a per-layer ablation sweep, i.e. testing every layer in turn.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Rank dense MLP neurons using gradient-times-activation attribution",
+      "quote": "We rank all neurons in a candidate layer by the gradient-times-activation score",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Sweep static weight interventions on top-ranked units",
+      "quote": "We evaluate four classes of static weight interventions on the top-K selected units:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate matched random interventions as controls",
+      "quote": "For selectivity, we additionally freeze five matched random interventions per model.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Tight-loop incidence",
+      "definition": "Whether the generation tail contains an exact repeated token period of 5–40 tokens at least three times.",
+      "quote": "A tight loop requires an exact 5–40-token period repeated at least three times at the generation tail.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Soft-loop incidence",
+      "definition": "Whether at least four consecutive lines collapse to identical normalized content.",
+      "quote": "A soft loop requires at least four consecutive lines with identical normalized content after stripping list markers, lowercasing, and normalizing whitespace",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Detector-positive loop incidence",
+      "definition": "The primary held-out outcome: fraction of generations classified as looping by the deterministic detector.",
+      "quote": "Our main held-out outcome is the fraction of generations classified as loops by the detector.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Natural EOS and budget exhaustion",
+      "definition": "Whether generations terminate with an end-of-sequence token or exhaust the generation budget.",
+      "quote": "We also measure natural EOS, budget exhaustion, unique and duplicate list items, and, for the U.S.-states probe, coverage of the 50-item gold list.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Closed-list coverage",
+      "definition": "The proportion of a gold factual list recovered by a generation, measured exactly for the U.S.-states control.",
+      "quote": "For the U.S.-states control, exact matching against a 50-item key additionally measures coverage.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Untouched capability-benchmark delta",
+      "definition": "Selected-minus-baseline score change on untouched no-thinking HellaSwag, WinoGrande, and BoolQ evaluations.",
+      "quote": "Selected-minus-baseline changes range from −3.4 to +0.4 pp for E2B, +0.6 to +4.0 pp for E4B, 0.0 to +1.4 pp for 26B, and −0.8 to +0.2 pp for 31B.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Detector precision, recall, and F1",
+      "definition": "Agreement between the deterministic repetition detector and a blinded human majority reference.",
+      "quote": "On a stratified 81-output blinded human audit, the detector has precision 0.878, recall 0.818, and F1 0.847 (Supplementary Sec. B).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Gradient-times-activation attribution score",
+      "definition": "A neuron score whose sign identifies anti-loop versus pro-loop candidates in the candidate layer.",
+      "quote": "Positive scores identify anti-loop units (candidates for amplification); negative scores identify pro-loop units (candidates for suppression, zeroing, or inversion).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Across frozen held-out prompts and seeds, the selected edits substantially reduced detected loops.",
+      "numbers": "46/384 baseline to 12/384 selected",
+      "quote": "Across 384 held-out baseline and 384 paired selected-edit generations, detected loops fall from 46 to 12.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The strongest held-out reductions occurred for E4B and 31B.",
+      "numbers": "E4B: 18/96 to 2/96; paired reduction 16.7 pp, 95% bootstrap CI [8.3, 25.0]. 31B: 13/96 to 3/96; 10.4 pp [4.2, 16.7].",
+      "quote": "E4B falls from 18/96 to 2/96 (paired reduction 16.7 pp, 95% bootstrap CI [8.3, 25.0]) and 31B from 13/96 to 3/96 (10.4 pp [4.2, 16.7])",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "E2B showed a smaller held-out reduction, while the 26B effect was not distinguishable from zero.",
+      "numbers": "E2B: 6/96 to 1/96; 5.2 pp [0.0, 10.4]. 26B: 9/96 to 6/96; 3.1 pp [−3.1, 9.4].",
+      "quote": "E2B falls from 6/96 to 1/96 (5.2 pp [0.0, 10.4]), while 26B falls from 9/96 to 6/96 (3.1 pp [−3.1, 9.4]).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A single sign-inverted E2B neuron eliminated development-grid failures but caused a larger benchmark regression tail.",
+      "numbers": "0/128 failures; L10 neuron 3513; α = −1; benchmark tail about −2.6 pp",
+      "quote": "A one-neuron variant that multiplies the L10 neuron 3513 by α = −1 reaches 0/128 failures, but has a worse benchmark tail of about −2.6 pp.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "No statistically detectable regression was found on the separate capability benchmarks.",
+      "numbers": "All 12 model–benchmark comparisons: 95% intervals include zero.",
+      "quote": "Conservative 95% intervals based on the two reported standard errors include zero in all 12 model–benchmark comparisons (Supplementary Sec. B), so none shows a statistically detectable regression.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Matched random controls supported selectivity for E4B in both modes, E2B without thinking, and thinking-enabled 31B, but not for 26B or thinking-enabled E2B.",
+      "numbers": "5 matched random interventions per model",
+      "quote": "The selected edit has a lower loop rate than every draw for E4B in both modes, E2B without thinking, and 31B with thinking.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A sparse L12 sign-inversion edit reduced detector-positive repetition on Qwen3.5-4B under both detectors, although it introduced some new loops.",
+      "numbers": "Antidoom detector: 181 to 104 positives; 111 resolved, 34 introduced; exact McNemar p < 10−10. Our detector: 74 to 42; 56 resolved, 24 introduced; p = 0.00045.",
+      "quote": "reduces positives from 181 to 104 under Antidoom’s repeated-span detector (111 resolved, 34 introduced; exact McNemar p < 10−10 ) and from 74 to 42 under our detector (56 resolved, 24 introduced; p = 0.00045)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "At long generation budgets, fast-commit loop suppression persisted in E2B and E4B, but doom looping remained in the larger 26B and 31B models.",
+      "numbers": "E2B/E4B: ≤ 1/24 residual, all soft. 26B selected at rep_pen=1.00: doom 39/48. 31B selected at rep_pen=1.00: doom 38/48.",
+      "quote": "26B and 31B exhibit substantial doom looping that does not worsen between 4k and 8k but does not resolve either.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The intervention search was not exhaustive over intervention types, layers, or unit counts.",
+      "quote": "This study is exploratory rather than an exhaustive search over intervention types, layers, and unit counts.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The selected components differ across models and attribution rankings are unstable, so no single family-independent loop circuit is claimed.",
+      "quote": "the selected components differ and attribution rankings are unstable; we therefore do not claim that these models share a single family-independent loop circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Intervention selection and initial reported outcomes reuse the same prompts and seeds.",
+      "quote": "Moreover, intervention selection and the initial reported outcomes use the same prompts and seeds.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Task-level generalization remains uncertain because four of the six held-out prompts are paraphrases of development triggers.",
+      "quote": "Because four of its six prompts are paraphrases of development triggers, task-level generalization remains uncertain even when generation-level paired effects are strong.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Detector-negative outputs can still be incomplete or incorrect, and finite capability tests cannot rule out effects on untested behavior.",
+      "quote": "Detector-negative outputs may still be incomplete or incorrect, and finite capability tests cannot exclude effects on untested behaviors.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The Rust side-effect check uses one prompt, and the Qwen detector comparison lacks independent human labels.",
+      "quote": "The Rust check uses one prompt, and the Qwen confirmation-set detector comparison does not include independent human labels.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Suppression of detected repetition does not establish completeness or factual correctness.",
+      "quote": "the absence of detected repetition does not imply completeness or correctness.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "E2B exhibited a completion trade-off on longer prompts.",
+      "quote": "E2B is the exception: coverage falls from 0.795 to 0.695 and natural-EOS from 0.906 to 0.781, concentrated on the longer chemical-elements and Pokémon prompts.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No CPU-only runtime, memory, or feasibility measurements are reported for backward-pass attribution, model surgery, or generation sweeps, so transfer to the lab's CPU setting is untested.",
+     "The paper does not analyze induction heads or copy heads directly, so the edited neurons and routed experts are not localized relative to known induction or copy-suppression circuits.",
+     "No logit-lens or per-layer embedding-space readout is used to determine what factual answer, entity, or token representation is present at the localized layers.",
+     "The study does not trace factual recall independently, leaving unresolved whether the selected components encode missing facts or only repetition dynamics.",
+     "KV-cache sharing is not examined, so the layer-level findings are not validated in a KV-shared architecture.",
+     "The effective E2B edits act at L10/L12, whereas the lab focuses on KV-shared layers 15–34; no cross-range replication or layer-index alignment analysis is provided.",
+     "The paper does not perform separate thinking-mode-specific localization, leaving open whether the E2B intervention targets the same mechanism when thinking is enabled versus disabled."
+    ],
+    "code_or_data_url": "https://huggingface.co/edgerunner-ai/gemma-4-E2B-it-noloop\nhttps://huggingface.co/edgerunner-ai/gemma-4-E4B-it-noloop\nhttps://huggingface.co/edgerunner-ai/gemma-4-26B-A4B-it-noloop\nhttps://huggingface.co/edgerunner-ai/gemma-4-31B-it-noloop",
+    "relevance_to_lab": "Directly relevant because the paper studies gemma-4-E2B-it and provides a concrete loop detector, per-layer ablation, gradient-times-activation attribution of MLP down_proj columns, and full-generation causal edits. Its E2B single-token signal is at L13–L15 while the effective edits act earlier at L10/L12, giving the lab a useful comparison point for activation patching, logit-lens, induction-head, and factual-recall traces over layers 15–34. Major gaps are the absence of KV-sharing, per-layer embedding, logit-lens, induction-head, factual-recall, and CPU analyses. The E2B result also needs caution: its one-neuron edit reduced held-out loops only from 6 to 4, and natural termination fell from 90/96 to 81/96."
+   },
+   "usage": {
+    "prompt_tokens": 24426,
+    "completion_tokens": 25325,
+    "total_tokens": 49751,
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 22179
+    }
+   }
+  }
+ }
+}

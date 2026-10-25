@@ -1,0 +1,456 @@
+{
+ "source_id": "LIT05-112",
+ "arxiv_id": "2412.02674",
+ "title": "Mind the Gap: Examining the Self-Improvement Capabilities of Large Language Models",
+ "chars": 222746,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 29,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Mind the Gap: Examining the Self-Improvement Capabilities of Large Language Models",
+    "research_question": "How does the generation-verification gap govern LLM self-improvement, and how does it scale with pre-training flops, task type, iteration, and verification mechanism?",
+    "models_and_data": [
+     {
+      "item": "Model families",
+      "quote": "We consider the following models families: Qwen-1.5 (Bai et al., 2023), Qwen-2 (Yang et al., 2024), Qwen-2.5 (Team, 2024), Llama-2 (Touvron et al., 2023), Llama-3, Llama-3.1 (Dubey et al., 2024) and Yi-1.5 (Young et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GSM8K and MATH benchmarks",
+      "quote": "We start with the GSM8K benchmark (Cobbe et al., 2021), with 1320 questions on the test data split, and MATH benchmark (Hendrycks et al., 2021), with 5000 questions on the test data split.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Natural Questions",
+      "quote": "we measure gap(f ) on the Natural Question dataset (Kwiatkowski et al., 2019)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Sudoku",
+      "quote": "We consider 4 by 4 sudoku puzzles, each with a unique solution, with 288 puzzles in total.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Base models",
+      "quote": "all experiments in this paper are performed on base models.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Inference engine",
+      "quote": "all inference in this paper is performed with vLLM (Kwon et al., 2023).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Sample generations and verifications",
+      "quote": "For each model f , for each prompt x, we sample 128 responses y ∼ f (x), and sample 1 verification for each response",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use rejection sampling",
+      "quote": "We mainly consider the rejection sampling setting",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute gap metrics",
+      "quote": "Then we calculate gap or gaprel according to Definitions 2.1 and 2.2",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run iterative self-improvement",
+      "quote": "we perform iterative self-improvement (Algorithm 1) on the Qwen-1.5 model family",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Combine verification filters",
+      "quote": "We employ a logical AND operation, keeping samples only if they pass all verification filters.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Generation-Verification Gap (GV-Gap)",
+      "definition": "Performance improvement from reweighting generations by the model’s self-verification score.",
+      "quote": "GV-Gap captures the “precision” of the model’s verification over its own generations.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Relative Generation Verification Gap",
+      "definition": "Gap normalized by each prompt’s deficiency to the best possible utility.",
+      "quote": "That is, we weigh the gap of each prompt by its deficiency to the best possible utility.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Generation accuracy",
+      "definition": "Accuracy of the original generations before filtering.",
+      "quote": "Generation Accuracy",
+      "quote_check": "exact"
+     },
+     {
+      "name": "pass@k",
+      "definition": "1 if at least one of k generations is correct, else 0.",
+      "quote": "Given a question, pass@k is 1 if at least one of the k generations of the model is correct, or 0 otherwise.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Effective generation diversity",
+      "definition": "Diversity measured by pass@k across iterations.",
+      "quote": "The change of effective generation diversity along the iterative self-improvement process for Qwen-1.5 7B model, measured by pass@k for different k.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Relative GV-Gap scales monotonically with pre-training flops under certain verification methods.",
+      "numbers": "not stated",
+      "quote": "the relative gap grows monotonically with the pre-training flops, demonstrating a scaling property.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Small models have non-positive gap for nearly all verification methods.",
+      "numbers": "0.5B, 0.5B, 7B",
+      "quote": "For small (in terms of pre-training flops) models such as Qwen-1.5 0.5B, Qwen-2 0.5B and Llama-2 7B, gap(f ) is non-positive for nearly all verification methods",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Natural Questions gaps are near zero despite non-trivial generation accuracy.",
+      "numbers": "smaller than 1%",
+      "quote": "the gap remains smaller than 1%, or is even negative, across all models.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Only the largest models exhibit non-trivial Sudoku gaps.",
+      "numbers": "72B, 70B",
+      "quote": "only the largest models, such as Qwen-1.5/2 72B and Llama 3.1 70B, exhibit non-trivial gaps.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For 72B models, Sudoku improvement is around 200%.",
+      "numbers": "72B, around 200%",
+      "quote": "For the 72B models, the improvement is around 200%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Iterative self-improvement saturates in two or three rounds.",
+      "numbers": "two or three",
+      "quote": "the gap diminishes nearly to zero within two or three rounds of self-improvement",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Ensemble verification improves performance.",
+      "numbers": "not stated",
+      "quote": "combining any verifications with non-trivial gaps improves the verification performance",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Scaling analysis is primarily observational.",
+      "quote": "our scaling analysis is primarily observational",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Only one verification sample per response due to compute constraints.",
+      "quote": "We only sample one due to computational constraints",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Slopes may differ by model family.",
+      "quote": "we should not expect the slope for each model family to be the same",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Absolute gap does not show the same scaling trend.",
+      "quote": "we do not observe a similar trend with the absolute gap",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Instruct models have confounders.",
+      "quote": "instruct models have more confounders that may not lead to a clear conclusion",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Future directions remain for understanding the mechanism.",
+      "quote": "we also leave several interesting future directions toward a more profound understanding of the mechanism of self-improvement.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not study Gemma 4 E2B or KV-shared layers 15-34, so its behavioral scaling results may not transfer to the lab’s target architecture.",
+     "It analyzes external generation/verification behavior, not internal mechanisms such as per-layer embeddings, activation patching, logit lens, induction heads, or factual-recall circuits.",
+     "Single verification sample per response may underestimate verification variance and distort the measured gap.",
+     "Base-model-only experiments may not generalize to instruction-tuned, chat, or production models.",
+     "Pre-training flops comparisons can confound architecture, tokenizer, data mixture, and training recipe differences across model families.",
+     "Thresholds and verification prompts are selected on the same benchmark families, which may yield optimistic or benchmark-specific estimates.",
+     "No paper code/data URL is provided in the text, limiting exact replication."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Low-to-moderate: provides a behavioral framework and metrics (GV-Gap, relative gap, pass@k) for self-verification and iterative filtering, but does not examine Gemma 4 E2B internals, KV-shared layers, per-layer embeddings, activation patching, logit lens, induction heads, or factual-recall tracing; useful mainly as a baseline conceptual framework."
+   },
+   "usage": {
+    "prompt_tokens": 22571,
+    "completion_tokens": 9831,
+    "total_tokens": 32402,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7940
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 32,
+    "near": 4,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Mind the Gap: Examining the Self-Improvement Capabilities of Large Language Models",
+    "research_question": "When, across model scales, tasks, iterations, and verification mechanisms, can LLM self-improvement occur through self-verification and reweighting, and what determines the generation-verification gap?",
+    "models_and_data": [
+     {
+      "item": "Model families: Qwen-1.5, Qwen-2, Qwen-2.5, Llama-2, Llama-3, Llama-3.1, and Yi-1.5",
+      "quote": "We consider the following models families: Qwen-1.5 (Bai et al., 2023), Qwen-2 (Yang et al., 2024), Qwen-2.5 (Team, 2024), Llama-2 (Touvron et al., 2023), Llama-3, Llama-3.1 (Dubey et al., 2024) and Yi-1.5 (Young et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Base-model experimental setting",
+      "quote": "To avoid the confounding effect of the post-training, all experiments in this paper are performed on base models.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Additional small-model families: Pythia and OPT",
+      "quote": "We also observe this phenomenon in Pythia (Biderman et al., 2023) and OPT (Zhang et al., 2022) model families.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GSM8K test split with 1320 questions and MATH test split with 5000 questions",
+      "quote": "We start with the GSM8K benchmark (Cobbe et al., 2021), with 1320 questions on the test data split, and MATH benchmark (Hendrycks et al., 2021), with 5000 questions on the test data split.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Natural Questions test subset with 3610 questions",
+      "quote": "Our analysis on a test subset of 3610 questions, presented in Table 1, reveals that despite all models achieving non-trivial generation accuracy, the gap remains smaller than 1%, or is even negative, across all models.",
+      "quote_check": "near"
+     },
+     {
+      "item": "Generalized Sudoku: 288 uniquely solvable 4 by 4 puzzles",
+      "quote": "We consider 4 by 4 sudoku puzzles, each with a unique solution, with 288 puzzles in total.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Use p = 0.9, t = 0.7, maximum length 512, and four-shot in-context examples for generation and verification.",
+      "quote": "For all tasks we use the following setup: for generations and verification, we use sampling parameters p = 0.9, t = 0.7, max length of 512 and 4-shot in-context samples.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For every prompt, sample 128 candidate responses and one verification per response.",
+      "quote": "For each model f , for each prompt x, we sample 128 responses y ∼ f (x), and sample 1 verification for each response, which defines the proxy utility score ûf (x, y).",
+      "quote_check": "near"
+     },
+     {
+      "step": "Apply rejection sampling using quantile or global thresholds, with RL investigated separately.",
+      "quote": "We mainly consider the rejection sampling setting (for completeness we investigate the RL setting in Section 5), and thus the weight function w is the indicator function with either quantile or global threshold (c.r. Example 2.2).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Multiple-Choice verification labels responses as Correct or Incorrect and uses the probability of Correct.",
+      "quote": "Multiple Choice (MC) (Zhao et al., 2023; Liu et al., 2023; Dong et al., 2024) asks the LM to label responses as “Correct” and “Incorrect” and uses the probability of “Correct” as a continuous score.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Chain-of-Thought verification extracts either a 1-to-10 score or a binary score from the justification.",
+      "quote": "Scores can be on a scale from 1 to 10 (CoT-Score) (Yuan et al., 2024; Liang et al., 2024) or binary (CoT-Binary).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Tournament verification compares generation pairs in a single-elimination tournament.",
+      "quote": "Tournament (To) involves sampling a batch of generations and having a verifier compare generation pairs in a single elimination tournament to produce a new generation distribution.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run iterative self-improvement on Qwen-1.5 models using CoT-Binary verification on GSM8K.",
+      "quote": "In our experiment, we perform iterative self-improvement (Algorithm 1) on the Qwen-1.5 model family (7B, 14B, 32B and 72B models) with CoT-Binary verification on GSM8K.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Perform inference with vLLM.",
+      "quote": "Finally, all inference in this paper is performed with vLLM (Kwon et al., 2023).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Generation-Verification Gap (GV-Gap)",
+      "definition": "The difference in expected true utility between the verifier-reweighted generation distribution and the original generation distribution.",
+      "quote": "Concretely, it is defined as the performance improvement obtained by re-weighting generations by the model’s self-verification score (e.g., 0 or 1).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Relative Generation-Verification Gap",
+      "definition": "Verifier-induced improvement normalized by each prompt's remaining headroom to maximum utility.",
+      "quote": "That is, we weigh the gap of each prompt by its deficiency to the best possible utility.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Filtered-vs-original accuracy difference",
+      "definition": "The operational accuracy difference between generations retained by verification and the original generations.",
+      "quote": "Then we calculate gap or gaprel according to Definitions 2.1 and 2.2, which is the accuracy difference between the filtered generations and the original generations.",
+      "quote_check": "near"
+     },
+     {
+      "name": "Ground-truth binary utility",
+      "definition": "Utility equal to 1 when the response ends in the correct answer and 0 otherwise.",
+      "quote": "The ground truth utility u(x, y) = 1 if the end of response y is the correct answer to the question x, or u(x, y) = 0 otherwise.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Expected utility J",
+      "definition": "The expected task utility of a generative model over prompts and sampled responses.",
+      "quote": "The goal is to find a generative model that maximizes the expected utility:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "pass@k",
+      "definition": "The probability that at least one of k generations is correct.",
+      "quote": "Given a question, pass@k is 1 if at least one of the k generations of the model is correct, or 0 otherwise.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "With suitable verification methods such as CoT-Score, relative GV-Gap grows monotonically with pre-training FLOPs.",
+      "numbers": "not stated",
+      "quote": "We observe that with certain verification methods (such as CoT-Score), the relative gap grows monotonically with the pre-training flops, demonstrating a scaling property.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For a fixed generator, the cross-verification gap increases as verifier capacity increases.",
+      "numbers": "not stated",
+      "quote": "We observe that the results are consistent with our intuition on the difficulty of verification: fix a generator model f , gap(f, g) increases as the model capacity (defined by pre-training flops) of the verifier model g increases.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Natural Questions is effectively unimprovable in this framework: the gap remains below 1% or becomes negative across tested models.",
+      "numbers": "3610 questions; smaller than 1% or negative",
+      "quote": "Our analysis on a test subset of 3610 questions, presented in Table 1, reveals that despite all models achieving non-trivial generation accuracy, the gap remains smaller than 1%, or is even negative, across all models.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Only the largest evaluated models exhibit non-trivial self-improvement gaps on Sudoku.",
+      "numbers": "Qwen-1.5/2 72B; Llama 3.1 70B",
+      "quote": "The results, presented in Table 2 and detailed further in Appendix C.3, reveal a surprising pattern: only the largest models, such as Qwen-1.5/2 72B and Llama 3.1 70B, exhibit non-trivial gaps.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "When the largest models improve on Sudoku, the accuracy improvement is substantially larger than on mathematics.",
+      "numbers": "50% − 300%",
+      "quote": "For these models, the improvement is indeed more significant (50% − 300% improvement in accuracy) than the improvement in the math task.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Iterative self-improvement typically saturates after two or three rounds independently of model capacity.",
+      "numbers": "two or three rounds",
+      "quote": "Without new information, iterative self-improvement typically saturates after two or three rounds, regardless of the model’s capacity.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Effective generation diversity declines during iterative self-improvement when pass@k uses a large k.",
+      "numbers": "not stated",
+      "quote": "However, when k is large, pass@k decreases with the number of iterations, indicating that the diversity of the generations is reduced through the self-improvement process.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Combining verification methods with a logical AND generally increases the gap, with one near-zero small-model exception.",
+      "numbers": "Qwen-2 1.5B: MC 5.27, MC+CoT-S 7.68, All 7.61",
+      "quote": "We observe that combining any verifications with non-trivial gaps improves the verification performance (with the exception of CoT for 0.5B model with near 0 gap).",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Only one verification is sampled per generation because of computational constraints.",
+      "quote": "We only sample one due to computational constraints and we leave multiple verifications along with understanding verification compute scaling for future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The scaling analysis is observational rather than a comprehensive scaling-law study.",
+      "quote": "While our scaling analysis is primarily observational (Ruan et al., 2024), pursuing a more extensive scaling law study (Kaplan et al., 2020) based on our preliminary findings could provide robust empirical guidelines.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Identifying the optimal cross-verification configuration may require an impractically large experiment set.",
+      "quote": "This, however, might require a combinatorially large number of experiments to pinpoint the optimal verifier for each generator.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The Sudoku analysis is post-hoc and lacks a metric that predicts task-specific self-improvability.",
+      "quote": "Although our analysis is primarily post-hoc, an interesting avenue for future research would be to develop a metric to predict a model’s “self-improvability” on specific tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Fine-tuning changes such as output-length modifications can inflate measured improvements without reflecting true capability gains.",
+      "quote": "Recent works (Dubois et al., 2024; Zhang et al., 2024c) highlight additional confounders, such as modifications to output length during finetuning, which may inflate perceived improvements without reflecting true model capabilities.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Results on instruction-tuned models are noisier than those on base models.",
+      "quote": "In Appendix B.2, we repeat a subset of our experiments on the instruct models and we indeed observe that the results are more noisy.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The decline in effective diversity may reflect failure to verify rare correct answers and convergence on incorrect solutions.",
+      "quote": "This trend may result from the model’s inability to verify rare, yet correct, answers, potentially leading to convergence on incorrect solutions during the self-improvement process.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Compute-optimal self-improvement methods across tasks remain unresolved.",
+      "quote": "Identifying compute-optimal methods for self-improvement across different tasks remains a critical challenge.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No Gemma 4 E2B, KV-shared layers 15-34, per-layer embeddings, activation patching, logit-lens, induction-head, or factual-recall analyses are reported, so mechanistic transfer is unsupported.",
+     "The paper does not report confidence intervals, repeated-seed uncertainty, or significance tests for most scale, threshold, and ensemble comparisons.",
+     "Optimal verification thresholds are used to report results, but no held-out validation protocol for selecting them on unseen tasks is specified.",
+     "Using pre-training FLOPs as the scale variable may confound architecture, tokenizer, data, and training-recipe differences across model families.",
+     "Benchmark contamination and overlap between self-generated training data and evaluation items are not checked.",
+     "The provided text gives no paper-specific code or data release, random seeds, or complete reproducibility artifact set.",
+     "No CPU feasibility measurements, resource accounting, or small-model activation-level replication is reported, limiting transfer to a CPU-based mechanistic lab."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "The paper provides a useful outcome metric for Gemma 4 E2B work: GV-Gap can quantify whether self-generated candidates become more accurate after self-verification and reweighting. Its separation of generation, verification, and update maps naturally onto activation patching in layers 15-34, while per-layer embeddings, logit lens, induction-head tracing, and factual-recall tracing could test where generation and verification signals overlap or diverge. However, the experiments use large Qwen, Llama, and Yi base models, 128 candidates per prompt, and vLLM inference; they provide no Gemma-specific, KV-sharing, layer-level, mechanistic, or CPU results. Thus the paper offers a framework and testable hypotheses rather than directly reusable internals or compute settings."
+   },
+   "usage": {
+    "prompt_tokens": 22841,
+    "completion_tokens": 20915,
+    "total_tokens": 43756,
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 17763
+    }
+   }
+  }
+ }
+}

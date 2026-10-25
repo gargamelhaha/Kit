@@ -18,3 +18,4 @@
 'all:"native sparse attention"': 14 results, 13 new
 'all:"mechanistic interpretability" AND all:"mixture of experts"': 6 results, 5 new
 'all:"mechanistic interpretability" AND all:"state space model"': 4 results, 4 new
+{"n_candidates": 125, "n_screened_both": 125, "include_deepseek": 41, "include_minimax": 55, "include_both": 40, "kappa": 0.733}

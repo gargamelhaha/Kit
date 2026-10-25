@@ -1,0 +1,477 @@
+{
+ "source_id": "LIT02-008",
+ "arxiv_id": "2403.00745",
+ "title": "AtP*: An efficient and scalable method for localizing LLM behaviour to components",
+ "chars": 150780,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 30,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "AtP∗: An efficient and scalable method for localizing LLM behaviour to components",
+    "research_question": "Can gradient-based Attribution Patching be made reliable and scalable for localizing LLM behavior to components, and how does the proposed AtP* compare with alternatives?",
+    "models_and_data": [
+     {
+      "item": "Pythia model suite from 410M to 12B parameters",
+      "quote": "We investigate transformer language models from the Pythia suite (Biderman et al., 2023) of sizes between 410M and 12B parameters.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia-12B used for main cost-of-verified-recall plots",
+      "quote": "Our cost-of-verified-recall plots in Figures 1, 7 and 8 refer to Pythia-12B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CITY-PP factual-recall prompt pair",
+      "quote": "CITY-PP is chosen to elicit factual recall which previous research suggests involves early MLPs and a small number of late attention heads",
+      "quote_check": "exact"
+     },
+     {
+      "item": "IOI-PP attention-focused prompt pair",
+      "quote": "IOI-PP is chosen to resemble an instance from the indirect object identification (IOI) task",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RAND-PP random prompt pair from The Pile",
+      "quote": "we also report results in Figure 8 (top) and Figure 9 on a random prompt pair chosen from a non-copyright-protected section of The Pile (Gao et al., 2020) which we refer to as RAND-PP.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Reduced IOI distribution with 120 prompt pairs",
+      "quote": "The first is a reduced version of IOI (Wang et al., 2022) on 6 names, resulting in 6 × 5 × 4 = 120 prompt pairs, where we evaluate AttentionNodes.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Use Attribution Patching as a fast prefilter before activation-patching verification.",
+      "quote": "We propose to accelerate this process by using Attribution Patching (AtP) (Nanda, 2022), a faster, approximate, causal attribution method, as a prefiltering step",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute AtP estimates for all nodes with two forward passes and one backward pass per prompt pair.",
+      "quote": "AtP requires two forward passes and one backward pass to compute an estimate score for all nodes on a given prompt pair",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply the QK fix by recomputing attention softmax before linear approximation.",
+      "quote": "We propose explicitly re-computing the first step of the rest of the model, i.e. the attention softmax, and then taking a linear approximation to the rest.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply GradDrop by zeroing residual-contribution gradients layer by layer.",
+      "quote": "For every layer ℓ ∈ {1, . . . , 𝐿} in the model, GradDrop computes an AtP estimate for all nodes, where gradients on the residual contribution from ℓ are set to 0",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Verify top AtP-ranked nodes with activation patching to filter false positives.",
+      "quote": "we iterate through the nodes in decreasing order of absolute value of the AtP estimate, then use Activation Patching to more reliably evaluate these nodes and filter out false positives",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use subsampling diagnostics to bound remaining false negatives.",
+      "quote": "we provide a diagnostic method, based on using AtP to filter out high impact nodes, and then patching random subsets of the remainder.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Cost of verified recall",
+      "definition": "Total forward-pass compute to verify the K nodes with largest true effect magnitude, for varying K.",
+      "quote": "We compare methods on the basis of total compute cost (in # of forward passes) to verify the 𝐾 nodes with biggest true effect magnitude, for varying 𝐾 .",
+      "quote_check": "exact"
+     },
+     {
+      "name": "IRWRGM relative cost",
+      "definition": "Inverse-rank-weighted geometric mean cost relative to oracle verification cost.",
+      "quote": "we use a weighted average with weight 1/ 𝐾 for the cost of the top 𝐾 nodes.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Effect metric L",
+      "definition": "Negative log probability of the clean-prompt target used as the loss.",
+      "quote": "All reported results use the negative log probability10 as their loss function L.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Direct effect ratio",
+      "definition": "Ratio of direct effect to total effect, used as evidence of cancellation.",
+      "quote": "we compute the ratio between the direct effect 𝑐direct ( 𝑛) and the total effect 𝑐 ( 𝑛).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Upper confidence bound on false negatives",
+      "definition": "Upper confidence bound on effect magnitudes of nodes not in the top K AtP* estimates.",
+      "quote": "we report the upper confidence bounds at confidence levels 90%, 99%, 99.9% from running Algorithm 1 with a given 𝑚",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "AtP significantly outperforms other investigated methods, and AtP* improves further.",
+      "numbers": "not stated",
+      "quote": "We present the first systematic study of AtP and alternative methods for faster activation patching and show that AtP significantly outperforms all other investigated methods, with AtP∗ providing further significant improvement.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Exhaustive patching can be huge on long prompts and large models.",
+      "numbers": "1024; 2.7 · 109",
+      "quote": "For example, on a prompt of length 1024, there are 2.7 · 109 neuron nodes in Chinchilla 70B",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "AtP costs two forward passes and one backward pass per prompt pair.",
+      "numbers": "two forward passes; one backward pass",
+      "quote": "AtP requires two forward passes and one backward pass to compute an estimate score for all nodes on a given prompt pair",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The full QK fix costs less than two transformer forward passes.",
+      "numbers": "less than two",
+      "quote": "the full QK fix requires less than two transformer forward passes",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GradDrop adds L backward passes.",
+      "numbers": "𝐿 backwards passes",
+      "quote": "the extra compute needed for GradDrop is 𝐿 backwards passes from the same intermediate activations on a clean forward pass.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GradDrop-corrected false negatives had high direct effect ratios.",
+      "numbers": "5.35, 12.2, 0",
+      "quote": "the most significant false negatives corrected by GradDrop in Figure 5 (highlighted) have high direct effect ratios of 5.35, 12.2, and 0 (no direct effect)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The reduced IOI distribution has 120 prompt pairs.",
+      "numbers": "6; 6 × 5 × 4 = 120",
+      "quote": "The first is a reduced version of IOI (Wang et al., 2022) on 6 names, resulting in 6 × 5 × 4 = 120 prompt pairs, where we evaluate AttentionNodes.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Only a small set of prompt-pair distributions was considered, often a single prompt pair.",
+      "quote": "We only considered a small set of prompt pair distributions, which often were limited to a single prompt pair, since evaluating the ground truth can be quite costly.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Neuron decomposition may not be semantically meaningful.",
+      "quote": "there is mounting evidence (Bricken et al., 2023) that the decomposition of signals into neuron contributions does not correspond directly to a semantically meaningful decomposition.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The study focuses on relatively fine-grained nodes.",
+      "quote": "we only considered relatively fine-grained nodes, because this is a case where very exhaustive verification is prohibitively expensive",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Effect-size accuracy is not evaluated.",
+      "quote": "we do not present evidence about how closely the estimated effect magnitudes from AtP or AtP* match the ground truth.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "False-positive prevalence is not assessed.",
+      "quote": "we did not assess the prevalence of false positives in our analysis, because they can be filtered out via the verification process.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Transfer to other LLM families and SotA-scale models is not established.",
+      "quote": "we cannot rule out qualitatively different behavior without further evidence, especially on SotA–scale models or models that significantly deviate from the standard decoder-only transformer architecture.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates Pythia decoder-only models, not Gemma 4 E2B with KV-shared layers 15-34 or per-layer embeddings, so AtP* behavior on those internals is untested.",
+     "KV sharing may create cross-layer dependencies that violate the per-layer node and additivity assumptions used by AtP*, QK fixes, and subsampling diagnostics.",
+     "Per-layer embeddings may introduce additional nonlinearities or cross-layer effects that are not represented in the paper's Pythia experiments.",
+     "CPU-only activation patching, logit lens, induction-head tracing, and factual-recall tracing may make GradDrop's L backward passes and QK recomputation expensive despite AtP* being cheaper than exhaustive patching.",
+     "The paper's ground truth is next-token negative log probability on selected Pythia prompt pairs; it does not validate induction-head or factual-recall localization in Gemma 4 E2B.",
+     "No code or data URL is provided in the text, so reproducing the exact AtP* implementation for the lab's Gemma setup would require reimplementation and validation."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "AtP* is relevant as a fast prefilter for activation patching in Gemma 4 E2B, especially the QK fix for attention/induction-head tracing and GradDrop/diagnostics for false negatives. However, it was not tested on KV-shared layers, per-layer embeddings, or CPU-only workflows, so adaptation and validation are needed."
+   },
+   "usage": {
+    "prompt_tokens": 25074,
+    "completion_tokens": 11077,
+    "total_tokens": 36151,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8743
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 2,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.949,
+   "data": {
+    "title": "AtP∗: An efficient and scalable method for localizing LLM behaviour to components",
+    "research_question": "Which gradient-based approximation to activation patching can reliably and scalably localize LLM behavior to individual transformer components, what failure modes cause false negatives, and how can any remaining false negatives be bounded?",
+    "models_and_data": [
+     {
+      "item": "Pythia transformer language models from 410M to 12B parameters",
+      "quote": "We investigate transformer language models from the Pythia suite (Biderman et al., 2023) of sizes between 410M and 12B parameters.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "NeuronNodes, using individual MLP neurons as attribution units",
+      "quote": "In the NeuronNodes setting, we took MLP neurons as our fundamental unit of analysis.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "AttentionNodes, including per-head queries, keys, values, and pre-linear outputs",
+      "quote": "For AttentionNodes, we consider the query, key, and value vector for each head as distinct nodes, as well as the pre-linear per-head attention output9.",
+      "quote_check": "near"
+     },
+     {
+      "item": "CITY-PP, a factual-recall prompt pair",
+      "quote": "CITY-PP is chosen to elicit factual recall which previous research suggests involves early MLPs and a small number of late attention heads (Geva et al., 2023; Meng et al., 2023).",
+      "quote_check": "near"
+     },
+     {
+      "item": "IOI-PP, an indirect-object-identification prompt pair",
+      "quote": "IOI-PP is chosen to resemble an instance from the indirect object identification (IOI) task (Wang et al., 2022), a task predominantly involving attention heads.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RAND-PP, a random prompt pair from a non-copyright-protected section of The Pile",
+      "quote": "To do this, we also report results in Figure 8 (top) and Figure 9 on a random prompt pair chosen from a non-copyright-protected section of The Pile (Gao et al., 2020) which we refer to as RAND-PP.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Reduced IOI distribution with 6 names and 120 prompt pairs",
+      "quote": "The first is a reduced version of IOI (Wang et al., 2022) on 6 names, resulting in 6 × 5 × 4 = 120 prompt pairs, where we evaluate AttentionNodes.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "A-AN distribution, where the model predicts an indefinite article",
+      "quote": "The other distribution prompts the model to output an indefinite article ‘ a’ or ‘ an’, where we evaluate NeuronNodes.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Construct clean/noise prompt pairs and intervene by noising each component with its noise-prompt activation",
+      "quote": "where the baseline distribution is a component’s activations on some corrupted input, such as an alternate string with a different answer (Pearl, 2001; Robins and Greenland, 1992).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute default AtP estimates for all nodes using forward and backward passes",
+      "quote": "AtP requires two forward passes and one backward pass to compute an estimate score for all nodes on a given prompt pair, and so provides a very significant speedup over brute force activation patching.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply the query/key correction by recomputing attention softmax before gradient approximation",
+      "quote": "We propose explicitly re-computing the first step of the rest of the model, i.e. the attention softmax, and then taking a linear approximation to the rest.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use the efficient per-head key-correction implementation",
+      "quote": "In Appendix A.2.1 we describe a more efficient variant that takes no more compute than the forward pass attention computation itself (requiring O(𝑇 2 ) flops).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply GradDrop across layers by zeroing selected residual-stream gradients",
+      "quote": "GradDrop computes an AtP estimate for all nodes, where gradients on the residual contribution from ℓ are set to 0, including the propagation to earlier layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Rank candidates and verify their true effects with activation patching",
+      "quote": "Once we have obtained node estimates via a given method, it is relatively cheap to directly measure true effects of top nodes one at a time; we refer to this as “verification”.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use subset sampling and a one-sided Welch’s t-test to bound residual false negatives",
+      "quote": "We use a one-sided Welch’s t-test to test this hypothesis; the general practice with a compound null hypothesis is to select the simple sub-hypothesis that gives the greatest 𝑝-value",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Measure behavior using negative log probability relative to the clean-prompt target",
+      "quote": "All reported results use the negative log probability10 as their loss function L.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Counterfactual contribution magnitude c(n)",
+      "definition": "The expected absolute change in the behavior metric caused by replacing a component's clean activation with its noise-prompt activation, averaged over prompt pairs.",
+      "quote": "we define the contribution 𝑐 ( 𝑛) of a node 𝑛 to the model’s behaviour as the counterfactual absolute3 expected impact of replacing that node on the clean prompt with its value on the reference prompt 𝑥 noise",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Behavior loss L",
+      "definition": "Negative log probability of the target taken from the clean prompt.",
+      "quote": "All reported results use the negative log probability10 as their loss function L.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cost of verified recall",
+      "definition": "Total estimation plus verification cost, measured in forward passes, required to recover the K nodes with the largest true effect magnitudes.",
+      "quote": "We compare methods on the basis of total compute cost (in # of forward passes) to verify the 𝐾 nodes with biggest true effect magnitude, for varying 𝐾",
+      "quote_check": "exact"
+     },
+     {
+      "name": "IRWRGM relative cost",
+      "definition": "Inverse-rank-weighted relative geometric mean cost, normalized to the oracle verification cost.",
+      "quote": "We refer to this as the IRWRGM (inverse-rank-weighted relative geometric mean) cost, or the relative cost.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Direct effect ratio",
+      "definition": "The ratio of a node's direct effect to its total effect; larger values indicate greater cancellation.",
+      "quote": "A higher direct effect ratio indicates more cancellation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Estimated-effect rank",
+      "definition": "The primary evaluation target, comparing the relative ranking of estimated node effects rather than their numerical magnitudes.",
+      "quote": "we focused on evaluating the relative rank of estimates, since our main goal was to identify important components (with effect size only instrumentally useful to this end)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "False-negative effect upper confidence bound",
+      "definition": "A confidence bound on the effect magnitude of nodes excluded from the retained top-ranked set.",
+      "quote": "Upper confidence bounds on effect magnitudes of false negatives (i.e. nodes not in the top 1024 nodes according to AtP∗ ), at 3 confidence levels, varying the sampling budget.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "AtP estimates all nodes on a given prompt pair with two forward passes and one backward pass, substantially reducing the cost of brute-force activation patching.",
+      "numbers": "two forward passes; one backward pass",
+      "quote": "AtP requires two forward passes and one backward pass to compute an estimate score for all nodes on a given prompt pair, and so provides a very significant speedup over brute force activation patching.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "AtP significantly outperformed the other investigated alternatives, with AtP∗ providing a further significant improvement.",
+      "numbers": "not stated",
+      "quote": "We present the first systematic study of AtP and these alternatives and show that AtP significantly outperforms all other investigated methods, with AtP∗ providing further significant improvement.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The complete query/key correction requires less than two transformer forward passes.",
+      "numbers": "less than two transformer forward passes",
+      "quote": "Since Equation (6) is also cheaper to compute than a forward pass, the full QK fix requires less than two transformer forward passes (since the latter also includes MLP computations).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GradDrop adds L backward passes on top of the default AtP cost.",
+      "numbers": "L backwards passes",
+      "quote": "Thus, computing Equation (11) takes 𝐿 backwards passes on top of the costs for AtP.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "The largest false negatives corrected by GradDrop had high direct-effect ratios.",
+      "numbers": "5.35, 12.2, 0",
+      "quote": "We observe that the most significant false negatives corrected by GradDrop in Figure 5 (highlighted) have high direct effect ratios of 5.35, 12.2, and 0 (no direct effect)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Propagating query/key effects had a major effect on reducing false negatives.",
+      "numbers": "not stated",
+      "quote": "We observe that the propagation of Q/K effects has a major impact on reducing the false negative rate.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The subset-sampling diagnostic bounded false negatives outside the top AtP∗ nodes while varying the sampling budget and confidence level.",
+      "numbers": "top 1024 nodes; 3 confidence levels",
+      "quote": "Upper confidence bounds on effect magnitudes of false negatives (i.e. nodes not in the top 1024 nodes according to AtP∗ ), at 3 confidence levels, varying the sampling budget.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The recommended configuration depends on prompt-pair and node granularity: AtP* for single pairs, AtP+QKFix for attention nodes over distributions, and AtP for neuron nodes over distributions.",
+      "numbers": "not stated",
+      "quote": "If AtP is appropriate, our results suggest the best variant to use is probably AtP* for single prompt pairs, AtP+QKFix for AttentionNodes on distributions, and AtP for NeuronNodes (or other sites that aren’t immediately before a nonlinearity) on distributions.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The evaluation used few prompt-pair distributions, often only one pair, and may not generalize to other distributions.",
+      "quote": "We only considered a small set of prompt pair distributions, which often were limited to a single prompt pair, since evaluating the ground truth can be quite costly.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Individual MLP neurons may not provide a semantically meaningful decomposition; finding suitable activation directions was outside the paper's scope.",
+      "quote": "Instead, achieving such a decomposition seems to require finding the right set of directions in neuron activation space (Bricken et al., 2023; Gurnee et al., 2023) – which we viewed as being out of scope for this paper.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Performance on coarse components such as full layers or residual streams is uncertain.",
+      "quote": "Nanda (2022) speculate that AtP may perform worse on coarser components like full layers or entire residual streams, as a larger change may have more of a non-linear effect.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The total causal effect used as ground truth can disagree with direct effect and may hide additional false negatives.",
+      "quote": "Equation (1) often significantly disagrees with a different evaluation target, the “direct effect”, by putting lower weight on some contributions when later components would shift their behaviour to compensate for the earlier patched component.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Distributional averaging can assign low importance to nodes that matter strongly on only one prompt.",
+      "quote": "Some nodes may have a real and significant effect, but only on a single clean prompt (e.g. they only respond to a particular name in IOI12 or object in A-AN).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The evaluation focused on relative rank rather than agreement between estimated and true effect magnitudes.",
+      "quote": "we focused on evaluating the relative rank of estimates, since our main goal was to identify important components (with effect size only instrumentally useful to this end)",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The Welch diagnostic relies on approximately unbiased, normally distributed populations without substantial skew.",
+      "quote": "This relies on the populations being approximately unbiased and normally distributed, and not skewed.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Transfer to other LLM families, especially very large or architecturally different models, is not established.",
+      "quote": "we cannot rule out qualitatively different behavior without further evidence, especially on SotA–scale models or models that significantly deviate from the standard decoder-only transformer architecture.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No Gemma 4 E2B-specific result is reported, so its exact ranking behavior and AtP failure rates remain unknown.",
+     "KV sharing across layers 15-34 can couple what the paper treats as separate nodes, so nodewise AtP scores and the approximate additivity assumption may fail.",
+     "Shared-KV interventions may require coordinated patches, whereas the paper formulates AtP, verification, and subset sampling primarily as nodewise interventions.",
+     "Per-layer embedding coordinates may be highly correlated, making causal localization non-identifiable and producing many redundant important components.",
+     "Forward-pass accounting does not establish CPU practicality; wall-clock latency, peak memory, activation-cache storage, and backward-pass overhead are unreported.",
+     "GradDrop's L backward passes may have a different CPU cost ratio from the paper's proxy, potentially reducing its speed advantage on E2B.",
+     "Negative-log-probability patching need not preserve rankings or mechanism interpretations obtained with logit lens, induction-head tracing, or factual-recall tracing.",
+     "The subset-sampling confidence bound depends on distributional and additivity assumptions that are not stress-tested for shared-KV or embedding nodes."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "The paper is methodologically relevant as an efficient prefilter for the lab's activation-patching workflow: AtP*'s softmax/QK correction, GradDrop, ranked verification, and subset-sampling bounds could reduce exhaustive sweeps. However, the paper provides no Gemma 4 E2B, shared-KV, per-layer-embedding, CPU-latency, logit-lens, induction-head, or factual-recall evidence, so rankings and confidence bounds should first be validated against exhaustive patching on Gemma."
+   },
+   "usage": {
+    "prompt_tokens": 26280,
+    "completion_tokens": 21189,
+    "total_tokens": 47469,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 18407
+    }
+   }
+  }
+ }
+}

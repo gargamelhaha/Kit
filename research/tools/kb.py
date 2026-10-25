@@ -74,7 +74,7 @@ def validate():
         if h.get("status") not in STATUSES: errs.append(f"{h.get('id')}: bad status")
     for sid, r in src.items():
         if not (r.get("url") or r.get("doi") or r.get("arxiv_id")): warns.append(f"{sid}: no url/doi/arxiv")
-        if r.get("read_depth") not in {"full_text", "partial", "abstract_only", "metadata_only"}: warns.append(f"{sid}: bad read_depth")
+        if r.get("read_depth") not in {"full_text", "full_text_machine", "partial", "abstract_only", "metadata_only"}: warns.append(f"{sid}: bad read_depth")
     print(f"claims={len(claims)} hypotheses={len(hyps)} sources={len(src)} errors={len(errs)} warnings={len(warns)}")
     for e in errs: print("ERROR", e)
     for w in warns[:30]: print("WARN", w)

@@ -1,0 +1,460 @@
+{
+ "source_id": "LIT04-143",
+ "arxiv_id": "2604.03809",
+ "title": "Representational Collapse in Multi-Agent LLM Committees: Measurement and Diversity-Aware Consensus",
+ "chars": 34257,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 26,
+    "near": 1,
+    "unverified": 4,
+    "skip": 0
+   },
+   "verified_frac": 0.871,
+   "data": {
+    "title": "Representational Collapse in Multi-Agent LLM Committees: Measurement and Diversity-Aware Consensus",
+    "research_question": "Do role-prompted homogeneous LLM committee agents contribute complementary evidence, or do they exhibit representational collapse that undermines majority voting?",
+    "models_and_data": [
+     {
+      "item": "Qwen2.5-Instruct 7B and 14B",
+      "quote": "using Qwen2.5-Instruct [Yang et al., 2024] at 7B and 14B parameters via Ollama on Apple Silicon (M4 Max, 128GB).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GSM8K first 100 test questions",
+      "quote": "We evaluate on GSM8K [Cobbe et al., 2021] (first 100 test questions)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MATH-500 stratified sample, 20 per difficulty level, 100 total",
+      "quote": "a stratified sample of MATH-500 [Hendrycks et al., 2021] (20 per difficulty level, 100 total)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Three role-conditioned agents",
+      "quote": "All protocols use N =3 agents with temperature 0.7 and distinct role prompts (methodical solver, skeptical verifier, concise expert).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "nomic-embed-text frozen encoder, 768 dimensions",
+      "quote": "The primary run used seed 42 with nomic-embed-text as the frozen encoder.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "mxbai-embed-large encoder, 1024 dimensions, 50 GSM8K questions",
+      "quote": "we replace it with mxbai-embed-large (1024 dimensions) and run on 50 GSM8K questions (Table 7).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Generate a short chain-of-thought per agent at temperature 0.7",
+      "quote": "each agent generates a 128-token chain-of-thought at temperature 0.7.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Embed each rationale with a frozen encoder",
+      "quote": "A frozen encoder ϕ (nomic-embed-text) maps each rationale to ei ∈ R768",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Optionally project embeddings with Gram-Schmidt, SVD, or identity",
+      "quote": "E′ ← Π(E) {GS, SVD, or identity}",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute diversity weights from projected embeddings",
+      "quote": "Compute wi ∝ 1 − s̄i (E′ ) for each i",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Agents re-answer with truncated hints from other agents",
+      "quote": "each agent receives truncated rationale text (up to 300 characters) from the other agents as hints and generates a final answer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Aggregate final answers by diversity-weighted voting",
+      "quote": "Answers are aggregated by weighted voting: wi ∝ 1 − s̄i",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Mean pairwise cosine similarity",
+      "definition": "Average cosine similarity between normalized rationale embeddings; values near 1 indicate near-identical representations.",
+      "quote": "mean pairwise cosine similarity of 0.888 and effective rank of 2.17 out of 3.0",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Effective rank",
+      "definition": "Intrinsic dimensionality of the committee’s evidence from singular values; ranges from 1 to N.",
+      "quote": "This ranges from 1 (all agents identical) to N (fully independent).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "GSM8K accuracy",
+      "definition": "Exact accuracy on GSM8K questions.",
+      "quote": "DALC-Id (diversity-weighted voting on raw, unprojected embeddings, with hint sharing) reaches 87%",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Mean tokens per question",
+      "definition": "Average token cost per question for a method.",
+      "quote": "GSM8K accuracy (%) and mean tokens per question.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MATH-500 stratified accuracy",
+      "definition": "Accuracy on MATH-500 stratified by difficulty level.",
+      "quote": "MATH-500 stratified accuracy (14B, n=100, 20 per level).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Run-to-run variance",
+      "definition": "Accuracy variation across independent runs of the same protocol.",
+      "quote": "Per-protocol swings range from 1 to 3 points",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Representational collapse is observed across role-conditioned agents on GSM8K.",
+      "numbers": "100 GSM8K questions; three Qwen2.5-14B agents; cosine 0.888; effective rank 2.17 out of 3.0",
+      "quote": "across 100 GSM8K questions with three Qwen2.5-14B agents, mean cosine similarity is 0.888 and effective rank is 2.17 out of 3.0",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DALC reaches higher GSM8K accuracy than self-consistency at lower token cost.",
+      "numbers": "87% vs. 84%; 26% lower token cost",
+      "quote": "DALC, a training-free consensus protocol that computes diversity weights from embedding geometry, reaches 87% on GSM8K versus 84% for self-consistency at 26% lower token cost.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On MATH-500, DALC variants match or slightly exceed self-consistency at lower token cost.",
+      "numbers": "57%; approximately two-thirds token cost",
+      "quote": "On MATH-500, both DALC variants reach 57% at approximately two-thirds the token cost of SC.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "mxbai encoder increases collapse severity relative to nomic.",
+      "numbers": "cosine 0.888 to 0.908; effective rank 2.17 to 2.09",
+      "quote": "mean cosine rises from 0.888 (nomic) to 0.908 (mxbai), and effective rank drops from 2.17 to 2.09.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Run-to-run variance is large enough to overlap protocol accuracy differences.",
+      "numbers": "1 to 3 points per protocol; 6 points total spread",
+      "quote": "Per-protocol swings range from 1 to 3 points, with total spread across methods reaching 6 points.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Collapse is more severe on the harder MATH-500 benchmark.",
+      "numbers": "cosine 0.904 vs. 0.888",
+      "quote": "Collapse is also more severe on MATH-500 (cosine 0.904 vs. 0.888 on GSM8K)",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Accuracy differences fall within measured run-to-run variance.",
+      "quote": "The accuracy differences between protocols (1–5 points at n=100) fall within the 1–3 point per-protocol run-to-run variance we measure in the replication ablation.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Collapse measurements depend on the embedding model.",
+      "quote": "The encoder ablation demonstrates that collapse measurements depend on the embedding model.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Only Qwen2.5 at two scales is evaluated.",
+      "quote": "We evaluate only the Qwen2.5 family at two scales (7B, 14B).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Harder expert-level benchmarks are needed for validation.",
+      "quote": "needs validation on expert-level benchmarks such as GPQA and Humanity’s Last Exam",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Committee size, decoding temperature, and prompt diversity are untested.",
+      "quote": "Sensitivity to committee size (N ), decoding temperature, and prompt diversity remains untested.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "No matched-budget comparison was run.",
+      "quote": "A matched-budget comparison that equalizes total tokens across methods would isolate the contribution of diversity weighting from protocol design; we have not run this ablation.",
+      "quote_check": "near"
+     },
+     {
+      "text": "Agent ordering in Gram-Schmidt is fixed and not averaged over permutations.",
+      "quote": "we fix the order by role prompt and do not average over permutations, which is a source of variance we have not quantified.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "External validity is limited: the paper tests only Qwen2.5 7B/14B, so collapse severity and DALC behavior may not transfer to Gemma 4 E2B or to KV-shared layers 15-34.",
+     "The collapse metric uses sentence-level frozen embeddings, not internal per-layer embeddings, hidden states, or KV-cache representations; it may miss mechanistic collapse in the lab’s target layers.",
+     "The study does not use activation patching, logit lens, induction-head tracing, or factual-recall tracing, so it cannot localize collapse to specific circuits or shared-KV layers.",
+     "Small samples (n=100, and n=50 for mxbai) and no significance testing mean the reported 1–5 point accuracy differences are fragile; the authors acknowledge variance but not statistical power.",
+     "Protocol confounds remain: hint sharing, diversity weighting, projection, and token budgets are not fully factorial, and the missing matched-budget comparison prevents clean attribution.",
+     "Encoder and subset differences confound the encoder ablation: mxbai uses 50 GSM8K questions while nomic uses 100, and encoder dimensionality/geometry may drive both collapse and accuracy."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Moderately relevant as a diagnostic framework: it motivates measuring representational diversity and collapse among role-conditioned agents, but it uses Qwen2.5 and sentence embeddings rather than Gemma 4 E2B internals. The lab could adapt cosine/effective-rank diagnostics to per-layer embeddings and KV-shared layers 15-34, then use activation patching, logit lens, induction-head, and factual-recall tracing to test whether collapse localizes to shared-KV layers or specific circuits on CPU."
+   },
+   "usage": {
+    "prompt_tokens": 8036,
+    "completion_tokens": 8899,
+    "total_tokens": 16935,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 6618
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 3,
+    "unverified": 4,
+    "skip": 0
+   },
+   "verified_frac": 0.886,
+   "data": {
+    "title": "Representational Collapse in Multi-Agent LLM Committees: Measurement and Diversity-Aware Consensus",
+    "research_question": "Do role-conditioned agents sharing one model contribute complementary evidence, and can embedding-space diagnostics plus diversity-aware consensus detect and reduce representational collapse in multi-agent committees?",
+    "models_and_data": [
+     {
+      "item": "Qwen2.5-Instruct at 7B and 14B parameters, served through Ollama on Apple Silicon (M4 Max, 128GB).",
+      "quote": "using Qwen2.5-Instruct [Yang et al., 2024] at 7B and 14B parameters via Ollama on Apple Silicon (M4 Max, 128GB).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GSM8K, using the first 100 test questions.",
+      "quote": "GSM8K [Cobbe et al., 2021] (first 100 test questions)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MATH-500, using a stratified sample of 20 questions per difficulty level and 100 questions total.",
+      "quote": "a stratified sample of MATH-500 [Hendrycks et al., 2021] (20 per difficulty level, 100 total)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Three role-conditioned agents: methodical solver, skeptical verifier, and concise expert, all sampled at temperature 0.7.",
+      "quote": "All protocols use N =3 agents with temperature 0.7 and distinct role prompts (methodical solver, skeptical verifier, concise expert).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Primary frozen encoder: nomic-embed-text.",
+      "quote": "The primary run used seed 42 with nomic-embed-text as the frozen encoder.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Alternative frozen encoder: mxbai-embed-large with 1024 dimensions, evaluated on 50 GSM8K questions.",
+      "quote": "we replace it with mxbai-embed-large (1024 dimensions) and run on 50 GSM8K questions (Table 7).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Phase 1: have each agent independently generate a 128-token chain-of-thought at temperature 0.7.",
+      "quote": "Given question q, each agent generates a 128-token chain-of-thought at temperature 0.7.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Embed each generated rationale with the frozen encoder.",
+      "quote": "ei ← ϕ(ri) {embed rationale}",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Optionally project the embedding matrix using Gram-Schmidt, SVD, or identity.",
+      "quote": "E′ ← Π(E) {GS, SVD, or identity}",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Derive per-agent diversity weights from each agent's mean projected cosine similarity to the other agents.",
+      "quote": "Answers are aggregated by weighted voting: wi ∝ 1 − s̄i , where s̄i is agent i’s mean cosine to all other agents under the (projected) embeddings.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Give every agent truncated rationales from the other agents as hints and have it regenerate an answer.",
+      "quote": "After projection, each agent receives truncated rationale text (up to 300 characters) from the other agents as hints and generates a final answer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Produce the final answer using diversity-weighted voting over the regenerated answers.",
+      "quote": "diversity-weighted voting produces the final answer",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compare against single-model inference and self-consistency with five chains.",
+      "quote": "Baselines: single-model inference and self-consistency (k=5).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Ablate run-to-run variance, hint sharing, and encoder choice on 14B GSM8K.",
+      "quote": "We conduct three ablation experiments on GSM8K with 14B to test the robustness and decompose the contributions of individual protocol components.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Mean pairwise cosine similarity",
+      "definition": "Mean angular overlap among pairwise L2-normalized rationale embeddings; values near 1 indicate near-identical representations.",
+      "quote": "measures angular overlap; values near 1 indicate near-identical",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Effective rank",
+      "definition": "A singular-value-based measure of the committee's intrinsic evidence dimensionality, ranging from 1 for identical agents to N for fully independent agents.",
+      "quote": "This ranges from 1 (all agents identical) to N (fully independent).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Accuracy",
+      "definition": "The percentage of evaluation questions answered correctly.",
+      "quote": "GSM8K accuracy (%)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Mean tokens per question",
+      "definition": "The average number of generated tokens consumed per evaluation question.",
+      "quote": "mean tokens per question",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Run-to-run accuracy swing",
+      "definition": "The change in a protocol's accuracy between two independent runs.",
+      "quote": "Per-protocol swings range from 1 to 3 points, with total spread across methods reaching 6 points.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Role-conditioned agents exhibited representational collapse on GSM8K, occupying only about 2.17 effective independent directions.",
+      "numbers": "100 GSM8K questions; mean cosine similarity 0.888; effective rank 2.17 out of 3.0.",
+      "quote": "across 100 GSM8K questions with three Qwen2.5-14B agents, mean cosine similarity is 0.888 and effective rank is 2.17 out of 3.0, a failure mode we term representational collapse.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DALC-Id outperformed self-consistency on 14B GSM8K while using fewer tokens in the primary run.",
+      "numbers": "DALC-Id 87%; SC 84%; 1181 vs. 1589 tokens; 26% fewer tokens.",
+      "quote": "On GSM8K with 14B, DALC-Id (diversity-weighted voting on raw, unprojected embeddings, with hint sharing) reaches 87%, three points above self-consistency, consuming 26% fewer tokens (1181 vs. 1589).",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Both reported DALC variants reached 57% accuracy on MATH-500 at roughly two-thirds of self-consistency's token cost.",
+      "numbers": "57%; approximately two-thirds of SC token cost.",
+      "quote": "On MATH-500, both DALC variants reach 57% at approximately two-thirds the token cost of SC.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Representational collapse was more severe on the harder MATH-500 benchmark than on GSM8K.",
+      "numbers": "cosine 0.904 on MATH-500 vs. 0.888 on GSM8K.",
+      "quote": "Collapse is also more severe on MATH-500 (cosine 0.904 vs. 0.888 on GSM8K), consistent with agents converging more tightly on harder problems where the model has fewer confident alternative paths.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "The reported accuracy differences were within observed run-to-run variance.",
+      "numbers": "1 to 3 points per protocol; total spread 6 points.",
+      "quote": "Per-protocol swings range from 1 to 3 points, with total spread across methods reaching 6 points.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In the no-hints ablation, hint sharing and diversity weighting did not surpass self-consistency.",
+      "numbers": "DALC-GS 85%; DALC-NoHints 84%; SC 86%.",
+      "quote": "DALC-GS with hints reaches 85%, DALC-NoHints reaches 84%, and SC reaches 86% in this run.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Encoder choice strongly modulated measured collapse severity and downstream accuracy.",
+      "numbers": "cosine 0.908 with mxbai versus 0.888 with nomic.",
+      "quote": "encoder choice strongly modulates collapse severity (cosine 0.908 with mxbai versus 0.888 with nomic) and downstream accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Perfect Gram-Schmidt orthogonality did not translate into an accuracy gain.",
+      "numbers": "DALC-GS 83% on 14B GSM8K; four points below DALC-Id.",
+      "quote": "DALC-GS scores 83% on 14B GSM8K, four points below DALC-Id which uses unprojected embeddings.",
+      "quote_check": "unverified"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Accuracy gains of 1–5 points are preliminary because they fall within the measured 1–3 point run-to-run variance.",
+      "quote": "The accuracy differences between protocols (1–5 points at n=100) fall within the 1–3 point per-protocol run-to-run variance we measure in the replication ablation. We present these as preliminary observations to motivate the diagnostic, not as established results.",
+      "quote_check": "near"
+     },
+     {
+      "text": "The no-hints ablation does not constitute a fully factorial decomposition of hints, weighting, and projection.",
+      "quote": "The no-hints ablation (Section 3.2) partially addresses a gap in the original version of this work, but a fully factorial design (hints × weighting × projection) would provide cleaner decomposition.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Only two encoders were tested, and their different collapse severities changed whether DALC improved over baselines.",
+      "quote": "Two encoders tested (nomic-embed-text, mxbai-embed-large) show qualitatively similar collapse but differ enough in severity (cosine 0.888 vs. 0.908) to change whether DALC improves over baselines.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The evaluation covers only the Qwen2.5 family at 7B and 14B scales.",
+      "quote": "We evaluate only the Qwen2.5 family at two scales (7B, 14B).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Sensitivity to committee size, decoding temperature, and prompt diversity remains untested.",
+      "quote": "Sensitivity to committee size (N ), decoding temperature, and prompt diversity remains untested.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Cross-architecture committees remain future work.",
+      "quote": "Cross-architecture committees, where agents backed by different model families (e.g., Qwen and Llama) produce inherently less correlated representations, are a natural next step that bypasses the need for embedding-space projection.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "A matched-token-budget comparison was not run, so token savings cannot isolate diversity weighting from protocol design.",
+      "quote": "A matched-budget comparison that equalizes total tokens across methods would isolate the contribution of diversity weighting from protocol design; we have not run this ablation.",
+      "quote_check": "near"
+     },
+     {
+      "text": "Gram-Schmidt depends on agent ordering, and permutation variance was not quantified.",
+      "quote": "we fix the order by role prompt and do not average over permutations, which is a source of variance we have not quantified.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The encoder ablation is not a clean paired comparison: the mxbai condition uses 50 GSM8K questions while the nomic column repeats the 100-question primary run, confounding encoder choice with subset difficulty and rerun effects.",
+     "MATH-500 per-level cells contain only 20 questions, and no replication or uncertainty estimate is reported for MATH-500, so protocol and difficulty-level differences may be unstable.",
+     "The answer-extraction and grading procedure for free-form mathematical outputs is not specified, leaving parsing, equivalence, and scoring errors uncharacterized.",
+     "Efficiency is reported in generated tokens without wall-clock latency, energy use, or empirical embedding-and-SVD overhead measurements, despite the claim that the diagnostic overhead is negligible.",
+     "Diversity weights are not analyzed for normalization, clipping, or instability when pairwise similarities are near 1, so the robustness of wi ∝ 1 − s̄i remains unclear.",
+     "The study does not directly test whether embedding overlap causes shared answer errors, leaving the causal connection between representational collapse and unreliable majority voting correlational.",
+     "Reproducibility details are incomplete in the provided text, including the exact role-prompt wording, Ollama and encoder versions, grading implementation, and experiment logs.",
+     "The abstract and Section 3.2 give conflicting interpretations of the no-hints ablation: the former emphasizes hint sharing over diversity weighting, while the latter says diversity weighting alone accounts for most of the effect."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "The paper is useful as a cautionary benchmark and protocol template for Gemma 4 E2B: it shows that textual role diversity can conceal narrow representational diversity, and that changing the representation space can change the apparent downstream conclusion. In the lab, pairwise cosine similarity and effective rank could be computed on Gemma 4 E2B per-layer embeddings across the KV-shared layers 15–34, with SVD providing a relatively lightweight CPU diagnostic. Activation patching and logit-lens tests could then determine whether high-overlap internal states causally carry shared reasoning or answer-selection information, while induction-head and factual-recall tracing could test whether the same layers mediate shared factual retrieval. Internal geometry should be compared with external nomic or mxbai embeddings and with hidden-state CKA or SVCCA-style probes, and pairwise distance should be correlated with answer disagreement. The paper directly motivates these tests, but it provides no Gemma 4 E2B, layer-specific, or activation-intervention evidence."
+   },
+   "usage": {
+    "prompt_tokens": 8222,
+    "completion_tokens": 21178,
+    "total_tokens": 29400,
+    "prompt_tokens_details": {
+     "cached_tokens": 197
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 18211
+    }
+   }
+  }
+ }
+}

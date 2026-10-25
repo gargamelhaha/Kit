@@ -1,0 +1,496 @@
+{
+ "source_id": "LIT01-040",
+ "arxiv_id": "2607.20596",
+ "title": "Are Single-Token Sparse Autoencoder Features Causally Necessary? Layer-Depth and SAE-Family Effects",
+ "chars": 163168,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 32,
+    "near": 0,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.914,
+   "data": {
+    "title": "Are Single-Token Sparse Autoencoder Features Causally Necessary? Layer-Depth and SAE-Family Effects",
+    "research_question": "Are single-token SAE features causally necessary, and is their causal role stable across SAE families and layer depth?",
+    "models_and_data": [
+     {
+      "item": "3.9M features, six models, three SAE families",
+      "quote": "We analyze 3.9M features across six models and three SAE families and zero-ablate at full layer depth",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Neuronpedia SAE features",
+      "quote": "We analyze 3.9M SAE features from Neuronpedia (Lin and Bloom, 2023) across six models",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SAE families",
+      "quote": "These span three SAE families: GemmaScope/res-jb, LlamaScope, and community BatchTopK.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Model list",
+      "quote": "GPT2-Small (124M) (Radford et al., 2019; Bloom, 2024), Gemma-2-2B and Gemma-2-9B (Team et al., 2024; Lieberum et al., 2024), Gemma-3-1B (Gemma Team, 2025), Llama-3.1-8B (Grattafiori et al., 2024), and DeepSeek-R1-8B (Guo et al., 2025).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Public SAE checkpoints, activation data, explanations",
+      "quote": "All SAE checkpoints, activation data, and feature explanations are publicly available.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Per-feature data used",
+      "quote": "For each feature, we use: (i) decoder vectors wdec ∈ Rd from SAE checkpoints (Chanin and Bloom, 2024), (ii) top-k activating tokens and values, and (iii) auto-interpretability explanations.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Activation positions from OpenWebText",
+      "quote": "We take activation positions from 4,096 sequences of 128 tokens of OpenWebText (Gokaslan and Cohen, 2019)—each model tokenizes its own copy of the raw text.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Define single-token features",
+      "quote": "We define a single-token feature as one whose activation is dominated by a single vocabulary item and its morphological variants.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Select detection operating point",
+      "quote": "We select an operating point of gap ≥ 0.3, purity ≥ 0.6, and complete word (bolded row in Table 2)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use decoder-alignment detection for cross-family causal experiments",
+      "quote": "For causal experiments requiring cross-family detection, we use decoder-alignment detection",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Zero-ablate feature direction",
+      "quote": "we replace the residual-stream activation a with a − fi · widec , run the modified forward pass",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Use logit lens readout",
+      "quote": "With the logit lens (nostalgebraist, 2020; Bloom and Lin, 2024)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply global BH correction",
+      "quote": "BH-corrected at p < 0.05 globally across all 208 layer tests.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Characterize decoder-vector geometry",
+      "quote": "We characterize feature geometry using three metrics on decoder vectors {wi }i∈F",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Gap Ratio",
+      "definition": "How sharply the top token dominates the top-k activation values.",
+      "quote": "Gap Ratio measures how sharply the top token dominates:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Lexical Purity",
+      "definition": "Fraction of top-k slots occupied by the most frequent token and case variants.",
+      "quote": "purity = max |{i ∈ [k] : ti = t}|/k",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Within-Type Similarity (clustering ratio)",
+      "definition": "Mean pairwise cosine among decoder vectors, compared for single-token vs polysemantic sets.",
+      "quote": "The clustering ratio is simwithin (FST )/simwithin (Fpoly )",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Intrinsic Dimension",
+      "definition": "Dimension of the feature-vector manifold estimated from neighbor growth.",
+      "quote": "Intrinsic Dimension. We want the dimension of the surface the feature vectors actually lie on",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Grassmannian Alignment",
+      "definition": "Mean cosine of principal angles between adjacent-layer decoder subspaces.",
+      "quote": "Cross-Layer Grassmannian Alignment. Let Uℓ , Uℓ+1 ∈ Rd×dPCA have orthonormal columns spanning the top-dPCA =50 principal subspaces of the decoder matrices at adjacent layers",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Ablation ∆logit",
+      "definition": "Change in target-token logit after zero-ablation.",
+      "quote": "∆logiti = zablated (t∗i ) − zclean (t∗i )",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Same-layer recovery",
+      "definition": "Fraction whose target-token rank after ablation stays within twice pre-ablation rank (floor 5).",
+      "quote": "Same-layer recovery is the fraction of features whose mean rank for t∗i under the same-layer logit lens stays within twice its pre-ablation value (floor 5) after ablation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Anchoring",
+      "definition": "Source-layer ablation significantly changes downstream logit-lens top-token readout.",
+      "quote": "A feature at source layer ℓ anchors downstream layer ℓ′ > ℓ if zero-ablation at ℓ produces a BH-significant change in the logit-lens top-token readout at ℓ′",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Causal necessity is significant in 178 of 208 layers.",
+      "numbers": "178 of 208",
+      "quote": "178 of their 208 layers are BH-significant.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Single-token features are tighter in decoder space and concentrate early.",
+      "numbers": "4.7×",
+      "quote": "they sit 4.7× tighter in decoder space and concentrate in early layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GPT2-Small single-token features concentrate in Layer 0.",
+      "numbers": "91%",
+      "quote": "91% of GPT2-Small’s sit in Layer 0",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "LlamaScope features are locally redundant by recovery.",
+      "numbers": "96–98%",
+      "quote": "Recovery mirrors anchoring: GemmaScope 62–71%, LlamaScope 96–98%",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "LlamaScope has much lower prevalence than GemmaScope at comparable scale.",
+      "numbers": "46×",
+      "quote": "LlamaScope SAEs show 46× lower prevalence than GemmaScope at comparable 8–9B scale",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Necessity damage rises with layer depth.",
+      "numbers": "ρ = 0.97 for BatchTopK, 0.70 for GemmaScope",
+      "quote": "necessity damage (|∆logit|) rises monotonically with depth (Spearman ρ = 0.97 for BatchTopK, 0.70 for GemmaScope on Gemma-2-2B; p < 0.001)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Activation function alone does not explain the cross-family pattern; controlled comparison reverses direction.",
+      "numbers": "N = 627; N = 142; p = 1.2 × 10−18; p = 0.036",
+      "quote": "token-matched (N = 627) shows BatchTopK > GemmaScope (p = 1.2 × 10−18 , r = 0.36), but the activation-function-isolated controlled comparison on the same model/layer/width (N = 142) shows the opposite direction (JumpReLU > TopK, p = 0.036)",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Cross-family comparisons co-vary multiple factors.",
+      "quote": "Our cross-family comparisons co-vary training data, dictionary width, recipe, and post-hoc conversion.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Within-model pairings only partially constrain the recipe factor.",
+      "quote": "The within-model pairings on Gemma-2-2B and Gemma-3-1B and the activation-function-controlled comparison partially constrain the recipe factor.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Gemma-3-1B shows weaker effects.",
+      "quote": "But Gemma-3-1B at 26 layers shows weaker effects.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Activation-based detection uses a fixed operating point.",
+      "quote": "Activation-based detection uses a fixed operating point.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Multi-token and compositional features are left to future work.",
+      "quote": "We leave multi-token spans and compositional features to future work, via span-embedding alignment.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Three data points cannot distinguish functional forms.",
+      "quote": "three data points cannot distinguish functional forms.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not test Gemma 4 E2B, KV-shared layers 15–34, or per-layer embeddings, so its layer-depth and SAE-family findings may not transfer to the lab’s target architecture.",
+     "The paper’s zero-ablation of SAE decoder directions is not equivalent to activation patching at arbitrary residual-stream sites; patching effects in Gemma 4 E2B could differ.",
+     "The paper does not evaluate induction heads or factual-recall tracing, so its causal readouts do not directly validate those lab tasks.",
+     "The paper does not report CPU runtime or memory, so feasibility for a CPU-only activation-patching/logit-lens pipeline is unknown.",
+     "The paper uses top-k=20 activation profiles and fixed/percentile thresholds; sensitivity to Gemma 4 E2B’s per-layer embedding structure and KV-sharing is untested.",
+     "The paper’s causal evidence is layer-level and target-token-logit based; feature interactions, circuit-level effects, and factual-recall accuracy are not analyzed."
+    ],
+    "code_or_data_url": "https://neuronpedia.org",
+    "relevance_to_lab": "Indirectly relevant: the paper’s zero-ablation, logit-lens, and layer-depth analyses are close to the lab’s activation patching/logit lens workflow, and its cross-SAE-family causal instability is a caution for interpreting Gemma 4 E2B KV-shared layers 15–34 and per-layer embeddings. It does not study Gemma 4 E2B, KV-shared layers, induction heads, factual recall, or CPU constraints, so the lab would need to replicate on the target model and SAEs."
+   },
+   "usage": {
+    "prompt_tokens": 19000,
+    "completion_tokens": 17029,
+    "total_tokens": 36029,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 14886
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 23,
+    "near": 5,
+    "unverified": 9,
+    "skip": 0
+   },
+   "verified_frac": 0.757,
+   "data": {
+    "title": "Are Single-Token Sparse Autoencoder Features Causally Necessary? Layer-Depth and SAE-Family Effects",
+    "research_question": "Are single-token SAE features causally necessary for their target tokens, and how do necessity, downstream anchoring, and same-layer recovery vary with SAE family and layer depth?",
+    "models_and_data": [
+     {
+      "item": "GPT2-Small (124M) with res-jb ReLU SAEs.",
+      "quote": "GPT2-Small uses res-jb SAEs (Bloom, 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gemma-2-2B, Gemma-2-9B, and Gemma-3-1B with GemmaScope JumpReLU SAEs.",
+      "quote": "Gemma-2 and Gemma-3 models use GemmaScope JumpReLU SAEs (Lieberum et al., 2024; Rajamanoharan et al., 2024b,a).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama-3.1-8B and DeepSeek-R1-8B with LlamaScope TopK SAEs.",
+      "quote": "Llama-3.1 and DeepSeek-R1 use LlamaScope TopK SAEs (He et al., 2024; Gao et al., 2025), following the k-sparse autoencoder framework (Makhzani and Frey, 2014).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Community BatchTopK SAEs on Gemma-2-2B and Gemma-3-1B for activation-function comparisons on the same base models.",
+      "quote": "For causal experiments, we additionally use community BatchTopK SAEs (Bussmann et al., 2024; Chanin and Bloom, 2024) on Gemma-2-2B and Gemma-3-1B to compare competitive versus independent activation functions on the same base models.",
+      "quote_check": "near"
+     },
+     {
+      "item": "3.9M SAE features spanning six models and three SAE families, with zero-ablation at full layer depth.",
+      "quote": "We analyze 3.9M features across six models and three SAE families and zero-ablate at full layer depth:",
+      "quote_check": "exact"
+     },
+     {
+      "item": "OpenWebText activation corpus, with each model tokenizing its own copy.",
+      "quote": "We take activation positions from 4,096 sequences of 128 tokens of OpenWebText (Gokaslan and Cohen, 2019)—each model tokenizes its own copy of the raw text.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Detect single-token candidates from top-20 activation lists using gap ratio, lexical purity, and complete-word status.",
+      "quote": "We operationalize this concept using three continuous metrics computed from the top-k = 20 activating tokens:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply the activation-based operating point gap ≥ 0.3, purity ≥ 0.6, and complete word.",
+      "quote": "We select an operating point of gap ≥ 0.3, purity ≥ 0.6, and complete word (bolded row in Table 2), validated by three independent signals: 64% explanation match, 4.7× geometric clustering, and causal necessity under ablation.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For causal experiments, detect features by decoder alignment to the layer's token embeddings and apply a per-layer percentile threshold.",
+      "quote": "a feature is selected when its gap ratio exceeds the 99th percentile of that layer’s gap-ratio distribution and its top-1 cosine exceeds 0.2.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Sample activation positions from 4,096 OpenWebText sequences of 128 tokens.",
+      "quote": "We take activation positions from 4,096 sequences of 128 tokens of OpenWebText (Gokaslan and Cohen, 2019)—each model tokenizes its own copy of the raw text.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Zero-ablate each active feature at its residual-stream activation and rerun the forward pass.",
+      "quote": "we replace the residual-stream activation a with a − fi · widec , run the modified forward pass, and record ablation damage.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Compare each single-token feature with size-matched random controls from the same SAE and a 2× activation-magnitude range.",
+      "quote": "Each single-token feature gets a size-matched random control drawn uniformly from non-single-token features of the same SAE—restricted to controls whose mean active activation falls within a 2× range of the ST feature’s.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Test target-token logit necessity with a one-sided Mann-Whitney U test and global BH correction across 208 layer tests.",
+      "quote": "We test layer-level significance with a one-sided Mann-Whitney U on the signed ∆logit (alternative: single-token ablation shifts the target-token logit more negatively than matched controls), BH-corrected at p < 0.05 globally across all 208 layer tests.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Measure downstream anchoring by testing source-layer ablations against logit-lens readouts at later layers.",
+      "quote": "A feature at source layer ℓ anchors downstream layer ℓ′ > ℓ if zero-ablation at ℓ produces a BH-significant change in the logit-lens top-token readout at ℓ′, using one-sided Mann-Whitney U against magnitude-matched controls at p < 0.05.",
+      "quote_check": "unverified"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Gap Ratio",
+      "definition": "Top-two activation dominance, measuring how sharply the strongest token exceeds the second strongest.",
+      "quote": "gap = (v1 − v2 )/v1 , where v1 ≥ v2 are the top two activation values among the top-k activating tokens.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Lexical Purity",
+      "definition": "Fraction of top-k activation slots occupied by the most frequent normalized token and its case variants.",
+      "quote": "Lexical Purity measures the fraction of the top-k slots occupied by the most frequent token and its case variants:",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Single-Token Prevalence",
+      "definition": "Number of detected single-token features normalized by one layer's feature width.",
+      "quote": "Prevalence is the single-token count normalized by one layer’s feature width.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Decoder-Space Clustering Ratio",
+      "definition": "Ratio of mean within-type pairwise cosine similarity for single-token features to that of the polysemantic complement at the same layer.",
+      "quote": "The clustering ratio is simwithin (FST )/simwithin (Fpoly ), where Fpoly is the complement of FST among activation-detected features at the same layer.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Cross-Layer Grassmannian Alignment",
+      "definition": "Mean cosine of principal angles between adjacent-layer decoder principal subspaces; one indicates aligned subspaces and zero indicates orthogonal subspaces.",
+      "quote": "Values approach 1 for identical subspaces and 0 for orthogonal subspaces under a representational shift.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Δlogit and Damaged Fraction",
+      "definition": "Mean target-token logit change under ablation, with a damaged feature defined by an absolute change greater than 0.1.",
+      "quote": "∆logit: mean logit change on ablation (more negative = more damage). Damaged: fraction with |∆logit| > 0.1.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Downstream Anchoring",
+      "definition": "A source-layer feature is an anchor when its ablation significantly changes a downstream layer's logit-lens top-token readout relative to matched controls.",
+      "quote": "A feature at source layer ℓ anchors downstream layer ℓ′ > ℓ if zero-ablation at ℓ produces a BH-significant change in the logit-lens top-token readout at ℓ′, using one-sided Mann-Whitney U against magnitude-matched controls at p < 0.05.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Same-Layer Recovery",
+      "definition": "Fraction of features whose target-token mean rank after same-layer ablation remains within twice its pre-ablation rank, with a floor of 5.",
+      "quote": "Same-layer recovery is the fraction of features whose mean rank for t∗i under the same-layer logit lens stays within twice its pre-ablation value (floor 5) after ablation.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "GPT2-Small single-token features are concentrated in Layer 0 and are geometrically distinct.",
+      "numbers": "91% in Layer 0; 4.7× tighter clustering",
+      "quote": "91% of GPT2-Small’s sit in Layer 0, and they cluster 4.7× tighter in decoder space.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GPT2 undergoes a sharp early-layer representational transition followed by stable adjacent-layer alignment.",
+      "numbers": "0.26 at L0→L1; >0.9 at later layers",
+      "quote": "The L0→L1 transition is sharp, with Grassmannian alignment 0.26 there versus >0.9 for later layers:",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Deleting a detected single-token feature significantly lowers its target token's logit across most tested layer conditions.",
+      "numbers": "178 of 208 layer conditions",
+      "quote": "Deleting one lowers the model’s logit for that token in 178 of 208 layer conditions, significant after multiple-comparison correction.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GemmaScope has substantially higher single-token-feature prevalence than LlamaScope at comparable 8–9B scale.",
+      "numbers": "46×; 8–9B scale",
+      "quote": "GemmaScope shows 46× higher prevalence than LlamaScope at the 8–9B scale (Gemma-2-9B vs Llama-3.1-8B).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On the same base models, GemmaScope and BatchTopK features are causally anchored, whereas LlamaScope features are locally redundant.",
+      "numbers": "96–98% recovery for LlamaScope",
+      "quote": "on the same base model, GemmaScope and BatchTopK features are causally anchored, LlamaScope features are locally redundant, recovering their pre-ablation rank 96–98% of the time",
+      "quote_check": "near"
+     },
+     {
+      "claim": "The cross-family causal gap does not follow activation-function choice: token-matched and activation-function-isolated comparisons have opposite directions.",
+      "numbers": "N = 627, p = 1.2 × 10−18; N = 142, p = 0.036",
+      "quote": "The within-model picture dissociates per Table 8: token-matched BatchTopK > GemmaScope at N = 627, p = 1.2 × 10−18 , but the activation-function-isolated N = 142 comparison shows JumpReLU > TopK at p = 0.036.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Target-token necessity grows with layer depth, while early layers show greater downstream propagation damage.",
+      "numbers": "ρ = 0.97 for BatchTopK; ρ = 0.70 for GemmaScope; p < 0.001; 13–30×",
+      "quote": "Necessity damage (|∆logit|) rises monotonically with depth (Spearman ρ = 0.97 for BatchTopK, 0.70 for GemmaScope on Gemma-2-2B; p < 0.001), with late layers showing 13–30× more damage than early layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Downstream anchoring strongly separates SAE families and persists across the full-layer tests.",
+      "numbers": "208 tests; 92–100% versus 31–34%",
+      "quote": "Across 208 full-layer tests, the anchoring split persists: GemmaScope/BatchTopK anchor 92–100% of source layers while LlamaScope anchors 31–34% across Llama-3.1-8B and DeepSeek-R1.",
+      "quote_check": "unverified"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Cross-family comparisons simultaneously vary training data, dictionary width, training recipe, and post-hoc conversion.",
+      "quote": "Our cross-family comparisons co-vary training data, dictionary width, recipe, and post-hoc conversion.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The within-model comparisons only partially constrain the training-recipe explanation.",
+      "quote": "The within-model pairings on Gemma-2-2B and Gemma-3-1B and the activation-function-controlled comparison partially constrain the recipe factor.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "The causal effects are weaker in the 26-layer Gemma-3-1B configuration.",
+      "quote": "But Gemma-3-1B at 26 layers shows weaker effects.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Activation-based detection uses a fixed threshold, although the authors report robustness over a 2× range and use an independent detector for causal tests.",
+      "quote": "Activation-based detection uses a fixed operating point.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The analysis is restricted to the single-token diagnostic endpoint; multi-token spans and compositional features remain future work.",
+      "quote": "The single-token endpoint is the diagnostic case. We leave multi-token spans and compositional features to future work, via span-embedding alignment.",
+      "quote_check": "near"
+     },
+     {
+      "text": "The model-scale trend is based on only three points and is descriptive rather than functionally decisive.",
+      "quote": "We emphasize that three data points cannot distinguish among functional forms—this fit is primarily descriptive:",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Cross-model prevalence comparisons also vary base model, tokenizer, and training data simultaneously.",
+      "quote": "The prevalence gap co-varies with SAE family and cannot be attributed to methodology alone, since base model, tokenizer, and training data vary simultaneously.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No Gemma 4 E2B model or KV-shared-layer architecture is tested, so direct transfer to layers 15–34 is uncertain.",
+     "The intervention endpoint is target-token next-token logit or rank, not induction-head behavior, factual-recall accuracy, or downstream answer correctness.",
+     "Residual-stream zero-ablation does not isolate whether effects arise from attention heads, MLPs, value/output pathways, or interactions involving shared KV layers.",
+     "Decoder-alignment detection and logit-lens evaluation both use embedding geometry, which may preferentially favor lexical features even though the detector is independent of activation statistics.",
+     "Excluding features with fewer than five active positions and sampling a fixed OpenWebText corpus can bias results toward frequent, easily observed tokens and away from rare factual tokens.",
+     "The paper does not report whether ablation damages non-target tokens, so the specificity of the observed target-token effect is unclear.",
+     "Global BH correction across layer tests may not account for dependence among features, tokens, or neighboring layers.",
+     "No runtime, memory, or CPU-feasibility measurements are reported for repeated full-layer forward passes, limiting direct planning of an equivalent CPU study."
+    ],
+    "code_or_data_url": "https://neuronpedia.org",
+    "relevance_to_lab": "The paper is methodologically relevant but has little direct model overlap with the lab. Its decoder-alignment detector, residual-stream zero-ablation, logit-lens Δlogit/rank measurements, magnitude-matched controls, and layer-wise anchoring/recovery analysis can be transferred to Gemma 4 E2B layers 15–34 using each layer's token embeddings. Its depth dissociation suggests testing whether features in layers 15–34 directly shape target logits or primarily propagate downstream effects, while its SAE-family results motivate checking SAE checkpoint identity rather than assuming portable causal roles. However, Gemma 4 E2B, shared-KV behavior, induction heads, factual recall, and CPU cost are not evaluated, so a small feature-and-layer subset with behavioral recall tests would be needed before broad activation patching."
+   },
+   "usage": {
+    "prompt_tokens": 19144,
+    "completion_tokens": 20232,
+    "total_tokens": 39376,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 17187
+    }
+   }
+  }
+ }
+}

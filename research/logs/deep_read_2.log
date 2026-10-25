@@ -1,1 +1,26 @@
 jobs 50
+LIT02-002 {'deepseek': 0.903, 'minimax': None}
+LIT01-091 {'deepseek': 0.938, 'minimax': 0.939}
+LIT02-065 {'deepseek': 0.174, 'minimax': 0.147}
+LIT02-057 {'deepseek': 0.966, 'minimax': 1.0}
+LIT02-047 {'deepseek': 0.294, 'minimax': 0.243}
+LIT02-088 {'deepseek': 0.929, 'minimax': 0.974}
+LIT01-012 {'deepseek': 0.943, 'minimax': 0.975}
+LIT02-128 {'deepseek': 0.15, 'minimax': 0.125}
+LIT02-127 {'deepseek': 0.969, 'minimax': 0.973}
+LIT03-098 {'deepseek': 1.0, 'minimax': 1.0}
+LIT02-017 {'deepseek': 0.968, 'minimax': 0.943}
+LIT02-018 {'deepseek': 0.96, 'minimax': 0.972}
+LIT01-087 {'deepseek': 1.0, 'minimax': 1.0}
+LIT05-013 {'deepseek': 1.0, 'minimax': 1.0}
+LIT05-046 {'deepseek': 0.367, 'minimax': 0.135}
+LIT04-143 {'deepseek': 0.871, 'minimax': 0.886}
+LIT01-040 {'deepseek': 0.2, 'minimax': 0.054}
+LIT03-089 {'deepseek': 0.941, 'minimax': 0.895}
+LIT02-008 {'deepseek': 1.0, 'minimax': 0.949}
+LIT01-090 {'deepseek': 1.0, 'minimax': 0.972}
+LIT02-013 {'deepseek': 0.933, 'minimax': 1.0}
+LIT05-080 {'deepseek': 1.0, 'minimax': 0.946}
+LIT05-022 {'deepseek': 0.857, 'minimax': 0.865}
+LIT05-112 {'deepseek': 0.966, 'minimax': 1.0}
+LIT04-016 {'deepseek': 1.0, 'minimax': 1.0}

@@ -7,49 +7,444 @@
  "extractions": {
   "deepseek": {
    "model_id": "free-deepseek-4.1-flash",
-   "parsed": false,
+   "parsed": true,
    "error": null,
    "quote_stats": {
-    "exact": 0,
-    "near": 0,
-    "unverified": 0,
+    "exact": 28,
+    "near": 3,
+    "unverified": 1,
     "skip": 0
    },
-   "verified_frac": null,
-   "data": null,
+   "verified_frac": 0.969,
+   "data": {
+    "title": "Towards Best Practices of Activation Patching in Language Models: Metrics and Methods",
+    "research_question": "How do methodological choices in activation patching—corruption methods, evaluation metrics, and sliding-window patching—affect localization and circuit-discovery results, and what are best practices?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 XL and GPT-2 small",
+      "quote": "we evaluate GN and STR on localizing factual recall in GPT-2 XL and discovering the IOI circuit in GPT-2 small.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "PAIRED FACTS dataset",
+      "quote": "To perform STR, we construct PAIRED FACTS of 145 pairs of prompts on factual recall.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "pIOI IOI prompts",
+      "quote": "For the IOI circuit, we use the pIOI distribution to sample the clean prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-J 6B",
+      "quote": "We also validate our findings on GPT-J 6B (Wang & Komatsuzaki, 2021) in Appendix G.5.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Python docstring task",
+      "quote": "We take 200 instances of the docstring completion task, perform activation patching by positions and compute the patching effects.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Greater-than task in GPT-2 small",
+      "quote": "Detections from activation patching on attention heads for the greater-than task in GPT-2 small, averaged across 300 prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 large factual association",
+      "quote": "We perform activation patching on MLP layers of GPT-2 large in the factual association setting.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "4-layer attention-only Transformer",
+      "quote": "Heimersheim & Janiak (2023) studies a circuit for Python docstring completion in a pre-trained 4-layer attention-only Transformer.",
+      "quote_check": "unverified"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Clean run: cache activations from the clean prompt.",
+      "quote": "run the model on Xclean and cache activations of a set of given model components, such as MLP or attention heads outputs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Corrupted run: record outputs on the corrupted prompt.",
+      "quote": "run the model on Xcorrupt and record the model outputs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Patched run: restore a component’s clean activation in the corrupted run.",
+      "quote": "run the model on Xcorrupt with a specific model component’s activation restored from the cached value of the clean run (Figure 1a).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Gaussian noising corruption.",
+      "quote": "GN adds Gaussian noise N (0, ν) to the embeddings of certain key tokens, where ν is 3 times the standard deviation of the token embeddings from the textset.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Symmetric token replacement corruption.",
+      "quote": "STR replaces the key tokens by similar ones with equal sequence length.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Detection threshold for attention heads.",
+      "quote": "we say that a head is detected if its patching effect is 2 standard deviation (SD) away from the mean effect.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Sliding-window MLP patching.",
+      "quote": "at each layer we restore a set of 5 adjacent MLP layers.",
+      "quote_check": "near"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Probability",
+      "definition": "Probability of the correct answer; patching effect is patched probability minus corrupted probability.",
+      "quote": "Probability: P(r); e.g., P(“Paris”). The patching effect is Ppt (r) − P∗ (r);",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Logit difference",
+      "definition": "Difference between logits of correct and corrupted answers; patching effect normalized by clean-corrupt logit difference.",
+      "quote": "Logit difference: LD(r, r′ ) = Logit(r) − Logit(r′ ); e.g., Logit(“Paris”) − Logit(“Rome”).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KL divergence",
+      "definition": "KL divergence from clean output distribution; patching effect is corrupted KL minus patched KL.",
+      "quote": "KL divergence: DKL (Pcl ||P ), the Kullback-Leibler (KL) divergence from the probability distribution of model outputs in the clean run.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Patching effect",
+      "definition": "Restoration of performance after patching; used to rank component importance.",
+      "quote": "Patching effect measures how much the patching intervention restores performance, which indicates the importance of the activation.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "In factual-recall MLP localization, GN produces a higher peak than STR across window sizes.",
+      "numbers": "2×–5×",
+      "quote": "across window sizes, we find the peak value of GN to be 2×–5× higher than STR",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "STR and GN detect inconsistent sets of IOI attention heads.",
+      "numbers": "not stated",
+      "quote": "Most importantly, we observe that STR and GN produce inconsistent discovery results.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GN yields a negative detection of head 0.10 in IOI.",
+      "numbers": "0.10",
+      "quote": "a major anomaly in the GN experiment is the “negative” detection of 0.10.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Probability overlooks Negative Name Mover head 11.10 under STR.",
+      "numbers": "11.10",
+      "quote": "both are detected, except when using probability as the metric where 11.10 is overlooked.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Probability assigns more effect to the last subject token than logit difference under STR.",
+      "numbers": "4.33×, 1.22×",
+      "quote": "Using STR corruption, the ratio is 4.33× in probability > 1.22× in logit difference.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Sliding-window patching gives higher peak effects than summing single-layer patching.",
+      "numbers": "1.40×, 1.75×, 1.59×",
+      "quote": "Sliding window patching offers 1.40×, 1.75× and 1.59× peak value than summation of single-layer patchings.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Restoring S-Inhibition values recovers IO logit under STR but not GN.",
+      "numbers": "1.04, 0.49",
+      "quote": "we can fully recover model’s logit on IO in STR (logit difference: 1.04) by restoring the values of the S-Inhibition Heads (Figure 3b). The same intervention, however, is fairly unsuccessful under GN (logit difference: 0.49).",
+      "quote_check": "near"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Experiments are limited to decoder-only language models up to 6B parameters.",
+      "quote": "our experiments are on decoder-only language models of size up to 6B.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Other architectures and larger models are left for future work.",
+      "quote": "We leave it as a future direction to study other architectures and even larger models.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The paper tests only overriding corrupted activations with clean activations.",
+      "quote": "Our work tests overriding corrupted activations by clean activations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The reverse direction, patching corrupted to clean, is not compared.",
+      "quote": "The other direction—patching corrupted to clean—has also been used for circuit discovery, and it is interesting to compare these two.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Evidence that corruption methods cause OOD behavior is tentative.",
+      "quote": "we provide tentative evidence that certain corruption methods lead to OOD model behaviors and suspect that this can make the resulting interpretability claims unreliable.",
+      "quote_check": "near"
+     },
+     {
+      "text": "Further demonstrations of the OOD hypothesis are needed.",
+      "quote": "Future work should examine this hypothesis closely and furnish further demonstrations.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper studies GPT-2/GPT-J-style decoder-only models, not Gemma 4 E2B; transfer to KV-shared layers 15-34 and per-layer embeddings is untested.",
+     "KV-shared layers may make patching assumptions of component independence problematic, because intervening on one layer can affect shared key/value state used by other layers.",
+     "CPU-based activation patching on Gemma 4 E2B may have low statistical power; the 2-SD detection rule could be unstable with small prompt samples or noisy metrics.",
+     "Per-layer embeddings and logit-lens readouts may interact with corruption choice, so OOD corruption could distort factual-recall and induction-head localization more than the paper’s settings suggest.",
+     "The paper’s metrics often assume single-token answers and clean/corrupt answer pairs; Gemma tokenization or multi-token factual answers may break these assumptions.",
+     "Sliding-window patching may inflate localization through nonlinear joint effects, and this risk may be larger in KV-shared architectures where layer interactions are structurally coupled."
+    ],
+    "code_or_data_url": "https://github.com/redwoodresearch/Easy-Transformer",
+    "relevance_to_lab": "Directly relevant: it gives methodological cautions for activation patching, metric choice, corruption design, and sliding-window patching that should inform CPU-based patching, logit-lens, induction-head, and factual-recall experiments on Gemma 4 E2B, especially because KV-shared layers 15-34 and per-layer embeddings may violate component-independence assumptions."
+   },
    "usage": {
     "prompt_tokens": 20834,
-    "completion_tokens": 8000,
-    "total_tokens": 28834,
+    "completion_tokens": 9353,
+    "total_tokens": 30187,
     "prompt_tokens_details": {
-     "cached_tokens": 0
+     "cached_tokens": 20736
     },
     "completion_tokens_details": {
-     "reasoning_tokens": 8000
+     "reasoning_tokens": 7497
     }
    }
   },
   "minimax": {
    "model_id": "minimax-m3.1-flash",
-   "parsed": false,
+   "parsed": true,
    "error": null,
    "quote_stats": {
-    "exact": 0,
-    "near": 0,
-    "unverified": 0,
+    "exact": 29,
+    "near": 2,
+    "unverified": 2,
     "skip": 0
    },
-   "verified_frac": null,
-   "data": null,
+   "verified_frac": 0.939,
+   "data": {
+    "title": "Towards Best Practices of Activation Patching in Language Models: Metrics and Methods",
+    "research_question": "How do corruption method, evaluation metric, sliding-window patching, and token choice affect activation-patching localization and circuit discovery in language models?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 XL on factual-association prompts for MLP localization",
+      "quote": "Disparate MLP patching effects for factual recall in GPT-2 XL.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 small on IOI sentences for attention-head circuit discovery",
+      "quote": "For IOI circuit discovery, we follow Wang et al. (2023) and focus on the role of attention heads.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-J 6B on basic-arithmetic prompts",
+      "quote": "We follow the setting of Stolfo et al. (2023) and perform localization analysis on the task of basic arithmetic in GPT-J (Wang & Komatsuzaki, 2021), a decoder-only model with 6B parameters.",
+      "quote_check": "near"
+     },
+     {
+      "item": "Pre-trained 4-layer attention-only Transformer on Python docstring completion",
+      "quote": "Heimersheim & Janiak (2023) studies a circuit for Python docstring completion in a pre-trained 4-layer attention-only Transformer.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "PAIRED FACTS: 145 symmetric factual-recall prompt pairs",
+      "quote": "To perform STR in the factual association setting, we construct PAIRED FACTS, a dataset of 145 pairs of prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "pIOI: Wang et al. IOI prompt distribution",
+      "quote": "For the IOI circuit, we use the pIOI distribution to sample the clean prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 large on factual-association prompts",
+      "quote": "We perform activation patching on MLP layers of GPT-2 large in the factual association setting.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Run the clean prompt and cache latent activations for the target model components.",
+      "quote": "(1) Clean run: run the model on Xclean and cache activations of a set of given model components, such as MLP or attention heads outputs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run the corrupted prompt and record its model outputs.",
+      "quote": "(2) Corrupted run: run the model on Xcorrupt and record the model outputs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Rerun the corrupted prompt while restoring one target component's activation from the clean cache.",
+      "quote": "(3) Patched run: run the model on Xcorrupt with a specific model component’s activation restored from the cached value of the clean run (Figure 1a).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Create Gaussian-noise corruption by adding N (0, ν) to key-token embeddings, with ν equal to 3 times the textset token-embedding standard deviation.",
+      "quote": "GN adds Gaussian noise N (0, ν) to the embeddings of certain key tokens, where ν is 3 times the standard deviation of the token embeddings from the textset.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Create symmetric token-replacement corruption by replacing key tokens with similar tokens of equal sequence length.",
+      "quote": "STR replaces the key tokens by similar ones with equal sequence length.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For factual recall, corrupt subject tokens, patch MLP activations at the last subject token, and restore 5 adjacent MLP layers per intervention.",
+      "quote": "Following Meng et al. (2022); Hase et al. (2023), at each layer we restore a set of 5 adjacent MLP layers.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "For IOI, corrupt S2, patch each attention-head output at all positions, and iterate over all heads.",
+      "quote": "Then we patch a single attention head’s output (at all positions) and iterate over all heads in this way.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Classify a head as detected when its patching effect is 2 standard deviations from the mean effect.",
+      "quote": "To avoid relying on visual inspection, we say that a head is detected if its patching effect is 2 standard deviation (SD) away from the mean effect.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Probability",
+      "definition": "Use the probability P(r) of the correct answer; the patching effect is Ppt(r) − P∗(r).",
+      "quote": "Probability: P(r); e.g., P(“Paris”).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Logit difference",
+      "definition": "Subtract the corrupted-answer logit from the correct-answer logit, compare the patched and corrupted runs, and normalize by the clean-to-corrupted logit-difference gap.",
+      "quote": "Logit difference: LD(r, r′ ) = Logit(r) − Logit(r′ ); e.g., Logit(“Paris”) − Logit(“Rome”).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KL divergence",
+      "definition": "Measure the change from the corrupted to patched run in KL divergence from the clean output distribution.",
+      "quote": "The patching effect is DKL (Pcl ||P∗ ) − DKL (Pcl ||Ppt ).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "In GPT-2 XL factual recall, the peak patching effect under Gaussian-noise corruption was substantially larger than under symmetric token replacement across window sizes.",
+      "numbers": "2×–5×",
+      "quote": "This is a robust phenomenon: across window sizes, we find the peak value of GN to be 2×–5× higher than STR; see Appendix G.1 for further plots on GPT-2 XL in this setting.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For IOI circuit discovery, symmetric replacement and Gaussian noise detected different sets of important heads for any fixed metric.",
+      "numbers": "not stated",
+      "quote": "In particular, for any fixed metric, STR and GN detect different sets of heads as important, highlighted in Table 1.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gaussian-noise corruption disrupted Name Mover attention on IOI sentences, distributing attention between IO and S1.",
+      "numbers": "0.26 to IO; 0.21 to S1",
+      "quote": "On the other hand, with GN corruption, we see that the attention is shared between IO and S1 (0.26 and 0.21).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Restoring S-Inhibition Head values was relatively unsuccessful under Gaussian-noise corruption.",
+      "numbers": "0.49",
+      "quote": "The same intervention, however, is fairly unsuccessful under GN (logit difference: 0.49).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Under STR factual-recall corruption, probability assigned a stronger last-subject-token effect than logit difference.",
+      "numbers": "4.33× in probability; 1.22× in logit difference",
+      "quote": "• Using STR corruption, the ratio is 4.33× in probability > 1.22× in logit difference.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Under fully random IOI corruption, the original IO's output probability was negligible.",
+      "numbers": "5e−4",
+      "quote": "First, we observe that the probability of outputting the IO of the original IOI sentence is negligible (5e−4) under this corruption.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Sliding-window patching produced larger peak effects than aggregating individual single-layer patching effects.",
+      "numbers": "1.40×, 1.75× and 1.59×",
+      "quote": "Sliding window patching offers 1.40×, 1.75× and 1.59× peak value than summation of single-layer patchings.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Corrupting S1 and IO, rather than S2, allowed most metric-and-corruption combinations to detect the Name Mover heads.",
+      "numbers": "3 Name Mover heads: 9.6, 9.9, 10.0",
+      "quote": "We find that most combinations of metrics and methods are able to notice all the NMs, when corruption applies to S1 and IO.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The experiments cover decoder-only language models no larger than 6B, leaving other architectures and larger models for future study.",
+      "quote": "In terms of limitations, our experiments are on decoder-only language models of size up to 6B.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The study tests restoring clean activations over corrupted ones, but does not compare the reverse corrupted-to-clean direction.",
+      "quote": "The other direction—patching corrupted to clean—has also been used for circuit discovery, and it is interesting to compare these two.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The evidence that corruption causes out-of-distribution behavior and unreliable interpretability claims is tentative.",
+      "quote": "In addition, we provide tentative evidence that certain corruption methods lead to OOD model behaviors and suspect that this can make the resulting interpretability claims unreliable.",
+      "quote_check": "near"
+     },
+     {
+      "text": "The IOI circuit discovery was incomplete and missed critical components such as Name Mover heads.",
+      "quote": "However, the discovery we achieved here appear far from complete, with some critical misses such as NM.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors do not characterize all Gaussian-noise localization results as illusory or inflated.",
+      "quote": "We do not, though, claim that results from GN are illusory or overly inflated.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Sliding-window patching may capture nonlinear interactions and produce inflated localization plots.",
+      "quote": "We speculate that simultaneously patching multiple layers could capture the following non-linear effects and results in inflated localization plots:",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Symmetric token replacement is not always applicable, particularly when token alignment or analogous tokens are unavailable.",
+      "quote": "GN may be considered as an alternative when token alignment or lack of analogous tokens makes STR unsuitable.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No experiments target Gemma 4 E2B or KV-shared layers 15–34, so transfer of layer indices, head roles, and per-layer embedding causal effects is unvalidated.",
+     "The 2 SD detection heuristic is not adjusted for the many layer, head, and token comparisons, leaving a false-positive risk.",
+     "Results rely on paired facts, synthetic IOI, templated docstrings, greater-than sentences, and arithmetic, so external validity to open-ended factual recall is untested.",
+     "STR uses semantically similar prompt pairs; shared lexical or semantic structure can preserve or redistribute the target signal and blur attribution to the subject token.",
+     "GPT-2 head labels and roles are not established as transferable to Gemma 4 E2B, particularly for Name Mover, Negative Name Mover, S-Inhibition, and induction-head functions.",
+     "No CPU runtime, memory footprint, or implementation cost is reported, so large activation-patching and logit-lens sweeps may be impractical on CPU.",
+     "The interventions do not establish causal sufficiency or uniqueness because influential or redundant paths can produce similar patching effects.",
+     "Reported averages and thresholded detections can hide prompt-level heterogeneity, rare failure modes, and unstable head rankings."
+    ],
+    "code_or_data_url": "https://github.com/redwoodresearch/Easy-Transformer; https://github.com/neelnanda-io/TransformerLens",
+    "relevance_to_lab": "Directly relevant as a protocol and metric-selection reference for Gemma 4 E2B activation patching: the paper supplies the clean, corrupt, and patched workflow; recommends in-distribution STR, normalized logit difference, and single-layer patching before sliding windows; and shows that corruption and token choice can change head localization. Its IOI induction-head and factual-recall analyses can inform Gemma tracing over KV-shared layers 15–34 and per-layer embeddings, including logit-lens validation, but the paper provides no Gemma 4 E2B, KV-sharing, per-layer-embedding, or CPU-feasibility evidence, so transfer and runtime remain unvalidated."
+   },
    "usage": {
     "prompt_tokens": 20902,
-    "completion_tokens": 8000,
-    "total_tokens": 28902,
+    "completion_tokens": 26595,
+    "total_tokens": 47497,
     "prompt_tokens_details": {
-     "cached_tokens": 0
+     "cached_tokens": 20736
     },
     "completion_tokens_details": {
-     "reasoning_tokens": 7999
+     "reasoning_tokens": 23943
     }
    }
   }

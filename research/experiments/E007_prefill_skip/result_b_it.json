@@ -1,0 +1,45 @@
+{
+ "rows": [
+  {
+   "T": 256,
+   "arm": "FULL",
+   "wall_s": 22.88,
+   "rss_before_gb": 4.983,
+   "peak_gb": 5.76,
+   "peak_minus_before_gb": 0.777
+  },
+  {
+   "T": 256,
+   "arm": "SKIP",
+   "wall_s": 10.05,
+   "rss_before_gb": 5.761,
+   "peak_gb": 5.761,
+   "peak_minus_before_gb": 0.0
+  },
+  {
+   "T": 1024,
+   "arm": "FULL",
+   "wall_s": 73.11,
+   "rss_before_gb": 5.761,
+   "peak_gb": 6.111,
+   "peak_minus_before_gb": 0.349
+  },
+  {
+   "T": 1024,
+   "arm": "SKIP",
+   "wall_s": 28.93,
+   "rss_before_gb": 5.912,
+   "peak_gb": 6.034,
+   "peak_minus_before_gb": 0.122
+  },
+  {
+   "T": 2048,
+   "arm": "SKIP",
+   "wall_s": 57.96,
+   "rss_before_gb": 5.912,
+   "peak_gb": 6.344,
+   "peak_minus_before_gb": 0.432
+  }
+ ],
+ "peak_method": "VmRSS sampled every 5 ms (no VmHWM under gVisor)"
+}

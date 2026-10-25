@@ -61,8 +61,36 @@ def fetch_text(arxiv_id):
         pdf = p[:-4] + ".pdf"
         req = urllib.request.Request(f"https://arxiv.org/pdf/{arxiv_id}", headers={"User-Agent": "research-lab/0.1"})
         open(pdf, "wb").write(urllib.request.urlopen(req, timeout=120).read()); time.sleep(3)  # arXiv politeness
-        subprocess.run(["pdftotext", "-layout", pdf, p], check=True); os.remove(pdf)
+        subprocess.run(["pdftotext", pdf, p], check=True)  # reading order; -layout interleaves 2-column lines (PL-8)
+        subprocess.run(["pdftotext", "-layout", pdf, p[:-4] + ".layout.txt"], check=True); os.remove(pdf)
     return open(p, errors="ignore").read()
+
+
+def reverify():
+    """Re-check stored quotes against reading-order + layout text (no API calls)."""
+    summary = []
+    for fn in sorted(os.listdir(OUT)):
+        if not fn.startswith("LIT"):
+            continue
+        rec = json.load(open(os.path.join(OUT, fn))); base = os.path.join(TXT, rec["arxiv_id"].replace("/", "_"))
+        srcs = [norm(open(base + ext, errors="ignore").read()) for ext in (".txt", ".layout.txt") if os.path.exists(base + ext)]
+        grams = set()
+        for s_ in srcs:
+            w = s_.split(); grams |= {" ".join(w[i:i + 5]) for i in range(len(w) - 4)}
+        joined = "\n".join(srcs)
+        for m, e in rec["extractions"].items():
+            stats = {"exact": 0, "near": 0, "unverified": 0, "skip": 0}
+            for k, v in (e["data"] or {}).items():
+                if isinstance(v, list):
+                    for it in v:
+                        if isinstance(it, dict) and "quote" in it:
+                            it["quote_check"] = verify(str(it["quote"]), joined, grams); stats[it["quote_check"]] += 1
+            n = stats["exact"] + stats["near"] + stats["unverified"]
+            e["quote_stats"], e["verified_frac"] = stats, (round((stats["exact"] + stats["near"]) / n, 3) if n else None)
+            summary.append({"source_id": rec["source_id"], "model": m, "parsed": e["data"] is not None, **stats})
+        json.dump(rec, open(os.path.join(OUT, fn), "w"), indent=1, ensure_ascii=False)
+        print(rec["source_id"], {m: e["verified_frac"] for m, e in rec["extractions"].items()}, flush=True)
+    json.dump(summary, open(os.path.join(OUT, "_summary.json"), "w"), indent=1)
 
 
 def parse_json(s):
@@ -118,4 +146,7 @@ def main(ids):
 
 
 if __name__ == "__main__":
-    main(PRIORITY if sys.argv[1:] == ["--priority"] else sys.argv[1:])
+    if sys.argv[1:] == ["--reverify"]:
+        reverify()
+    else:
+        main(PRIORITY if sys.argv[1:] == ["--priority"] else sys.argv[1:])

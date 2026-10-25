@@ -1,0 +1,414 @@
+{
+ "source_id": "LIT02-065",
+ "arxiv_id": "2304.14767",
+ "title": "Dissecting Recall of Factual Associations in Auto-Regressive Language Models",
+ "chars": 143998,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 22,
+    "near": 1,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Dissecting Recall of Factual Associations in Auto-Regressive Language Models",
+    "research_question": "How are factual associations retrieved internally during inference in auto-regressive LMs?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 and GPT-J models",
+      "quote": "We analyze two auto-regressive decoder-only GPT LMs with different layouts: GPT-2 (Radford et al., 2019) (L = 48, 1.5B parameters) and GPT-J (Wang and Komatsuzaki, 2021) (L = 28, 6B parameters).",
+      "quote_check": "near"
+     },
+     {
+      "item": "CounterFact queries",
+      "quote": "We use queries from C OUNTER FACT (Meng et al., 2022a).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Correct-attribute samples",
+      "quote": "For a given model, we extract a random sample of queries for which the model predicts the correct attribute.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Sample sizes",
+      "quote": "resulting in 1,209 queries for GPT-2 and 1,199 for GPT-J.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Vocabulary size",
+      "quote": "Both models use a vocabulary with ∼50K tokens.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Attention knockout",
+      "quote": "we intervene on the MHSA sublayers by blocking the last position from attending to other positions at specific layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Sublayer knockout",
+      "quote": "we zero-out updates to the last subject position from each MHSA and MLP sublayer, for 10 consecutive layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Vocabulary projection",
+      "quote": "we map hidden representations to vocabulary tokens via projection.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Representation patching",
+      "quote": "we feed the representations at the subject positions as input to the MHSA at any succeeding layer ℓ′ > ℓ.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Knowledge-head mapping check",
+      "quote": "we then check if a appears in the top-10 tokens for any of s’s tokens.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Attributes rate",
+      "definition": "Portion of top-k tokens by a representation that appear in candidate attribute set As.",
+      "quote": "We define the attributes rate for a subject s in a set of tokens T as the portion of tokens in T that appear in As .",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Extraction rate",
+      "definition": "Fraction of queries with an extraction event in at least one layer.",
+      "quote": "Extraction rate here refers to the fraction of queries for which there was an extraction event in at least one layer.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Prediction probability change",
+      "definition": "Relative change in prediction probability when attention edges to the last position are intervened on.",
+      "quote": "Relative change in the prediction probability when intervening on attention edges to the last position",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Attribute rank",
+      "definition": "Rank of the attribute in the subject representation projection; lower rank means more prominent.",
+      "quote": "We observe an average attribute rank of 999.5",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Blocking attention to subject tokens in middle-upper layers decreases prediction probability up to 60%.",
+      "numbers": "up to 60%",
+      "quote": "blocking attention to the subject tokens (solid green lines) in the middle-upper layers causes a dramatic decrease in the prediction probability of up to 60%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Blocking non-subject positions decreases prediction probability by 35%-45%.",
+      "numbers": "35%-45%",
+      "quote": "another substantial decrease of 35%-45% is observed for the non-subject positions (dashed purple lines).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Attributes rate at last-subject position reaches close to 50%.",
+      "numbers": "close to 50%",
+      "quote": "reaching close to 50%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Canceling early MLP sublayers decreases subject attributes rate by ∼88% on average.",
+      "numbers": "∼88%",
+      "quote": "canceling the early MLP sublayers has a destructive effect on the subject representation’s attributes rate, decreasing it by ∼88% on average.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MHSA extraction rate is 68.2%.",
+      "numbers": "68.2%",
+      "quote": "with 68.2% of the examples exhibiting agreement events (Tab. 2).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Subject-attribute mappings in heads for 30.2% GPT-2 and 39.3% GPT-J extraction events.",
+      "numbers": "30.2% (39.3%)",
+      "quote": "We find that for 30.2% (39.3%) of the extraction events in GPT-2 (GPT-J), there is a head that encodes the subject-attribute mapping in its parameters",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Vocabulary projection is only an approximation, especially in early layers.",
+      "quote": "it only provides an approximation of the information encoded in these vectors, especially in early layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attention knockout does not account for information leakage across positions.",
+      "quote": "our attention knockout intervention method does not account for “information leakage” across positions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Blocking a range of layers rather than a single layer alleviates leakage.",
+      "quote": "we block a range of layers rather than a single layer, which alleviates the possibility for such leakage.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Architecture mismatch: evidence comes from GPT-2/GPT-J, not Gemma 4 E2B; KV-shared layers 15-34 and per-layer embeddings may change where subject enrichment and extraction occur.",
+     "Attention knockout may not transfer cleanly to grouped-query/KV-shared attention, where blocking edges and head roles differ from GPT-style MHSA.",
+     "The study conditions on correct predictions only, so it may miss failure modes and recall mechanisms relevant to factual-recall tracing.",
+     "Vocabulary projection/logit lens is approximate, especially in early layers, and may misestimate per-layer embeddings in Gemma.",
+     "Knowledge-head mapping uses top-10 token approximation and does not establish causal use of those heads during inference.",
+     "CPU-only activation patching/logit lens on Gemma 4 E2B may be limited by compute, requiring smaller samples and fewer intervention layers."
+    ],
+    "code_or_data_url": "https://github.com/google-research/google-research/tree/master/dissecting_factual_predictions",
+    "relevance_to_lab": "Provides methods and findings for factual recall via attention knockout, logit-lens-style projection, MLP enrichment, and attention-head subject-attribute mappings; directly informs activation patching/logit lens/factual-recall tracing, but must be adapted to Gemma 4 E2B KV-shared layers 15-34 and per-layer embeddings on CPU."
+   },
+   "usage": {
+    "prompt_tokens": 16744,
+    "completion_tokens": 8476,
+    "total_tokens": 25220,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7134
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 30,
+    "near": 2,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.941,
+   "data": {
+    "title": "Dissecting Recall of Factual Associations in Auto-Regressive Language Models",
+    "research_question": "How do auto-regressive language models aggregate subject and relation information during factual recall, where is subject knowledge enriched, and which components extract the requested attribute?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 (GPT2-xl)",
+      "quote": "GPT-2 (Radford et al., 2019) (L = 48, 1.5B parameters)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-J",
+      "quote": "GPT-J (Wang and Komatsuzaki, 2021) (L = 28, 6B parameters)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Vocabulary size for both models",
+      "quote": "Both models use a vocabulary with ∼50K tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-J parallel MHSA/MLP layout",
+      "quote": "Also, GPT-J employs parallel MHSA and MLP sublayers",
+      "quote_check": "exact"
+     },
+     {
+      "item": "COUNTERFACT factual queries",
+      "quote": "We use queries from C OUNTER FACT (Meng et al., 2022a).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Correct-answer query sampling",
+      "quote": "For a given model, we extract a random sample of queries for which the model predicts the correct attribute.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Per-model query counts",
+      "quote": "This results in 1,209 queries for GPT-2 and 1,199 for GPT-J.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Candidate subject-attribute sets",
+      "quote": "For a given subject s, we first create a set As of candidate attributes, by retrieving paragraphs about s from Wikipedia using BM25 (Robertson et al., 1995), tokenizing each paragraph, and removing common words and sub-words.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Apply Attention Knockout to test direct propagation from subject and relation positions to the final position.",
+      "quote": "We use Attention Knockout to test whether and, if so, where information from the subject and relation positions directly propagates to the last position.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Block attention edges over model-specific layer windows.",
+      "quote": "We set k = 9 (5) for GPT-2 (GPT-J).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply Sublayer Knockout to test which sublayers enrich the last-subject representation.",
+      "quote": "Concretely, we zero-out updates to the last subject position from each MHSA and MLP sublayer, for 10 consecutive layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Project hidden representations to vocabulary tokens as a logit-lens readout.",
+      "quote": "To do this, we map hidden representations to vocabulary tokens via projection.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute attributes rate from the top projected tokens at the last-subject position across layers.",
+      "quote": "We measure the attributes rate in the top k = 50 tokens by the subject representation, that is, the representation at the last-subject position, in each layer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure layer-wise extraction for MHSA and MLP updates, including attention-blocked variants.",
+      "quote": "Fig. 5 shows the extraction rate (namely the fraction of queries for which there was an extraction event) for the MHSA and MLP updates across layers in GPT-2, and Tab. 2 provides per-example extraction statistics",
+      "quote_check": "near"
+     },
+     {
+      "step": "Patch early-layer subject representations into later MHSA layers and measure extraction-rate changes.",
+      "quote": "For each layer ℓ = 0, 1, 5, 10, 20, with 0 being the embeddings, we feed the representations at the subject positions as input to the MHSA at any succeeding layer ℓ′ > ℓ.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Search attention-head parameter mappings for subject-attribute correspondences.",
+      "quote": "For every extraction event with a subject s and an attribute a, we then check if a appears in the top-10 tokens for any of s’s tokens.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Relative change in prediction probability",
+      "definition": "Percentage change in the probability of the correct predicted attribute after attention-edge interventions.",
+      "quote": "Relative change in the prediction probability when intervening on attention edges to the last position, for window sizes of 9 layers in GPT-2 and 5 in GPT-J.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Attributes rate",
+      "definition": "Fraction of a candidate attribute-token set that occurs among the top tokens predicted from a subject representation.",
+      "quote": "the rate of the predicted attributes in a given set of tokens known to be highly related to the subject.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Attribute extraction rate",
+      "definition": "Fraction of queries with at least one extraction event.",
+      "quote": "Extraction rate here refers to the fraction of queries for which there was an extraction event in at least one layer.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Extraction event",
+      "definition": "Agreement between the top token produced by a layer's sublayer update and the model's final top prediction.",
+      "quote": "We check the agreement between t∗ and t′ for every ℓ ∈ [1, L], and refer to agreement cases (i.e., when t′ = t∗ ) as extraction events, since the attribute is being extracted by the MHSA.",
+      "quote_check": "near"
+     },
+     {
+      "name": "Attribute rank",
+      "definition": "Rank of the requested attribute under the vocabulary projection of the subject representation at an extraction event.",
+      "quote": "We observe an average attribute rank of 999.5, which shows that the extraction operation promotes the specific attribute over many other candidate tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Gradient-times-Input saliency",
+      "definition": "Per-token saliency score computed from gradient-times-input, using L2-normalized vectors and normalization across tokens.",
+      "quote": "a method such as Gradient-times-Input (Denil et al., 2014) reflects saliency: it shows (approximately) how much each input contributes to this particular logit value.",
+      "quote_check": "unverified"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Relation-position information reaches the prediction before subject-position information; blocking relation edges reduces prediction probability by 35%-45%.",
+      "numbers": "35%-45%",
+      "quote": "Moreover, another substantial decrease of 35%-45% is observed for the non-subject positions (dashed purple lines). Importantly, critical information from non-subject positions precedes the propagation of critical information from the subject positions",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Blocking subject-to-prediction attention in middle-upper layers sharply reduces factual prediction probability.",
+      "numbers": "up to 60%",
+      "quote": "For both GPT-2 and GPT-J, blocking attention to the subject tokens (solid green lines) in the middle-upper layers causes a dramatic decrease in the prediction probability of up to 60%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The last-subject representation becomes progressively enriched with subject-related attributes and substantially exceeds other positions.",
+      "numbers": "close to 50%",
+      "quote": "the attributes rate at the last-subject position is increasing throughout the layers, and is substantially higher than at other positions in the intermediate-upper layers, reaching close to 50%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Early MLP sublayers are the primary source of subject-representation enrichment, while MHSA cancellation has a smaller effect.",
+      "numbers": "∼88% on average; <30% decrease",
+      "quote": "canceling the early MLP sublayers has a destructive effect on the subject representation’s attributes rate, decreasing it by ∼88% on average. In contrast, canceling the MHSA sublayers has a much smaller effect of <30% decrease",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Upper MHSA sublayers perform attribute extraction for a majority of examples.",
+      "numbers": "68.2%",
+      "quote": "When attending to all the input positions, the upper MHSA sublayers promote the attribute to the prediction (Fig. 5), with 68.2% of the examples exhibiting agreement events (Tab. 2).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MLP sublayers also perform extraction, but substantially less often than MHSA sublayers.",
+      "numbers": "31.3%",
+      "quote": "The extraction rate by the MLP sublayers is substantially lower (31.3%) than by the MHSA.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Patching early subject representations reduces later extraction, demonstrating that subject enrichment is causally important for factual recall.",
+      "numbers": "up to 50%",
+      "quote": "Patching early subject representations decreases the extraction rate by up to 50%, which stresses the importance of attributes enrichment for attribute recall.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Some extraction events are mediated by individual attention heads whose parameters encode the relevant subject-attribute mapping.",
+      "numbers": "30.2% in GPT-2; 39.3% in GPT-J",
+      "quote": "We find that for 30.2% (39.3%) of the extraction events in GPT-2 (GPT-J), there is a head that encodes the subject-attribute mapping in its parameters (see examples in §G).",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Vocabulary-space projection is used to interpret intermediate representations and parameters.",
+      "quote": "Some of our experiments rely on interpreting intermediate layer representations and parameters through projection to the vocabulary space.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The projection-based interpretation is only an approximation, particularly in early layers.",
+      "quote": "it only provides an approximation of the information encoded in these vectors, especially in early layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attention knockout does not account for information leakage across positions.",
+      "quote": "our attention knockout intervention method does not account for “information leakage” across positions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors mitigate leakage by blocking ranges of layers rather than a single layer.",
+      "quote": "For this reason, we block a range of layers rather than a single layer, which alleviates the possibility for such leakage.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Only GPT-2 and GPT-J are tested, so the reported layer-by-layer mechanism may not transfer to Gemma 4 E2B, especially when KV sharing couples layers 15-34 and changes the effective independence of heads and sublayers.",
+     "COUNTERFACT is a templated factual dataset, and restricting analysis to queries already answered correctly creates success-selection bias and excludes failed, ambiguous, or competing-answer recalls.",
+     "The BM25 Wikipedia candidate sets use token overlap as a proxy for semantic relatedness and may reward corpus-frequency associations rather than subject-specific factual knowledge.",
+     "The authors do not test whether vocabulary projection remains a valid readout for Gemma's embedding geometry, vocabulary composition, or multilingual tokenization.",
+     "The experiments cover short single-relation prompts, without testing multi-hop facts, distractors, paraphrases, long contexts, multilingual facts, or robustness to prompt format.",
+     "Exact top-1 agreement can miss near-correct answers, subword-prefix attributes, or distributed extraction, so extraction rate may not measure graded factual recall.",
+     "The Wikipedia dump used to construct candidate attributes is dated and may not match the pretraining corpus or factual state represented by a newer model.",
+     "No runtime or memory analysis is provided, and dense head searches plus repeated per-layer interventions on a 6B model do not directly indicate what is feasible for CPU-only experiments."
+    ],
+    "code_or_data_url": "https://github.com/google-research/google-research/tree/master/dissecting_factual_predictions",
+    "relevance_to_lab": "The paper is highly relevant methodologically: attention-edge knockouts, sublayer cancellation, vocabulary projection of per-layer embeddings, early-to-late activation patching, and attention-head parameter mapping can be transferred to Gemma 4 E2B factual-recall tracing. Its central hypothesis for the lab is that lower layers enrich a subject representation while later layers query that representation to extract the requested attribute, motivating separate patching of relation, last-subject, other subject, and final-position activations in layers 15-34. Gemma's shared-KV architecture requires adapting the intervention and layer accounting rather than directly adopting GPT layer indices. Head-level subject-attribute analysis can also complement induction-head tracing, while keeping the two head functions conceptually distinct. Given CPU-only execution, a practical starting point is a small factual set, cached per-layer embeddings, sparse layer windows, and selected candidate heads, followed by checks for whether shared-KV behavior changes the predicted relation-to-subject flow."
+   },
+   "usage": {
+    "prompt_tokens": 16912,
+    "completion_tokens": 18237,
+    "total_tokens": 35149,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 15855
+    }
+   }
+  }
+ }
+}

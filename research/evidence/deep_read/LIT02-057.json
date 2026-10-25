@@ -1,0 +1,471 @@
+{
+ "source_id": "LIT02-057",
+ "arxiv_id": "2209.11895",
+ "title": "In-context Learning and Induction Heads",
+ "chars": 140811,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.966,
+   "data": {
+    "title": "In-context Learning and Induction Heads",
+    "research_question": "Whether induction heads are the mechanism for the majority of in-context learning in transformer language models, and whether this holds from small attention-only models to large models with MLPs.",
+    "models_and_data": [
+     {
+      "item": "34 decoder-only Transformer language models with training snapshots",
+      "quote": "The arguments above are based on analysis of 34 decoder-only Transformer language models, with different snapshots saved over the course of training, for one run of training per model.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Small attention-only models (1-6 layers, no MLPs)",
+      "quote": "“Small, attention-only models”, a series of models (from 1-layer to 6-layer) that do not have MLPs, and were trained specifically for the present investigations.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Small models with MLPs (1-6 layers)",
+      "quote": "“Small models with MLPs”, a series of models (from 1-layer to 6-layer) that have both attention and MLP layers, and were trained specifically for the present investigations.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Full-scale models (4 layers/13M to 40 layers/13B)",
+      "quote": "“Full-scale models”, a series of successively-larger models with MLPs (ranging from 4 layers and 13M parameters, up to 40 layers and 13B parameters), that are used as the basis for multiple projects at Anthropic.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Smeared key models",
+      "quote": "“Smeared key models”, a targeted architectural experiment designed to allow transformers of any depth to express induction heads.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Training data for small and smeared-key models",
+      "quote": "The dataset used for training the small models and smeared key models was an earlier version of the dataset described in Askell et al. [18]",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Train multiple architectures and save training snapshots",
+      "quote": "we'll train several different model architectures, saving dozens of “snapshots” of each over the course of training.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute per-token loss vectors and PCA",
+      "quote": "We combine these log-likelihoods into a \"per-token loss vector\" and apply Principal Component Analysis (PCA):",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Score heads for induction via prefix matching",
+      "quote": "score them for whether they are induction heads (using a prefix matching score which measures their ability to perform the task we used to define induction heads in Key Concepts)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Ablate attention heads at test time",
+      "quote": "By “knocking out” we mean that we remove a given attention head from the model at test time, doing a forward pass on the transformer without it.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use smeared-key interpolation to test induction-head formation",
+      "quote": "we introduce a trainable real parameter α used as σ(α) ∈ [0, 1] that interpolates between the key for the current token and previous token:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure in-context learning score",
+      "quote": "the loss of the 500th token in the context minus the average loss of the 50th token in the context, averaged over dataset examples.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "In-context learning score",
+      "definition": "Loss at the 500th token minus average loss at the 50th token, averaged over dataset examples.",
+      "quote": "the loss of the 500th token in the context minus the average loss of the 50th token in the context, averaged over dataset examples.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Prefix matching score",
+      "definition": "Head attends back to previous tokens followed by the current and/or recent tokens.",
+      "quote": "The head attends back to previous tokens that were followed by the current and/or recent tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Copying score",
+      "definition": "Head output increases the logit of the attended-to token.",
+      "quote": "The head’s output increases the logit corresponding to the attended-to token.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Per-token loss vector PCA",
+      "definition": "PCA on per-token log-likelihood vectors.",
+      "quote": "We combine these log-likelihoods into a \"per-token loss vector\" and apply Principal Component Analysis (PCA):",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Ablation effect on in-context learning",
+      "definition": "Removing an attention head at test time and measuring change in in-context learning.",
+      "quote": "knocking out induction heads decreases the amount of in-context learning we observe in our models.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "In-context learning develops abruptly in a narrow early-training window.",
+      "numbers": "roughly 2.5 to 5 billion tokens",
+      "quote": "it develops abruptly in a narrow window early in training (roughly 2.5 to 5 billion tokens) and then is constant for the rest of training",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In-context learning score jumps from below 0.15 nats to about 0.4 nats.",
+      "numbers": "less than 0.15 nats; roughly 0.4 nats",
+      "quote": "Before this window there is less than 0.15 nats of in-context learning, after it there is roughly 0.4 nats",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Over 75% of final in-context learning forms during the phase-change window.",
+      "numbers": "over 75%",
+      "quote": "Since over 75% of final in-context learning forms in this window",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Almost all in-context learning in small attention-only models comes from induction heads.",
+      "numbers": "almost all",
+      "quote": "In fact, almost all the in-context learning in small attention-only models appears to come from these induction heads!",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A pattern-matching induction head allocates about 65% of colon attention to correct positions.",
+      "numbers": "about 65%",
+      "quote": "This head isn’t perfect at this, but empirically it allocates about 65% of its attention from the colons to the correct positions",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Analysis covered 34 transformers and more than 50,000 attention-head ablations.",
+      "numbers": "34 transformers; more than 50,000 attention head ablations",
+      "quote": "analysis of 34 transformers over the course of training, including more than 50,000 attention head ablations",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Evidence is preliminary and indirect.",
+      "quote": "we present preliminary and indirect evidence for a hypothesis that induction heads might constitute the mechanism for the majority of all “in-context learning” in large transformer models",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Causal evidence is strong only for small attention-only models; larger MLP models are correlational.",
+      "quote": "For small attention-only models, we present strong, causal evidence; for larger models with MLPs, we present correlational evidence.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "No ablations for full-scale models.",
+      "quote": "Unfortunately, we do not have ablations for our full-scale models.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Large-model training analysis has low time resolution.",
+      "quote": "In large models, we have low time resolution on our analysis over training.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Co-occurrence may reflect a shared latent variable rather than direct causality.",
+      "quote": "perhaps the co-occurrence is primarily caused by a shared latent variable, rather than direct causality from induction heads to the full observed change in in-context learning.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Large-model induction heads cannot yet be fully reverse engineered.",
+      "quote": "Presently, fully reverse engineering them is beyond us, since they exist in large models with MLPs, which we don't have a strong framework for mechanistically understanding.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper studies Anthropic transformer models, not Gemma 4 E2B; KV-shared layers 15-34 and per-layer embeddings may change where and how induction heads form.",
+     "KV sharing can make head ablation and activation patching nonlocal: ablating one layer may affect multiple layers' keys/values, confounding causal attribution.",
+     "The induction-head definition relies on repeated random sequences and prefix-matching/copying scores; Gemma's tokenizer, context length, and data distribution may shift these measurements.",
+     "The in-context learning score uses token 50 versus token 500; this arbitrary index choice may not transfer to Gemma's context length or training regime.",
+     "Most causal evidence comes from small attention-only models; full-scale evidence is correlational, so applying it to Gemma internals is an extrapolation.",
+     "CPU activation patching and logit lens may have limited precision and coverage compared with the paper's ablations over many checkpoints and heads.",
+     "The paper does not provide code or data URLs, limiting exact replication of its head-scoring and ablation pipelines."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Directly relevant: the paper's induction-head definition, prefix-matching/copying scores, head ablation, per-token loss/PCA, and phase-change framing can guide activation patching, logit lens, induction-head and factual-recall tracing in Gemma 4 E2B. The KV-shared layers 15-34 and per-layer embeddings require adapting head-level ablations and patching to avoid nonlocal KV effects, and CPU constraints favor targeted small-scale tests."
+   },
+   "usage": {
+    "prompt_tokens": 23915,
+    "completion_tokens": 9801,
+    "total_tokens": 33716,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7916
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 37,
+    "near": 2,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "In-context Learning and Induction Heads",
+    "research_question": "Do induction heads constitute the mechanistic source of the majority of general in-context learning in transformers, especially large models with MLPs?",
+    "models_and_data": [
+     {
+      "item": "Small attention-only transformer family",
+      "quote": "“Small, attention-only models”, a series of models (from 1-layer to 6-layer) that do not have MLPs, and were trained specifically for the present investigations.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Small transformer family with MLPs",
+      "quote": "“Small models with MLPs”, a series of models (from 1-layer to 6-layer) that have both attention and MLP layers, and were trained specifically for the present investigations.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Full-scale model family",
+      "quote": "“Full-scale models”, a series of successively-larger models with MLPs (ranging from 4 layers and 13M parameters, up to 40 layers and 13B parameters), that are used as the basis for multiple projects at Anthropic.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Smeared-key architectural intervention",
+      "quote": "“Smeared key models”, a targeted architectural experiment designed to allow transformers of any depth to express induction heads.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Primary training distribution for small and smeared-key models",
+      "quote": "consisting of filtered common crawl data [19] and internet books, along with several other smaller distributions [20] , including approximately 10% python code.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Alternate dataset for small models",
+      "quote": "Additionally, another set of the small models was trained on a different dataset, consisting of just internet books, to explore the impact of varying the dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Training distribution for full-scale models",
+      "quote": "The full-scale models were trained on an improved version of roughly the same data distribution.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Training-snapshot collection",
+      "quote": "The arguments above are based on analysis of 34 decoder-only Transformer language models, with different snapshots saved over the course of training, for one run of training per model.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Train multiple model architectures and save snapshots throughout training.",
+      "quote": "In our use, we'll train several different model architectures, saving dozens of “snapshots” of each over the course of training.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Collect token log-likelihoods on a fixed set of examples for every snapshot.",
+      "quote": "Next, we collect the log-likelihoods each model assigns to a consistent set of 10,000 random tokens, each taken from a different example sequence.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Construct per-token loss vectors and apply PCA to compare training trajectories.",
+      "quote": "We combine these log-likelihoods into a \"per-token loss vector\" and apply Principal Component Analysis (PCA):",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Score every attention head for induction behavior using prefix matching.",
+      "quote": "score them for whether they are induction heads (using a prefix matching score which measures their ability to perform the task we used to define induction heads in Key Concepts)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Knock out individual attention heads at test time and measure changes in in-context learning.",
+      "quote": "By “knocking out” we mean that we remove a given attention head from the model at test time, doing a forward pass on the transformer without it.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Intervene on architecture by interpolating current- and previous-token keys.",
+      "quote": "We define a “smeared key\" architecture with a very simple modification that should make it easy for transformers of any depth to express induction heads.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Validate candidate induction heads on literal copying, translation, and abstract pattern-matching tasks.",
+      "quote": "We verify that these heads score highly on our “copying” and “prefix matching” evaluations (that is, they increase the probability of the token they attend to, and attend to tokens where the prefix matches the present token)",
+      "quote_check": "near"
+     },
+     {
+      "step": "Use direct-path logit attribution to trace which earlier tokens contribute to current predictions.",
+      "quote": "In blue, \"Logit attr\" shows the earlier tokens that contributed to the prediction of the current token, using \"direct-path\" logit attribution.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "In-context learning score",
+      "definition": "The stated difference between token-500 loss and average token-50 loss, averaged over dataset examples.",
+      "quote": "In-context learning score: the loss of the 500th token in the context minus the average loss of the 50th token in the context, averaged over dataset examples.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Prefix matching",
+      "definition": "Whether a head attends to prior tokens whose following token matches the current and/or recent tokens.",
+      "quote": "Prefix matching: The head attends back to previous tokens that were followed by the current and/or recent tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Copying",
+      "definition": "Whether a head's output increases the logit corresponding to the token it attends to.",
+      "quote": "Copying: The head’s output increases the logit corresponding to the attended-to token.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Per-token loss vector",
+      "definition": "A fixed-example vector of token log-likelihoods, analyzed with PCA to compare how predictions evolve during training.",
+      "quote": "We combine these log-likelihoods into a \"per-token loss vector\" and apply Principal Component Analysis (PCA):",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Copying score",
+      "definition": "An empirical head score based on whether the head increases the probability of its attended token on random repeated sequences.",
+      "quote": "We verify that these heads score highly on our “copying” and “prefix matching” evaluations (that is, they increase the probability of the token they attend to, and attend to tokens where the prefix matches the present token)",
+      "quote_check": "near"
+     },
+     {
+      "name": "Correct-position attention allocation",
+      "definition": "The fraction of attention from designated source tokens directed to positions belonging to the correct synthetic pattern category.",
+      "quote": "This head isn’t perfect at this, but empirically it allocates about 65% of its attention from the colons to the correct positions, when tested on a range of similar problems.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Direct-path logit attribution",
+      "definition": "Projection of each position's attention-weighted value through WO and the unembedding to obtain a token's logit contribution.",
+      "quote": "We compute this by taking the value vector produced at each position, weighting it by the attention matrix, and multiplying it by WO and the unembedding, and selecting the logit value for the corresponding token.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "In-context learning develops abruptly during a narrow early-training window and then remains constant.",
+      "numbers": "roughly 2.5 to 5 billion tokens",
+      "quote": "it develops abruptly in a narrow window early in training (roughly 2.5 to 5 billion tokens)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The amount of in-context learning rises sharply across the phase-change window.",
+      "numbers": "less than 0.15 nats before; roughly 0.4 nats after",
+      "quote": "Before this window there is less than 0.15 nats of in-context learning, after it there is roughly 0.4 nats, an amount that remains constant for the rest of training",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Induction heads form abruptly during the same window in which in-context learning develops.",
+      "numbers": "not stated",
+      "quote": "we find that induction heads form abruptly during exactly the same window where in-context learning develops",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The smeared-key intervention enables in-context learning in one-layer models and shifts its onset earlier in deeper models.",
+      "numbers": "not stated",
+      "quote": "The results (figure below) are in line with the predictions: when we use the smeared-key architecture, in-context learning does indeed form for one-layer models (when it didn’t before), and it forms earlier for two-layer and larger models.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In small attention-only models, nearly all measured in-context learning appears to arise from induction heads.",
+      "numbers": "not stated",
+      "quote": "In fact, almost all the in-context learning in small attention-only models appears to come from these induction heads!",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Induction heads in a large model exhibited literal copying, translation, and abstract pattern matching.",
+      "numbers": "40-layer model with 13 billion parameters",
+      "quote": "In this argument, we show some anecdotal examples of induction heads from larger transformers (our 40-layer model with 13 billion parameters) that exhibit exactly such behaviors – namely literal copying, translation, and a specific type of abstract pattern matching.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "An induction head performing abstract category matching allocated most, but not all, of the relevant attention correctly.",
+      "numbers": "about 65%",
+      "quote": "This head isn’t perfect at this, but empirically it allocates about 65% of its attention from the colons to the correct positions, when tested on a range of similar problems.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Reverse engineering in small attention-only models identified a common QK attention mechanism and positive-eigenvalue copying circuit for induction heads.",
+      "numbers": "not stated",
+      "quote": "In the small models we studied in our previous paper, all induction heads have the described QK term driving their attention pattern and a positive eigenvalue circuit performing copying.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The evidence is preliminary and vulnerable to subtle confounds or alternative hypotheses.",
+      "quote": "our results here are only the beginnings of evidence for such a case, and that like any empirical or interventional study, a large number of subtle confounds or alternative hypotheses are possible",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Evidence for large models with MLPs is mainly correlational and potentially confounded.",
+      "quote": "For large models with MLP’s, we must therefore rely on mainly correlational evidence, which could be confounded.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Large-model training trajectories have low temporal resolution.",
+      "quote": "In large models, we have low time resolution on our analysis over training.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The study lacks head ablations for the full-scale models.",
+      "quote": "Unfortunately, we do not have ablations for our full-scale models.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "In models with MLPs, interactions between MLPs and attention may contribute to in-context learning and complicate attribution.",
+      "quote": "In models with MLPs, in-context learning could also come from interactions between MLP and attention layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Extrapolation from small to much larger models is cautioned against.",
+      "quote": "Extrapolating from small models to models many orders of magnitude larger is something one should do with caution.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The abstract-behavior evidence covers only a small number of tasks and is therefore only suggestive generally.",
+      "quote": "This evidence applies even to the very largest models (and we study up to 12B parameter models), but since it shows only a small number of tasks, it’s only suggestive regarding in-context learning in general.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Fully reverse-engineering complex induction heads in large models with MLPs is beyond the authors' current framework.",
+      "quote": "Presently, fully reverse engineering them is beyond us, since they exist in large models with MLPs, which we don't have a strong framework for mechanistically understanding.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper gives the in-context-learning subtraction in opposite orders in different sections, making the sign convention for the reported score internally inconsistent.",
+     "The provided text does not state whether the 10,000-example evaluation set was held out from training, leaving memorization or training-set exposure as a possible contributor.",
+     "Each model is represented by one training run; seed-to-seed variability in phase-change timing, induction-head counts, and score magnitude is not quantified.",
+     "No prevalence estimate or prospective selection rule is reported for the anecdotal large-model heads, so cherry-picking and evaluator-threshold effects cannot be ruled out.",
+     "Threshold and calibration details for converting continuum copying and prefix-matching scores into binary induction-head labels are not given.",
+     "The study contains no Gemma 4 E2B, shared-KV, layer-15–34, or per-layer-embedding experiments, so transfer to the lab's target architecture is assumed rather than demonstrated.",
+     "The headline in-context metric and selected translation and pattern-matching tasks do not measure factual recall, so the paper cannot establish that induction heads implement the lab's factual-recall behavior."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "The paper is directly useful for candidate induction-head discovery and causal testing: scan layers 15–34 for heads satisfying both prefix matching and copying on repeated sequences, then use targeted activation patching as an analogue of head knockout. Direct-path logit attribution can expose the earlier tokens contributing to current predictions, while inspection of QK K-composition, OV copying circuits, and per-layer embeddings can test whether candidates implement literal or fuzzy semantic matching. The paper's majority claim is causal only in small attention-only models; its large-model evidence remains correlational, and shared-KV attention may weaken the additive head-contribution assumption. Factual recall should therefore be traced separately, using CPU-friendly targeted patches rather than exhaustive ablation."
+   },
+   "usage": {
+    "prompt_tokens": 23561,
+    "completion_tokens": 22889,
+    "total_tokens": 46450,
+    "prompt_tokens_details": {
+     "cached_tokens": 197
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 20316
+    }
+   }
+  }
+ }
+}

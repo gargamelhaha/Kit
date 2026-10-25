@@ -1,0 +1,447 @@
+{
+ "source_id": "LIT03-098",
+ "arxiv_id": "2504.00132",
+ "title": "Contextualize-then-Aggregate: Circuits for In-Context Learning in Gemma-2 2B",
+ "chars": 107063,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 24,
+    "near": 2,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Contextualize-then-Aggregate: Circuits for In-Context Learning in Gemma-2 2B",
+    "research_question": "Which mechanism assembles task information from the individual examples in a few-shot prompt?",
+    "models_and_data": [
+     {
+      "item": "Gemma-2 2B",
+      "quote": "We use causal interventions to identify information flow in Gemma-2 2B for five naturalistic ICL tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gemma-2 9B and 27B",
+      "quote": "We focus on Gemma-2, especially its 2B version, but our methodology allows us to also investigate larger variants (9B and 27B).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Five ICL tasks: Capitalization, Country-Capital, Present-Past, Person-Sport, Copying",
+      "quote": "five naturalistic tasks formatted as few-shot prompts (Capitalization, Country-Capital, Present-Past, Person-Sport, Copying)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Datasets from Todd et al. plus Capitalization/Copying words",
+      "quote": "We took Person-Sport, Country-Capital and Present-Past datasets from Todd et al. (2024), and selected words for Capitalization dataset randomly from 5000 English words.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Test size 100 examples per dataset",
+      "quote": "We used a test size of 100 examples in each dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Ambiguity dataset: 20 English verbs with identical present and past tense forms",
+      "quote": "For the ambiguity dataset, we selected 20 English verbs with identical present and past tense forms, and combined them with the Present-Past dataset.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Identify position-level circuits using path patching",
+      "quote": "We use path patching (Wang et al., 2022; Hanna et al., 2023) to identify position-level circuits and analyze information flow along edges.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Construct counterfactual inputs by replacing few-shot inputs and outputs with random words",
+      "quote": "we define a simple class of counterfactual inputs where all few-shot inputs and outputs (including the query x N +1 ) are replaced with random words",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Ablate an edge by replacing source K/V activations when queried by target with corrupted-prompt activations",
+      "quote": "When we ablate an edge from position A to position B, the key (K) and value (V) activations of A when queried by B are replaced with activations computed on a corrupted prompt.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate circuit output by greedy decoding while ablating all edges outside the circuit",
+      "quote": "We define the output of a circuit on an input prompt by greedily decoding a response y N +1 until a separator is generated, while ablating all edges outside the circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Project position-level circuits to activation-level circuits with a gradient-based method",
+      "quote": "We used a gradient-based method (Michel et al., 2019; Syed et al., 2023) (see Appendix F for technical details) to obtain a circuit on the level of activations with edges defined by attention heads, in the 3-shot setup",
+      "quote_check": "near"
+     },
+     {
+      "step": "Patch K/V activations with contrastive inputs to test which information is routed",
+      "quote": "We vary the information about the input available to a particular edge by constructing a contrastive input sample in which certain aspects have been altered",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Accuracy",
+      "definition": "Proportion of correct answers; performance drop is measured as accuracy decrease between ablated and normal model runs",
+      "quote": "Performance drop is measured as accuracy decrease between ablated and normal model runs.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Performance drop",
+      "definition": "Accuracy decrease between ablated and normal model runs",
+      "quote": "Performance drop is measured as accuracy decrease between ablated and normal model runs.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MSE loss",
+      "definition": "Loss on ICL on linear functions when trained with attention links ablated during training",
+      "quote": "Loss (MSE) on ICL on linear functions when trained with attention links ablated during training",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Function vector score",
+      "definition": "Top-10-scoring heads selected for each task using the Todd et al. method",
+      "quote": "We next identified function vector heads by using the method described in Todd et al. (2024) for each task independently and selecting the top-10-scoring heads for each task.",
+      "quote_check": "near"
+     },
+     {
+      "name": "Statistical significance",
+      "definition": "Binomial test with α = 0.05 comparing ablated performance to full circuit performance",
+      "quote": "we indicate whether the drop in performance is statistically significant compared to the full circuit performance in a binomial test with α = 0.05.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Aggregation-only circuit is insufficient on Capitalization and Country-Capital",
+      "numbers": "≥ 85%; < 60%",
+      "quote": "With this ablation, the model achieves ≥ 85% of the full accuracy on three tasks, but shows a huge drop (< 60% of full model) on Capitalization and Country-Capital",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Contextualization circuits recover most performance at 2B and 10 shots",
+      "numbers": "≥ 90%",
+      "quote": "At 2B parameters and 10 few-shots, the circuits explained ≥ 90% of the full model’s performance, far exceeding the aggregation-only circuit on some tasks",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Full model remains accurate with 7 out of 10 ambiguous examples",
+      "numbers": "7 out of 10; 95%",
+      "quote": "Even when 7 out of 10 few-shot examples are ambiguous, the full model continues to perform the task at very high accuracy (95%).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Aggregation-only circuit drops on ambiguous prompts",
+      "numbers": "56%",
+      "quote": "its performance on the ambiguous prompts dropped to 56%",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Contextualization subcircuit recovers almost all performance on ambiguous prompts",
+      "numbers": "89.9%",
+      "quote": "adding a contextualization subcircuit with edges yi → y j , yi → t j , xi → t j , ti → yi , ti → ti+1 , xi → xi+1 recovered almost all of the full model’s performance (89.9%).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Aggregating attention edges do not show classical induction-circuit similarity effect",
+      "numbers": "five; 3; 10",
+      "quote": "across all five tasks, at both 3 or 10 examples, there was almost no discernible effect on accuracy",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Focuses on one model family and five tasks to keep computational cost manageable",
+      "quote": "A limitation of the present study is that, to keep computational cost manageable, it focuses on one model family and five tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Focuses on causal information flow between positions and does not interpret MLPs or individual heads",
+      "quote": "A second limitation is that it focuses on causal understanding of information flow between positions, and does not interpret MLPs or individual heads.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "High computational cost prevented larger test sets",
+      "quote": "The high computational cost of the full set of patching experiments (Figure 8) prevented us from running larger test sets.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper studies Gemma-2 2B/9B/27B, not Gemma 4 E2B, so its circuits may not transfer to the lab’s target model.",
+     "It does not analyze KV-shared layers 15-34 or per-layer embeddings, which are central to the lab context.",
+     "Position-level circuits collapse all layers and heads into single edges, limiting localization to specific layers or KV-sharing behavior.",
+     "Activation-level circuits are reported for 3-shot prompts and selected tasks, so layer/head conclusions may not generalize to 10-shot or other tasks.",
+     "Counterfactual patching uses random-word corruptions and a specific prompt template, which may introduce template- or tokenization-specific effects.",
+     "Evaluation uses 100 test examples per dataset and binomial tests, so small but meaningful effects may be missed.",
+     "The study focuses on five high-accuracy tasks, which may omit mechanisms used in harder or lower-accuracy ICL settings.",
+     "The paper does not interpret MLPs or individual heads, so it cannot fully rule out alternative component-level mechanisms."
+    ],
+    "code_or_data_url": "https://github.com/lacoco-lab/icl_circuits",
+    "relevance_to_lab": "Methodologically relevant: it uses causal patching, position-level circuits, activation-level projection, function-vector heads, and induction-head tests in Gemma-2 2B. However, it does not study Gemma 4 E2B, KV-shared layers 15-34, or per-layer embeddings, and its compute setup is GPU rather than CPU."
+   },
+   "usage": {
+    "prompt_tokens": 25702,
+    "completion_tokens": 8229,
+    "total_tokens": 33931,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 6444
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 2,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Contextualize-then-Aggregate: Circuits for In-Context Learning in Gemma-2 2B",
+    "research_question": "Which causal information-flow circuit assembles task information from individual few-shot examples in Gemma-2, and is aggregation alone sufficient to explain in-context learning?",
+    "models_and_data": [
+     {
+      "item": "Gemma-2 family, with the 2B model as the primary system and 9B and 27B variants used for scale tests.",
+      "quote": "We focus on Gemma-2, especially its 2B version, but our methodology allows us to also investigate larger variants (9B and 27B).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Five few-shot ICL tasks: Capitalization, Country-Capital, Present-Past, Person-Sport, and Copying.",
+      "quote": "five naturalistic tasks formatted as few-shot prompts (Capitalization, Country-Capital, Present-Past, Person-Sport, Copying) in Gemma-2 2B",
+      "quote_check": "near"
+     },
+     {
+      "item": "Task selection was restricted to cases where the 2B model already achieved high accuracy.",
+      "quote": "the 2B model achieves high (between 88% and 100%) accuracy",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Main experiments used short 3-shot and long 10-shot prompts.",
+      "quote": "We focused experiments on shorter (3-shot) and longer (10-shot) prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Person-Sport, Country-Capital, and Present-Past came from Todd et al.; Capitalization and Copying used English-word sources.",
+      "quote": "We took Person-Sport, Country-Capital and Present-Past datasets from Todd et al. (2024), and selected words for Capitalization dataset randomly from 5000 English words.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Few-shot examples were sampled without replacement from training splits, while the final query and target came from the test split.",
+      "quote": "To construct an ICL prompt, we select examples from the train split of the dataset without replacement to use as few-shot examples, and one example from the test split to use as final query and target.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Each dataset used a 100-example test set.",
+      "quote": "We used a test size of 100 examples in each dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The ambiguity experiment combined Present-Past with 20 verbs whose present and past forms are identical.",
+      "quote": "For the ambiguity dataset, we selected 20 English verbs with identical present and past tense forms, and combined them with the Present-Past dataset.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Construct a position-level computation graph whose nodes are prompt positions and whose directed edges represent information flow.",
+      "quote": "We first discover a position-level circuit. Nodes are the positions in the prompt; edges are directed arcs between them, representing the flow of information (Figure 1).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Create counterfactual prompts by replacing few-shot inputs, outputs, and the query with random words.",
+      "quote": "To identify circuits, we define a simple class of counterfactual inputs where all few-shot inputs and outputs (including the query x N +1 ) are replaced with random words (Appendix H).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Ablate a position edge by replacing the source position's K and V activations, when queried by the destination, with activations computed on the counterfactual prompt.",
+      "quote": "When we ablate an edge from position A to position B, the key (K) and value (V) activations of A when queried by B are replaced with activations computed on a corrupted prompt.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply position-edge patching simultaneously across all attention heads and layers represented by that edge.",
+      "quote": "This patching is applied simultaneously at each layer and head.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate a circuit by greedily decoding the answer until a separator while ablating all edges outside the circuit.",
+      "quote": "We define the output of a circuit on an input prompt by greedily decoding a response y N +1 until a separator is generated, while ablating all edges outside the circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use targeted contrastive inputs to test whether an edge transports token identity, input-output functional relationships, or semantic types.",
+      "quote": "We vary the information about the input available to a particular edge by constructing a contrastive input sample in which certain aspects have been altered",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Project position-level circuits to activation-level circuits using gradient-based head and edge pruning.",
+      "quote": "We used a gradient-based method (Michel et al., 2019; Syed et al., 2023) (see Appendix F for technical details) to obtain a circuit on the level of activations with edges defined by attention heads",
+      "quote_check": "near"
+     },
+     {
+      "step": "Stress-test contextualization by replacing seven positions in a 10-shot Present-Past prompt with ambiguous examples.",
+      "quote": "For each prompt, we randomly selected N = 7 positions in the Present-Past prompt to replace with ambiguous examples.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Task accuracy",
+      "definition": "Accuracy of clean or ablated model predictions on the task outputs.",
+      "quote": "Performance drop is measured as accuracy decrease between ablated and normal model runs.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Fraction of full-model accuracy recovered",
+      "definition": "Accuracy of the selected circuit expressed as a fraction of the full model's accuracy.",
+      "quote": "At 2B parameters and 10 few-shots, the circuits explained ≥ 90% of the full model’s performance, far exceeding the aggregation-only circuit on some tasks (Figure 2).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Statistical significance of patching effects",
+      "definition": "Whether an ablation-induced accuracy drop is significant under a binomial test.",
+      "quote": "For each ablation, we indicate whether the drop in performance is statistically significant compared to the full circuit performance in a binomial test with α = 0.05.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Gradient-pruning loss",
+      "definition": "Multi-token cross-entropy on the complete answer, used for gradient-based circuit pruning.",
+      "quote": "The loss for gradient-based pruning is the entire multi-token CE on the answer.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Head-pruning stopping criterion",
+      "definition": "Pruning stops when loss more than doubles or accuracy falls by more than 10% relative to the position-level circuit.",
+      "quote": "We stop when either the loss increases more than twice or the accuracy drops by more than 10%, compared to the original position-level circuit.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Function Vector Head score",
+      "definition": "A head's score reflects how strongly patching from valid to shuffled prompts increases the likelihood of the desired target.",
+      "quote": "Todd et al. (2024) specifically operationalize Function Vector Heads as heads whose activations, when patched from valid ICL prompts to shuffled uninformative prompts, can most increase the likelihood of the desired target.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "In lower layers, Gemma-2 contextualizes representations of individual few-shot examples using preceding examples.",
+      "numbers": "not stated",
+      "quote": "In the lower layers, the model builds up representations of individual few-shot examples, which are contextualized by preceding examples through connections between few-shot input and output tokens across the sequence.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The aggregation-only circuit is causally important but insufficient on Capitalization and Country-Capital.",
+      "numbers": "≥ 85% of full accuracy on three tasks; < 60% of full-model performance on Capitalization and Country-Capital",
+      "quote": "With this ablation, the model achieves ≥ 85% of the full accuracy on three tasks, but shows a huge drop (< 60% of full model) on Capitalization and Country-Capital (Figure 2).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Adding task-specific contextualization circuits recovers at least 90% of full-model performance at 2B parameters and 10 few-shots.",
+      "numbers": "≥ 90% of full-model performance",
+      "quote": "At 2B parameters and 10 few-shots, the circuits explained ≥ 90% of the full model’s performance, far exceeding the aggregation-only circuit on some tasks (Figure 2).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Circuits selected on the 2B model transferred to the 9B and 27B variants.",
+      "numbers": "at least 90% of full-model performance at 10 shots",
+      "quote": "At 10 shots, the circuits that we had chosen based on the 2B model explained at least 90% of the full model’s performance in these model.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Activation-level circuits place contextualization in lower layers and most aggregation edges in middle and upper layers.",
+      "numbers": "not stated",
+      "quote": "The circuit reveals that the contextualization step tends to precede the aggregation step: contextualization happens in the lower half layers, most aggregation edges are in the middle and upper layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Aggregation normally transports task information, but Person-Sport instead uses input/output-space information without the functional relationship.",
+      "numbers": "not stated",
+      "quote": "Aggregation edges generally move information about the task from individual examples to the last token. In the Person-Sport task, they move information about input/output spaces without regard to functional relationship.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The tested aggregation edges do not preferentially attend to few-shot examples similar to the query, unlike a classical induction circuit.",
+      "numbers": "not stated",
+      "quote": "Attention is not preferentially given to specific few-shots on the basis of similarity to the query.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "With ambiguous examples, a contextualization subcircuit including separator edges recovered almost all full-model performance.",
+      "numbers": "89.9% of full-model performance",
+      "quote": "Overall, adding a contextualization subcircuit with edges yi → y j , yi → t j , xi → t j , ti → yi , ti → ti+1 , xi → xi+1 recovered almost all of the full model’s performance (89.9%).",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The study covers only one model family and five tasks to control computational cost.",
+      "quote": "A limitation of the present study is that, to keep computational cost manageable, it focuses on one model family and five tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The analysis does not interpret MLPs or individual heads.",
+      "quote": "A second limitation is that it focuses on causal understanding of information flow between positions, and does not interpret MLPs or individual heads.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Position-level circuits are upper bounds and do not distinguish computations across layers.",
+      "quote": "Position-level circuits provide useful and interpretable upper bounds on information flow, though they do not distinguish between computations happening in different layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The gradient-based pruning thresholds were selected preliminarily rather than extensively tuned.",
+      "quote": "As above, thresholds were chosen in preliminary experiments and not extensively tuned; these could be refined in future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Computational cost prevented evaluation on larger test sets.",
+      "quote": "The high computational cost of the full set of patching experiments (Figure 8) prevented us from running larger test sets.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Information-routing experiments focus on the 2B model for tractability.",
+      "quote": "We focus on the 2B model for tractability.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Even a single 2B patching run is computationally expensive.",
+      "quote": "For the 2B model, a single patching run takes roughly 40 minutes on 1 NVIDIA A100 40GB GPU on one 3-shot task, and roughly 4 hours on a 10-shot task.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Transfer to Gemma 4 E2B is untested; the paper studies Gemma-2, whereas the lab's target has KV sharing in layers 15-34, so layer and circuit correspondences may not transfer directly.",
+     "The five tasks and fixed tab/newline template may not generalize to broader, noisier, or linguistically richer in-context-learning prompts.",
+     "Random-word and semantic-type counterfactuals may introduce lexical or distribution artifacts, making apparent circuit sufficiency dependent on the particular intervention distribution.",
+     "With only 100 test examples per dataset and numerous binomial tests without reported multiplicity control, small effects may be unstable or overstated.",
+     "Exact-match accuracy after greedy decoding can hide partial correctness, equivalent valid outputs, and uncertainty in the model's answer distribution.",
+     "Selecting a minimal sufficient circuit does not guarantee that omitted redundant or rarely needed paths are unnecessary on unseen prompt distributions.",
+     "Circuits selected on the 2B model at 3 shots and transferred to 9B and 27B may conflate shared positional structure with model-size- or prompt-length-specific mechanisms.",
+     "Reported point accuracies without confidence intervals or split and prompt-sampling variation leave robustness to train/test partitions and random few-shot draws unclear."
+    ],
+    "code_or_data_url": "https://github.com/lacoco-lab/icl_circuits",
+    "relevance_to_lab": "High methodological relevance: the paper provides position-level K/V activation patching, activation-level circuit projection, function-vector scoring, and a direct test of whether aggregation behaves like an induction circuit. For Gemma 4 E2B, its central hypothesis can be tested by checking whether task representations are contextualized in lower or shared layers before aggregation in upper layers, including the KV-shared layers 15-34, and whether those representations remain visible in per-layer embeddings and logit-lens or factual-recall traces. The tab/newline few-shot format, random-word and semantic-type counterfactuals, and contextualization-versus-aggregation contrasts are directly reusable. Because the paper reports roughly 40 minutes per 3-shot run and roughly 4 hours per 10-shot run on 1 NVIDIA A100 40GB GPU, a CPU reproduction should focus on targeted layer and head probes rather than a full sweep."
+   },
+   "usage": {
+    "prompt_tokens": 26187,
+    "completion_tokens": 18211,
+    "total_tokens": 44398,
+    "prompt_tokens_details": {
+     "cached_tokens": 197
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 15097
+    }
+   }
+  }
+ }
+}

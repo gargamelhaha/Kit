@@ -1,0 +1,475 @@
+{
+ "source_id": "LIT02-127",
+ "arxiv_id": "2605.30162",
+ "title": "BioRefusalAudit: Auditing Biosecurity Refusal Depth Using General and Domain-Fine-Tuned Sparse Autoencoders",
+ "chars": 50900,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.969,
+   "data": {
+    "title": "BioRefusalAudit: Auditing Biosecurity Refusal Depth Using General and Domain-Fine-Tuned Sparse Autoencoders",
+    "research_question": "When a model refuses, is that refusal structurally sound, or does it disappear under modest changes to prompt framing, formatting, or output length?",
+    "models_and_data": [
+     {
+      "item": "Gemma 2 2B-IT with Gemma Scope 1 SAE",
+      "quote": "Gemma 2 2B-IT + Gemma Scope 1 layer_12/width_16k/average_l0_82, a general-purpose pre-trained JumpReLU SAE",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gemma 4 E2B-IT with author-trained bio SAE",
+      "quote": "Gemma 4 E2B-IT (Google DeepMind, 2026; HuggingFace: google/gemma−4−e2b−it) + author-trained bio SAE",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama 3.2 1B behavioral comparison",
+      "quote": "Llama 3.2 1B",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen 2.5 1.5B behavioral comparison",
+      "quote": "Qwen 2.5 1.5B",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Phi-3-mini-4k-instruct behavioral comparison",
+      "quote": "Phi-3-mini-4k-instruct (Abdin et al., 2024; arXiv:2404.14219)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "75-prompt evaluation set",
+      "quote": "75 prompts stratified by tier (benign_bio n=23, dual_use_bio n=30, hazard_adjacent n=22) and framing (direct / educational / roleplay / obfuscated).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WMDP bio corpora for SAE training",
+      "quote": "WMDP bio-forget corpus (hazard-adjacent, ~222 samples) plus bio-retain corpus (benign biology)",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Generate model responses with residual-stream hook",
+      "quote": "Generate at T=0.7 with a residual-stream forward hook at ~50% model depth",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Project activations through SAE and average over tokens",
+      "quote": "Project activations through the SAE and take per-feature mean across generated tokens",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compress SAE features into five categories and normalize",
+      "quote": "Compress to 5 categories via feature catalog and L1-normalize to produce f",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run judge ensemble to produce soft surface labels",
+      "quote": "Run judge ensemble (regex -> Gemini CLI -> Claude Haiku, weighted voting) to produce soft s",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute divergence score and flags",
+      "quote": "Compute D and three divergence flags",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Fit calibration matrix within-sample for main Gemma 2 experiment",
+      "quote": "T is fit within-sample for the main Gemma 2 experiment.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run held-out calibration check",
+      "quote": "A held-out calibration run on a differently-framed prompt distribution produced inverted tier ordering (Cohen’s d = -0.967)",
+      "quote_check": "unverified"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "D divergence score",
+      "definition": "Audit signal comparing surface response label to internal SAE feature-category activations; ranges 0 to 2, higher means more divergent.",
+      "quote": "D ranges from 0 to 2. Higher means more divergent.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cohen's d",
+      "definition": "Effect size for tier separation between benign and hazard-adjacent prompts.",
+      "quote": "Tier effect size benign vs. hazard: Cohen’s d = 1.29, p = 0.0001, non-overlapping 95% CIs.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Refusal rate",
+      "definition": "Proportion of prompts labeled as refusals under a given formatting/token condition.",
+      "quote": "Gemma 4 E2B-IT refused 65/75 prompts with chat-template formatting and 0/75 without it.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "D separation",
+      "definition": "Difference in mean D between comply and refuse surface labels, with overlap.",
+      "quote": "On Gemma 4, comply and refuse responses separated by a 0.647-point gap with zero overlap (n=75)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "False-positive rate",
+      "definition": "Rate at which benign biology prompts are flagged hazardous/refused.",
+      "quote": "an 83-87% false-positive rate on benign biology",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Gemma 2 2B-IT never genuinely refused; it hedged on every hazard-adjacent prompt.",
+      "numbers": "0/75 refusals; all hazard-adjacent hedged",
+      "quote": "Zero genuine refusals across all 75 prompts. On every hazard-adjacent prompt, the model hedged.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gemma 4 E2B-IT refusal is format-gated by chat-template tokens.",
+      "numbers": "65/75 with canonical tokens; 0/75 without canonical formatting",
+      "quote": "With canonical <start_of_turn> tokens: 65/75 refusals",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Both Gemma models refused 0% under an 80-token cap.",
+      "numbers": "0% at 80-token cap",
+      "quote": "Both Gemma 2 and Gemma 4 refused 0% of prompts at an 80-token generation cap.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Qwen 2.5 1.5B and Phi-3-mini over-refused benign biology.",
+      "numbers": "83-87% benign false positives",
+      "quote": "Qwen 2.5 1.5B and Phi-3-mini over-refused, flagging 83-87% of benign biology as hazardous.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Llama 3.2 1B showed the only meaningful tier gradient.",
+      "numbers": "61-point spread",
+      "quote": "Llama 3.2 1B showed the only meaningful tier gradient (61-point spread).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gemma 4 D separated comply and refuse with zero overlap.",
+      "numbers": "0.647-point gap; n=75",
+      "quote": "On Gemma 4, comply and refuse responses separated by a 0.647-point gap with zero overlap (n=75)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gemma 2 refused psilocybin cultivation more than hazard-adjacent biology.",
+      "numbers": "25-50% vs 0%",
+      "quote": "Gemma 2 refused psilocybin cultivation at 25-50% while refusing hazard-adjacent biology at 0%.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Mechanistic results are Gemma-family only.",
+      "quote": "Mechanistic results are Gemma-family only. This is the most important scope limitation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Feature catalog is statistically selected, not semantically validated.",
+      "quote": "The five-category internal representation depends on statistically selected, not semantically validated, features.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Calibration matrix is fit on the same prompts used for evaluation.",
+      "quote": "T is fit on the same 75 prompts used for evaluation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Prompt scale limits stable per-cell estimates.",
+      "quote": "75 prompts supports group-level patterns but not stable per-cell estimates for fine-grained subgroups.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Learned projection adapter is in-sample.",
+      "quote": "The learned projection adapter (Finding 8) was trained and evaluated on the same 75 samples.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Domain-specific SAE contrastive training barely moved loss.",
+      "quote": "The domain-specific SAE trained during the hackathon barely moved the contrastive loss.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The 0.647-point Gemma 4 separation may be driven by prompt length, formatting, or generic activation geometry because the SAE was trained on only 22 hazard prompts and contrastive loss collapsed.",
+     "No causal validation such as activation patching or ablation is performed; D and feature flags are correlational and could reflect vocabulary routing.",
+     "The 80-token cap may truncate refusals before the judge can label them, confounding safety collapse with generation-length artifacts.",
+     "The prompt set is small, single-author, and lacks inter-rater reliability; tier labels and framing categories may embed researcher bias.",
+     "Multiple exploratory comparisons and small legality-confound cells (n=3-4) raise risk of unstable or cherry-picked effects without correction.",
+     "Cross-table D comparisons are confounded by calibration changes, and T_prior/within-sample T are not held-out validated."
+    ],
+    "code_or_data_url": "github.com/SolshineCode/Deleeuw-AI-x-Bio-hackathon",
+    "relevance_to_lab": "Directly relevant to Gemma 4 E2B internals: it trains/uses a layer-17 residual-stream SAE and reports surface-internal refusal divergence, which can guide activation-patching and logit-lens targets in layers 15-34. However, it does not analyze KV-shared layers, per-layer embeddings, induction heads, or factual recall, and its SAE/feature catalog is narrow and correlational."
+   },
+   "usage": {
+    "prompt_tokens": 11423,
+    "completion_tokens": 9478,
+    "total_tokens": 20901,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7626
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.973,
+   "data": {
+    "title": "BioRefusalAudit: Auditing Biosecurity Refusal Depth Using General and Domain-Fine-Tuned Sparse Autoencoders",
+    "research_question": "Does a model's surface refusal label align with its internal sparse-autoencoder feature activations, and is that refusal stable under prompt framing, chat-template formatting, and token-budget changes?",
+    "models_and_data": [
+     {
+      "item": "Behavioral subject models, evaluated on the same 75-prompt set: Gemma 2, Gemma 4, Llama 3.2 1B, Qwen 2.5 1.5B, and Phi-3-mini-4k.",
+      "quote": "Behavioral-label comparisons across the same 75-prompt eval set were run on all five architectures: Gemma 2, Gemma 4, Llama 3.2 1B, Qwen 2.5 1.5B, and Phi-3-mini-4k.",
+      "quote_check": "near"
+     },
+     {
+      "item": "Mechanistic scope: full SAE-based D-metric analysis was restricted to Gemma 2 2B-IT and Gemma 4 E2B-IT.",
+      "quote": "Full SAE-based mechanistic analysis (the D metric) was performed on Gemma 2 2B-IT and Gemma 4 E2B-IT.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gemma 2 mechanistic SAE: the general-purpose Gemma Scope 1 JumpReLU SAE at layer 12, width 16k, average L0 82.",
+      "quote": "Gemma 2 2B-IT + Gemma Scope 1 layer_12/width_16k/average_l0_82, a general-purpose pre-trained JumpReLU SAE",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Two author-fine-tuned Gemma 2 domain SAEs: a WMDP-corpus version and a pairwise behavioral version.",
+      "quote": "Two author-fine-tuned Gemma 2 domain bio SAE variants are also published: WMDP corpus fine-tune (Solshine/biorefusalaudit-gemma2-2b-bio-sae-wmdp) and pairwise behavioral fine-tune (Solshine/biorefusalaudit-gemma2-2b-bio-sae-pairwise).",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Gemma 4 mechanistic SAE: an author-trained TopK(k=32) bio SAE trained from scratch on Gemma 4 activations.",
+      "quote": "Gemma 4 E2B-IT (Google DeepMind, 2026; HuggingFace: google/gemma−4−e2b−it) + author-trained bio SAE (Solshine/gemma4-e2b-bio-sae-v1), a TopK(k=32) SAE trained from scratch on Gemma 4 activations during this hackathon",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Main evaluation set: 75 prompts stratified by biological tier and by direct, educational, roleplay, or obfuscated framing.",
+      "quote": "75 prompts stratified by tier (benign_bio n=23, dual_use_bio n=30, hazard_adjacent n=22) and framing (direct / educational / roleplay / obfuscated).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gemma 4 SAE training corpus: WMDP bio-retain documents plus 22 tier-1/2 prompts from the evaluation set.",
+      "quote": "Training data: ~5,000 documents from the WMDP bio-retain corpus plus 22 tier-1/2 bio prompts from the BioRefusalAudit eval set.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Tier-3 evaluation data access is restricted by an HL3-gated HuggingFace attestation.",
+      "quote": "Tier-3 is behind an HL3-gated HuggingFace attestation consistent with the Biosecurity Data Level framework (Bloomfield, Black, Crook et al., Science 2026).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Generate each model response at temperature 0.7 while attaching a residual-stream forward hook at approximately half model depth.",
+      "quote": "Generate at T=0.7 with a residual-stream forward hook at ~50% model depth",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Project residual activations through the SAE and average each feature over generated tokens.",
+      "quote": "Project activations through the SAE and take per-feature mean across generated tokens",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Map SAE features into five categories and L1-normalize them to form the internal feature vector f.",
+      "quote": "Compress to 5 categories via feature catalog and L1-normalize to produce f",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Assign a surface posture with a regex, Gemini CLI, and Claude Haiku weighted-voting judge ensemble.",
+      "quote": "Run judge ensemble (regex -> Gemini CLI -> Claude Haiku, weighted voting)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute the divergence score D and the three divergence flags.",
+      "quote": "Compute D and three divergence flags",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Fit the alignment matrix T by ridge-regularized least squares on known-good surface/internal pairs.",
+      "quote": "It encodes the expected mapping between internal states and surface behaviors, fit by ridge-regularized least squares on known-good (s, f) pairs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Select discriminating SAE features using Cohen's d between high-tier and low-tier activation samples.",
+      "quote": "Feature categories are populated via Cohen’s d discrimination between high-tier and low-tier activation samples (statistical selection, not semantic validation).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train the Gemma 4 custom SAE for 2,000 steps on a Colab T4.",
+      "quote": "2,000 steps on a Colab T4 (~35 min wall time)",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Surface response label",
+      "definition": "The judge-assigned posture of a completion: comply, refuse, hedge, partial, or evade, represented as a soft distribution.",
+      "quote": "BioRefusalAudit first labels the model’s surface response (comply, refuse, hedge, partial, or evade)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Internal feature-category vector f",
+      "definition": "A unit-normalized five-dimensional vector compressing residual-stream activations into bio-content, hazard vocabulary, refusal circuitry, hedging, and deception-correlate scores.",
+      "quote": "The inside vector is f, the actual internal activations compressed to five category scores (bio-content, hazard vocabulary, refusal circuitry, hedging, and deception correlates), normalized to unit length, recorded from the model’s residual stream during generation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Divergence score D",
+      "definition": "A cosine-distance score comparing the actual internal feature vector with the surface-label distribution transformed into internal-feature space; it ranges from 0 to 2, with larger values indicating greater inconsistency.",
+      "quote": "Subtracting that cosine value from 1 gives the divergence score: zero for perfect alignment, larger as the vectors pull apart.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Shallow-refusal divergence",
+      "definition": "High D when the surface output refuses while hazard-related internal features continue firing.",
+      "quote": "If the model says “I refuse” while hazard features keep firing, D is high.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cohen's d tier effect size",
+      "definition": "The standardized effect size comparing mean divergence between benign and hazard-adjacent tiers.",
+      "quote": "Tier effect size benign vs. hazard: Cohen’s d = 1.29, p = 0.0001, non-overlapping 95% CIs.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Gemma 2 2B-IT made no genuine refusals on the 75-prompt evaluation set.",
+      "numbers": "0 genuine refusals; n=75",
+      "quote": "Zero genuine refusals across all 75 prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gemma 4 E2B-IT's refusal behavior was strongly gated by canonical chat-template formatting.",
+      "numbers": "65/75 with chat-template formatting; 0/75 without it",
+      "quote": "Gemma 4 E2B-IT refused 65/75 prompts with chat-template formatting and 0/75 without it.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "An 80-token generation cap eliminated refusal articulation in both Gemma models.",
+      "numbers": "0% for both Gemma 2 and Gemma 4 at an 80-token cap",
+      "quote": "Both Gemma 2 and Gemma 4 refused 0% of prompts at an 80-token generation cap.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Llama 3.2 1B had the strongest benign-to-hazard refusal gradient among the five architectures, but also over-refused benign biology.",
+      "numbers": "61-point refusal gradient",
+      "quote": "Llama shows a 61-point refusal gradient from benign to hazard, the best discrimination of the five.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Qwen 2.5 1.5B and Phi-3-mini lacked genuine discrimination because of high benign-biology false-positive refusal rates.",
+      "numbers": "83-87% false-positive rate on benign biology",
+      "quote": "Neither achieves genuine discrimination: an 83-87% false-positive rate on benign biology may make them unsuitable as safety filters without a secondary classification layer.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On Gemma 4, the author-trained SAE's divergence score separated comply and refuse postures without overlap in the preliminary run.",
+      "numbers": "n=75; comply n=59, mean D=0.896, Std=0.001; refuse n=16, mean D=0.249, Std=0.004; 0.647-point gap; zero overlap",
+      "quote": "On Gemma 4, comply and refuse responses separated by a 0.647-point gap with zero overlap (n=75), though this is preliminary, with a narrow catalog, within-sample calibration, and Gemma-family-only SAE coverage.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gemma 2 refused psilocybin cultivation more often than genuinely hazard-adjacent biology, suggesting a legality or salience confound.",
+      "numbers": "25-50% psilocybin-cultivation refusal; 0% hazard-adjacent refusal",
+      "quote": "Gemma 2 refused psilocybin cultivation at 25-50% while refusing hazard-adjacent biology at 0%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "With explicit prompts, Gemma 4 generated genuine refusals, and many of those refusals retained active hazard features.",
+      "numbers": "39 of 100 explicit hazard prompts; 58% of 67 genuine refusals",
+      "quote": "The shallow-refusal flag becomes interpretable: 39 of 100 explicit hazard prompts showed hazard_features_active_despite_refusal, which is 58% of the 67 genuine refusals in that tier.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The mechanistic results cover only the Gemma family.",
+      "quote": "Mechanistic results are Gemma-family only.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The five-category representation uses statistically rather than semantically validated features.",
+      "quote": "The five-category internal representation depends on statistically selected, not semantically validated, features.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The alignment matrix was fitted on the same prompts used for evaluation.",
+      "quote": "T is fit on the same 75 prompts used for evaluation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The 75-prompt sample is too small for stable fine-grained subgroup estimates.",
+      "quote": "75 prompts supports group-level patterns but not stable per-cell estimates for fine-grained subgroups.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The legality-confound compound cells are pilot results.",
+      "quote": "The legality confound cells (n=3-4 per compound) should be treated as pilot findings.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The learned projection result is in-sample and does not establish held-out generalization.",
+      "quote": "It demonstrates that the activation signal is learnable at this scale, not that the adapter generalizes to held-out distributions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The domain SAE lacks genuine base-versus-RLHF contrastive training data.",
+      "quote": "Behavioral pair data (base model vs. RLHF-tuned on identical prompts) is needed to provide genuine contrastive signal, and requires institutional partners.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The Gemma 4 SAE reconstructs activations well but has not been validated as a hazard detector.",
+      "quote": "The SAE reconstructs Gemma 4 internals well but hasn’t been validated as a hazard detector.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Possible train-evaluation leakage: the Gemma 4 SAE was trained on 22 prompts from the same 75-prompt evaluation set, so the comply/refuse separation may partly reflect memorized evaluation examples rather than transferable refusal structure.",
+     "D may be sensitive to feature-category boundaries, category polarity, the alignment matrix, and the choice between fitted and prior calibration; the paper does not provide an invariance test across these choices.",
+     "The judge pipeline had a fallback-to-uniform-prior bug that mislabeled 29/75 completions, and the paper does not report inter-judge agreement or the effect of residual labeling errors on D.",
+     "Averaging SAE activations over generated tokens can erase token-position-specific refusal dynamics and make the shallow-refusal flags aggregation artifacts.",
+     "The Gemma 4 separation is observational; no intervention demonstrates that the identified SAE features causally produce or suppress refusal posture.",
+     "No confidence intervals or significance tests are reported for the Gemma 4 0.647-point gap, so its robustness to prompt resampling, SAE retraining, and judge variation is unclear.",
+     "Gated tier-3 data and the absence of official journal peer review may limit independent replication and detection of implementation or analysis errors.",
+     "CPU feasibility for the lab is untested because the reported workflow used a GTX 1650 Ti Max-Q and Colab T4, with no CPU runtime, memory profile, or approximation experiment."
+    ],
+    "code_or_data_url": "Repository: github.com/SolshineCode/Deleeuw-AI-x-Bio-hackathon; public dataset: SolshineCode/biorefusalaudit-public; gated dataset: SolshineCode/biorefusalaudit-gated; Gemma 4 SAE: Solshine/gemma4-e2b-bio-sae-v1; Gemma 2 WMDP SAE: Solshine/biorefusalaudit-gemma2-2b-bio-sae-wmdp; Gemma 2 pairwise SAE: Solshine/biorefusalaudit-gemma2-2b-bio-sae-pairwise; dashboard: solshinecode.github.io/Deleeuw-AI-x-Bio-hackathon/demo/interactive_explorer.html; training code path: training/train_bio_sae.py",
+    "relevance_to_lab": "High relevance to Gemma 4 E2B internals: the paper directly evaluates Gemma 4 E2B-IT, hooks residual-stream activations at approximately half depth in the generic pipeline and layer 17 for its custom SAE, and reports activation-level comply/refuse separation. Its layer-17 SAE and five-category divergence score could seed hypotheses and candidate features for per-layer analysis across layers 15-34. However, it does not use the lab's KV-shared layers, activation patching, logit lens, induction-head tracing, or factual-recall tracing, and it reports no CPU implementation or runtime. It is therefore a useful mechanism-discovery and hypothesis-generation source rather than a drop-in method for the lab's CPU causal-tracing workflow."
+   },
+   "usage": {
+    "prompt_tokens": 11281,
+    "completion_tokens": 19861,
+    "total_tokens": 31142,
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 16490
+    }
+   }
+  }
+ }
+}

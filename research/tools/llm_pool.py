@@ -50,8 +50,31 @@ def _creds():
     return base.rstrip("/"), key
 
 
+def _read_sse(resp):
+    content, reasoning, usage, finish = [], [], {}, None
+    for raw in resp:
+        line = raw.decode("utf-8", "ignore").strip()
+        if not line.startswith("data:"):
+            continue
+        data = line[5:].strip()
+        if data == "[DONE]":
+            break
+        d = json.loads(data)
+        if d.get("error"):
+            raise RuntimeError(f"stream error: {str(d['error'])[:200]}")
+        if d.get("usage"):
+            usage = d["usage"]
+        for ch in d.get("choices") or []:
+            delta = ch.get("delta") or {}
+            content.append(delta.get("content") or ""); reasoning.append(delta.get("reasoning_content") or "")
+            finish = ch.get("finish_reason") or finish
+    if finish is None:
+        raise RuntimeError("stream ended without finish_reason")
+    return "".join(content), "".join(reasoning), usage, finish
+
+
 class Pool:
-    def __init__(self, concurrency=MAX_PARALLEL, timeout=300, retries=4, tag=""):
+    def __init__(self, concurrency=MAX_PARALLEL, timeout=1800, retries=4, tag=""):
         self.base, self.key = _creds()
         self.concurrency, self.timeout, self.retries, self.tag = concurrency, timeout, retries, tag
         os.makedirs(CACHE, exist_ok=True)
@@ -66,7 +89,9 @@ class Pool:
         h = self._key(req); cp = os.path.join(CACHE, h + ".json")
         if cache and os.path.exists(cp):
             return {**json.load(open(cp)), "cached": True}
-        body = json.dumps({k: v for k, v in req.items() if k not in ("meta",)}).encode()
+        # PL-9: the gateway (nginx) cuts non-streaming responses at 300 s (HTTP 504); SSE streaming keeps the connection alive
+        body = json.dumps({**{k: v for k, v in req.items() if k not in ("meta",)}, "stream": True,
+                           "stream_options": {"include_usage": True}}).encode()
         err, t0 = None, time.time()
         attempt, busy = 0, 0
         while attempt <= self.retries:
@@ -75,10 +100,9 @@ class Pool:
                 r = urllib.request.Request(self.base + "/chat/completions", data=body, headers={
                     "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
                 with _Slot():
-                    d = json.load(urllib.request.urlopen(r, timeout=self.timeout))
-                msg = d["choices"][0]["message"]
-                out = {"content": msg.get("content") or "", "reasoning": msg.get("reasoning_content") or "",
-                       "usage": d.get("usage", {}), "finish": d["choices"][0].get("finish_reason"),
+                    content, reasoning, usage, finish = _read_sse(urllib.request.urlopen(r, timeout=self.timeout))
+                out = {"content": content, "reasoning": reasoning,
+                       "usage": usage, "finish": finish,
                        "latency_s": round(time.time() - t0, 2), "model": req["model"], "hash": h}
                 if cache:
                     json.dump(out, open(cp, "w"))

@@ -1,0 +1,164 @@
+{
+ "deepseek": {
+  "implementation_bugs": [],
+  "prereg_deviations": [
+   "Held-out R1 pairs are not explicitly filtered against the 12 E004 pairs; the code assumes the first 12 from the selection procedure are the E004 in-sample pairs. If that assumption is false, the held-out set may contain in-sample pairs."
+  ],
+  "statistical_issues": [
+   "Bootstrap over pairs assumes independence, but pairs share items (e.g., CN Tower appears in many pairs), so the 95% CIs may be anti-conservative.",
+   "The overall held-out median is dominated by R2 (16 pairs) versus R1 (12 pairs), though per-relation results are reported.",
+   "The recovery metric can exceed 1, so it is not bounded; the median is used, but the mean may be skewed by nonlinearities.",
+   "The NOISE_ATTN25 conclusion is based on the median; the distribution has a long tail (e.g., one pair retains 0.602), so the necessity claim is at the median level, not universal."
+  ],
+  "alternative_explanations": [
+   {
+    "explanation": "The layer-13 vs layer-14 difference may reflect layer depth rather than sliding vs full attention, because the prompts are shorter than the 512-token sliding window, so layer 13's sliding attention is effectively full attention.",
+    "test_to_rule_out": "Use longer prompts that exceed the sliding window and repeat the KV13_all vs KV14_all comparison."
+   },
+   {
+    "explanation": "The ATTN_25 effect may reflect block 25 being the layer that writes the answer token, not necessarily the layer that reads the subject information from the shared K/V.",
+    "test_to_rule_out": "Measure attention weights at block 25 to confirm it attends to the subject position, and compare with other layers."
+   },
+   {
+    "explanation": "The NOISE_ATTN25 effect could be due to general disruption rather than specific subject information.",
+    "test_to_rule_out": "Replace clean block-25 attention with attention from a different corrupt prompt or with a random vector of similar norm; if only the matched corrupt attention reduces LD, the effect is specific."
+   },
+   {
+    "explanation": "The HEAD25_0 effect could be an artifact of head indexing or the o_proj input patching; the HEAD25 sweep is exploratory.",
+    "test_to_rule_out": "Patch combinations of heads or use head ablation to confirm the role of head 0."
+   }
+  ],
+  "warranted_conclusions": [
+   "The NULL control passed, validating the intervention pipeline.",
+   "On the held-out set, KV13_all recovery is high (median ~0.986) and KV14_all is low (median ~0.017), with KV13_all - KV14_all >= 0.5 in 100% of pairs. This supports H-008: the subject information reaches the final position through the layer-13 shared K/V, not the layer-14 shared K/V.",
+   "KVBOTH_all recovery is high (median >0.9), supporting completeness of the K/V route.",
+   "KV13_D recovery is high (median >0.9) and KV13_T is low (median ~0.01), supporting localisation to the subject positions.",
+   "ATTN_25 recovery is high (median ~0.76) and is the largest ATTN_L in 100% of pairs. NOISE_ATTN25 retained is low (median ~0.23). This supports H-009: block 25 attention is both sufficient and necessary (in the median) for the transfer.",
+   "The effects are consistent across R1 and R2 held-out sets, and in-sample.",
+   "The data do not support a role for layer-14 shared K/V in carrying the subject information.",
+   "The data do not support other ATTN_L layers (15-24, 26-34) as the primary transfer point."
+  ],
+  "overclaims_to_avoid": [
+   "Do not claim that the sliding window mechanism is causal, because the prompts are shorter than the 512-token window, so layer 13's sliding attention is effectively full attention. The effect is about layer 13 vs layer 14, not sliding vs full.",
+   "Do not claim that block 25 is necessary in every pair; the median retained is <=0.5, but some pairs retain >0.5 (e.g., 0.602). The conclusion is at the median level.",
+   "Do not claim that head 0 is the sole subject head; the HEAD25 sweep is exploratory and head 0 shows only partial recovery.",
+   "Do not claim that the last subject token is always sufficient; KV13_S is variable for R1, indicating distributed information for multi-token subjects.",
+   "Do not claim that the recovery metric is bounded or linear; values >1 occur.",
+   "Do not claim generalisation to other models, relations, or longer prompts without further testing."
+  ],
+  "recommended_followups": [
+   "Test with longer prompts that exceed the sliding window to see if the sliding nature of layer 13 matters.",
+   "Measure attention weights at block 25 to confirm it attends to the subject position.",
+   "Run a control for NOISE_ATTN25 using attention from a different corrupt prompt or a random vector to rule out general disruption.",
+   "Perform a cluster bootstrap over items rather than pairs to account for shared items.",
+   "Test head combinations or ablations to confirm the role of head 0.",
+   "Test additional relations and models to assess generalisation.",
+   "Analyze the KV13_S variability for multi-token subjects to understand how subject information is distributed."
+  ],
+  "overall_verdict": "The experiment is well-designed and the data strongly support the preregistered hypotheses H-008 and H-009, with some caveats about the sliding window not being active and the need for specificity controls. The implementation appears correct, with only a minor potential prereg deviation regarding the in-sample/held-out split assumption. The statistical analysis follows the prereg, though the bootstrap over pairs may be anti-conservative due to shared items. The conclusions are warranted at the median level for this model and these relations."
+ },
+ "deepseek_usage": {
+  "prompt_tokens": 25064,
+  "completion_tokens": 37665,
+  "total_tokens": 62729,
+  "prompt_tokens_details": {
+   "cached_tokens": 24960
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 36335
+  }
+ },
+ "minimax": {
+  "implementation_bugs": [
+   {
+    "location": "experiments/E006_kv_route/analyze.py, prediction and hypothesis-status construction",
+    "problem": "The analysis reports control_null_ok and underpowered but does not use either flag when assigning H-008 or H-009 statuses. Thus a failed NULL control or fewer than 12 held-out pairs could still receive a SUPPORTED or REFUTED label, contrary to the preregistered invalidation and underpowering rules.",
+    "severity": "major",
+    "evidence": "a[\"H-008\"] and a[\"H-009\"] are assigned directly from the prediction thresholds; P[\"control_null_ok\"] and P[\"underpowered\"] never gate them. This does not change the supplied results because all NULL values are zero and there are 28 held-out pairs, but the implementation is not compliant in general."
+   }
+  ],
+  "prereg_deviations": [],
+  "statistical_issues": [
+   "The confirmatory decisions are based on arbitrary fixed thresholds and medians, while the preregistered bootstrap confidence intervals play no role in the SUPPORTED, REFUTED, or INCONCLUSIVE decisions. The resulting classifications are operational threshold outcomes, not conventional hypothesis-test results.",
+   "The pair bootstrap treats the 28 pairs as exchangeable independent observations, although many pairs reuse the same subjects. For example, CN Tower, Big Ben, Space Needle, Sydney Opera House, and several capitals recur. The effective sample size is therefore smaller than 28 and uncertainty may be understated.",
+   "The held-out set is a small, deterministically selected subset of eligible model-correct items from only two relations. Generalization to other subjects, relations, prompt templates, or the broader factual-recall task is not quantified.",
+   "The five confirmatory predictions are evaluated without any family-wise or false-discovery adjustment. This was preregistered, but it means that simultaneous satisfaction of P1-P5 should not be interpreted as five independently calibrated claims.",
+   "Recovery values above 1 and occasionally below 0 are possible because the intervention is nonlinear and the normalization is based on a logit difference. They should not be interpreted as probabilities, although the preregistered use of medians and thresholds is reasonable.",
+   "The clean and corrupt conditions have very large opposite-signed logit differences in almost every pair, so recovery denominators are large. This improves numerical comparability but does not establish that the intervention is robust under less extreme corruptions or weaker clean evidence.",
+   "HEAD25 and the full ATTN_L sweep are exploratory, but they involve many comparisons. The conspicuous dominance of HEAD25_0 should be treated as hypothesis-generating rather than confirmatory evidence."
+  ],
+  "alternative_explanations": [
+   {
+    "explanation": "The layer-13 K/V intervention may restore the answer because it reinstates a distributed, already answer-associated representation produced by earlier layers, rather than because block 25 itself performs the semantic transfer.",
+    "test_to_rule_out": "Run layer-wise causal tracing and head/attention-probability analyses on the clean subject-to-answer computation, and test whether block-25 attention is the first point at which clean subject-conditioned information is needed for the clean answer."
+   },
+   {
+    "explanation": "Patching clean K/V may cause generic distribution-shift or logit-calibration effects rather than a specifically subject-mediated effect. The answer-specific logit-difference metric and NULL control reduce this concern but do not eliminate it.",
+    "test_to_rule_out": "Use semantically unrelated clean K/V patches, shuffled clean K/V, token-identity-preserving but content-randomized K/V, and controls that preserve answer-token marginal statistics while removing subject identity."
+   },
+   {
+    "explanation": "The high ATTN_25 recovery may reflect sufficiency rather than the location where information normally moves. The clean attention contribution was computed in an entirely clean run, so inserting it can inject already-computed answer information into the corrupt run.",
+    "test_to_rule_out": "Compare clean and corrupt block-25 attention probabilities, perform path-specific interventions at the block-25 query and attention output, and test downstream mediation while holding all other early computations fixed."
+   },
+   {
+    "explanation": "Low NOISE_ATTN25 retention may be a destructive interference or context-mismatch effect: the corrupt block-25 contribution is inserted into a clean residual stream and may disrupt processing rather than demonstrate logical necessity.",
+    "test_to_rule_out": "Compare clean, corrupt, matched-but-scrambled, zero, and alternative corrupt contributions at block 25; measure downstream representation disruption and performance with redundant routes left intact."
+   },
+   {
+    "explanation": "The weak KV13_S effects in several multi-token landmark subjects may reflect distribution of subject identity across the differing subject span rather than failure of the layer-13 route.",
+    "test_to_rule_out": "Analyze token positions within each subject span jointly with position-specific attention and K/V interventions, including controlled tokenizations with equal subject length."
+   },
+   {
+    "explanation": "HEAD25_0 may be a highly relevant readout head whose output contains the answer, while other heads and layers provide redundant routes. This would explain strong sufficiency without unique necessity or exclusive localization.",
+    "test_to_rule_out": "Perform leave-one-head-out and multi-head perturbation experiments, compare clean-run head attributions, and test whether the effect persists when alternative downstream routes are selectively disrupted."
+   }
+  ],
+  "warranted_conclusions": [
+   "The NULL control passes for all supplied pairs: the maximum absolute NULL recovery is zero, so the observed intervention effects are not explained by the copy-with-own-K/V implementation control.",
+   "There are 28 held-out pairs, exceeding the preregistered minimum of 12.",
+   "On the held-out set, the preregistered P1 criterion is met. The median KV13_all recovery is approximately 0.986, the median KV14_all recovery is approximately 0.016, and all 28 held-out pairs have KV13_all minus KV14_all at least 0.5.",
+   "Within these prompts and selected items, replacing the layer-13 shared K/V nearly fully restores clean answer discrimination, whereas replacing the layer-14 shared K/V alone has little effect. This is strong operational support for H-008 and for the layer-13 shared K/V being a sufficient route to the final-position answer logit.",
+   "P2 is met: the held-out median KVBOTH_all recovery is approximately 0.992, and combining the two shared K/V stores provides little improvement over layer 13 alone.",
+   "P3 is met at the held-out median level: KV13_D recovery is approximately 0.978, whereas KV13_T recovery is approximately 0.004. Thus the layer-13 route is localized primarily to the differing subject span rather than the unchanged template positions. The KV13_S results are heterogeneous for multi-token subjects, so the relevant subject representation need not be confined to the final subject token.",
+   "P4 is met: the held-out median ATTN_25 recovery is approximately 0.757, and ATTN_25 is the largest recovered ATTN_L contribution in all 28 held-out pairs. Therefore, replacing block-25's final-position attention contribution with the clean contribution is sufficient to restore answer discrimination in this experimental setup.",
+   "The held-out median NOISE_ATTN25 retained fraction is approximately 0.227, satisfying the preregistered P5 threshold.",
+   "Accordingly, H-009 satisfies the experiment's operational preregistered criteria: block-25 attention is sufficient, and inserting the corrupt block-25 contribution strongly reduces retained clean answer discrimination. This supports an important role for block 25 but does not by itself prove logical uniqueness or exclusivity.",
+   "The exploratory head results consistently implicate HEAD25_0: it has much larger recovery than the other heads and is often roughly 0.2 to 0.85. This is a useful lead for follow-up work, not a preregistered confirmatory result."
+  ],
+  "overclaims_to_avoid": [
+   "Do not claim that the experiment proves the semantic or causal transfer of subject information occurs uniquely at block 25. The intervention establishes that a clean block-25 attention contribution can restore the output and that a corrupt contribution can disrupt it.",
+   "Do not equate failure of NOISE_ATTN25 to prove logical necessity. Low retention can also arise from destructive interference or representation mismatch, and the experiment does not eliminate redundant pathways.",
+   "Do not claim that layer 14 carries no subject or factual information whatsoever. The result is that replacing layer-14 shared K/V alone has little effect on this particular clean/corrupt logit-difference task.",
+   "Do not claim that layer-13 K/V is the exclusive route in the network. The intervention demonstrates sufficiency and localization for this contrast, not exclusivity across all computations or tasks.",
+   "Do not generalize the findings to all factual recall, all relations, all subjects, arbitrary prompt templates, or other Gemma variants.",
+   "Do not describe recovery values as probabilities or causal mediation percentages; values above 1 and below 0 arise from nonlinear logit normalization.",
+   "Do not present HEAD25_0 as a preregistered or independently confirmed finding.",
+   "Do not treat the 28 pairs as 28 independent facts because subjects recur across pairs.",
+   "Do not claim the NULL control validates the semantic specificity of the interventions; it only validates that copying the run's own K/V leaves the output unchanged."
+  ],
+  "recommended_followups": [
+   "Revise analyze.py so a failed NULL control invalidates the run and fewer than 12 held-out pairs forces an INCONCLUSIVE or UNDERPOWERED status.",
+   "Persist an explicit held-out pair manifest containing subject IDs, relation, split, and hashes, and verify programmatically that no R1 held-out unordered pair appears in the E004 in-sample set.",
+   "Use subject-clustered bootstrap intervals or a hierarchical model that accounts for repeated subjects and relation.",
+   "Add an independently generated confirmatory set with more subjects, relations, prompt templates, and item lengths, and preregister both efficacy-based and uncertainty-based decision rules.",
+   "Run control interventions using shuffled, unrelated, zeroed, and token-randomized clean K/V to distinguish subject-specific restoration from generic clean/corrupt distribution shift.",
+   "Analyze block-25 attention probabilities and per-position key weights on clean runs to determine whether block 25 directly retrieves the subject or merely reads a subject-conditioned representation already formed upstream.",
+   "Perform leave-one-head-out, multi-head, and multi-layer perturbation tests to assess redundancy and whether HEAD25_0 is necessary or merely sufficient.",
+   "Test the NOISE_ATTN25 result against matched artificial corruptions, including preserving output norms and directions, and measure whether downstream layers recover or compensate.",
+   "Compare interventions at block 25 and immediately adjacent blocks under matched patch sizes and add a path-specific mediation analysis.",
+   "Add unit tests comparing last_only_from=15 against a full forward for the final position, verifying the stated numerical tolerance and checking that all shared-K/V, attention-output, and head-input hooks alter only the intended tensors."
+  ],
+  "overall_verdict": "The supplied implementation and data support a clean preregistered operational result: on 28 held-out pairs, all five threshold criteria P1-P5 and the NULL control pass. The strongest finding is that layer-13 shared K/V, particularly at the differing subject span, is sufficient to restore answer discrimination while layer-14 shared K/V alone is not. Block 25 is likewise strongly implicated because replacing its attention contribution nearly restores the clean output and ATTN_25 dominates the layer sweep. The conclusions should nevertheless remain bounded to the selected tasks and operational interventions: the data strongly support sufficiency and localization, but they do not prove that block 25 is the unique semantic transfer site or that it is logically necessary. The principal implementation defect is that the analysis does not enforce the preregistered NULL-invalid and underpowered status rules, although neither defect affects the supplied run."
+ },
+ "minimax_usage": {
+  "prompt_tokens": 24782,
+  "completion_tokens": 11011,
+  "total_tokens": 35793,
+  "prompt_tokens_details": {
+   "cached_tokens": 197
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 8507
+  }
+ }
+}

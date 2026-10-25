@@ -1,0 +1,511 @@
+{
+ "source_id": "LIT01-012",
+ "arxiv_id": "2406.04093",
+ "title": "Scaling and evaluating sparse autoencoders",
+ "chars": 110339,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 34,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.971,
+   "data": {
+    "title": "Scaling and evaluating sparse autoencoders",
+    "research_question": "How can k-sparse autoencoders be trained at scale and evaluated for extracting interpretable features from language model activations?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 small and GPT-4 family residual stream activations",
+      "quote": "We train autoencoders on the residual streams of both GPT-2 small [Radford et al., 2019] and models from a series of increasing sized models sharing GPT-4 architecture and training setup",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-4 series models at layer 56",
+      "quote": "we use a layer 56 of the way into the network for GPT-4 series models",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 small at layer 8",
+      "quote": "we use layer 8 ( 34 of the way) for GPT-2 small.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "16 million latent autoencoder on GPT-4 activations for 40 billion tokens",
+      "quote": "we train a 16 million latent autoencoder on GPT-4 activations for 40 billion tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Context length of 64 tokens",
+      "quote": "We use a context length of 64 tokens for all experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "61 binary classification datasets for probe evaluation",
+      "quote": "we curated a set of 61 binary classification datasets (details in Table 1).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Released code, GPT-2 small autoencoders, and visualizer",
+      "quote": "We also release code, a full suite of GPT-2 small autoencoders, and a feature visualizer for GPT-2 small autoencoders and the 16 million latent GPT-4 autoencoder.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Train autoencoders on residual stream activations",
+      "quote": "We train autoencoders on the residual streams of both GPT-2 small [Radford et al., 2019] and models from a series of increasing sized models sharing GPT-4 architecture and training setup",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Subtract mean and normalize inputs to unit norm",
+      "quote": "We subtract the mean over the dmodel dimension and normalize to all inputs to unit norm, prior to passing to the autoencoder (or computing reconstruction errors).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use TopK k-sparse autoencoder activation",
+      "quote": "We use a k-sparse autoencoder [Makhzani and Frey, 2013], which directly controls the number of active latents by using an activation function (TopK) that only keeps the k largest latents, zeroing the rest.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Prevent dead latents with tied initialization and auxiliary loss",
+      "quote": "We find two important ingredients for preventing dead latents: we initialize the encoder to the transpose of the decoder, and we use an auxiliary loss that models reconstruction error using the top-kaux dead latents",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate sparsity L0 and reconstruction MSE",
+      "quote": "After training, we evaluate autoencoders on sparsity L0 , and reconstruction mean-squared error (MSE).",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Train to compute-MSE frontier",
+      "quote": "we train autoencoders to the optimal MSE given the available compute, disregarding convergence.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use Adam with constant learning rate",
+      "quote": "We use the Adam optimizer [Kingma and Ba, 2014] with β1 = 0.9 and β2 = 0.999, and a constant learning rate.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Normalized MSE",
+      "definition": "Reconstruction MSE divided by the baseline error of always predicting mean activations.",
+      "quote": "We report a normalized version of all MSE numbers, where we divide by a baseline reconstruction error of always predicting the mean activations.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Sparsity L0",
+      "definition": "Number of active latents, directly controlled by TopK.",
+      "quote": "It enables setting the L0 directly, as opposed to tuning an L1 coefficient λ, enabling simpler model comparison and rapid iteration.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Downstream loss",
+      "definition": "Language model loss after replacing the residual stream latent with its autoencoder reconstruction.",
+      "quote": "How good is the language model loss if the residual stream latent is replaced with the autoencoder reconstruction of that latent?",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Probe loss",
+      "definition": "Best cross entropy loss of 1d logistic probes trained on latents for binary tasks.",
+      "quote": "For each task, we train a 1d logistic probe on each latent using the Newton-Raphson method to predict the task, and record the best cross entropy loss (across latents).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "N2G explainability precision/recall",
+      "definition": "Explanation quality using Neuron to Graph n-gram-with-wildcards explanations.",
+      "quote": "we focus on an improved version of Neuron to Graph (N2G) [Foote et al., 2023], a substantially less expressive but much cheaper method that outputs explanations in the form of collections of n-grams with wildcards.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Ablation sparsity",
+      "definition": "Sparsity of downstream logit effects when ablating individual latents, measured by (L1/L2)^2 normalized by V*T.",
+      "quote": "We then measure the sparsity of this vector via ( LL21 )2 , which corresponds to an “effective number of vocab tokens affected”.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Dead latents",
+      "definition": "Latents that have not activated for 10 million tokens.",
+      "quote": "We follow Templeton et al. [2024], and consider a latent dead if it has not activated in 10 million tokens",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Joint scaling law L(N,K)",
+      "definition": "MSE scaling law jointly over number of latents n and sparsity level k.",
+      "quote": "We find that MSE follows a joint scaling law along the number of latents n and the sparsity level k (Figure 1b).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "TopK has a better reconstruction-sparsity tradeoff than ReLU and ProLU and is comparable to Gated.",
+      "numbers": "n = 32768",
+      "quote": "At a fixed number of latents (n = 32768), TopK has a better reconstruction-sparsity trade off than ReLU and ProLU, and is comparable to Gated.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The paper finds clean scaling laws with respect to autoencoder size and sparsity.",
+      "numbers": "not stated",
+      "quote": "we find clean scaling laws with respect to autoencoder size and sparsity.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A 16 million latent autoencoder is trained on GPT-4 activations for 40 billion tokens.",
+      "numbers": "16 million; 40 billion",
+      "quote": "we train a 16 million latent autoencoder on GPT-4 activations for 40 billion tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The largest 16 million latent autoencoder has only 7% dead latents.",
+      "numbers": "16 million; 7%",
+      "quote": "Using these techniques, even in our largest (16 million latent) autoencoder only 7% of latents are dead.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Substituting the 16 million latent autoencoder into GPT-4 gives loss corresponding to 10% of GPT-4 pretraining compute.",
+      "numbers": "16 million; 10%",
+      "quote": "when our 16 million latent autoencoder is substituted into GPT-4, we get a language modeling loss corresponding to 10% of the pretraining compute of GPT-4.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "TopK N2G explanations have higher recall and slightly worse precision than ReLU.",
+      "numbers": ">1.5x; >0.9x",
+      "quote": "N2G explanations have significantly better recall (>1.5x) and only slightly worse precision (>0.9x) for TopK models with the same n (resulting in better F1 scores) and similar L0 (Figure 24).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Larger subject models require larger autoencoders to achieve the same MSE, with a worse exponent.",
+      "numbers": "not stated",
+      "quote": "larger subject models require larger autoencoders to achieve the same MSE, and the exponent is worse",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "TopK forces exactly k latents per token, which is likely suboptimal.",
+      "quote": "TopK forces every token to use exactly k latents, which is likely suboptimal. Ideally we would constrain E[L0 ] rather than L0 .",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Optimization could likely be greatly improved.",
+      "quote": "The optimization can likely be greatly improved, for example with learning rate scheduling,16 better optimizers, and better aux losses for preventing dead latents.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Many random activations, especially in GPT-4, are not yet adequately monosemantic.",
+      "quote": "A large fraction of the random activations of features we find, especially in GPT-4, are not yet adequately monosemantic.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The probe-based metric is noisy.",
+      "quote": "Our probe based metric is quite noisy, which could be improved by having a greater breadth of tasks and higher quality tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "N2G captures only very simple patterns.",
+      "quote": "While we use n2g for its computational efficiency, it is only able to capture very simple patterns.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The 64-token context may be too short for interesting GPT-4 behaviors.",
+      "quote": "A context length of 64 tokens is potentially too few tokens to exhibit the most interesting behaviors of GPT-4.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not study Gemma 4 E2B, KV-shared layers 15-34, or per-layer embeddings, so SAE findings may not transfer to those internal sites.",
+     "No activation patching, logit lens, induction-head, or factual-recall tracing experiments are reported.",
+     "The GPT-4-scale SAE training is far beyond CPU-scale replication and may not be feasible for the lab setup.",
+     "The 64-token context and near-end layer choice may miss long-context and mid-layer KV-shared phenomena.",
+     "TopK fixed-k SAEs may not align with per-layer embedding structure or shared KV representations.",
+     "The evaluation metrics are quality proxies and do not establish causal circuits for induction or factual recall."
+    ],
+    "code_or_data_url": "https://github.com/openai/sparse_autoencoder and https://openaipublic.blob.core.windows.net/sparse-autoencoder/sae-viewer/index.html",
+    "relevance_to_lab": "Moderate relevance: the SAE training recipe, dead-latent prevention, scaling laws, and evaluation metrics are transferable, but the paper does not address Gemma 4 E2B KV-shared layers 15-34, per-layer embeddings, activation patching, logit lens, induction heads, or factual recall; GPT-4-scale training is not CPU-feasible."
+   },
+   "usage": {
+    "prompt_tokens": 23442,
+    "completion_tokens": 12641,
+    "total_tokens": 36083,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 10051
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 39,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.975,
+   "data": {
+    "title": "Scaling and evaluating sparse autoencoders",
+    "research_question": "Can sparse autoencoders be trained reliably at very large width while directly controlling sparsity, and how do reconstruction quality and feature quality scale with autoencoder size, sparsity, and subject-model size?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 small residual-stream activations",
+      "quote": "Inputs: We train autoencoders on the residual streams of both GPT-2 small [Radford et al., 2019]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-4-family subject models, including GPT-4",
+      "quote": "models from a series of increasing sized models sharing GPT-4 architecture and training setup",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Model-specific residual-stream layer selection",
+      "quote": "Specifically, we use a layer 56 of the way into the network for GPT-4 series models, and we use layer 8 ( 34 of the way) for GPT-2 small.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "64-token context window",
+      "quote": "We use a context length of 64 tokens for all experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Sixty-one binary classification datasets for probe evaluation",
+      "quote": "Based on this intuition, we curated a set of 61 binary classification datasets (details in Table 1).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-4 activations for the largest SAE experiment",
+      "quote": "To demonstrate the scalability of our approach, we train a 16 million latent autoencoder on GPT-4 activations for 40 billion tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Alternative activation-function baselines",
+      "quote": "We compared these different approaches in terms of reconstruction MSE, number of active latents L0 , and downstream cross-entropy loss (Figure 2 and 5).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Synthetic 768-dimensional Gaussian noise data",
+      "quote": "In synthetic experiments with unstructured noise (see Figure 31), we find an L(N ) exponent of -0.04 on 768-dimensional gaussian data",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Extract residual-stream activations at a model-specific late layer.",
+      "quote": "Specifically, we use a layer 56 of the way into the network for GPT-4 series models, and we use layer 8 ( 34 of the way) for GPT-2 small.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Center activations over the model dimension and normalize each input to unit norm.",
+      "quote": "We subtract the mean over the dmodel dimension and normalize to all inputs to unit norm, prior to passing to the autoencoder (or computing reconstruction errors).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use TopK to retain only the k largest latent activations.",
+      "quote": "We use a k-sparse autoencoder [Makhzani and Frey, 2013], which directly controls the number of active latents by using an activation function (TopK) that only keeps the k largest latents, zeroing the rest.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Prevent dead latents using tied encoder-decoder initialization and an auxiliary dead-latent loss.",
+      "quote": "We find two important ingredients for preventing dead latents: we initialize the encoder to the transpose of the decoder, and we use an auxiliary loss that models reconstruction error using the top-kaux dead latents",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Optimize with Adam and a constant learning rate.",
+      "quote": "We use the Adam optimizer [Kingma and Ba, 2014] with β1 = 0.9 and β2 = 0.999, and a constant learning rate.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use very large token batches for parallel training.",
+      "quote": "To gain the benefits of parallelism, we use a batch size of 131,072 tokens for most of our experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate behavioral reconstruction by replacing the residual stream with its SAE reconstruction.",
+      "quote": "In both cases, we test an autoencoder by replacing the residual stream by the reconstructed value during the forward pass, and seeing how it affects downstream predictions.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate known-feature recovery with one-dimensional logistic probes.",
+      "quote": "For each task, we train a 1d logistic probe on each latent using the Newton-Raphson method to predict the task, and record the best cross entropy loss (across latents).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Normalized reconstruction MSE",
+      "definition": "Reconstruction MSE divided by the error obtained by always predicting the mean activation.",
+      "quote": "We report a normalized version of all MSE numbers, where we divide by a baseline reconstruction error of always predicting the mean activations.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "L0 sparsity",
+      "definition": "The number of active SAE latents.",
+      "quote": "After training, we evaluate autoencoders on sparsity L0 , and reconstruction mean-squared error (MSE).",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Downstream KL divergence",
+      "definition": "KL divergence of language-model predictions after replacing a residual stream with the SAE reconstruction.",
+      "quote": "we follow prior work [Bills et al., 2023, Cunningham et al., 2023, Bricken et al., 2023, Braun et al., 2024] and consider downstream Kullback-Leibler (KL) divergence and cross-entropy loss.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Delta cross-entropy",
+      "definition": "Cross-entropy loss measured relative to the loss of a perfect autoencoder reconstruction.",
+      "quote": "Because a perfect reconstruction would lead to a non-zero cross-entropy loss, we actually consider the difference to the perfect-autoencoder cross-entropy (“delta cross-entropy”).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Probe loss",
+      "definition": "The best binary cross-entropy obtained by fitting a one-dimensional logistic probe to each latent and selecting the best latent.",
+      "quote": "For each task, we train a 1d logistic probe on each latent using the Newton-Raphson method to predict the task, and record the best cross entropy loss (across latents).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "N2G explanation precision and recall",
+      "definition": "Precision is P(act > 0 | n2g > 0), and recall is P(n2g > 0 | act > 0) for a latent and its N2G explanation.",
+      "quote": "N2G explanations have significantly better recall (>1.5x) and only slightly worse precision (>0.9x) for TopK models with the same n (resulting in better F1 scores) and similar L0 (Figure 24).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Explanation reconstruction",
+      "definition": "Use explanation-generated latent simulations, decode them, and evaluate the resulting downstream language-model loss.",
+      "quote": "Our downstream loss metric measures how much of the performance we’re capturing (but our features could be uninterpretable), and our explanation based metric measures how monosemantic our features are (but they might not explain most of the model).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Ablation-effect sparsity",
+      "definition": "A normalized concentration score for latent-ablation logit differences over future vocabulary outputs; smaller values indicate sparser effects.",
+      "quote": "We normalize by V · T to have a fraction between 0 and 1, with smaller values corresponding to sparser effects.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "The method scales to a 16 million latent SAE trained on GPT-4 activations for 40 billion tokens.",
+      "numbers": "16 million latents; 40 billion tokens",
+      "quote": "To demonstrate the scalability of our approach, we train a 16 million latent autoencoder on GPT-4 activations for 40 billion tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Tied initialization and the auxiliary loss leave only 7% of latents dead at the largest reported scale.",
+      "numbers": "16 million latent autoencoder; 7% dead",
+      "quote": "Using these techniques, even in our largest (16 million latent) autoencoder only 7% of latents are dead.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The token budget needed for convergence increases approximately as sublinear power laws of SAE width.",
+      "numbers": "approximately Θ(n0.6 ) for GPT-2 small and Θ(n0.65 ) for GPT-4",
+      "quote": "We find that the number of tokens to convergence increases as approximately Θ(n0.6 ) for GPT-2 small and Θ(n0.65 ) for GPT-4 (Figure 11).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The joint GPT-4 MSE scaling fit has explicit width, sparsity, interaction, and irreducible-loss coefficients.",
+      "numbers": "α = −0.50, βk = 0.26, βn = −0.017, γ = −0.042, ζ = −1.32, and η = −0.085",
+      "quote": "with α = −0.50, βk = 0.26, βn = −0.017, γ = −0.042, ζ = −1.32, and η = −0.085.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Substituting the 16 million latent SAE reconstruction into GPT-4 yields a language-modeling loss corresponding to 10% of GPT-4's pretraining compute.",
+      "numbers": "16 million latents; 10% of the pretraining compute of GPT-4",
+      "quote": "For example, when our 16 million latent autoencoder is substituted into GPT-4, we get a language modeling loss corresponding to 10% of the pretraining compute of GPT-4.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Relative to ReLU at the same width and similar sparsity, TopK N2G explanations improve recall substantially while retaining slightly worse precision.",
+      "numbers": ">1.5x recall; >0.9x precision",
+      "quote": "N2G explanations have significantly better recall (>1.5x) and only slightly worse precision (>0.9x) for TopK models with the same n (resulting in better F1 scores) and similar L0 (Figure 24).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Ablating individual SAE latents has substantially sparser logit effects than ablating residual-stream channels.",
+      "numbers": "10-14% for latents; 60% for residual stream channels",
+      "quote": "Note that latents are sparse in an absolute sense, having a ( LL21 )2 of 10-14% , whereas ablating residual stream channels gives 60% (slightly better than the theoretical value of ∼ π2 for random vectors).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "At very high sparsity, latent solutions become dense and the favorable metric trends reverse.",
+      "numbers": "k = 512; dmodel = 768",
+      "quote": "However, the trend reverses at k = 512, indicating that as k approaches dmodel = 768, the autoencoder learns latents with less interpretable effects.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "TopK's fixed per-token latent count is likely suboptimal; the authors prefer constraining expected L0.",
+      "quote": "TopK forces every token to use exactly k latents, which is likely suboptimal.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The training optimization could be improved substantially.",
+      "quote": "The optimization can likely be greatly improved, for example with learning rate scheduling",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The relationship between evaluation metrics and downstream applications remains insufficiently understood.",
+      "quote": "Much more could be done to understand what metrics best track relevance to downstream applications, and to study those applications themselves.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Many random GPT-4 feature activations are not yet adequately monosemantic.",
+      "quote": "A large fraction of the random activations of features we find, especially in GPT-4, are not yet adequately monosemantic.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The probe metric is noisy and needs more and higher-quality tasks.",
+      "quote": "Our probe based metric is quite noisy, which could be improved by having a greater breadth of tasks and higher quality tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "N2G is computationally efficient but captures only simple patterns.",
+      "quote": "While we use n2g for its computational efficiency, it is only able to capture very simple patterns.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The 64-token context may be too short to expose the most interesting GPT-4 behaviors.",
+      "quote": "A context length of 64 tokens is potentially too few tokens to exhibit the most interesting behaviors of GPT-4.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Compute constraints prevented training the 16M SAE to the convergence token budget, excluding it from a consistent L(N) series.",
+      "quote": "Unfortunately, because of compute constraints, we were unable to train our 16M latent autoencoder to L(N ), which made it not possible to include the 16M as part of a consistent L(N ) series.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "External validity is untested: the paper evaluates GPT-2 and GPT-4-family models, not Gemma 4 E2B or its shared-KV architecture.",
+     "The paper does not test whether a residual-stream SAE cleanly represents features that are shared across layers 15–34.",
+     "Aggregate next-token KL and cross-entropy improvements do not establish preservation of induction-head behavior or factual-recall circuits.",
+     "Single-layer reconstruction substitution and individual latent ablations do not establish that multi-layer causal circuits remain intact.",
+     "The probe suite may omit important factual-recall mechanisms, and the paper does not report training-data contamination controls for the evaluation datasets.",
+     "The largest-scale recipe depends on 512-way sharding and custom sparse kernels, so its quality and scaling trade-offs may not reproduce in a CPU-centered laboratory.",
+     "Although GPT-2 layer sweeps are reported, most detailed mechanistic and ablation analyses use GPT-2 small layer 8, leaving the layer-dependence of results for Gemma layers 15–34 unresolved.",
+     "Training-budget sensitivity can alter the apparent winner at a fixed token budget because convergence requirements vary with width and differ between L(C) and L(N)."
+    ],
+    "code_or_data_url": "https://github.com/openai/sparse_autoencoder",
+    "relevance_to_lab": "Methodologically relevant, but not directly validated on the lab's architecture. The paper's residual-stream replacement experiment is effectively activation patching, and its latent-ablation logit-difference metric is adjacent to logit-lens analysis. TopK, AuxK, tied initialization, downstream KL/delta cross-entropy, and ablation-sparsity measurements could inform SAE baselines for per-layer Gemma embeddings. The released code may be adaptable. However, there are no Gemma 4 E2B, shared-KV layers 15–34, induction-head, or factual-recall experiments; the single-layer 64-token setup and large-scale GPU-oriented systems also leave cross-layer causality and CPU feasibility unresolved."
+   },
+   "usage": {
+    "prompt_tokens": 23395,
+    "completion_tokens": 23255,
+    "total_tokens": 46650,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 20397
+    }
+   }
+  }
+ }
+}

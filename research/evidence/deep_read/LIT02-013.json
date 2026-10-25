@@ -1,0 +1,478 @@
+{
+ "source_id": "LIT02-013",
+ "arxiv_id": "2606.09899",
+ "title": "When Attribution Patching Lies: Diagnosis and a Second-Order Correction",
+ "chars": 142309,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.967,
+   "data": {
+    "title": "When Attribution Patching Lies: Diagnosis and a Second-Order Correction",
+    "research_question": "When is attribution patching reliable, how large can its error be, and how should it be corrected?",
+    "models_and_data": [
+     {
+      "item": "Five model families at 124M–9B scale",
+      "quote": "We evaluate five model families at different scales as shown in Table 1.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Models include GPT-2, Pythia, Qwen2.5, Gemma-2, Llama-3.1",
+      "quote": "GPT-2 [35], Pythia (410M, 2.8B) [36], Qwen2.5-1.5B [37], Gemma (2B, 9B) [38], and Llama-3.18B [39].",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Component types: attention heads, pre-activation MLP neurons, Qwen MLP outputs",
+      "quote": "We analyze attention heads in all models, pre-activation MLP neurons in GeLU models, and MLP layer outputs in Qwen.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Tasks: IOI, Greater-Than, factual completion",
+      "quote": "We evaluate on the three established circuit benchmarks together with a broader factual-completion setting:",
+      "quote_check": "near"
+     },
+     {
+      "item": "Prompt counts for IOI and Greater-Than",
+      "quote": "IOI uses 50 templated prompts and Greater-Than uses 200 prompts.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "TransformerLens hooking",
+      "quote": "All models are hooked with TransformerLens [40].",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Screen-Flag-Fix workflow: screen all components, flag unreliable estimates, correct only flagged components",
+      "quote": "screen all components with attribution patching, flag unreliable ones via the reliability score, and correct only those with an HVP-based second-order fix.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute HVP correction using two backward passes",
+      "quote": "Computing δ⊤Hδ requires the Hessian-vector product Hδ, which we obtain via two backward passes [34]:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "MS-HVP splits the patch into K sub-steps and applies local second-order corrections",
+      "quote": "splits the patch into K equal sub-steps and applies a second-order correction at each intermediate point along the path from a to a+δ.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Selective HVP applies correction only above reliability threshold τ",
+      "quote": "compute R̃ for all components, apply HVP correction only to those with R̃ ≥ τ , and trust attribution patching for the rest.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Report 95% confidence intervals via prompt bootstrap",
+      "quote": "we report 95% confidence intervals computed from 1,000 bootstrap resamples over prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute Hessian-vector products without explicitly forming the Hessian",
+      "quote": "Each Hessian–vector product Hδ is computed with a single double backward pass, without ever forming the Hessian explicitly",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "top-5 relative error",
+      "definition": "Mean absolute error on the five components with largest activation-patching effect, normalized by ground-truth score range.",
+      "quote": "Our primary metric is top-5 relative error: the mean absolute error of a method’s scores on the five components with largest activation-patching effect, normalized by the ground-truth score range.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "reliability score R̃",
+      "definition": "Leading omitted quadratic term relative to the first-order attribution-patching estimate.",
+      "quote": "R̃ measures the leading omitted term relative to the first-order estimate.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "AUROC for detecting >50% relative error",
+      "definition": "Area under ROC curve for flagging components whose attribution-patching relative error exceeds 50%.",
+      "quote": "ROC curve for detecting >50% relative error. AUC = 0.70 [0.67, 0.73].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "top-k overlap",
+      "definition": "Fraction of ground-truth circuit heads recovered at top-k ranking.",
+      "quote": "Top-k overlap is computed against the activation patching ground truth.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Spearman correlation",
+      "definition": "Rank correlation between reliability score and true relative error.",
+      "quote": "Spearman ρ = 0.48.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Kendall τ rank correlation",
+      "definition": "Global rank correlation of component rankings against activation-patching ground truth.",
+      "quote": "Kendall τ rank correlations range from 0.35 on Pythia-410M to 0.72 on Gemma-2-2B factual.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Standard HVP reduces top-5 relative error substantially on attention heads and pre-activation MLP neurons.",
+      "numbers": "72–90% attention heads; 56–67% pre-activation MLP neurons",
+      "quote": "Standard HVP correction (K=1, cost 2) reduces top-5 relative error by 72–90% on attention heads and 56–67% on pre-activation MLP neurons.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MS-HVP reduces Llama-3.1-8B IOI error by 82% relative to attribution patching.",
+      "numbers": "8.42% to 3.54%; 82% reduction",
+      "quote": "On Llama-3.1-8B IOI, multi-step HVP further reduces error from 8.42% to 3.54%, corresponding to an 82% reduction relative to attribution patching.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Selective HVP captures most full-HVP gain at low cost.",
+      "numbers": "91% of full-HVP gain at 26% cost; τ=0.1",
+      "quote": "Applying HVP only to R̃-flagged components (Figure 6b) captures 91% of full-HVP gain at 26% of the cost (τ =0.1), validating Proposition 2.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MS-HVP improves GPT-2 Greater-Than top-5 head overlap.",
+      "numbers": "70.1% to 83.2%; +13.1 pp",
+      "quote": "On GPT-2 Greater-Than, MS-HVP (K=5) increases top-5 head overlap with activation-patching ground truth from 70.1% to 83.2% (+13.1 pp), outperforming both IG and GIM.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Single HVP pass nearly recovers Gemma-2-2B Greater-Than ranking.",
+      "numbers": "7.41% to 0.62%",
+      "quote": "on Gemma-2-2B Greater-Than, a single HVP pass reduces the top-5 relative error from 7.41% to 0.62%, approaching exact recovery of the activation-patching ranking.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Standard HVP can overshoot in pathological high-curvature Pythia-410M IOI.",
+      "numbers": "22.34% to 47.48%",
+      "quote": "standard HVP catastrophically overshoots, increasing the error from 22.34% to 47.48%",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MS-HVP at cost 10 beats IG at cost 35 on Pythia-410M IOI.",
+      "numbers": "18.03% vs 18.47%; p = 0.022",
+      "quote": "On Pythia-410M IOI, MS-HVP with K=5 (cost 10) outperforms IG with S=35 (cost 35), achieving 18.03% versus 18.47% top-5 error (∆ = −0.44 pp, p = 0.022).",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Framework focuses on single-token perturbations.",
+      "quote": "The current framework focuses on single-token perturbations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Larger-than-9B scale behavior remains unverified.",
+      "quote": "While we demonstrate consistent gains up to 9B parameters, verifying behaviour at yet larger scales remains an open opportunity.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "HVP does not address circuit completeness or minimality.",
+      "quote": "HVP improves component-level attribution accuracy but does not by itself address circuit completeness or minimality",
+      "quote_check": "exact"
+     },
+     {
+      "text": "SAE encoder nonlinearity adds curvature not analyzed.",
+      "quote": "the SAE encoder’s nonlinearity (ReLU or top-k) introduces an additional curvature source whose magnitude we leave to future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Joint patches add off-diagonal Hessian contributions not measured.",
+      "quote": "Joint patches add off-diagonal Hessian contributions",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Paper evaluates Gemma-2-2B/9B, not Gemma 4 E2B; KV-shared layers 15-34 and per-layer embeddings are untested and may change HVP behavior.",
+     "CPU-only lab setting may make double-backward HVP/MS-HVP much more expensive than the GPU wall-clock overhead reported in the paper.",
+     "Reliability-score thresholds and AUROC may not transfer to Gemma 4 E2B; overall AUROC is only 0.70 and precision at R̃>0.3 is 36%, so false positives could waste CPU compute.",
+     "The paper tests attention heads and MLP neurons on IOI/Greater-Than/factual completion, not induction-head or factual-recall tracing with logit lens on Gemma 4 E2B.",
+     "Independent per-component patching ignores off-diagonal Hessian interactions, so circuit-level conclusions from selective HVP may still be misleading.",
+     "No own code or data URL is provided, limiting exact reproducibility on the lab’s Gemma 4 E2B setup."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Directly relevant to the lab’s activation-patching work: it diagnoses when attribution patching is unreliable and proposes HVP/MS-HVP plus a reliability score. It uses Gemma-2-2B/9B and activation patching, so it can inform CPU feasibility and selective correction, but the lab must validate it on Gemma 4 E2B KV-shared layers 15-34, per-layer embeddings, logit lens, induction heads, and factual-recall tracing."
+   },
+   "usage": {
+    "prompt_tokens": 24290,
+    "completion_tokens": 8618,
+    "total_tokens": 32908,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 6548
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 37,
+    "near": 2,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "When Attribution Patching Lies: Diagnosis and a Second-Order Correction",
+    "research_question": "For a given component, when is attribution patching reliable, how large can its error be, and how should it be corrected?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 Small",
+      "quote": "GPT-2 Small [35]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia-410M-deduped and Pythia-2.8B-deduped",
+      "quote": "Pythia (410M, 2.8B) [36]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen2.5-1.5B",
+      "quote": "Qwen2.5-1.5B [37]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gemma-2-2B and Gemma-2-9B",
+      "quote": "Gemma (2B, 9B) [38]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama-3.1-8B",
+      "quote": "Llama-3.1-8B [39]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "IOI dataset: 50 templated prompts with name-swap corruption and Mary as the target",
+      "quote": "50 IOI prompts of the form “When Mary and John went to the store, John gave a drink to”, with the indirect object (Mary) as the target.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Greater-Than dataset: 200 prompts testing comparison of years",
+      "quote": "For the Greater-Than circuit [41], we use 200 prompts of the form “The war lasted from the year 17{XX} to the year 17” and measure whether the model assigns higher probability to years greater than XX.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Factual-completion sweeps using 20 generic prompts, with selected settings scaled to 55 or 35 prompts",
+      "quote": "Unless otherwise noted, generic sweeps use 20 factual prompts. We additionally scale selected experiments to 55 prompts for the Pythia-410M attention-head setting and 35 prompts for the Qwen2.5-1.5B attention-head and MLP-output settings.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Create matched clean and counterfactual inputs differing by a controlled corruption.",
+      "quote": "Causal localization compares two matched inputs that differ in a controlled way (e.g., swapping a name or replacing a token) and asks which internal components account for the resulting change in output.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute the activation-patching causal reference and a first-order attribution-patching estimate.",
+      "quote": "Activation patching measures the true causal effect of replacing a with the counterfactual a′ = a + δ, namely ∆ := M (a + δ) − M (a). Attribution patching approximates it using a single backward pass.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Compute each Hessian-vector product with a double backward pass without explicitly forming the Hessian.",
+      "quote": "Each Hessian–vector product Hδ is computed with a single double backward pass, without ever forming the Hessian explicitly (implementation details in Appendix E.1).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Score component-level reliability using network-level curvature.",
+      "quote": "the reliability score R̃ tracks network-level curvature and accurately localizes failure regions.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For large perturbations, split the patch into K local sub-steps and apply a second-order correction at each step.",
+      "quote": "Multi-Step HVP (MS-HVP), which splits the patch into K equal sub-steps and applies a second-order correction at each intermediate point along the path from a to a+δ.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Flag unreliable estimates and apply HVP only to the selected components.",
+      "quote": "run attribution patching broadly, threshold R̃, and apply HVP only to the flagged subset.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compare against Integrated Gradients, Integrated Hessians, GIM, and other attribution-patching refinements.",
+      "quote": "We evaluate across five model families (124M–9B parameters), comparing against Integrated Gradients (IG) [10], Integrated Hessians (IH) [11], and GIM [8].",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate uncertainty with prompt-level bootstrap confidence intervals.",
+      "quote": "Unless otherwise stated, we report 95% confidence intervals computed from 1,000 bootstrap resamples over prompts.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Top-5 relative error",
+      "definition": "Mean absolute error on the five components with the largest activation-patching effect, normalized by the ground-truth score range.",
+      "quote": "Our primary metric is top-5 relative error: the mean absolute error of a method’s scores on the five components with largest activation-patching effect, normalized by the ground-truth score range.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-k overlap and Spearman correlation",
+      "definition": "Agreement between attribution-based head rankings and activation-patching ground-truth rankings.",
+      "quote": "We compute attribution-patching and HVP-corrected attributions for all 12 × 12 = 144 attention heads, rank them by magnitude, and compare the resulting rankings against the activation-patching ground truth using top-k overlap and Spearman correlation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Reliability score",
+      "definition": "Relative magnitude of the omitted quadratic correction compared with the first-order attribution estimate.",
+      "quote": "R̃ measures the leading omitted term relative to the first-order estimate.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "ROC AUC for unreliable-estimate detection",
+      "definition": "Area under the ROC curve for detecting attribution estimates with more than 50% relative error, with operating-point recall and precision.",
+      "quote": "AUC = 0.70 [0.67, 0.73]. At R̃ > 0.3 (marked), recall is 89% and precision 36%, flagging 40% of components.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-K circuit recovery overlap",
+      "definition": "Fraction of activation-patching ground-truth heads recovered after ranking heads by attribution magnitude and thresholding at the known circuit size.",
+      "quote": "ranking all attention heads by attribution magnitude and threshold at the known circuit size to measure overlap with the activation-patching ground truth",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Kendall τ rank correlation",
+      "definition": "Global agreement between an attribution-based ranking and the activation-patching reference ranking.",
+      "quote": "Kendall τ rank correlations range from 0.35 on Pythia-410M to 0.72 on Gemma-2-2B factual.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Backward-pass cost",
+      "definition": "Computational cost measured in backward passes per component per prompt.",
+      "quote": "Measured in backward passes per component per prompt, standard attribution patching has cost 1, standard HVP has cost 2, and MS-HVP with K iterations has cost 2K.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Attribution-patching error is driven by downstream network curvature rather than local component curvature.",
+      "numbers": "2–66×; r = 0.04; >750%",
+      "quote": "the network-level Hessian exceeds local curvature by 2–66× across three model families, with near-zero correlation (r = 0.04); using f ′′ (z) for correction produces >750% error – worse than no correction at all (Figure 2).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Standard HVP broadly reduces top-5 relative error for attention heads and pre-activation MLP neurons.",
+      "numbers": "K=1, cost 2; 72–90%; 56–67%",
+      "quote": "Standard HVP correction (K=1, cost 2) reduces top-5 relative error by 72–90% on attention heads and 56–67% on pre-activation MLP neurons.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "HVP nearly eliminates top-5 error on Gemma-2-2B Greater-Than.",
+      "numbers": "7.41% to 0.62%",
+      "quote": "on Gemma-2-2B Greater-Than, a single HVP pass reduces the top-5 relative error from 7.41% to 0.62%, approaching exact recovery of the activation-patching ranking.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Multi-step HVP substantially improves attribution at 8B scale.",
+      "numbers": "8.42% to 3.54%; 82%",
+      "quote": "On Llama-3.1-8B IOI, multi-step HVP further reduces error from 8.42% to 3.54%, corresponding to an 82% reduction relative to attribution patching.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Single-step HVP can overshoot catastrophically when the perturbation exceeds the local Taylor convergence radius, while multi-step HVP restores stability.",
+      "numbers": "22.34% to 47.48%",
+      "quote": "In this regime, standard HVP catastrophically overshoots, increasing the error from 22.34% to 47.48%, exactly as predicted by Corollary 1.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In the pathological high-curvature setting, MS-HVP is more accurate than much more expensive Integrated Gradients.",
+      "numbers": "K=5, cost 10; S=35, cost 35; 18.03% versus 18.47%; ∆ = −0.44 pp; p = 0.022",
+      "quote": "On Pythia-410M IOI, MS-HVP with K=5 (cost 10) outperforms IG with S=35 (cost 35), achieving 18.03% versus 18.47% top-5 error (∆ = −0.44 pp, p = 0.022).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "HVP improves circuit-boundary recovery on GPT-2 Greater-Than.",
+      "numbers": "70.1% to 83.2%; +13.1 pp",
+      "quote": "On GPT-2 Greater-Than, MS-HVP (K=5) increases top-5 head overlap with activation-patching ground truth from 70.1% to 83.2% (+13.1 pp), outperforming both IG and GIM.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Selective HVP recovers most of the full-correction benefit at a fraction of the cost.",
+      "numbers": "91%; 26%; τ =0.1",
+      "quote": "Applying HVP only to R̃-flagged components (Figure 6b) captures 91% of full-HVP gain at 26% of the cost (τ =0.1), validating Proposition 2.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The main framework focuses on single-token perturbations, with multi-token semantic corruptions left as a future direction.",
+      "quote": "The current framework focuses on single-token perturbations. However, extending to multi-token semantic corruptions is a natural next direction where preliminary results are promising (Appendix E.4).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Validation is limited to models up to 9B parameters.",
+      "quote": "While we demonstrate consistent gains up to 9B parameters, verifying behaviour at yet larger scales remains an open opportunity.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Component-level HVP accuracy does not itself establish circuit completeness or minimality.",
+      "quote": "HVP improves component-level attribution accuracy but does not by itself address circuit completeness or minimality – integrating with verification tools is an exciting avenue for future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "SAE-encoder nonlinearity introduces an additional curvature source not quantified in the paper.",
+      "quote": "the SAE encoder’s nonlinearity (ReLU or top-k) introduces an additional curvature source whose magnitude we leave to future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Standard HVP fails in the identified high-curvature regime unless replaced or stabilized with multi-step correction.",
+      "quote": "In this regime, standard HVP catastrophically overshoots, increasing the error from 22.34% to 47.48%, exactly as predicted by Corollary 1.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The Greater-Than benchmark cannot be evaluated directly on Gemma because of tokenizer incompatibility.",
+      "quote": "— Tokenizer-incompatible: the greater_than task requires patching a single token representing a two-digit number (e.g. “42”), but Gemma’s tokenizer splits it into multiple tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The path-local smoothness bound fails for a non-negligible fraction of GPT-2 component-prompt pairs, concentrated in Layer 0.",
+      "quote": "The 17.6% of violations are concentrated in Layer 0, where L̂3 is an order of magnitude larger than mid-network layers (median 0.065 vs. 0.001–0.002).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Independent component corrections omit off-diagonal Hessian effects that matter for aggregate circuit-level metrics.",
+      "quote": "these affect aggregate circuit-level metrics but not per-component ranking (measuring them would require O(n2 ) HVPs).",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Architecture transfer is untested: the paper evaluates Gemma-2-2B and Gemma-2-9B, not Gemma 4 E2B or its KV-shared layers.",
+     "CPU feasibility is unknown: all timings use NVIDIA L40S GPUs, and double-backward HVP may have different relative CPU cost and memory behavior.",
+     "The evaluated benchmarks do not directly test induction-head identification or factual-recall tracing in the lab's target architecture.",
+     "Improved independent component rankings may not transfer to joint-patch behavior, whole-circuit faithfulness, or interactions among simultaneously patched layers.",
+     "Random-token and short factual sweeps may not represent naturalistic factual recall, while semantic entity-swap validation covers only a limited subset of models.",
+     "Numerical sensitivity is not characterized despite float32 gradients, mixed precision elsewhere, and potential cancellation in the quadratic form.",
+     "Prompt-level bootstrap intervals do not quantify variability across models, tasks, corruption draws, random seeds, or implementation choices.",
+     "Replication risk remains because no paper-specific code or data URL is supplied, AtP* was reimplemented from its description, and the GIM implementation was modified."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "The method is directly applicable to Gemma 4 E2B activation-patching workflows: treat each per-layer embedding in the KV-shared layers as a differentiable patched activation, use target-token log-probability or a logit-lens difference as the scalar metric, screen with attribution patching, flag unreliable components using the reliability score, and selectively apply HVP. This could improve localization for induction-head and factual-recall tracing while avoiding full second-order correction on reliable components. The main caveat is that Gemma 4 E2B and CPU performance are not evaluated; double-backward HVP may be substantially more expensive on CPU, and multi-step correction may be needed when perturbations exceed the Taylor convergence radius."
+   },
+   "usage": {
+    "prompt_tokens": 24533,
+    "completion_tokens": 16978,
+    "total_tokens": 41511,
+    "prompt_tokens_details": {
+     "cached_tokens": 24532
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 13667
+    }
+   }
+  }
+ }
+}

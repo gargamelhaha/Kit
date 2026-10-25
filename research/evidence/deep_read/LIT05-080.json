@@ -1,0 +1,484 @@
+{
+ "source_id": "LIT05-080",
+ "arxiv_id": "2502.16982",
+ "title": "Muon is Scalable for LLM Training",
+ "chars": 94159,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 33,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Muon is Scalable for LLM Training",
+    "research_question": "Can Muon, an optimizer based on matrix orthogonalization, scale to large language models with billions of parameters and trillions of tokens, and can it match or outperform AdamW?",
+    "models_and_data": [
+     {
+      "item": "Muon optimizer",
+      "quote": "the Muon optimizer (K. Jordan et al. 2024) based on matrix orthogonalization",
+      "quote_check": "exact"
+     },
+     {
+      "item": "AdamW baseline",
+      "quote": "For a fair comparison with AdamW, we performed scaling law experiments on a series of dense models in Llama (Grattafiori et al. 2024) architecture.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Moonlight 3B/16B MoE",
+      "quote": "we introduce Moonlight, a 3B/16B-parameter Mixture-of-Expert (MoE) model trained with 5.7T tokens using Muon.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "800M small-scale models",
+      "quote": "We experimented with small scale 800M models as described in 3.2.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pretraining data",
+      "quote": "Our pretraining data details can be found in K. Team 2025. The maximum context length during pretraining is 8K.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SFT data",
+      "quote": "These models were finetuned for two epochs on the open-source tulu-3-sft-mixture dataset (Lambert et al. 2024), which contains 4k sequence length data.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen2.5-7B SFT model",
+      "quote": "We further applied Muon to the supervised fine-tuning (SFT) of a public pretrained model, specifically the Qwen2.5-7B base model (Yang et al. 2024)",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Add weight decay to Muon",
+      "quote": "we introduced the standard AdamW (Loshchilov et al. 2019) weight decay mechanism into Muon",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Match Muon update RMS to AdamW",
+      "quote": "We propose to match Muon’s update RMS to be similar to that of AdamW.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use Distributed Muon with ZeRO-1",
+      "quote": "We propose a new distributed solution based on ZeRO-1 for Muon, referred to as Distributed Muon.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run scaling-law comparison",
+      "quote": "we performed scaling law experiments on a series of dense models in Llama (Grattafiori et al. 2024) architecture.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Pretrain Moonlight in stages",
+      "quote": "The model is trained in several stages. We use a 1e-3 auxfree bias update rate in stage 1 and 2, and 0.0 auxfree bias update rate in stage 3.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run SFT optimizer ablation",
+      "quote": "we finetuned Moonlight@1.2T and Moonlight-A@1.2T using both the Muon and AdamW optimizers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Analyze singular spectrum",
+      "quote": "we conducted a spectral analysis of the weight matrices trained with Muon and AdamW.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Validation loss",
+      "definition": "Held-out loss used to compare optimizer training dynamics.",
+      "quote": "Figure 2 shows validation loss curves of the model trained with AdamW, vanilla Muon (without weight decay), and Muon with weight decay.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MMLU",
+      "definition": "5-shot English language understanding and reasoning benchmark.",
+      "quote": "English Language Understanding and Reasoning: MMLU(5-shot)(Hendrycks, Burns, Basart, et al. 2021)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "HumanEval pass@1",
+      "definition": "Code generation benchmark measured by pass@1.",
+      "quote": "Code Generation: HumanEval(pass@1) (M. Chen et al. 2021), MBPP(pass@1)(Austin et al. 2021)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "GSM8K",
+      "definition": "Mathematical reasoning benchmark.",
+      "quote": "Mathematical Reasoning: GSM8K(4-shot) (Cobbe et al. 2021) MATH (Hendrycks, Burns, Kadavath, et al. 2021)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "SVD entropy",
+      "definition": "Entropy of normalized squared singular values of a weight matrix.",
+      "quote": "we calculate the SVD entropy (Alter et al. 2000; Roy et al. 2007) of this matrix as follows:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Update RMS",
+      "definition": "Root mean square of optimizer updates, controlled to match AdamW.",
+      "quote": "We propose to match Muon’s update RMS to be similar to that of AdamW.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Training FLOPs",
+      "definition": "Compute budget used to compare model performance.",
+      "quote": "Muon only requires about 52% training FLOPs to match the performance of AdamW under compute-optimal setting.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Muon achieves about 2x computational efficiency versus AdamW under compute-optimal training.",
+      "numbers": "∼ 2×",
+      "quote": "Scaling law experiments indicate that Muon achieves ∼ 2× computational efficiency compared to AdamW with compute optimal training.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Muon needs about 52% of training FLOPs to match AdamW.",
+      "numbers": "52%",
+      "quote": "Muon only requires about 52% training FLOPs to match the performance of AdamW under compute-optimal setting.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Moonlight is a 3B/16B MoE model trained with Muon on 5.7T tokens.",
+      "numbers": "3B/16B, 5.7T",
+      "quote": "we introduce Moonlight, a 3B/16B-parameter Mixture-of-Expert (MoE) model trained with 5.7T tokens using Muon.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Moonlight MMLU is 70.0 versus Llama3.2-3B 54.7, Qwen2.5-3B 65.6, and DSV2-Lite 58.3.",
+      "numbers": "54.7, 65.6, 58.3, 70.0",
+      "quote": "MMLU                         54.7           65.6         58.3         70.0",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Moonlight HumanEval is 48.1 versus Llama3.2-3B 28.0, Qwen2.5-3B 42.1, and DSV2-Lite 29.9.",
+      "numbers": "28.0, 42.1, 29.9, 48.1",
+      "quote": "HumanEval                 28.0           42.1         29.9         48.1",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For over 90% of weight matrices, Muon has higher SVD entropy than AdamW.",
+      "numbers": "over 90%",
+      "quote": "for over 90% of the weight matrices, the SVD entropy when optimized by Muon is higher than that of AdamW",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Muon is currently used together with Adam for some parameters.",
+      "quote": "Currently, the Muon optimizer is utilized in conjunction with the Adam optimizer, where certain parameters remain under the purview of Adam optimization.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Pretraining-finetuning optimizer mismatch is a notable problem.",
+      "quote": "A notable phenomenon observed in practice is the suboptimal performance of models pretrained with AdamW when fine-tuned with Muon, and vice versa.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "SFT with Muon does not show a significant advantage when the SFT optimizer differs from the pretraining optimizer.",
+      "quote": "when the SFT optimizer differs from the pretraining optimizer, SFT with Muon does not show a significant advantage over AdamW.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Extending Muon to general Schatten norms is left as future work.",
+      "quote": "extending Muon to encompass the general Schatten norm is a promising direction.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Multi-token prediction did not show significant pretraining benefits in their experiments.",
+      "quote": "MTP has not shown significant benefits to pretraining in our experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "AdamW controlled maximum attention logit better than alternative optimizers.",
+      "quote": "AdamW demonstrated healthier behavior in controlling this metric compared to alternative optimizers.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not study Gemma 4 E2B, KV-shared layers 15-34, or per-layer embeddings, so its findings do not directly transfer to the lab’s target architecture.",
+     "No activation patching, logit lens, induction-head, or factual-recall tracing experiments are reported.",
+     "The scaling-law and pretraining results rely on proprietary data and large-scale GPU training, with no CPU-feasibility analysis.",
+     "The provided text gives no explicit code or data URL, despite mentioning open-source implementation and checkpoints.",
+     "Optimizer-level SVD entropy and update RMS are not mechanistic interpretability metrics for localizing knowledge or circuits.",
+     "The paper’s SFT mismatch finding is empirical and lacks a theoretical explanation, limiting causal inference."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Low-to-moderate: the paper is about Muon optimizer scalability and training dynamics, not Gemma 4 E2B internals. Its update-RMS, SVD-entropy, and distributed optimizer analyses may inform training/optimization context, but it does not provide activation patching, logit lens, induction-head, factual-recall, KV-shared layer, or per-layer embedding evidence."
+   },
+   "usage": {
+    "prompt_tokens": 17779,
+    "completion_tokens": 9480,
+    "total_tokens": 27259,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7499
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 34,
+    "near": 1,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.946,
+   "data": {
+    "title": "Muon is Scalable for LLM Training",
+    "research_question": "Can Muon scale to billion-parameter, trillion-token LLM training, operate efficiently in a distributed setting, and generalize across pretraining and supervised finetuning while matching or outperforming AdamW?",
+    "models_and_data": [
+     {
+      "item": "Dense Llama-family scaling-law models ranging from 399M to 1.5B parameters without embeddings",
+      "quote": "For a fair comparison with AdamW, we performed scaling law experiments on a series of dense models in Llama (Grattafiori et al. 2024) architecture.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "800M-parameter model trained for 100B tokens to study overtraining",
+      "quote": "Based on our scaling law research in Sec 3.2, we trained an 800M parameters model with 100B tokens (∼ 5× optimal training tokens).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Moonlight: a DeepSeek-V3-Small-like MoE with 2.24B activated and 15.29B total parameters, excluding embeddings",
+      "quote": "Our pretrained model has 2.24B activated and 15.29B total parameters (3B activated and 16B total when including embedding).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Moonlight-A, the AdamW-trained counterpart to Moonlight",
+      "quote": "Moonlight-A follows the same training settings as Moonlight, except that it uses the AdamW optimizer.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Moonlight pretraining corpus, with details deferred to K. Team 2025",
+      "quote": "Our pretraining data details can be found in K. Team 2025.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Tülu 3 SFT mixture used for two-epoch supervised finetuning",
+      "quote": "These models were finetuned for two epochs on the open-source tulu-3-sft-mixture dataset (Lambert et al. 2024), which contains 4k sequence length data.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen2.5-7B base model used for public-model SFT experiments",
+      "quote": "We further applied Muon to the supervised fine-tuning (SFT) of a public pretrained model, specifically the Qwen2.5-7B base model (Yang et al. 2024), using the open-source tulu-3-sft-mixture dataset (Lambert et al. 2024).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Update matrix parameters using momentum and Newton-Schulz approximate orthogonalization.",
+      "quote": "K. Jordan et al. 2024 proposed Muon, which updates matrix parameters with orthogonalized gradient momentum using Newton-Schulz iteration.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Add decoupled weight decay to stabilize overtrained models.",
+      "quote": "Adding weight decay addressed this issue - the results demonstrate that Muon with weight decay outperforms both vanilla Muon and AdamW, achieving lower validation loss in the over-train regime.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Scale each matrix update to target an AdamW-like update RMS and reuse AdamW learning-rate and weight-decay settings.",
+      "quote": "Therefore, we scale Muon’s update RMS to this range by the following adjustment:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use five Newton-Schulz iteration steps for computational efficiency.",
+      "quote": "Hence we set N = 5 in this work for the sake of efficiency.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Implement distributed Muon using ZeRO-1-style partitioned optimizer states.",
+      "quote": "We propose a new distributed solution based on ZeRO-1 for Muon, referred to as Distributed Muon.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "In scaling-law experiments, directly reuse the compute-optimal AdamW hyperparameters for Muon.",
+      "quote": "For Muon, as discussed in Sec 2.2, since we matched Muon’s update RMS to AdamW, we directly reused the hyper-parameters that were optimal for the AdamW baseline.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Pretrain through three stages ending with a cooldown stage at constant batch size 4096.",
+      "quote": "In this stage (also referred as the cooldown stage), the learning rate increases to 1e-4 in in 100 steps, and then linearly decays to 0 in 500B tokens, and we keep a constant 4096 batch size.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Perform two-epoch supervised finetuning on the open-source Tülu 3 SFT mixture.",
+      "quote": "These models were finetuned for two epochs on the open-source tulu-3-sft-mixture dataset (Lambert et al. 2024), which contains 4k sequence length data.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "LM loss",
+      "definition": "Language-model loss measured at an 8K sequence length for the scaling-law comparison.",
+      "quote": "LM loss (seqlen=8K)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Validation loss",
+      "definition": "Held-out loss used to compare AdamW, vanilla Muon, and Muon with weight decay during overtraining.",
+      "quote": "Figure 2: Validation loss curves for AdamW (green), Muon without weight decay (red), and Muon with weight decay (blue).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Update RMS",
+      "definition": "Root-mean-square magnitude of optimizer updates, monitored for consistency across parameter shapes and against AdamW.",
+      "quote": "We monitored Muon’s update RMS during training and found it typically close to the theoretical value given above.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Training FLOPs",
+      "definition": "Training computation required for a model to reach a specified loss or performance.",
+      "quote": "Muon only requires about 52% training FLOPs to match the performance of AdamW under compute-optimal setting.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "SVD entropy",
+      "definition": "Entropy of the squared singular-value energy distribution, macro-averaged across weight matrices in each architecture group.",
+      "quote": "The SVD entropy is calculated as the macro-average of the weight matrices in each group across all layers.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MMLU",
+      "definition": "Five-shot Massive Multitask Language Understanding score.",
+      "quote": "MMLU(5-shot)(Hendrycks, Burns, Basart, et al. 2021)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "HumanEval pass@1",
+      "definition": "Fraction of HumanEval programming problems solved successfully with one generated sample.",
+      "quote": "HumanEval(pass@1) (M. Chen et al. 2021)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Large attention logits ratio",
+      "definition": "Proportion of attention logits within a batch whose values exceed 100.",
+      "quote": "we introduced the large attention logits ratio metric, defined as the proportion of attention logits exceeding 100 within a batch.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Under compute-optimal scaling-law training, Muon matches AdamW performance with roughly half the training computation.",
+      "numbers": "52% training FLOPs; ∼ 2× computational efficiency",
+      "quote": "Muon only requires about 52% training FLOPs to match the performance of AdamW under compute-optimal setting.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Adding weight decay prevents excessive weight growth and produces the lowest validation loss in the overtraining regime.",
+      "numbers": "800M parameters; 100B tokens; ∼ 5× optimal training tokens",
+      "quote": "Adding weight decay addressed this issue - the results demonstrate that Muon with weight decay outperforms both vanilla Muon and AdamW, achieving lower validation loss in the over-train regime.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Shape-aware update-RMS control improves both training and validation loss over the baseline.",
+      "numbers": "Update Norm: training loss 2.72, validation loss 2.789; Adjusted LR: 2.721, 2.789; Baseline: 2.734, 2.812",
+      "quote": "Both Update Norm and Adjusted LR achieved better performances than Baseline;",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Distributed Muon uses less additional optimizer memory than distributed AdamW.",
+      "numbers": "half of Distributed AdamW; 1 momentum buffer vs 2 momentum buffers",
+      "quote": "Therefore, the additional memory used by the Muon optimizer is half of Distributed AdamW.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "At 1.2T tokens, Moonlight improved most reported metrics over the AdamW-trained Moonlight-A, although BBH was lower.",
+      "numbers": "Moonlight/Moonlight-A — MMLU 60.4/60.2; MMLU-pro 28.1/26.8; BBH 43.2/45.3; HumanEval 37.2/29.3; MBPP 52.9/49.2; GSM8K 45.0/43.8; MATH 19.8/16.1",
+      "quote": "As shown in Table 4, Moonlight performs significantly better than Moonlight-A, proving the scaling effectiveness of Muon.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "The fully trained Moonlight model reaches 70.0 MMLU and advances the performance-versus-training-budget Pareto frontier.",
+      "numbers": "MMLU 70.0; MMLU-pro 42.4; HumanEval 48.1; MBPP 63.8; GSM8K 77.4; MATH 45.3; 5.7T training tokens; 2.24B activated parameters; 15.29B total parameters",
+      "quote": "Notably, Moonlight lies on the Pareto frontier of model performance versus training budget, outperforming many other models across various sizes.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Muon produces a more diverse singular spectrum than AdamW across most analyzed weight matrices.",
+      "numbers": "over 90%",
+      "quote": "We find that, for over 90% of the weight matrices, the SVD entropy when optimized by Muon is higher than that of AdamW, providing strong empirical evidence of Muon’s superior capability in exploring diverse optimization directions.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Using Muon for both pretraining and SFT gives the strongest result in the optimizer-interchangeability ablation.",
+      "numbers": "MMLU (EM) 55.7 (0-shot CoT); HumanEval (Pass@1) 57.3 (0-shot); MBPP (Pass@1) 55.6 (0-shot); GSM8K (EM) 68.0 (5-shot)",
+      "quote": "Specifically, a model that is both Muon-pretrained and Muon-finetuned outperforms others in the ablation studies.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Muon is used as a hybrid optimizer, with embeddings, the LM head, and other non-matrix parameters still handled by Adam.",
+      "quote": "Currently, the Muon optimizer is utilized in conjunction with the Adam optimizer, where certain parameters remain under the purview of Adam optimization.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Changing the optimizer between pretraining and SFT does not consistently provide a significant Muon advantage.",
+      "quote": "However, we also observe that when the SFT optimizer differs from the pretraining optimizer, SFT with Muon does not show a significant advantage over AdamW.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Models pretrained and finetuned with different optimizers show suboptimal performance, and the mechanism remains unresolved.",
+      "quote": "A notable phenomenon observed in practice is the suboptimal performance of models pretrained with AdamW when fine-tuned with Muon, and vice versa.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Distributed Muon has greater end-to-end latency than distributed AdamW because of added communication and orthogonalization work.",
+      "quote": "Distributed Muon has larger end-to-end latencies than Distributed AdamW because it introduces additional communication and requires running Newton-Schulz iteration steps.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Muon controls the maximum attention-logit metric less healthily than AdamW.",
+      "quote": "Notably, AdamW demonstrated healthier behavior in controlling this metric compared to alternative optimizers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The current Muon formulation is tied to the spectral-norm interpretation rather than general Schatten norms.",
+      "quote": "The Muon optimizer can be interpreted as the steepest descent method under the spectral norm.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The central Moonlight result uses a DeepSeek-V3-Small-like MoE and a corpus whose composition is not given in this report, so architectural and data generalization to Gemma 4 is untested.",
+     "The dense scaling-law series covers 399M–1.5B parameters without embeddings; the 16B MoE result is not a multi-architecture replication of the scaling law.",
+     "Public-model comparisons mix the authors' measurements with externally sourced metrics and models whose optimizer is listed as Unknown, potentially confounding training-budget comparisons.",
+     "No repeated-run estimates, error bars, or confidence intervals are reported, so small benchmark differences may not reflect stable effects.",
+     "Attributing gains specifically to Muon is confounded by the hybrid use of AdamW for embeddings, the LM head, and RMSNorm parameters.",
+     "The spectral analysis samples only 3 of 64 experts and macro-averages matrix groups, which may hide expert- and layer-specific effects relevant to shared-layer analyses.",
+     "No benchmark-contamination audit is reported for the pretraining corpus, SFT mixture, and evaluation tasks.",
+     "The report contains no CPU-feasibility analysis or activation-level mechanistic tests, limiting direct transfer to Gemma 4 E2B activation patching, logit lens, induction-head, or factual-recall tracing."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Indirect but potentially useful: the paper shows that optimizer choice can alter weight-matrix singular spectra, update RMS, and attention-logit dynamics. Muon-versus-AdamW checkpoints could therefore serve as an intervention for Gemma 4 E2B activation patching across KV-shared layers 15–34, with per-layer embedding, logit-lens, induction-head, and factual-recall traces complemented by SVD entropy and maximum-attention-logit diagnostics. However, the study provides no Gemma 4/E2B, KV-sharing, CPU, activation-patching, logit-lens, induction-head, or factual-recall results, and its main model is a large MoE, so applicability to the lab's CPU setup remains untested."
+   },
+   "usage": {
+    "prompt_tokens": 18079,
+    "completion_tokens": 17627,
+    "total_tokens": 35706,
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 14423
+    }
+   }
+  }
+ }
+}

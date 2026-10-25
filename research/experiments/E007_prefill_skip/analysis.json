@@ -1,0 +1,87 @@
+{
+ "rows": [
+  {
+   "T": 64,
+   "full_s": [
+    7.834,
+    8.84,
+    9.054
+   ],
+   "skip_s": [
+    3.191,
+    5.12,
+    4.802
+   ],
+   "speedup_median": 1.841,
+   "max_abs_dlogit": 2.3603439331054688e-05,
+   "top1_same": true,
+   "top10_overlap": 10,
+   "speedup_min_over_min": 2.455,
+   "speedup_mean": 1.962
+  },
+  {
+   "T": 256,
+   "full_s": [
+    18.685,
+    21.844,
+    21.233
+   ],
+   "skip_s": [
+    8.217,
+    8.939,
+    9.037
+   ],
+   "speedup_median": 2.375,
+   "max_abs_dlogit": 2.2172927856445312e-05,
+   "top1_same": true,
+   "top10_overlap": 10,
+   "speedup_min_over_min": 2.274,
+   "speedup_mean": 2.358
+  },
+  {
+   "T": 512,
+   "full_s": [
+    35.826,
+    38.05,
+    38.011
+   ],
+   "skip_s": [
+    14.053,
+    13.916,
+    13.259
+   ],
+   "speedup_median": 2.732,
+   "max_abs_dlogit": 3.0517578125e-05,
+   "top1_same": true,
+   "top10_overlap": 10,
+   "speedup_min_over_min": 2.702,
+   "speedup_mean": 2.714
+  },
+  {
+   "T": 1024,
+   "full_s": [
+    78.915,
+    60.987,
+    85.033
+   ],
+   "skip_s": [
+    23.028,
+    23.942,
+    28.737
+   ],
+   "speedup_median": 3.296,
+   "max_abs_dlogit": 2.5272369384765625e-05,
+   "top1_same": true,
+   "top10_overlap": 10,
+   "speedup_min_over_min": 2.648,
+   "speedup_mean": 2.971
+  }
+ ],
+ "missing": "T=2048: FULL arm exceeded the 6.8 GB RSS guard (rc=3); see result_b_it.json (exploratory)",
+ "P1_exact_all_T": true,
+ "P1_includes_T_gt_512": true,
+ "P2_speedup_ge_2_for_T_ge_256": true,
+ "P3_speedup_le_3.30": true,
+ "P4_speedup_1024_ge_64": true,
+ "cost_model_note": "Post-hoc: the preregistered cost model wrongly assumed attention-score FLOPs equal in both arms; SKIP also drops the T x T attention of layers 15-34, so 3.30 is not an upper bound for large T. P3 therefore is not a valid test of the cost model and is reported as preregistered only."
+}

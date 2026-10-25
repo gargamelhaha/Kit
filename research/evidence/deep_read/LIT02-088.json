@@ -1,0 +1,466 @@
+{
+ "source_id": "LIT02-088",
+ "arxiv_id": "2406.11717",
+ "title": "Refusal in Language Models Is Mediated by a Single Direction",
+ "chars": 148258,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 25,
+    "near": 1,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.929,
+   "data": {
+    "title": "Refusal in Language Models Is Mediated by a Single Direction",
+    "research_question": "Is refusal behavior mediated by a single one-dimensional direction in chat model residual stream activations, such that ablating it bypasses refusal and adding it induces refusal?",
+    "models_and_data": [
+     {
+      "item": "13 open-source chat models up to 72B parameters",
+      "quote": "across 13 popular open-source chat models up to 72B parameters in size.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Safety fine-tuned chat models spanning 1.8B to 72B parameters",
+      "quote": "we study a diverse set of safety fine-tuned models, spanning 1.8 to 72 billion parameters in size.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Harmful instruction dataset drawn from AdvBench",
+      "quote": "Dharmful , a dataset of harmful instructions drawn from A D - V B ENCH",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Harmless instruction dataset from Alpaca",
+      "quote": "Dharmless , a dataset of harmless instructions sampled from A LPACA (Taori et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "JailbreakBench evaluation set of 100 harmful instructions",
+      "quote": "we generate model completions over JAILBREAK B ENCH (Chao et al., 2024), a dataset of 100 harmful instructions.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "HarmBench test set of 159 standard behaviors",
+      "quote": "the H ARM B ENCH test set of 159 “standard behaviors”",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Compute difference-in-means between mean harmful and harmless activations",
+      "quote": "we compute the difference between the model’s mean activations when run on harmful and harmless instructions.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Select the single most effective candidate direction using validation sets",
+      "quote": "We then select the single most effective vector ri∗ from this set by evaluating each candidate vector over validation sets",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Apply directional ablation to erase the refusal direction from residual stream activations",
+      "quote": "we can erase it from the model’s representations using directional ablation.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply activation addition to induce refusal on harmless inputs",
+      "quote": "we can add the difference-in-means vector to the activations of a harmless input to shift them closer to the mean harmful activation, thereby inducing refusal",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Orthogonalize residual-stream-writing weights with respect to the refusal direction",
+      "quote": "we can take each matrix Wout ∈ Rdmodel ×dinput that writes to the residual stream, and orthogonalize its column vectors with respect to r̂",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Generate completions with greedy decoding and maximum length 512 tokens",
+      "quote": "When generating model completions for evaluation, we always use greedy decoding and a maximum generation length of 512 tokens",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "refusal_score",
+      "definition": "Binary indicator: 1 if completion contains at least one refusal substring, else 0.",
+      "quote": "If a model completion includes at least one such substring, it is classified as a refusal (refusal_score=1); otherwise, it is classified as a non-refusal (refusal_score=0).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "safety_score",
+      "definition": "Binary indicator from Meta Llama Guard 2: 1 if completion classified safe, else 0.",
+      "quote": "We prompt this model to classify each model completion as safe (safety_score=1) or unsafe (safety_score=0).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "attack success rate (ASR)",
+      "definition": "Proportion of completions classified as successfully bypassing refusal.",
+      "quote": "the attack success rate (ASR), which is the proportion of completions classified as successfully bypassing refusal.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "refusal_metric",
+      "definition": "Sum of next-token probabilities assigned to model-specific refusal tokens, transformed to log-odds.",
+      "quote": "we define a set of refusal tokens R ⊆ V, which contains the tokens most likely to begin the model’s refusals",
+      "quote_check": "exact"
+     },
+     {
+      "name": "coherence evaluations",
+      "definition": "MMLU, ARC, GSM8K, TruthfulQA, WinoGrande, TinyHellaSwag, and CE loss.",
+      "quote": "we run four common language model evaluations: MMLU (Hendrycks et al., 2020), ARC (Clark et al., 2018), GSM8K (Cobbe et al., 2021), and T RUTHFUL QA (Lin et al., 2021).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Refusal is mediated by a one-dimensional subspace across 13 open-source chat models up to 72B.",
+      "numbers": "13; up to 72B",
+      "quote": "refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Directional ablation reduces refusal rates and elicits unsafe completions.",
+      "numbers": "100 harmful instructions",
+      "quote": "Ablating r̂ from the model’s residual stream activations, labeled as directional ablation, reduces refusal rates and elicits unsafe completions.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Activation addition induces refusal on harmless instructions.",
+      "numbers": "100 harmless instructions",
+      "quote": "Adding r to the model’s residual stream activations, labeled as activation addition, results in the model refusing even harmless requests.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "System prompt inclusion substantially reduces ASR for Llama-2 7B.",
+      "numbers": "22.6% vs 79.9%",
+      "quote": "For L LAMA -2 models, including the system prompt substantially reduces ASR compared to evaluation without it (e.g. 22.6% vs 79.9% for L LAMA -2 7B).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Orthogonalized models mostly preserve general capabilities, with exceptions Qwen 7B and Yi 34B.",
+      "numbers": "99% confidence intervals",
+      "quote": "Except for Q WEN 7B and Y I 34B, all evaluation metrics for orthogonalized models lie within 99% confidence intervals of original performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Adversarial suffix suppresses expression of the refusal direction.",
+      "numbers": "128 refusal-eliciting harmful instructions",
+      "quote": "The expression of the refusal direction after appending the adversarial suffix is heavily suppressed, and closely resembles that of harmless instructions.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Findings may not generalize to untested or larger models, including proprietary and future models.",
+      "quote": "our findings may not generalize to untested models, especially those at greater scale, including current state-of-the-art proprietary models and those developed in the future.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The refusal-direction extraction method is heuristic and likely not optimal.",
+      "quote": "the methodology we used to extract the “refusal direction” is likely not optimal and relies on several heuristics.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Adversarial-suffix analysis is not comprehensive and is limited to one model and one example.",
+      "quote": "our analysis of adversarial suffixes does not provide a comprehensive mechanistic understanding of the phenomenon, and is restricted to a single model and a single adversarial example.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Measuring chat-model coherence is difficult and each metric is flawed.",
+      "quote": "it is difficult to measure the coherence of a chat model, and we consider each metric used flawed in various ways.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The semantic meaning of the identified directions remains unclear.",
+      "quote": "we acknowledge that the semantic meaning of these directions remains unclear.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not test Gemma 4 E2B or architectures with KV-shared layers/per-layer embeddings, so the single-direction claim may not transfer to the lab’s target model.",
+     "The refusal direction may be entangled with harmfulness, danger, or topic; the authors note semantic ambiguity but do not disentangle these alternatives experimentally.",
+     "Evaluation relies on substring refusal scoring and Llama Guard 2, with greedy decoding only; robustness to sampling, prompt templates, and judge errors is not established.",
+     "Direction selection uses validation-set heuristics and may overfit model-specific validation splits; no nested or held-out model-family validation is reported.",
+     "Weight orthogonalization edits all residual-writing matrices; long-term or out-of-distribution capability and safety side effects beyond listed benchmarks are not characterized."
+    ],
+    "code_or_data_url": "https://github.com/andyrdt/refusal_direction",
+    "relevance_to_lab": "Directly relevant methodologically: difference-in-means refusal direction, directional ablation, activation addition, weight orthogonalization, attention-head DFA, and residual-stream interventions align with activation patching, logit lens, induction-head, and factual-recall tracing. However, the paper studies Gemma 2B/7B IT, not Gemma 4 E2B, and does not address KV-shared layers 15-34 or per-layer embeddings; CPU feasibility is not stated."
+   },
+   "usage": {
+    "prompt_tokens": 25616,
+    "completion_tokens": 12420,
+    "total_tokens": 38036,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 10630
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 34,
+    "near": 4,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.974,
+   "data": {
+    "title": "Refusal in Language Models Is Mediated by a Single Direction",
+    "research_question": "Is refusal in safety-fine-tuned chat models causally mediated by a single residual-stream direction, and can ablating or adding that direction control refusal behavior?",
+    "models_and_data": [
+     {
+      "item": "Thirteen safety-fine-tuned models spanning Qwen Chat 1.8B/7B/14B/72B, Yi Chat 6B/34B, Gemma IT 2B/7B, Llama-2 Chat 7B/13B/70B, and Llama-3 Instruct 8B/70B.",
+      "quote": "In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The suite includes models aligned by preference optimization and models aligned by fine-tuning.",
+      "quote": "We consider both models aligned by preference optimization (APO) and aligned by fine-tuning (AFT) (Meade et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Harmful direction-extraction data: 128 training instructions sampled from AdvBench, MaliciousInstruct, and TDC2023.",
+      "quote": "To construct Dharmful , we randomly sample a total of 128 harmful instructions from A DV B ENCH (Zou et al., 2023b), M ALICIOUS I NSTRUCT (Huang et al., 2023), and TDC2023 (Mazeika et al., 2023, 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Harmless direction-extraction data are sampled from Alpaca.",
+      "quote": "To construct the harmless datasets, we sample instructions from A LPACA (Taori et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Each direction-extraction dataset has 128 training and 32 validation samples, with filtering against evaluation-set overlap.",
+      "quote": "Each dataset consists of train and validation splits of 128 and 32 samples, respectively.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The directional-ablation evaluation uses 100 harmful JailbreakBench instructions across 10 categories.",
+      "quote": "In §3, we evaluate over JAILBREAK B ENCH (Chao et al., 2024), a dataset containing 100 harmful instructions, spanning 10 categories: harassment/discrimination, malware/hacking, physical harm, economic harm, fraud/deception, disinformation, sexual/adult content, privacy, expert advice, government decision-making.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The white-box jailbreak evaluation uses 159 HarmBench standard behaviors and HarmBench's classifier.",
+      "quote": "Specifically, we generate completions over the H ARM B ENCH test set of 159 “standard behaviors”, and then use their provided classifier model to determine the attack success rate (ASR)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The adversarial-suffix mechanism analysis is performed on Qwen 1.8B Chat.",
+      "quote": "In this section, we mechanistically analyze the effect of an adversarial suffix on Q WEN 1.8B C HAT.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Construct harmful and harmless train/validation splits and filter them against overlap with the §3 and §4 evaluation datasets.",
+      "quote": "Each dataset consists of train and validation splits of 128 and 32 samples, respectively. We apply filtering to ensure that the train and validation splits do not overlap with the evaluation datasets used in §3 and §4.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute per-layer, post-instruction-token difference-in-means vectors between harmful and harmless prompts.",
+      "quote": "To identify the “refusal direction” in the model’s residual stream activations, we compute the difference between the model’s mean activations when run on harmful and harmless instructions.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Select one candidate direction using validation performance, requiring refusal induction, limited behavioral change, and a layer before the final 20% of the network.",
+      "quote": "This evaluation measures each candidate vector’s ability to bypass refusal when ablated and to induce refusal when added, while otherwise maintaining minimal change in model behavior.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For directional ablation, remove the selected direction's projection from residual-stream activations at every layer and token position.",
+      "quote": "We perform this operation at every activation xi and x̃i , across all layers l and all token positions i.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For activation addition, add the selected difference-in-means vector to all token positions at its source layer.",
+      "quote": "Note that for activation addition, we intervene only at layer l, and across all token positions.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Implement a persistent white-box intervention by orthogonalizing all residual-stream-writing matrices and output biases with respect to the refusal direction.",
+      "quote": "Orthogonalizing all of these matrices, as well as any output biases, with respect to the direction r̂ effectively prevents the model from ever writing r̂ to its residual stream.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Generate evaluation completions with greedy decoding and a maximum length of 512 tokens.",
+      "quote": "When generating model completions for evaluation, we always use greedy decoding and a maximum generation length of 512 tokens, as suggested in Mazeika et al. (2024).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For suffix analysis, compare no suffix, an adversarial suffix, and a same-length random suffix, then trace the largest refusal-writing attention heads.",
+      "quote": "We select the top eight attention heads with the highest DFA on harmful instructions, and then investigate how their behavior changes when suffixes are appended.",
+      "quote_check": "near"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "refusal_score",
+      "definition": "Binary completion-level refusal classification based on whether the completion contains at least one refusal substring.",
+      "quote": "If a model completion includes at least one such substring, it is classified as a refusal (refusal_score=1); otherwise, it is classified as a non-refusal (refusal_score=0).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "safety_score",
+      "definition": "Binary harmfulness classification produced by Llama Guard 2, with 1 meaning safe and 0 meaning unsafe.",
+      "quote": "We prompt this model to classify each model completion as safe (safety_score=1) or unsafe (safety_score=0).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "refusal_metric",
+      "definition": "The log-odds of the summed next-token probability for model-specific refusal-initial tokens.",
+      "quote": "To create a more informative “refusal metric”, we take the log-odds of Prefusal .",
+      "quote_check": "exact"
+     },
+     {
+      "name": "bypass_score / induce_score",
+      "definition": "The average refusal metric on harmful validation prompts under directional ablation and on harmless validation prompts under activation addition, respectively.",
+      "quote": "This evaluation measures each candidate vector’s ability to bypass refusal when ablated and to induce refusal when added, while otherwise maintaining minimal change in model behavior.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "kl_score",
+      "definition": "The average KL divergence between last-token output distributions on harmless prompts with and without directional ablation.",
+      "quote": "kl_score < 0.1",
+      "quote_check": "exact"
+     },
+     {
+      "name": "attack success rate (ASR)",
+      "definition": "The proportion of completions classified as successfully bypassing refusal.",
+      "quote": "the attack success rate (ASR), which is the proportion of completions classified as successfully bypassing refusal.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "cosine similarity with refusal direction",
+      "definition": "Cosine similarity between the last-token residual-stream activation and the refusal-mediating direction.",
+      "quote": "For each run, we cache the last token activations and visualize their cosine similarity with the refusal-mediating direction.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "direct feature attribution (DFA) contribution",
+      "definition": "An attention-head or MLP component's direct contribution to the refusal direction, measured by projecting its output onto that direction.",
+      "quote": "each component’s direct contribution can be measured by projecting its output onto the refusal direction.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "A one-dimensional residual-stream subspace mediated refusal across all 13 tested open-source chat models.",
+      "numbers": "13 popular open-source chat models; up to 72B parameters",
+      "quote": "In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Directional ablation of the selected refusal direction reduced refusal rates and elicited unsafe completions.",
+      "numbers": "100 harmful instructions",
+      "quote": "Ablating r̂ from the model’s residual stream activations, labeled as directional ablation, reduces refusal rates and elicits unsafe completions.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Adding the same direction caused models to refuse harmless instructions.",
+      "numbers": "100 randomly sampled harmless instructions",
+      "quote": "With this intervention in place, we generate model completions over 100 randomly sampled harmless instructions from A LPACA. Adding r to the model’s residual stream activations, labeled as activation addition, results in the model refusing even harmless requests.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Weight orthogonalization produced substantial but system-prompt-sensitive HarmBench attack success rates for Llama-2 models.",
+      "numbers": "22.6% vs 79.9% for L LAMA -2 7B",
+      "quote": "For L LAMA -2 models, including the system prompt substantially reduces ASR compared to evaluation without it (e.g. 22.6% vs 79.9% for L LAMA -2 7B).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Orthogonalization generally preserved benchmark performance, with two named model exceptions.",
+      "numbers": "99% confidence intervals; exceptions: Q WEN 7B and Y I 34B",
+      "quote": "Except for Q WEN 7B and Y I 34B, all evaluation metrics for orthogonalized models lie within 99% confidence intervals of original performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "TruthfulQA accuracy consistently declined after orthogonalization.",
+      "numbers": "-1.0 for L LAMA -2 70B; -5.9 for Y I 6B",
+      "quote": "Interestingly, accuracy on T RUTHFUL QA consistently drops for orthogonalized models.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "An adversarial suffix suppressed expression of the refusal direction to resemble harmless-prompt expression.",
+      "numbers": "Q WEN 1.8B C HAT; 128 harmful instructions; 128 harmless instructions; 1 adversarial suffix",
+      "quote": "The expression of the refusal direction after appending the adversarial suffix is heavily suppressed, and closely resembles that of harmless instructions.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The adversarial suffix redirected important attention heads away from the harmful instruction and toward the suffix.",
+      "numbers": "top eight attention heads",
+      "quote": "With the adversarial suffix appended, these heads shift their attention to the suffix region, and away from the harmful instruction.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The findings may not generalize to untested, larger, proprietary, or future models.",
+      "quote": "While we evaluate a broad range of open-source models, our findings may not generalize to untested models, especially those at greater scale, including current state-of-the-art proprietary models and those developed in the future.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The refusal-direction extraction method is heuristic and may not be optimal.",
+      "quote": "Additionally, the methodology we used to extract the “refusal direction” is likely not optimal and relies on several heuristics.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The work is positioned as an existence proof rather than an optimized extraction method.",
+      "quote": "We see this paper as more of an existence proof that such a direction exists, rather than a careful study of how best to extract it, and we leave methodological improvements to future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The adversarial-suffix mechanism analysis is incomplete and restricted to one model and one adversarial example.",
+      "quote": "Furthermore, our analysis of adversarial suffixes does not provide a comprehensive mechanistic understanding of the phenomenon, and is restricted to a single model and a single adversarial example.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Chat-model coherence is difficult to measure, and the authors consider every coherence metric flawed.",
+      "quote": "Another limitation is that it is difficult to measure the coherence of a chat model, and we consider each metric used flawed in various ways.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The semantic interpretation of each extracted direction remains unresolved.",
+      "quote": "Finally, while our work identifies a single direction that mediates refusal behavior in each model, we acknowledge that the semantic meaning of these directions remains unclear.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The white-box method requires access to model weights.",
+      "quote": "However, our method does not require any modifications to the input prompt, but has the obvious limitation that we require access to the model’s weights.",
+      "quote_check": "near"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not test Gemma 4 E2B, so transfer from Gemma IT 2B/7B and the other model families to the lab's target architecture is unknown.",
+     "The work does not analyze shared-KV layers, KV-cache state, or how the 15-34 layer range in Gemma 4 E2B changes direction propagation.",
+     "No CPU-specific feasibility measurements are provided; the full |I| × L candidate sweep could remain expensive even for an E2B model.",
+     "The provided text does not quantify direction-selection stability across resampled data splits, seeds, chat templates, or numerical precisions.",
+     "The supplied text reports no matched random-direction or label-permutation controls for the large candidate-direction search.",
+     "Automatic refusal and safety classifiers are not supplemented by blinded human agreement measurements or calibrated thresholds.",
+     "The coherence benchmarks do not isolate possible damage to factual recall, induction-head behavior, or per-layer embedding representations.",
+     "Generalization to multilingual prompts, multi-turn conversations, long contexts, quantized weights, and independently fine-tuned Gemma variants is not tested."
+    ],
+    "code_or_data_url": "https://github.com/andyrdt/refusal_direction",
+    "relevance_to_lab": "Methodologically highly relevant: per-layer and post-instruction-token difference-in-means extraction, directional ablation, activation addition, DFA, and TransformerLens closely match activation-patching and logit-lens workflows. The reported Gemma directions occur at 10/18 for Gemma 2B and 14/28 for Gemma 7B, making layers 15-34 in Gemma 4 E2B a natural replication range. However, Gemma 4 E2B, shared-KV layers, per-layer embeddings, induction heads, and factual-recall tracing are not covered. A lab-scale adaptation should sweep layers 15-34 and post-instruction positions, patch the selected direction against refusal and factual-recall prompts, compare logit-lens emergence, test adversarial-suffix head routing, and include random-direction, label-permutation, split-stability, and CPU-cost controls."
+   },
+   "usage": {
+    "prompt_tokens": 25617,
+    "completion_tokens": 20414,
+    "total_tokens": 46031,
+    "prompt_tokens_details": {
+     "cached_tokens": 197
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 17102
+    }
+   }
+  }
+ }
+}

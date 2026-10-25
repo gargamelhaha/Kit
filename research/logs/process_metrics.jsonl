@@ -5,3 +5,6 @@
 {"ts": "2026-10-25T08:17:52Z", "cycle": "1", "step": "E002_logit_lens:it", "kind": "exp", "wall_s": 1380.3, "peak_rss_gb_process": 6.04, "outcome": "ok", "artifact": "experiments/E002_logit_lens", "runner": "run_many"}
 {"ts": "2026-10-25T08:39:44Z", "cycle": "1", "step": "E004_factual_patching:it", "kind": "exp", "wall_s": 1310.9, "peak_rss_gb_process": 6.59, "outcome": "ok", "artifact": "experiments/E004_factual_patching", "runner": "run_many"}
 {"ts": "2026-10-25T10:19:00Z", "cycle": "2", "step": "E006_kv_route:it", "kind": "exp", "wall_s": 1352.5, "cpu_s": 876.8, "peak_rss_gb": 6.15, "outcome": "ok", "artifact": "experiments/E006_kv_route", "notes": ""}
+{"ts": "2026-10-25T10:32:57Z", "cycle": "2", "step": "E007_prefill_skip:it", "kind": "exp", "wall_s": 815.0, "cpu_s": 561.8, "peak_rss_gb": 6.69, "outcome": "fail(rc=3)", "artifact": "experiments/E007_prefill_skip", "notes": ""}
+{"ts": "2026-10-25T10:36:51Z", "cycle": "2", "step": "E007_prefill_skip:b", "kind": "exp", "wall_s": 28.2, "cpu_s": 22.1, "peak_rss_gb": 5.24, "outcome": "fail(rc=1)", "artifact": "experiments/E007_prefill_skip", "notes": ""}
+{"ts": "2026-10-25T10:44:26Z", "cycle": "2", "step": "E007_prefill_skip:b", "kind": "exp", "wall_s": 221.4, "cpu_s": 135.8, "peak_rss_gb": 6.65, "outcome": "ok", "artifact": "experiments/E007_prefill_skip", "notes": ""}

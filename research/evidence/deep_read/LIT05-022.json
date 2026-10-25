@@ -1,0 +1,462 @@
+{
+ "source_id": "LIT05-022",
+ "arxiv_id": "2412.06464",
+ "title": "Gated Delta Networks: Improving Mamba2 with Delta Rule",
+ "chars": 103257,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 26,
+    "near": 0,
+    "unverified": 2,
+    "skip": 1
+   },
+   "verified_frac": 0.929,
+   "data": {
+    "title": "Gated DeltaNetworks: Improving Mamba 2 with Delta Rule",
+    "research_question": "Can combining gating for adaptive memory control with the delta update rule improve linear Transformer performance on retrieval and long-context tasks?",
+    "models_and_data": [
+     {
+      "item": "Gated DeltaNet",
+      "quote": "Our proposed architecture, Gated DeltaNet, consistently surpasses existing models like Mamba2 and DeltaNet across multiple benchmarks",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Mamba2",
+      "quote": "Mamba2 addresses this limitation by introducing a simple gated update rule",
+      "quote_check": "exact"
+     },
+     {
+      "item": "DeltaNet",
+      "quote": "DeltaNet implements a first-order linear recurrence with generalized Householder transition matrices",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GatedDeltaNet-H1",
+      "quote": "we combine linear recurrent layers with sliding window attention (SWA), resulting in GatedDeltaNet-H1.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GatedDeltaNet-H2",
+      "quote": "We also stack Mamba2, Gated DeltaNet and SWA, resulting in GatedDeltaNet-H2.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Training data",
+      "quote": "all models are trained under identical conditions with 1.3B parameters on 100B tokens sampled from the FineWeb-Edu dataset",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Baselines",
+      "quote": "We evaluate against the following baselines: RetNet (Sun et al., 2023a), HGRN2 (Qin et al., 2024b), Mamba (Gu & Dao, 2023), Mamba2 (Dao & Gu, 2024b), Samba (Ren et al., 2024), and DeltaNet (Yang et al., 2024b).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Propose gated delta rule",
+      "quote": "we propose the gated delta rule, a simple and intuitive mechanism that combines both approaches.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Extend chunkwise parallel training",
+      "quote": "Our extension preserves the benefits of chunkwise parallelism",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train models",
+      "quote": "all models are trained under identical conditions with 1.3B parameters on 100B tokens sampled from the FineWeb-Edu dataset",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate length extrapolation",
+      "quote": "we evaluate the models’ capacity to extrapolate to sequences of up to 20K tokens across six long-context benchmarks.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Build hybrid models",
+      "quote": "we also develop hybrid architectures that strategically combine Gated DeltaNet layers with sliding window attention or Mamba2 layers",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Ablation study",
+      "quote": "Table S.1 presents ablation studies on the Gated DeltaNet block’s components.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Perplexity",
+      "definition": "Language modeling perplexity; lower is better.",
+      "quote": "Avg-PPL (↓)",
+      "quote_check": "skip"
+     },
+     {
+      "name": "Zero-shot accuracy",
+      "definition": "Accuracy on commonsense reasoning benchmarks.",
+      "quote": "zero-shot accuracy",
+      "quote_check": "exact"
+     },
+     {
+      "name": "S-NIAH",
+      "definition": "Single Needle-In-A-Haystack retrieval benchmark from RULER.",
+      "quote": "Single Needle-In-A-Haystack (S-NIAH) benchmark suite from RULER",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Recall-world retrieval accuracy",
+      "definition": "Accuracy on real-world recall-intensive tasks with input truncated to 2K tokens.",
+      "quote": "Accuracy on recall-world retrieval tasks with input truncated to 2K tokens.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "LongBench accuracy",
+      "definition": "Accuracy on 14 long-context tasks.",
+      "quote": "Accuracy on 14 tasks from LongBench",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Training throughput",
+      "definition": "Thousands of tokens per second during training.",
+      "quote": "Thousands Token Per Second (Kt/s)",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Gated DeltaNet outperforms Mamba2 and DeltaNet across multiple benchmarks.",
+      "numbers": "not stated",
+      "quote": "Our proposed architecture, Gated DeltaNet, consistently surpasses existing models like Mamba2 and DeltaNet across multiple benchmarks",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet has lower WikiText and LAMBADA perplexity than Mamba2 and DeltaNet.",
+      "numbers": "16.42, 12.17",
+      "quote": "Gated DeltaNet             16.42   12.17",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet S-NIAH-1 scores at 1K, 2K, 4K, and 8K are 98.4, 88.4, 91.4, and 91.8.",
+      "numbers": "98.4, 88.4, 91.4, 91.8",
+      "quote": "Gated DeltaNet     98.4     88.4    91.4    91.8",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet-H1 recall-world average is 39.0.",
+      "numbers": "35.6, 39.7, 52.0, 60.1, 24.6, 22.2, 39.0",
+      "quote": "Gated DeltaNet-H1           35.6    39.7 52.0 60.1 24.6 22.2 39.0",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet is slightly slower than Mamba2 in throughput.",
+      "numbers": "2-3K tokens/sec",
+      "quote": "Both are slightly slower than Mamba2 (2-3K tokens/sec)",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Linear transformers have limitations in modeling local shifts and comparisons, and fixed state size makes retrieval hard.",
+      "quote": "Linear transformers have limitations in modeling local shifts and comparisons, and their fixed state size makes it hard for retrieval tasks",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Length extrapolation results are mixed.",
+      "quote": "While we observe mixed results in length extrapolation",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Improvement margin on real-world retrieval is smaller than on synthetic S-NIAH.",
+      "quote": "though the improvement margin is smaller than in Table 2",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Delta rule has theoretical limitations and only moderate real-world performance.",
+      "quote": "the delta rule faces theoretical limitations (Irie et al., 2023) and shows only moderate performance on real-world datasets",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Longer-sequence capabilities are left for future work.",
+      "quote": "Future work will explore these models’ capabilities on even longer sequences.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates 400M/1.3B models on FineWeb-Edu, not Gemma 4 E2B or its KV-shared layers 15-34/per-layer embeddings, so internal-mechanism claims may not transfer.",
+     "No activation patching, logit lens, induction-head, or factual-recall tracing is performed, so the work does not directly validate the lab's interpretability methods.",
+     "Benchmark gains may reflect training/token budget and architecture choices rather than the gated delta rule alone; ablations are limited to 400M/15B tokens.",
+     "Hybrid layer ordering is tested only in a small ablation, and conclusions may not generalize to other layer placements or scales.",
+     "CPU inference/training behavior is not analyzed; throughput results are on a single H100 GPU.",
+     "No statistical significance or variance across seeds is reported for main benchmark comparisons.",
+     "The paper does not analyze KV sharing, per-layer embeddings, or memory-collision behavior inside Gemma-style models."
+    ],
+    "code_or_data_url": "https://github.com/NVlabs/GatedDeltaNet",
+    "relevance_to_lab": "The paper is not about Gemma 4 E2B internals, but its gated delta rule and hybrid linear-attention designs are relevant to memory/retrieval mechanisms that could inform hypotheses for activation patching, logit lens, induction-head, and factual-recall tracing; it provides no direct evidence on KV-shared layers 15-34 or per-layer embeddings."
+   },
+   "usage": {
+    "prompt_tokens": 25954,
+    "completion_tokens": 11689,
+    "total_tokens": 37643,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 10111
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 32,
+    "near": 2,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.919,
+   "data": {
+    "title": "Gated Delta Networks: Improving Mamba 2 with Delta Rule",
+    "research_question": "Can combining Mamba 2-style data-dependent gating with DeltaNet-style selective key-value replacement improve memory retention, filtering, retrieval, long-context performance, and hardware-efficient training relative to either mechanism alone?",
+    "models_and_data": [
+     {
+      "item": "Gated DeltaNet",
+      "quote": "The basic Gated DeltaNet follows Llama’s macro architecture, stacking token mixer layers with SwiGLU MLP layers, but replaces self-attention with gated delta rule token mixing.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gated DeltaNet-H1 hybrid",
+      "quote": "Following recent hybrid architectures like Griffin (De et al., 2024) and Samba (Ren et al., 2024), we combine linear recurrent layers with sliding window attention (SWA), resulting in GatedDeltaNet-H1.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Gated DeltaNet-H2 hybrid",
+      "quote": "We also stack Mamba2, GatedDeltaNet and SWA, resulting in GatedDeltaNet-H2.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Baseline architectures: RetNet, HGRN2, Mamba, Mamba2, Samba, and DeltaNet",
+      "quote": "We evaluate against the following baselines: RetNet (Sun et al., 2023a), HGRN2 (Qin et al., 2024b), Mamba (Gu & Dao, 2023), Mamba2 (Dao & Gu, 2024b), Samba (Ren et al., 2024), and DeltaNet (Yang et al., 2024b).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "FineWeb-Edu pretraining corpus",
+      "quote": "For fair comparison, all models are trained under identical conditions with 1.3B parameters on 100B tokens sampled from the FineWeb-Edu dataset (Penedo et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RULER Single Needle-In-A-Haystack suite",
+      "quote": "the Single Needle-In-A-Haystack (S-NIAH) benchmark suite from RULER (Hsieh et al., 2024), where a key-value pair acts as a needle in the haystack (context)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "LongBench long-context benchmark suite",
+      "quote": "we evaluated the models’ performance on LongBench (Bai et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Real-world retrieval datasets: SWDE, FDA, SQuAD, TriviaQA, Drop, and NQ",
+      "quote": "we evaluate on diverse datasets: SWDE (Lockard et al., 2019) for structured HTML relation extraction, FDA (Arora et al., 2023b) for PDF key-value retrieval, and several question-answering datasets including SQuAD, TriviaQA, Drop, and NQ.",
+      "quote_check": "near"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Implement the gated delta state update, with αt controlling decay and βt controlling selective replacement.",
+      "quote": "St = St−1 (αt (I − βt kt kt⊺ )) + βt vt kt⊺",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Extend DeltaNet's chunkwise algorithm with gating terms for hardware-efficient training.",
+      "quote": "Similar to how Mamba2 extends linear attention (Eq. 1), we can adapt DeltaNet’s chunkwise algorithm (Eq. 8-9) for Gated DeltaNet to enable hardware-efficient training as follows:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Construct the token-mixer block with projected queries, keys, values, decay, and update-strength signals.",
+      "quote": "The query/key paths consist of linear proj., shortconv., SiLU and L2 norm; the value path includes linear proj., shortconv. and SiLU; alpha/beta use linear proj.; and output gate applies linear proj. with SiLU.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Interleave recurrent and attention layers to form the two hybrid architectures.",
+      "quote": "GatedDeltaNet-H1 and H2 use Gated DeltaNet + SWA and Mamba2 + Gated DeltaNet + SWA patterns, respectively.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Train all compared models under matched parameter, token-budget, and corpus conditions.",
+      "quote": "For fair comparison, all models are trained under identical conditions with 1.3B parameters on 100B tokens sampled from the FineWeb-Edu dataset (Penedo et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Optimize with AdamW, a 4e-4 peak learning rate, 0.1 weight decay, and 1.0 gradient clipping.",
+      "quote": "We use the AdamW optimizer with a peak learning rate of 4e-4, weight decay of 0.1, and gradient clipping of 1.0.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use cosine annealing, a 1B-token warm-up, and batches of 0.5M tokens.",
+      "quote": "The learning rate follows a cosine annealing schedule with a 1B token warm-up period and batch size of 0.5M tokens.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Evaluate the non-instruction-tuned models with cloze-completion prompts.",
+      "quote": "Since our pretrained models lack instruction tuning, we employ the Cloze Completion Formatting prompts provided by Arora et al. (2024b), which better align with our models’ next-word-prediction training objective.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Language-modeling perplexity",
+      "definition": "Perplexity on WikiText and LAMBADA, where lower is better.",
+      "quote": "Table 3: Performance comparison on language modeling and zero-shot common-sense reasoning.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-shot common-sense accuracy",
+      "definition": "Accuracy on PIQA, HellaSwag, WinoGrande, ARC-easy, ARC-challenge, SIQA, and BoolQ.",
+      "quote": "PIQA (Bisk et al., 2020), HellaSwag (Hella.; Zellers et al., 2019), WinoGrande (Wino.; Sakaguchi et al., 2020), ARC-easy (ARC-e) and ARC-challenge (ARC-c)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Average perplexity and average zero-shot accuracy",
+      "definition": "Average perplexity and average accuracy across the common-sense reasoning evaluations.",
+      "quote": "Avg-PPL and Avg-Acc denote average perplexity and zero-shot commonsense reasoning accuracy (as in Table 3), respectively.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "S-NIAH retrieval score",
+      "definition": "Zero-shot retrieval performance for pass-key, numeric, and UUID needles at multiple context lengths.",
+      "quote": "S-NIAH-1 (pass-key retrieval) S-NIAH-2 (number in haystack) S-NIAH-3 (uuid in haystack)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Real-world retrieval accuracy",
+      "definition": "Accuracy on recall-oriented real-world tasks with inputs truncated to 2K tokens.",
+      "quote": "Accuracy on recall-world retrieval tasks with input truncated to 2K tokens.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "LongBench accuracy",
+      "definition": "Accuracy averaged over 14 long-context understanding tasks.",
+      "quote": "Table 5: Accuracy on 14 tasks from LongBench (Bai et al., 2023): Narrative QA, QasperQA, MultiField QA, HotpotQA, 2WikiMulti QA, Musique, GovReport, QMSum, MultiNews, TRec, Trivia QA, SamSum, LCC, and RepoBench-P by order.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Length-extrapolation perplexity",
+      "definition": "Perplexity while extrapolating to sequences of up to 20K tokens across six long-context benchmarks.",
+      "quote": "As shown in Fig.2, we evaluate the models’ capacity to extrapolate to sequences of up to 20K tokens across six long-context benchmarks.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Training throughput",
+      "definition": "Training tokens per second for 1.3B models on one H100 GPU.",
+      "quote": "Figure 3: Training throughput comparison of 1.3B models on a single H100 GPU.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "On repeated synthetic contexts, Gated DeltaNet showed less long-context degradation than Mamba2, while DeltaNet remained strongest overall.",
+      "numbers": "S-NIAH-1, 1K/2K/4K/8K: DeltaNet 97.4/96.8/99.0/98.8; Mamba2 99.2/98.8/65.4/30.4; Gated DeltaNet 98.4/88.4/91.4/91.8.",
+      "quote": "Mamba2 degrades significantly beyond 2K sequences since it decays historical information too quickly, while Gated DeltaNet’s degradation is less severe thanks to the use of delta rule.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gating improved filtering in the numeric-needle haystack task, with Gated DeltaNet leading the reported models at all shown lengths.",
+      "numbers": "S-NIAH-2, 1K/2K/4K/8K: DeltaNet 98.4/45.6/18.6/14.4; Mamba2 99.4/98.8/56.2/17.0; Gated DeltaNet 100.0/99.8/92.2/29.6.",
+      "quote": "Mamba2 and Gated DeltaNet maintain better performance through gating mechanisms that filter irrelevant information.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The delta rule improved complex-pattern memorization in the UUID-needle task.",
+      "numbers": "S-NIAH-3, 1K/2K/4K: DeltaNet 85.2/47.0/22.4; Mamba2 64.4/47.6/4.6; Gated DeltaNet 86.6/84.2/27.6.",
+      "quote": "Mamba2’s performance drops quickly, while Gated DeltaNet performs better, verifying that the delta rule indeed has better memorization ability.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet outperformed the other recurrent baselines on average common-sense reasoning, and the hybrid variants improved further.",
+      "numbers": "Gated DeltaNet Avg. 55.32; Mamba2 Avg. 54.89; DeltaNet Avg. 52.14; Gated DeltaNet-H1 Avg. 56.40; Gated DeltaNet-H2 Avg. 56.18; Gated DeltaNet Wiki. ppl 16.42; LMB. ppl 12.17.",
+      "quote": "Gated DeltaNet consistently outperforms other linear models, including RetNet, HGRN2, Mamba, Mamba2, and DeltaNet, at both scales.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet improved real-world retrieval over DeltaNet and Mamba2, and the hybrid models achieved the highest average scores.",
+      "numbers": "Avg.: DeltaNet 26.2; Mamba2 29.8; Gated DeltaNet 30.6; Gated DeltaNet-H1 39.0; Gated DeltaNet-H2 40.1.",
+      "quote": "Gated DeltaNet outperforms both DeltaNet and Mamba2 thanks to its gated delta rule, though the improvement margin is smaller than in Table 2.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet had the strongest recurrent-model LongBench average, while both hybrid variants improved long-context understanding further.",
+      "numbers": "Avg.: Mamba2 13.5; DeltaNet 13.6; Gated DeltaNet 16.6; Gated DeltaNet-H1 17.8; Gated DeltaNet-H2 18.4.",
+      "quote": "In recurrent models, Gated DeltaNet shows consistent advantages, especially in single-doc QA, few-shot in-context learning, and Code tasks, demonstrating its superior capabilities in retrieval, in-context learning, and state tracking, respectively.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gated DeltaNet produced the lowest overall perplexity across the tested long-context benchmarks among recurrent models.",
+      "numbers": "up to 20K tokens; six long-context benchmarks",
+      "quote": "Gated DeltaNet achieves the lowest overall perplexity across tasks among RNN models.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Adding the gate imposed only marginal training-throughput overhead relative to DeltaNet.",
+      "numbers": "2-3K tokens/sec",
+      "quote": "As our analysis shows, the proposed gated delta rule introduces only marginal overhead compared to the original delta rule, with Gated DeltaNet achieving essentially the same throughput as DeltaNet.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Fixed-state recurrent layers have difficulty modeling local shifts and comparisons and retaining information needed for retrieval.",
+      "quote": "Linear transformers have limitations in modeling local shifts and comparisons, and their fixed state size makes it hard for retrieval tasks (Arora et al., 2024a).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The delta rule retains theoretical limitations and only moderate real-world performance, motivating further architectural changes.",
+      "quote": "Despite these significant advantages, the delta rule faces theoretical limitations (Irie et al., 2023) and shows only moderate performance on real-world datasets (Yang et al., 2024b), suggesting room for improvement.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Length-extrapolation results were mixed rather than uniformly superior.",
+      "quote": "While we observe mixed results in length extrapolation, Gated DeltaNet exhibits relatively more robust performance, suggesting better memory management.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The experiments did not establish behavior on substantially longer sequences.",
+      "quote": "Future work will explore these models’ capabilities on even longer sequences.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Repetition errors in non-instruction-tuned models reduced the observable separation between update rules on real-world retrieval tasks.",
+      "quote": "We attribute this reduced performance gap to instruction-unaligned small language models being prone to repetition errors, which are the primary source of errors in these tasks (cf. Arora et al. (2024b, Appendix E)).",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No causal or layer-wise analysis isolates αt-driven forgetting, βt-driven replacement, or individual state writes as the source of the benchmark gains.",
+     "Repeated-seed variance, confidence intervals, and significance tests are not reported for the reported performance differences.",
+     "The main training comparison centers on 1.3B-parameter models trained for 100B tokens, so scaling behavior for substantially larger models or longer training budgets is not established.",
+     "Training throughput is measured on one H100 GPU; CPU latency, memory consumption, energy use, and inference or decoding throughput are not characterized.",
+     "Memory-collision, erasure, and retention claims are inferred from downstream scores rather than direct measurements of state capacity, collision rate, or gate dynamics.",
+     "Hybrid gains may jointly reflect the recurrent update rule, added sliding-window attention, and layer allocation; per-layer compute- and parameter-matched controls are not reported.",
+     "Evaluation is concentrated on pretraining-model zero-shot and cloze-format benchmarks, limiting conclusions about instruction-following and instruction-tuned factual recall."
+    ],
+    "code_or_data_url": "https://github.com/NVlabs/GatedDeltaNet",
+    "relevance_to_lab": "Moderate conceptual relevance but low direct transferability. The gated rule separates αt-driven decay from βt-driven selective replacement, providing concrete hypotheses for activation-patching candidate erase/write signals and for logit-lens tracing from recurrent state to output. The S-NIAH and recall evaluations align with factual-recall tracing, while the online-learning formulation suggests testing whether patched gate signals causally change retrieved values. However, the paper does not analyze Gemma 4 E2B, induction heads, KV sharing in layers 15-34, or per-layer embeddings, and its hardware evaluation uses an H100 rather than CPU. It should therefore be used to generate mechanistic hypotheses and controls, not as evidence that the lab's targeted layers implement the reported mechanism."
+   },
+   "usage": {
+    "prompt_tokens": 25975,
+    "completion_tokens": 21949,
+    "total_tokens": 47924,
+    "prompt_tokens_details": {
+     "cached_tokens": 25974
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 18375
+    }
+   }
+  }
+ }
+}

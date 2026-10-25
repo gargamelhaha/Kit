@@ -1,0 +1,435 @@
+{
+ "source_id": "LIT02-018",
+ "arxiv_id": "2401.12631",
+ "title": "A Reply to Makelov et al. (2023)'s \"Interpretability Illusion\" Arguments",
+ "chars": 88087,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 22,
+    "near": 2,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.96,
+   "data": {
+    "title": "A Reply to Makelov et al. (2023)’s “Interpretability Illusion” Arguments",
+    "research_question": "Are the phenomena Makelov et al. (2023) call “interpretability illusions” genuine failures of distributed interchange interventions/DAS, or artifacts of their training and evaluation paradigms?",
+    "models_and_data": [
+     {
+      "item": "GPT-2 Small checkpoint",
+      "quote": "We use the GPT-2 model Small checkpoint from HuggingFace.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "IOI dataset generation scripts from Makelov et al.",
+      "quote": "We use the dataset generation scripts from the publicly released code of Makelov et al. (2023).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Toy linear neural network",
+      "quote": "The toy example involves a simple linear neural network f (x) = (xW1⊺ )W2 where W1 = [1, 0, 1]⊺ and W2 = [0, 2, 1]⊺.",
+      "quote_check": "near"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Decompose the DAS direction into nullspace and rowspace components",
+      "quote": "Makelov et al. decompose v into two orthogonal parts as,",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Define an illusion as a much smaller causal effect for the rowspace-only intervention",
+      "quote": "an “illusion” arises if the causal effect of intervening on vr is much smaller than v towards the desired goal",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train a single DAS direction on base-source pairs",
+      "quote": "To train a single DAS direction, we sample 200 pairs of base and source example pairs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate alignment with interchange intervention accuracy",
+      "quote": "We use IIA as our evaluation metric.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Perform leave-one-out head alignment",
+      "quote": "we perform Leave-One-Out (LOO) alignment: we align with concatenated head representations by leaving one head out at a time.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use Boundless DAS as a variable-dimensionality variant",
+      "quote": "we also experimented with Boundless DAS (Wu et al., 2023), a variant of DAS that does not assume a fixed dimensionality for the DAS subspace.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Interchange intervention accuracy (IIA)",
+      "definition": "Percentage of counterfactual predictions matched under interchange interventions between the high-level causal model and the neural model.",
+      "quote": "Interchange intervention accuracy (IIA) is the percentage of counterfactual predictions matched under interchange interventions between the high-level causal model and the neural model.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Fractional logit difference decrease (FLDD)",
+      "definition": "Fractional logit difference between the IO and S tokens before and after the intervention.",
+      "quote": "FLDD measures a frac- tional logit difference between the IO and S (i.e., incorrect output token) tokens before and after the intervention",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Task accuracy",
+      "definition": "Model task performance on the IOI task.",
+      "quote": "GPT-2 can achieve a task performance of 91.6%.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Illusion effect",
+      "definition": "Difference in causal effect between intervening on v and vr alone.",
+      "quote": "I LLUSION E FFECT represents the difference in causal effect between intervening on v and vr alone.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "A direction Makelov et al. call non-illusory still has an illusion effect; rowspace-only intervention retains only 20% of the causal effect.",
+      "numbers": "20%",
+      "quote": "This shows the causal effect by intervening with vr alone greatly diminishes by only retaining 20% of the causal effect when intervening on v.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Makelov et al. report very low IIA for MLP intervention locations, far below GPT-2 task performance.",
+      "numbers": "0.0% to 4.2%; 91.6%",
+      "quote": "Makelov et al. (2023) end up with an IIA ranging from 0.0% to 4.2% for intervention locations in MLP layers",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DAS finds name-position information in the main residual stream at the 8th layer but much less in MLP activations.",
+      "numbers": "70%; 4%; 8th",
+      "quote": "The learned DAS direction achieves an IIA of 70% with the main residual stream (vblock out ) and an IIA of 4% with the MLP activations (vmlp act )",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "At the 8th layer, attention output and block output carry substantial name-position information.",
+      "numbers": "48%; 69%",
+      "quote": "the attention output stream (vattn out ) reaches about 48% IIA, and the resulting block output stream reaches about 69% IIA.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Head 6 alone reaches 0% IIA and with head 10 remains below 20%, supporting distributed head processing.",
+      "numbers": "0%; 20%",
+      "quote": "head 6 alone reaches 0% IIA, and it reaches less than 20% when considered together with head 10",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DAS finds a new attention-value-output alignment with 13% IIA where vanilla interchange intervention is 0%.",
+      "numbers": "13%; 0%",
+      "quote": "DAS finds new alignments in the attention value output stream with an IIA of 13% where the vanilla interchange intervention flats out with a 0% IIA.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "IIA has limitations as an interpretability measure.",
+      "quote": "Although IIA has limitations (as outlined in Geiger et al. 2023; Wu et al. 2023), it offers an intuitive measure",
+      "quote_check": "near"
+     },
+     {
+      "text": "FLDD can be misleading because it is a ratio of log-likelihoods.",
+      "quote": "Because FLDD is based on a ratio of log-likelihoods, it can be brought arbitrarily close to 100% with no effect whatsoever on counterfactual behavior.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DAS assumes a fixed-size linear subspace, which may not fit binary variables.",
+      "quote": "DAS assumes a fixed-size linear subspace; however, a binary variable may not always fit within a linear subspace of a single dimension.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Activation-only analysis cannot support strong causal claims.",
+      "quote": "analysis solely based on activations cannot support strong causal claims about model structures.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The factual-recall DAS setup can overfit a single fact pair.",
+      "quote": "the current experimental setup also entails that the learned DAS direction overfits the single pair of facts seen during training.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Complex models may admit multiple distinct fully correct causal abstractions.",
+      "quote": "for sufficiently complex models, there are still likely to be multiple distinct fully correct abstractions.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper studies GPT-2 Small/XL and a toy linear network, not Gemma 4 E2B or its KV-shared layers 15-34.",
+     "The nullspace/rowspace analysis is specific to MLP down-projection weights and does not directly address KV-shared attention layers or per-layer embeddings.",
+     "IIA and FLDD are behavioral metrics and may miss internal mechanisms such as induction heads or factual-recall circuits.",
+     "Single DAS directions per task/layer may underrepresent distributed representations and may not generalize across templates, names, or facts.",
+     "The paper does not test activation patching, logit lens, induction-head tracing, or factual-recall tracing on Gemma 4 E2B.",
+     "CPU feasibility and scaling to large models are not analyzed.",
+     "The critique is conceptual and empirical on IOI/factual recall; it does not establish whether similar “illusions” occur in KV-shared architectures."
+    ],
+    "code_or_data_url": "https://github.com/frankaging/pyvene/blob/main/tutorials/advanced tutorials/IOI with DAS.ipynb",
+    "relevance_to_lab": "Relevant as a caution about nullspace/rowspace artifacts in activation patching and DAS, but it studies GPT-2/toy models rather than Gemma 4 E2B KV-shared layers, per-layer embeddings, logit lens, induction heads, or CPU tracing."
+   },
+   "usage": {
+    "prompt_tokens": 18069,
+    "completion_tokens": 10191,
+    "total_tokens": 28260,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8506
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.972,
+   "data": {
+    "title": "A Reply to Makelov et al. (2023)’s “Interpretability Illusion” Arguments",
+    "research_question": "Do Makelov et al.’s “interpretability illusions” show that distributed or subspace interchange interventions are invalid, and are their empirical demonstrations artifacts of experimental design?",
+    "models_and_data": [
+     {
+      "item": "A three-hidden-unit linear toy network implementing a copy function.",
+      "quote": "The toy example involves a simple linear neural network f (x) = (xW1⊺ )W2 where W1 = [1, 0, 1]⊺ and W2 = [0, 2, 1]⊺ .",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 Small checkpoint used for the paper’s IOI experiments.",
+      "quote": "We use the GPT-2 model Small checkpoint from HuggingFace.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "IOI data for aligning a binary name-position variable with distributed representations.",
+      "quote": "Following Makelov et al. (2023), we learn a single DAS direction to localize the name position in the IOI task.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Paired IOI data for learning representations of the correct indirect-object name.",
+      "quote": "To find the IO name representations, we sample 200 pairs of base and source randomly and have the correct counterfactual label to be the source IO name.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Factual-recall experimental setup reviewed from Makelov et al.",
+      "quote": "Makelov et al. (2023) also try to replicate their finding of “illusion” in the factual recall task as in their Section 6.1 (p. 20).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Alpaca simple in-context reasoning task used as an external IIA comparison.",
+      "quote": "For example, in the study of how Alpaca solves a simple reasoning task in context (Wu et al., 2023), we see IIA values around 85% even in ambitious, out-of-domain evaluations.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Intervene on the activation induced by example A using the activation induced by example B along a learned subspace v.",
+      "quote": "Intervening on activations created by A with B in the subspace spanned by v can be expressed as,",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Decompose the intervention direction into orthogonal nullspace and rowspace components relative to the MLP down-projection matrix.",
+      "quote": "Makelov et al. decompose v into two orthogonal parts as,",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compare the causal effect of intervening on the full direction with the effect of intervening only on its rowspace component.",
+      "quote": "the main experiments that Makelov et al. designed is to compare the causal effect on model predictions of intervening on v with intervening on vr alone",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate the toy example using concrete inputs and compare full-subspace and rowspace-only outputs.",
+      "quote": "intervening along v will result in an output of 5, and intervening along vr will result in an output of 5 − 0.8 × (5 − 1) = 1.8 which is much lower",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Learn a single DAS direction for the IOI name-position variable and test it at seven intervention locations.",
+      "quote": "We try seven intervention locations to find the causal variable as annotated in Figure 1.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train the DAS direction with Adam using the reported learning rate, epochs, and batch size.",
+      "quote": "We use the Adam optimizer (Kingma & Ba, 2015) with an initial learning rate of 0.01 for an epoch number of 10 with a batch size of 20.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Rank attention heads by leave-one-out IIA loss and then build cumulative head representations in that order.",
+      "quote": "We then rank the IIA drops across heads from the highest (i.e., leaving this head out results in the biggest loss in IIA) to the lowest based on LOO experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compare vanilla interchange interventions with DAS when locating the correct IO-name representation.",
+      "quote": "To find the IO token representation, we use vanilla interchange interventions (Geiger et al., 2021) as well as DAS.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Illusion Effect",
+      "definition": "The difference in downstream causal effect between intervening along the full subspace direction v and intervening along its rowspace component alone.",
+      "quote": "Recall that I LLUSION E FFECT represents the difference in causal effect between intervening on v and vr alone.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Interchange Intervention Accuracy (IIA)",
+      "definition": "The percentage of counterfactual predictions matched under interchange interventions between a high-level causal model and the neural model.",
+      "quote": "Interchange intervention accuracy (IIA) is the percentage of counterfactual predictions matched under interchange interventions between the high-level causal model and the neural model.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Fractional Logit Difference Decrease (FLDD)",
+      "definition": "The fractional change in the logit difference between the correct IO token and incorrect S token before and after an intervention.",
+      "quote": "FLDD measures a fractional logit difference between the IO and S (i.e., incorrect output token) tokens before and after the intervention, as described in Equation 4 in the paper.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Task accuracy",
+      "definition": "The proportion of examples on which GPT-2 produces the correct task answer.",
+      "quote": "The GPT-2 model achieves 96% task accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Leave-One-Out head IIA",
+      "definition": "IIA obtained with a concatenated head representation while omitting one attention head at a time.",
+      "quote": "The top panel shows IIA when aligning with a concatenated representation of all heads in the 8th layer by leaving one head out at a time.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cumulative-head IIA",
+      "definition": "IIA obtained by cumulatively concatenating heads in descending order of leave-one-out IIA loss.",
+      "quote": "The bottom panel shows IIA when aligning with cumulated head representations by starting from the head resulting in the largest drop in the top panel",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "The authors reject the “illusion” label and interpret the effects as discoveries about distributed representations.",
+      "numbers": "not stated",
+      "quote": "These are simply discoveries about distributed representations.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In the toy example, the direction identified as non-illusory produces an illusion effect, and rowspace-only intervention retains only 20% of the full intervention’s causal effect.",
+      "numbers": "20%; x = 1; x′ = 5; output of 5; output of 5 − 0.8 × (5 − 1) = 1.8",
+      "quote": "This shows the causal effect by intervening with vr alone greatly diminishes by only retaining 20% of the causal effect when intervening on v.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For IOI name-position information, DAS aligns strongly with the main residual stream but weakly with MLP activations.",
+      "numbers": "70%; 4%",
+      "quote": "The learned DAS direction achieves an IIA of 70% with the main residual stream (vblock out ) and an IIA of 4% with the MLP activations (vmlp act )",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Name-position information emerges prominently through the self-attention block at the 8th layer.",
+      "numbers": "11%; 48%; 69%",
+      "quote": "of the 8th layer (i.e., the block output stream of the previous layer) reaches about 11% IIA, the attention output stream (vattn out ) reaches about 48% IIA, and the resulting block output stream reaches about 69% IIA.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Name-position information is distributed across attention heads: leaving heads 6 and 10 out causes the largest IIA losses, while head 6 alone reaches 0% IIA and remains below 20% when paired with head 10.",
+      "numbers": "0%; less than 20%; heads 6 and 10",
+      "quote": "Our results show that head 6 alone reaches 0% IIA, and it reaches less than 20% when considered together with head 10 as shown in the bottom panel of Figure 4.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DAS finds an attention-value alignment for the correct IO name that vanilla interchange intervention misses.",
+      "numbers": "13%; 0%",
+      "quote": "Comparing results from DAS with vanilla interchange intervention, we find that DAS finds new alignments in the attention value output stream with an IIA of 13% where the vanilla interchange intervention flats out with a 0% IIA.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Boundless DAS outperforms standard DAS when aligning the correct IO-name variable.",
+      "numbers": "not stated",
+      "quote": "However, it demonstrates superior performance in alignment with the correct IO name.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The correct IO-name representation appears to emerge beginning at the 9th layer.",
+      "numbers": "9th layer",
+      "quote": "As shown in Figure 6, the correct IO token seems to emerge starting from the 9th layer.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The authors judge the empirical evidence provided by Makelov et al. to be weak.",
+      "quote": "Our view is that the evidence provided in favor of this claim is not strong.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "IIA has acknowledged limitations as a measure of interpretability.",
+      "quote": "Although IIA has limitations (as outlined in Geiger et al. 2023; Wu et al., 2023), it offers an intuitive measure for gauging the interpretability of a neural model",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "FLDD can approach 100% without producing any counterfactual behavioral change.",
+      "quote": "Because FLDD is based on a ratio of log-likelihoods, it can be brought arbitrarily close to 100% with no effect whatsoever on counterfactual behavior.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Activation-distribution analysis alone cannot justify strong causal claims.",
+      "quote": "We thus argue that analysis solely based on activations cannot support strong causal claims about model structures.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The single-pair factual-recall DAS experiment aligns with an uninteresting dummy causal model.",
+      "quote": "the learned DAS direction aligns the neural network with an uninteresting high-level causal model: a dummy model that always returns the answer of the seen source example.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The single-pair factual-recall DAS setup overfits the facts used for training.",
+      "quote": "the current experimental setup also entails that the learned DAS direction overfits the single pair of facts seen during training.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The learned factual-recall directions are unlikely to generalize beyond the observed facts.",
+      "quote": "As a result, their directions would likely not generalize to any other facts except the ones it is trained on.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Cumulative-head results are sensitive to the ordering of heads.",
+      "quote": "In practice, given the scale of the dataset and the magnitude of IIAs, we observe variance in results as the order changes.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The experiments use GPT-2 Small and review GPT-2-XL, so the reported geometry and layer-wise findings are not validated on Gemma 4 E2B.",
+     "KV sharing, layers 15–34, and per-layer embedding intervention sites are not tested, leaving transfer to the lab’s architecture unknown.",
+     "Training is reported on a single 12G Nvidia GPU, leaving CPU-only feasibility and memory scaling for Gemma-scale models unaddressed.",
+     "No induction-head circuit is evaluated, so IOI name-mover findings cannot establish induction-head behavior in Gemma.",
+     "Factual recall is discussed primarily as a critique of prior work rather than rerun with a modern experimental design, leaving little direct factual-recall tracing evidence.",
+     "No confidence intervals, significance tests, or seed-level uncertainty are reported for most IIA comparisons; only ordering variance is noted.",
+     "The connection between head importance and DAS weight sparsity is primarily qualitative rather than supported by a reported statistical analysis.",
+     "Exact environment and dependency versions for the external code and dataset-generation scripts are not specified in the provided text, creating reproducibility risk across library revisions."
+    ],
+    "code_or_data_url": "https://github.com/frankaging/pyvene/blob/main/tutorials/advanced_tutorials/IOI_with_DAS.ipynb",
+    "relevance_to_lab": "The paper is directly relevant as a methodological warning and template for activation-patching work: it shows why full-subspace versus rowspace-only patches should be compared, argues that nonorthogonality to downstream nullspaces can reflect distributed structure rather than failed explanation, and recommends IIA, logit-difference or KL-style checks, and head-wise leave-one-out and cumulative tracing. The lab can adapt these procedures to Gemma 4 E2B by testing per-layer embeddings and intervention sites across KV-shared layers 15–34, but the paper provides no Gemma-specific, induction-head, CPU-feasibility, or modern factual-recall validation."
+   },
+   "usage": {
+    "prompt_tokens": 18366,
+    "completion_tokens": 15394,
+    "total_tokens": 33760,
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 12427
+    }
+   }
+  }
+ }
+}

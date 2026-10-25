@@ -46,6 +46,29 @@ a["predictions"] = {
 P = a["predictions"]
 a["H-008"] = "SUPPORTED" if P["P1"] else ("REFUTED" if med("KV14_all") >= med("KV13_all") else "INCONCLUSIVE")
 a["H-009"] = ("SUPPORTED" if P["P4"] and P["P5"] else "PARTIAL (sufficient, not necessary)" if P["P4"] else "REFUTED")
+# AUDIT-002 fixes: enforce the preregistered failure rules in code (they did not bind in this run)
+if not P["control_null_ok"]:
+    a["H-008"] = a["H-009"] = "INVALID (NULL control failed)"
+elif P["underpowered"]:
+    a["H-008"] = a["H-009"] = "INCONCLUSIVE (underpowered)"
+
+
+def cluster_boot(ps, cond, n=10000):
+    """AUDIT-002 robustness (exploratory): resample subjects, keep all held-out pairs whose clean AND corrupt subject were drawn."""
+    rng = np.random.default_rng(0); subs = sorted({p["clean"] for p in ps} | {p["corrupt"] for p in ps}); meds = []
+    for _ in range(n):
+        pick = set(rng.choice(subs, len(subs), replace=True))
+        w = [p["recovery"][cond] for p in ps if p["clean"] in pick and p["corrupt"] in pick]
+        if w: meds.append(np.median(w))
+    return [round(float(np.percentile(meds, 2.5)), 4), round(float(np.percentile(meds, 97.5)), 4)]
+
+
+a["subject_cluster_bootstrap_ci95_median"] = {c: cluster_boot(ho, c) for c in
+    ("KV13_all", "KV14_all", "KVBOTH_all", "KV13_D", "KV13_T", "ATTN_25", "NOISE_ATTN25", "HEAD25_0")}
+ins = {frozenset((p["clean"], p["corrupt"])) for p in pairs if p["split"] == "in_sample"}
+a["split_check"] = {"held_out_pairs_overlapping_in_sample_pairs": sum(frozenset((p["clean"], p["corrupt"])) in ins for p in ho),
+                    "held_out_R1_pairs_sharing_a_subject_with_in_sample": sum(bool({p["clean"], p["corrupt"]} & {s for q in ins for s in q})
+                                                                         for p in ho if p["relation"] == "R1")}
 json.dump(a, open(os.path.join(D, "analysis.json"), "w"), indent=1, default=lambda o: o.item())
 print(json.dumps({k: a[k] for k in ("n_pairs", "n_held_out", "predictions", "H-008", "H-009")}, indent=1, default=lambda o: o.item()))
 for c in ("KV13_all", "KV14_all", "KVBOTH_all", "KV13_D", "KV14_D", "KV13_S", "KV13_T", "ATTN_25", "NOISE_ATTN25", "NULL"):

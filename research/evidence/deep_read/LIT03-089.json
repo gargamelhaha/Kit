@@ -1,0 +1,496 @@
+{
+ "source_id": "LIT03-089",
+ "arxiv_id": "2606.18322",
+ "title": "SAE Interventions are Unreliable: Post-Intervention Recovery of Suppressed Behavior",
+ "chars": 71627,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 32,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.941,
+   "data": {
+    "title": "SAE Interventions are Unreliable: Post-Intervention Recovery of Suppressed Behavior",
+    "research_question": "Can a behavior suppressed by an SAE feature clamp be recovered from the defended residual state while the clamp remains active and targeted features stay near defended values?",
+    "models_and_data": [
+     {
+      "item": "TPP official layer-5 benchmark on Gemma-scale model with Gemma-Scope residual SAE",
+      "quote": "We use the official layer-5 TPP benchmark without modifying its feature-selection or ablation pipeline.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WMDP-Bio unlearning with SAE-based biology feature clamping",
+      "quote": "We use the SAE-based WMDP-Bio unlearning setting, where biology-related SAE features are selected from forget-versus-retain statistics and clamped during inference to suppress target-domain answer accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "IOI circuit-level test on GPT-2 Small with residual SAE",
+      "quote": "For GPT-2 Small, we select SAE features with positive attribution to this IO-minus-S logit difference, clamp them while preserving the SAE reconstruction residual, and optimize a residual recovery variable at the defended answer position.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Refusal recovery on strict valid AdvBench prompts with Gemma-2B refusal SAE features",
+      "quote": "We evaluate on strict valid AdvBench prompts: the unclamped model must produce a non-refusal response, while the active refusal clamp must turn the same prompt into a refusal under the same detector.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "HarmBench-Test cross-dataset refusal recovery",
+      "quote": "Appendix D repeats the protocol on HarmBench-Test and obtains 43/43 non-refusal recovery under low defended-feature drift.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Refusal feature-set size sweep on full 520-prompt AdvBench slice",
+      "quote": "We construct feature sets of increasing size from the same local-union refusal-feature pool and evaluate each K on the full 520-prompt AdvBench slice.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Restrict recovery evaluation to valid flips where the base model shows the behavior and the active SAE intervention suppresses it",
+      "quote": "We evaluate recovery only on valid flips: examples where the base model exhibits the target behavior but the active SAE intervention suppresses it.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Start from the clamped defended residual state and optimize small residual perturbations",
+      "quote": "Starting from the clamped state, we optimize small residual perturbations to restore the target behavior.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Approximate the constrained recovery search with projected gradient descent",
+      "quote": "We therefore approximate the search using projected gradient descent (PGD).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For single-layer interventions, project updates away from selected SAE encoder directions",
+      "quote": "For single-layer interventions, we project updates away from the selected SAE encoder directions.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For cross-layer interventions, use feature-map Jacobians to constrain feature changes across layers",
+      "quote": "For cross-layer interventions, we use feature-map Jacobians to constrain how perturbations affect the features across layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Replay four components under the active clamp for recovery-path attribution",
+      "quote": "For each optimized perturbation, we replay four components under the same active clamp: clamped-feature changes, non-clamped SAE-feature changes, top-k non-clamped feature changes, and the SAE reconstruction residual.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Report recovery rate as behavioral metric and activation drift as defended-feature violation metric",
+      "quote": "Unless otherwise stated, we report recovery rate as the behavioral metric and activation drift as the primary defended-feature violation metric.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Valid flips",
+      "definition": "Examples where base behavior is present and active SAE intervention suppresses it.",
+      "quote": "We evaluate recovery only on valid flips: examples where the base model exhibits the target behavior but the active SAE intervention suppresses it.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Recovery rate",
+      "definition": "Behavior restored on valid flips; for WMDP, correct choice restored for same permutation.",
+      "quote": "Recovery is counted only if post-intervention optimization restores the correct choice for that same permutation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Activation drift",
+      "definition": "Movement of defended features.",
+      "quote": "Movement of defended features",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Defended-feature drift",
+      "definition": "Movement from post-clamp feature state.",
+      "quote": "Movement from post-clamp feature state",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Clamp-floor violation",
+      "definition": "Whether recovery lowers clamped refusal features.",
+      "quote": "Whether recovery lowers clamped refusal features",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-reactivation recovery",
+      "definition": "Recovery without reopening selected features.",
+      "quote": "Recovery without reopening selected features",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Non-refusal recovery",
+      "definition": "Weak readout that recovered output avoids explicit refusal or safety-cue openings.",
+      "quote": "Non-refusal recovery is a weak readout that checks whether the recovered response avoids explicit refusal or safety-cue openings such as “I cannot” or “I can’t help”.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Base-like recovery",
+      "definition": "Recovered output close to unclamped base non-refusal response.",
+      "quote": "Base-like recovery measures whether the recovered response remains close to the original non-refusal response",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Encoder-orthogonal TPP recovery preserves high behavioral recovery while sharply restricting targeted-feature reactivation.",
+      "numbers": "74.9% recovery; 0.002 reactivation",
+      "quote": "At the latent level, TPP on SAEBench [10] shows that encoder-orthogonal recovery preserves a high behavioral recovery rate of 74.9% while sharply restricting targeted-feature reactivation to just 0.002.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "WMDP-Bio unlearning recovery restores strict valid answer-choice flips with zero measured activation drift.",
+      "numbers": "98.9%; zero measured activation drift",
+      "quote": "At the output level, WMDP-Bio unlearning [8] demonstrates that recovery restores 98.9% of strict valid answer-choice flips from the post-intervention state with zero measured activation drift.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Encoder-projected IOI recovery achieves full recovery with low reactivated-feature fraction.",
+      "numbers": "100% recovery; 0.016 reactivated-feature fraction",
+      "quote": "At the circuit level, IOI [22] shows that the encoder-projected method achieves 100% recovery with only a 0.016 reactivated-feature fraction.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Refusal-steering recovery is high while defended-feature relative drift remains low.",
+      "numbers": "95.8% recovery; 0.131 relative drift",
+      "quote": "Especially in the safety-critical refusal-steering setting, we achieve a 95.8% recovery rate on valid samples while keeping defended-feature relative drift to 0.131, substantially below suffix-based baselines.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "SAE reconstruction residual is the main recovery carrier.",
+      "numbers": "23/24 non-refusal; 14/24 base-like",
+      "quote": "SAE residual replay                                                23/24              14/24         Main recovery carrier",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "HarmBench-Test shows non-refusal recovery under low defended-feature drift.",
+      "numbers": "43/43",
+      "quote": "Appendix D repeats the protocol on HarmBench-Test and obtains 43/43 non-refusal recovery under low defended-feature drift.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Recovery remains high with larger refusal feature sets in the stable range.",
+      "numbers": "42/45 at K = 20",
+      "quote": "reaching 42/45 even at K = 20.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Not a universal impossibility result for SAE-based interventions.",
+      "quote": "Our results are not a universal impossibility result for SAE-based interventions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Results depend on feature selection and SAE release.",
+      "quote": "They are feature-selection and SAE-release dependent: the tested defenses act on selected SAE features in specific dictionaries and model settings.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Recovery procedure is a white-box diagnostic, not a black-box attack.",
+      "quote": "Our recovery procedure is a white-box diagnostic rather than a black-box attack.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Refusal case study has a relatively small main set of clean recovery examples.",
+      "quote": "Finally, the refusal case study uses a strict valid-filtering protocol, which improves interpretability but leaves a relatively small main set of clean recovery examples.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Broader evaluation across models, prompts, clamp strengths, and SAE releases is needed.",
+      "quote": "Therefore, broader evaluation across models, prompts, clamp strengths, and SAE releases is needed to determine the full scope of the phenomenon.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Manual labels are pending, so opening-category diagnostics are automatic rather than independent human evaluation.",
+      "quote": "Manual labels are pending, so this table should be interpreted as an automatic diagnostic rather than an independent human evaluation.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The recovery optimizer may exploit implementation-specific artifacts of the SAE clamp, decoder geometry, or perturbation parameterization rather than a general behavioral bypass; the paper does not ablate clamp implementation details or decoder non-orthogonality.",
+     "Automatic refusal and safety-cue detectors are used for strict-valid filtering and recovery scoring; manual labels are pending, so reported refusal recovery may overstate true harmful or base-like behavior.",
+     "Most experiments use small strict-valid subsets and single runs; the paper does not report multiple random seeds, optimizer hyperparameter sweeps, or stability across PGD/Jacobian projection settings.",
+     "The cross-layer Jacobian projection is a first-order local approximation; higher-order or nonlinear feature changes may evade the preservation constraints, so defended-feature drift may underestimate true reactivation.",
+     "The white-box per-example optimization with gradient access and a perturbation budget may not match realistic deployment constraints; the paper does not test black-box, query-limited, or compute-limited attackers.",
+     "The models are Gemma-scale/Gemma-2B and GPT-2 Small, not Gemma 4 E2B or KV-shared layers 15-34; transfer to the lab's architecture and CPU tracing setup is untested.",
+     "Recovery-path attribution uses behavioral replay of non-orthogonal SAE decoder components; the paper acknowledges norms are not variance fractions but does not fully rule out component interference."
+    ],
+    "code_or_data_url": "Mingyuee88/sae-post-intervention-recovery",
+    "relevance_to_lab": "Useful as a caution and diagnostic template for activation patching/logit-lens work: it tests whether a clamped SAE feature is a complete bottleneck and attributes recovery to the SAE reconstruction residual, with encoder-orthogonal and cross-layer Jacobian projections that could inform tracing across KV-shared layers. It does not study Gemma 4 E2B, layers 15-34, per-layer embeddings, induction heads, or factual recall, and its GPU-based per-example optimization would need adaptation for CPU tracing."
+   },
+   "usage": {
+    "prompt_tokens": 14969,
+    "completion_tokens": 10195,
+    "total_tokens": 25164,
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7984
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 3,
+    "unverified": 4,
+    "skip": 0
+   },
+   "verified_frac": 0.895,
+   "data": {
+    "title": "SAE Interventions are Unreliable: Post-Intervention Recovery of Suppressed Behavior",
+    "research_question": "After an SAE feature clamp suppresses a behavior, can that behavior be recovered from the post-intervention residual state while the clamp remains active and the targeted SAE features stay near their defended values?",
+    "models_and_data": [
+     {
+      "item": "TPP latent-level benchmark using a Gemma-scale model, Gemma-Scope residual SAE, official layer-5 target latents, and zero ablation.",
+      "quote": "TPP                      Gemma-scale model   Gemma-Scope residual SAE   5             official TPP latents       0               target probe logit            encoder",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WMDP-Bio unlearning using a Gemma-scale model, Gemma-Scope residual SAE, task-layer knowledge features, and correct-choice cross-entropy recovery.",
+      "quote": "WMDP-Bio                 Gemma-scale model   Gemma-Scope residual SAE   task layer    knowledge features         ≤0              correct-choice CE             encoder",
+      "quote_check": "exact"
+     },
+     {
+      "item": "IOI circuit task using GPT-2 Small, a residual SAE, task-layer IOI-attribution features, and an IO-minus-S logit-difference readout.",
+      "quote": "IOI                      GPT-2 Small         residual SAE               task layer    IOI-attribution features   0               IO–S logit diff               encoder",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Refusal recovery on AdvBench using Gemma-2B, cross-layer refusal SAE features, the benchmark_our/global feature set, clamp value 3.0, and Jacobian projection.",
+      "quote": "Refusal AdvBench         Gemma-2B            refusal SAE features       cross-layer   benchmark_our/global        3.0             behavior + base-like loss     Jacobian",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Refusal recovery on HarmBench-Test using Gemma-2B with the same refusal SAE feature set, clamp value 3.0, and Jacobian projection.",
+      "quote": "Refusal HarmBench-Test   Gemma-2B            refusal SAE features       cross-layer   benchmark_our/global        3.0             behavior + base-like loss     Jacobian",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Refusal feature-size sweep over the full 520-prompt AdvBench slice using local-union top-K refusal feature sets and K-specific valid sets.",
+      "quote": "We construct feature sets of increasing size from the same local-union refusal-feature pool and evaluate each K on the full 520-prompt AdvBench slice.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Condition evaluation on valid flips where the base model exhibits the target behavior and the active intervention suppresses it.",
+      "quote": "Across all experiments, recovery is evaluated only on valid flips: examples where the base model exhibits the target behavior and the active SAE intervention suppresses it.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Clamp selected SAE features to defended values while preserving the SAE reconstruction residual.",
+      "quote": "Following standard SAE intervention practice, we preserve the SAE reconstruction residual and apply",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Initialize from the defended state and optimize a small residual perturbation to restore the suppressed behavior.",
+      "quote": "Starting from the clamped state, we optimize small residual perturbations to restore the suppressed behavior.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Keep the SAE clamp active throughout both optimization and generation.",
+      "quote": "Here MS,c denotes the model with the SAE clamp active throughout optimization and generation.",
+      "quote_check": "near"
+     },
+     {
+      "step": "For single-layer interventions, project each recovery-gradient update away from the selected SAE encoder directions.",
+      "quote": "To enforce the encoder orthogonality constraint (C1), we project each gradient onto the orthogonal complement of the clamped features:",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "For cross-layer interventions, use the feature-map Jacobian to project away first-order directions that change defended features across layers.",
+      "quote": "This dynamic projection extends the single-layer encoder projection to the multi-layer setting.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Enforce encoder orthogonality and the perturbation budget by projection and norm clipping, and evaluate activation and decode stability post hoc.",
+      "quote": "We enforce C1 by projection and C4 by norm clipping, while C2 and C3 are evaluated as post-hoc preservation metrics; see Appendix A.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Attribute recovery by replaying clamped-feature, non-clamped-feature, top-k non-clamped-feature, and SAE-residual components under the same clamp.",
+      "quote": "For each optimized perturbation, we replay four components under the same active clamp: clamped-feature changes, non-clamped SAE-feature changes, top-k non-clamped feature changes, and the SAE reconstruction residual.",
+      "quote_check": "unverified"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Recovery rate",
+      "definition": "Fraction of valid-flip examples for which the target behavior is restored after the recovery perturbation; the primary behavioral metric.",
+      "quote": "We report recovery rate as the primary behavioral metric and defended-feature drift as the primary feature-preservation metric.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Non-refusal recovery",
+      "definition": "Binary readout indicating that the recovered output contains no explicit refusal or safety-cue opening.",
+      "quote": "Non-refusal recovery is a weak readout that checks whether the recovered response avoids explicit refusal or safety-cue openings such as “I cannot” or “I can’t help.”",
+      "quote_check": "near"
+     },
+     {
+      "name": "Base-like recovery",
+      "definition": "Indicator that the recovered output remains close to the unclamped base model's non-refusal response.",
+      "quote": "Base-like recovery measures whether the recovered response remains close to the original non-refusal response, while clamp-floor violation measures whether recovery lowers the clamped refusal features below their post-clamp value.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Activation drift",
+      "definition": "L2 distance between recovered selected-feature activations and their defended values cS.",
+      "quote": "Movement of defended features",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-reactivation recovery",
+      "definition": "Recovery indicator additionally requiring every selected feature activation to remain at or below η.",
+      "quote": "Recovery without reopening selected features",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Defended-feature drift",
+      "definition": "Relative L2 distance between the recovered and post-clamp defended-feature states.",
+      "quote": "Movement from post-clamp feature state",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Clamp-floor violation",
+      "definition": "Relative positive-part distance measuring whether recovery lowers clamped refusal features below their post-clamp state.",
+      "quote": "Whether recovery lowers clamped refusal features",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Relative perturbation norm",
+      "definition": "Frobenius norm of the recovery perturbation normalized by the Frobenius norm of the defended residual state.",
+      "quote": "Scale of residual recovery path",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Encoder projection preserved substantial TPP target recovery while sharply reducing defended-feature reopening.",
+      "numbers": "Target-mean recovery 0.749; mean reactivation 0.002.",
+      "quote": "Encoder projection reduces target-mean recovery from 0.819 to 0.749, but sharply lowers post-hoc evidence of feature reopening: mean reactivation drops from 0.013 to 0.002.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "WMDP-Bio answer behavior remained almost fully recoverable from the defended state despite zero measured activation drift.",
+      "numbers": "98.9% recovery; 90/91 answer-choice flips; zero measured activation drift.",
+      "quote": "At the output level, WMDP-Bio unlearning [8] demonstrates that recovery restores 98.9% of strict valid answer-choice flips from the post-intervention state with zero measured activation drift.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Encoder-projected IOI recovery restored every valid decision while scarcely reactivating the selected features.",
+      "numbers": "100% recovery; 0.016 reactivated-feature fraction.",
+      "quote": "At the circuit level, IOI [22] shows that the encoder-projected method achieves 100% recovery with only a 0.016 reactivated-feature fraction.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Jacobian-projected refusal recovery restored most strict-valid AdvBench behavior while keeping defended-feature movement low.",
+      "numbers": "95.8% recovery; 23/24 prompts; defended-feature relative drift 0.131.",
+      "quote": "Finally, in the safety refusal-steering task [16, 23], recovery reaches 95.8% on strict-valid AdvBench prompts while keeping defended-feature relative drift to 0.131.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The refusal-recovery pattern generalized to HarmBench-Test, although base-response fidelity was substantially lower than non-refusal recovery.",
+      "numbers": "43/43 non-refusal recovery; 19/43 base-like recovery; 14/43 strict-base-like recovery.",
+      "quote": "Jacobian-projected recovery restores non-refusal behavior on all 43 valid examples, with 19/43 base-like recoveries and 14/43 strict-base-like recoveries.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Recovery remained high across the stable range of larger refusal-feature clamps.",
+      "numbers": "K = 5–20; non-refusal recovery 93.3%–100.0%; base-like recovery 68.9%–88.2%.",
+      "quote": "For K = 5–20, non-refusal recovery remains between 93.3% and 100.0%, while base-like recovery remains between 68.9% and 88.2%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The SAE-unexplained reconstruction residual, rather than reopened clamped features or a small set of alternative latents, was the dominant recovery carrier.",
+      "numbers": "SAE residual replay: 23/24 non-refusal and 14/24 base-like; clamped-feature replay: 0/24 and 0/24; non-clamped SAE-feature replay: 2/24 and 1/24.",
+      "quote": "Residual replay nearly matches full recovery, while clamped-feature replay fails and non-clamped SAE-feature replay remains weak.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Encoder-projected WMDP recovery emerged with a modest perturbation budget and remained at zero measured defended-feature drift.",
+      "numbers": "Budgets 0 and 2: no recovery; budget 5: 4/6; budget 10: 6/6; budget 20: no further increase; defended-feature drift zero.",
+      "quote": "Encoder-projected recovery does not recover at budgets 0 or 2, partially recovers at budget 5 (4/6), and reaches full recovery at budget 10 (6/6), while maintaining zero measured defended-feature drift throughout.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The work does not claim that every SAE intervention is necessarily recoverable.",
+      "quote": "Our results are not a universal impossibility result for SAE-based interventions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Observed recovery is dependent on the selected features, SAE release, dictionary, and model setting.",
+      "quote": "They are feature-selection and SAE-release dependent: the tested defenses act on selected SAE features in specific dictionaries and model settings.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The procedure is a white-box diagnostic rather than a black-box attack.",
+      "quote": "Our recovery procedure is a white-box diagnostic rather than a black-box attack.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Recovery requires internal activation and gradient access and uses per-input residual optimization.",
+      "quote": "It assumes access to internal activations and gradients and optimizes per-input residual perturbations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The results should not be interpreted as a directly deployable jailbreak.",
+      "quote": "This is appropriate for testing intervention completeness, but it should not be interpreted as a directly deployable jailbreak.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Strict refusal filtering leaves a relatively small main set of clean recovery examples.",
+      "quote": "Finally, the refusal case study uses a strict valid-filtering protocol, which improves interpretability but leaves a relatively small main set of clean recovery examples.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "A non-refusal opening does not guarantee a coherent or original-answer response.",
+      "quote": "a non-refusal output may still be degenerate, malformed, or unrelated to the original answer.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "An independent human evaluation of the refusal outputs has not yet been completed.",
+      "quote": "This diagnostic is not a substitute for a full independent human evaluation; manual labels are still pending.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Objective leakage and metric gaming are possible because optimization targets behavior while refusal evaluation relies partly on lexical opening detectors; a successful non-refusal readout may not imply coherent harmful-content recovery.",
+     "Valid-flip conditioning selects only cases where the intervention successfully suppresses behavior, creating selection bias and limiting population-level estimates of defense robustness.",
+     "Gradient-based per-input residual search may find adversarial off-manifold states, so recovered paths need not resemble trajectories the model would naturally take without an optimizer.",
+     "Encoder orthogonality and the local feature-map Jacobian constrain only first-order local feature motion; nonlinear cross-layer effects or long-generation drift may remain despite low post-hoc measurements.",
+     "The residual attribution identifies where behaviorally sufficient signal travels but does not establish whether it represents a stable semantic capability, prompt-specific artifacts, or optimization byproducts.",
+     "Heterogeneous models, SAE releases, intervention layers, tasks, and small strict-valid sets limit extrapolation to architectures and regimes not directly tested, including Gemma 4 E2B.",
+     "Per-example PGD and Jacobian computations may scale poorly, potentially limiting exhaustive auditing and practical deployment of the diagnostic."
+    ],
+    "code_or_data_url": "Mingyuee88/sae-post-intervention-recovery",
+    "relevance_to_lab": "High methodological but moderate direct-model relevance. The paper's residual-stream SAE clamping, encoder-orthogonal activation patching, cross-layer Jacobian projection, and residual replay/knockout attribution map closely onto Gemma 4 E2B activation patching and per-layer embedding audits. It does not directly test Gemma 4 E2B, KV-shared layers 15-34, logit-lens analysis, induction-head or factual-recall tracing, or CPU execution; per-input PGD and Jacobian optimization would require a CPU-efficient adaptation and could be computationally expensive."
+   },
+   "usage": {
+    "prompt_tokens": 14786,
+    "completion_tokens": 18923,
+    "total_tokens": 33709,
+    "prompt_tokens_details": {
+     "cached_tokens": 14785
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 16245
+    }
+   }
+  }
+ }
+}

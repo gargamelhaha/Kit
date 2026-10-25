@@ -1,2 +1,5 @@
 text tokens 16331
 {"T": 64, "full_s": [7.834, 8.84, 9.054], "skip_s": [3.191, 5.12, 4.802], "speedup_median": 1.841, "max_abs_dlogit": 2.3603439331054688e-05, "top1_same": true, "top10_overlap": 10}
+{"T": 256, "full_s": [18.685, 21.844, 21.233], "skip_s": [8.217, 8.939, 9.037], "speedup_median": 2.375, "max_abs_dlogit": 2.2172927856445312e-05, "top1_same": true, "top10_overlap": 10}
+{"T": 512, "full_s": [35.826, 38.05, 38.011], "skip_s": [14.053, 13.916, 13.259], "speedup_median": 2.732, "max_abs_dlogit": 3.0517578125e-05, "top1_same": true, "top10_overlap": 10}
+{"T": 1024, "full_s": [78.915, 60.987, 85.033], "skip_s": [23.028, 23.942, 28.737], "speedup_median": 3.296, "max_abs_dlogit": 2.5272369384765625e-05, "top1_same": true, "top10_overlap": 10}
