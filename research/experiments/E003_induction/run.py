@@ -10,15 +10,18 @@ model, tok, info = load(V); use_fp32_compute(model); R = Runner(model)
 H, L = model.config.num_attention_heads, model.config.num_hidden_layers
 seq = torch.randint(1000, 30000, (B, T), generator=g)
 ids = torch.cat([torch.full((B, 1), tok.bos_token_id), seq, seq], dim=1)
-def losses(out):
-    nll = -torch.log_softmax(out["logits"].float(), -1)[:, :-1].gather(-1, ids[:, 1:, None])[..., 0]
+def losses(out, rows=64):
+    """Mean NLL on repeat 1 / repeat 2 without materialising [B, 61, 262144] logits (~1 GB): unembed in row chunks."""
+    h = out["final_h"][:, :-1].reshape(-1, out["final_h"].shape[-1]); tgt = ids[:, 1:].reshape(-1)
+    nll = torch.cat([torch.nn.functional.cross_entropy(R.unembed(h[r:r + rows]), tgt[r:r + rows], reduction="none")
+                     for r in range(0, h.shape[0], rows)]).view(B, -1)
     return nll[:, 1:T].mean().item(), nll[:, T + 1:].mean().item()
 t0 = time.time(); scores = torch.zeros(L, H); means = {}
 q = torch.arange(T + 1, 2 * T + 1); kk = q - T + 1
 def probs_hook(p, i): scores[i] = p[:, :, q, kk].mean(dim=(0, 2)).float()
 def mean_hook(h, i): means[i] = h.mean(dim=(0, 1), keepdim=True).clone()
 hooks = {("attn_probs", i): probs_hook for i in range(L)}; hooks.update({("head_in", i): mean_hook for i in range(L)})
-l1, l2 = losses(R.forward(ids, hooks=hooks, attn="eager", logits="all"))
+l1, l2 = losses(R.forward(ids, hooks=hooks, attn="eager", logits=None))
 top = sorted([(s.item(), l, h) for l in range(L) for h, s in enumerate(scores[l])], reverse=True)[:K]
 def ablate(heads):
     by = {}
@@ -27,7 +30,7 @@ def ablate(heads):
         def f(x, i):
             x = x.clone(); x[:, :, hs] = means[i][:, :, hs]; return x
         return f
-    a1, a2 = losses(R.forward(ids, hooks={("head_in", l): mk(hs) for l, hs in by.items()}, logits="all"))
+    a1, a2 = losses(R.forward(ids, hooks={("head_in", l): mk(hs) for l, hs in by.items()}, logits=None))
     return a1 - l1, a2 - l2
 res = {"info": info, "clean_nll": {"repeat1": l1, "repeat2": l2}, "scores": scores.tolist(),
        "top_heads": [{"layer": l, "head": h, "score": s} for s, l, h in top]}
