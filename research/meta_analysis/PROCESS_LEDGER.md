@@ -136,3 +136,15 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Fix: `functools.wraps` + `assert model._supports_logits_to_keep()`; biased rows quarantined in `E007c/biased_run1/`; full rerun.
 - Rule: instrumentation wrappers must preserve signatures, and a measurement harness needs an assertion that the measured
   code path equals the production path.
+
+## PL-16 Sandbox reset #5: a second model process started while E008 ran (14:30Z)
+- Symptom: sandbox reset (uptime 0); workspace restored from a 13:50 snapshot; E008 progress lost.
+- Root cause chain: (1) a waiter loop `while kill -0 $QPID` got `$QPID` from a process search that also printed fragments of
+  other processes' multi-line command lines ("import hs"); (2) `kill -0` with invalid arguments fails → loop exits at once →
+  `queue.sh E009_reliability:base` loaded a second 6 GB model next to E008 → 8 GiB box exceeded → container killed.
+  Underlying cause: mutual exclusion of model processes was a *convention* enforced by ad-hoc scripts, not by the queue.
+- Recovery: Hoplite WIP checkpoint `bd6850c` (14:27:03Z) contained all E009 output (793 rows), analysis, H-017; restored path-by-path
+  and validated (JSON parse of every row). Lost: E008 partial run (~6 min), base weights (re-download), AUDIT-004 launch.
+- Fix: `queue.sh` wraps every model run in `flock /tmp/lab_model.lock` — any number of queues may be started; model runs serialise.
+  Rule: never chain model runs with waiters again; push immediately after every result file is produced.
+- Status: accepted.

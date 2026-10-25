@@ -1,0 +1,175 @@
+{
+ "markdown_top1_errors": 46,
+ "markdown_share_of_errors": 0.09583333333333334,
+ "n": 793,
+ "n_errors": 480,
+ "error_taxonomy": {
+  "content, target rank<=2": 76,
+  "punct/whitespace": 87,
+  "content, other": 148,
+  "function word": 169
+ },
+ "errors_with_target_top1_at_some_layer_20_34": 151,
+ "of_which_final_is_function_or_punct": 69,
+ "layer_where_target_peaks_in_lost": {
+  "29": 2,
+  "31": 1,
+  "32": 20,
+  "33": 55,
+  "34": 73
+ },
+ "dev_acc_by_residual_index": {
+  "20": 0.0,
+  "21": 0.0,
+  "22": 0.005,
+  "23": 0.008,
+  "24": 0.0,
+  "25": 0.003,
+  "26": 0.04,
+  "27": 0.106,
+  "28": 0.224,
+  "29": 0.363,
+  "30": 0.413,
+  "31": 0.401,
+  "32": 0.448,
+  "33": 0.476,
+  "34": 0.411,
+  "35": 0.375
+ },
+ "best_index_on_dev": 33,
+ "test_acc_final": 0.41414141414141414,
+ "test_acc_best_index": 0.47474747474747475,
+ "test_acc_index33": 0.47474747474747475,
+ "examples_lost": [
+  [
+   "F0019",
+   "Maseru",
+   " **",
+   [
+    34
+   ]
+  ],
+  [
+   "F0037",
+   "H",
+   " **",
+   [
+    34
+   ]
+  ],
+  [
+   "F0039",
+   "C",
+   " **",
+   [
+    34
+   ]
+  ],
+  [
+   "F0040",
+   "N",
+   " **",
+   [
+    34
+   ]
+  ],
+  [
+   "F0043",
+   "Au",
+   " **",
+   [
+    33,
+    34
+   ]
+  ],
+  [
+   "F0048",
+   "Cl",
+   " **",
+   [
+    31,
+    32,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0053",
+   "Sb",
+   " **",
+   [
+    32,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0057",
+   "Xe",
+   " **",
+   [
+    30,
+    31,
+    32,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0069",
+   "Cl",
+   " **",
+   [
+    34
+   ]
+  ],
+  [
+   "F0084",
+   "Fitzgerald",
+   " F",
+   [
+    33
+   ]
+  ],
+  [
+   "F0085",
+   "Melville",
+   " Herman",
+   [
+    32
+   ]
+  ],
+  [
+   "F0087",
+   "Tolkien",
+   " J",
+   [
+    31,
+    32,
+    33
+   ]
+  ]
+ ],
+ "acc_by_relation": {
+  "US state -> capital city": 0.85,
+  "animal -> class (mammal, bird, reptile, fish, amphibian, insect)": 0.0,
+  "chemical element -> chemical symbol (answer is the symbol)": 0.39,
+  "city -> country": 0.81,
+  "company -> country of headquarters": 0.05,
+  "composer -> nationality adjective": 0.0,
+  "country -> capital city": 0.95,
+  "currency -> country": 0.48,
+  "dish -> country of origin": 0.5,
+  "famous book -> author surname": 0.03,
+  "inventor -> invention (one word)": 0.3,
+  "language -> country where it is most spoken": 0.74,
+  "mountain -> continent": 0.38,
+  "musical instrument -> instrument family (e.g. string)": 0.47,
+  "painting or sculpture -> artist surname": 0.43,
+  "planet or moon -> planet it orbits / or star system object": 0.33,
+  "river -> continent": 0.21,
+  "scientist -> field (one word, e.g. physics)": 0.3,
+  "sport -> number of players per team (as a word)": 0.13,
+  "university -> city": 0.47
+ }
+}

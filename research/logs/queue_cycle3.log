@@ -14,3 +14,9 @@
 [2026-10-25T13:21:37Z] end E006c_backup_route variant=it exit=0
 [2026-10-25T13:21:37Z] start E009_reliability variant=it
 [2026-10-25T13:28:14Z] start E009_reliability variant=it
+[2026-10-25T14:23:37Z] end E009_reliability variant=it exit=0
+[2026-10-25T14:23:37Z] start E008_window_route variant=it
+/dev/stdin: line 2: 55469: command not found
+/dev/stdin: line 3: 55472: command not found
+/dev/stdin: line 4: import: command not found
+[2026-10-25T14:26:53Z] start E009_reliability variant=base
