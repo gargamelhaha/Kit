@@ -1,0 +1,20 @@
+'ti:"DoLa" AND all:decoding': 2 results, 2 new
+'all:"contrastive decoding" AND all:layers AND all:factuality': 10 results, 10 new
+'all:"inference-time intervention" AND all:truthfulness': 16 results, 15 new
+'all:"activation steering" AND all:"without fine-tuning"': 8 results, 8 new
+'all:"early exit" AND all:"language model" AND all:confidence': 25 results, 25 new
+'ti:"LayerSkip"': 1 results, 1 new
+'ti:"Confident Adaptive Language Modeling"': 1 results, 0 new
+'all:"hallucination detection" AND all:"internal states"': 25 results, 24 new
+'all:"semantic entropy probes"': 2 results, 2 new
+'all:"truthfulness" AND all:"linear probe" AND all:"hidden states"': 5 results, 5 new
+'all:"KV cache" AND all:quantization AND all:accuracy': 25 results, 25 new
+'all:"KV cache eviction" AND all:"long context" AND all:evaluation': 16 results, 16 new
+'all:"weight quantization" AND all:"hidden degradation"': 0 results, 0 new
+'all:"quantization" AND all:"interpretability" AND all:circuits': 20 results, 20 new
+'all:"layer pruning" AND all:"large language models" AND all:redundancy': 9 results, 9 new
+'all:"self-consistency" AND all:"small language models"': 13 results, 13 new
+'all:"logit lens" AND all:"calibration"': 1 results, 1 new
+'all:"speculative decoding" AND all:"self-speculative"': 25 results, 23 new
+'all:"per-layer embeddings" AND all:offloading': 0 results, 0 new
+'all:"knowledge conflict" AND all:"context" AND all:"parametric" AND all:mechanism': 9 results, 8 new

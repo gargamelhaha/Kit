@@ -1,0 +1,466 @@
+{
+ "source_id": "LIT06-039",
+ "arxiv_id": "2606.00930",
+ "title": "A Circuit, Not The Circuit: Non-Unique Causal Localisation of the Mamba-2 State Sink",
+ "chars": 85813,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 29,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.967,
+   "data": {
+    "title": "A Circuit, Not The Circuit: Non-Unique Causal Localisation of the Mamba-2 State Sink",
+    "research_question": "Whether a single probe's top-activating units identify the causal circuit for the Mamba-2 state sink, and whether that localisation is unique.",
+    "models_and_data": [
+     {
+      "item": "Mamba checkpoints",
+      "quote": "four Mamba checkpoints (Mamba-1 130M / 2.8B, Mamba-2 1.3B / 2.7B)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia baseline",
+      "quote": "Pythia (Biderman et al., 2023) 160M–2.8B is the cross-architecture baseline",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Corpora",
+      "quote": "wikitext-2 (Merity et al., 2017) and Pile-10k (Gao et al., 2020)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RULER NIAH",
+      "quote": "RULER-style Needle-in-a-Haystack (Hsieh et al., 2024) probe at 1024 and 2048 context",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Mamba-2 130M",
+      "quote": "Mamba-2 130M is added for the F1 scale ladder (§4.3.1) and the phenomenology cross-method correlations only.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Specialist classification",
+      "quote": "threshold the resulting differential ∆āℓ,u,c at τ = 0.5 (pre-softplus units) to obtain a binary specialty matrix Sℓ,u,c ∈ {0, 1}",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Intervention grid size",
+      "quote": "totalling 12,096 cells of which 6,048 are evaluated",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Cross-corpus transfer",
+      "quote": "Cross-corpus replication transfers those wikitext-defined sets unchanged to a filtered Pile-10k subset (Gao et al., 2020) and re-scores the headline cells",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Probe split",
+      "quote": "We test this by ablating the shared core A ∩ B and the two difference sets on their own (Table 4).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Intervention surface",
+      "quote": "We hold the head set and the scored positions fixed and change only the intervention surface.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "RULER scoring",
+      "quote": "We report a thresholded teacher-forced success rate: a trial counts as retrieved when the mean answer-token NLL is below 3.0, with 10 trials at each of three needle depths (30 per condition).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Differential NLL",
+      "definition": "specialist mean minus size-matched random-complement mean",
+      "quote": "We report differentials: specialist mean minus size-matched random-complement mean, since ratios are unstable when the complement is near zero.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Bootstrap CI",
+      "definition": "30-document bootstrap confidence interval with 5,000 resamples",
+      "quote": "Each cell uses a 30-document bootstrap CI (nboot = 5,000).",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Jaccard overlap",
+      "definition": "set overlap between probe-selected head sets",
+      "quote": "sharing only 13 of 254 heads with it at a Jaccard of 0.03",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cosine similarity",
+      "definition": "class-conditional cosine similarity on ∆pre activations",
+      "quote": "Dual heads align on BOS and newline at cos = 0.89–0.90, against 0.53–0.54 for the specialists.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "RULER success rate",
+      "definition": "thresholded teacher-forced retrieval success",
+      "quote": "a trial counts as retrieved when the mean answer-token NLL is below 3.0",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Next-token NLL",
+      "definition": "negative log-likelihood on BOS-context and newline targets",
+      "quote": "We score next-token NLL on two target classes, BOS-context (the first eight tokens after BOS) and newline (positions whose target token is a newline), each on wikitext-2 and Pile-10k.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Near-disjoint top-activation probe matches or exceeds specialist effect",
+      "numbers": "13 of 254 heads; Jaccard 0.03",
+      "quote": "A top-activation probe B that shares just 13 of 254 heads with the single-bucket set A, a Jaccard of 0.03, produces a BOS-context effect at least as large at both scales",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Dual heads are representationally similar but not causally interchangeable",
+      "numbers": "27–35% of total",
+      "quote": "Dual heads, 27–35% of the total, come from the same probe under a multi-class aggregation rule and are near-collinear with the specialists on BOS and newline, yet under class-conditional ablation they do not stand in for them.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Effect dissociates by intervention surface",
+      "numbers": "at most 0.16 nats; 1.5 to 7.3 nats",
+      "quote": "perturbing the input-dependent ∆ the probe reads moves the loss by at most 0.16 nats, while suppressing the same heads’ output moves it by 1.5 to 7.3 nats.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Ablation drops RULER retrieval",
+      "numbers": "30/30 to 0/30 at 1024 context",
+      "quote": "bos-specialist ablation drops needle-retrieval success on a RULER-style probe from 30/30 to 0/30 at 1024 context on Mamba-1 2.8B and Mamba-2 2.7B",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Mamba-1 channel granularity shows causal effect",
+      "numbers": "+3.76 nats",
+      "quote": "Ablating the bos-specialist channel set across all layers (gate_zero × bos_specialist × L_all) on Mamba-1 130M produces a differential of +3.76 nats on both wikitext-2 and Pile-10k against the size-matched random complement",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Pythia checkpoints show positive single-bucket selectivity",
+      "numbers": "all four; eight CIs",
+      "quote": "All four Pythia checkpoints show clean positive selectivity on both corpora, all eight CIs strictly excluding zero",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Limited model/dataset grid",
+      "quote": "The intervention grid covers four Mamba checkpoints (Mamba-1 130M / 2.8B, Mamba-2 1.3B / 2.7B) on wikitext-2 (Merity et al., 2017) and Pile-10k (Gao et al., 2020); the 30-seed cross-dataset confirmation covers all 8 M-2 head-granularity headline cells.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Hybrid SSM-attention models out of scope",
+      "quote": "hybrid SSM–attention models such as Zamba (Glorioso et al., 2024) are out of scope.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Formal tasks deferred",
+      "quote": "formal-task evaluations (parity, Dyck-2, S3 -permutation) are deferred.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Untested token classes may carry additional causal sets",
+      "quote": "Untested classes, including punctuation and whitespace_word, may carry additional causal sets.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Small Mamba-2 effect sizes and wide CI",
+      "quote": "Mamba-2 single-bucket differentials are small (+0.25–+2.48 on BOS-context vs. +3.76 for M-1 130M); the M-2 1.3B gate_one CI is wide but excludes zero.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Uncertainty not fully propagated",
+      "quote": "The headline bootstrap CIs resample the 30 complement seeds and condition on the fixed probe-selected set; they do not propagate document-sampling or specialist-selection uncertainty.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "NIAH complement is single random draw",
+      "quote": "The NIAH complement is a single random draw, not a multi-seed control.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The non-uniqueness result is specific to Mamba-2 head-shared ∆ gating; it may not transfer directly to Gemma 4 E2B KV-shared layers, where the sharing mechanism and intervention surfaces differ.",
+     "Probe-selected specialist sets are defined on wikitext-2 and transferred unchanged; selection uncertainty is not propagated, so causal effect estimates may be conditional on one probe definition.",
+     "The RULER NIAH evidence uses 30 trials per condition and a single random complement draw, limiting reliability and generalization of the retrieval-collapse claim.",
+     "gate_zero and u_zero are identical output knockouts, so the paper cannot identify the mediating pathway between head output and loss; output ablation may disrupt multiple mechanisms.",
+     "The Pythia cross-architecture comparison uses a different specialist threshold semantics (attention-to-BOS > 0.10) than Mamba’s pre-softplus ∆ threshold, which may confound architecture comparisons.",
+     "The paper does not test KV-shared layers, per-layer embeddings, logit lens, induction heads, or factual-recall tracing, so relevance to the lab’s Gemma 4 E2B internals is analogical rather than direct."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Directly relevant as a caution for activation-patching and logit-lens work on Gemma 4 E2B: a single probe’s top-activating units may not be the unique causal circuit, especially on head-shared or KV-shared substrates. The recommended check—run a second probe and ablate the difference sets—fits the lab’s CPU patching workflow. The intervention-surface dissociation also warns that perturbing a readout signal versus suppressing output can yield different causal conclusions for induction-head and factual-recall tracing."
+   },
+   "usage": {
+    "prompt_tokens": 25916,
+    "total_tokens": 36987,
+    "completion_tokens": 11071,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 25600
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8997
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.946,
+   "data": {
+    "title": "A Circuit, Not The Circuit: Non-Unique Causal Localisation of the Mamba-2 State Sink",
+    "research_question": "Does a single probe's top-activating units identify the unique causal circuit for the Mamba-2 state sink, and do representational similarity or the intervention surface predict causal function?",
+    "models_and_data": [
+     {
+      "item": "Mamba intervention grid: Mamba-1 130M/2.8B and Mamba-2 1.3B/2.7B.",
+      "quote": "4 models (Mamba-1 130M / 2.8B, Mamba-2 1.3B / 2.7B) × 6 interventions (gate_zero / gate_one / gate_mean / delta_zero / delta_median / u_zero) × 7 channel/head scopes × 6 layer scopes × 4 tasks × 3 seeds",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Mamba-2 130M was used for the F1 scale ladder and cross-method phenomenology.",
+      "quote": "Mamba-2 130M is added for the F1 scale ladder (§4.3.1) and the phenomenology cross-method correlations only.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia 160M–2.8B served as the attention-head cross-architecture baseline; hybrid SSM–attention models were out of scope.",
+      "quote": "Pythia (Biderman et al., 2023) 160M–2.8B is the cross-architecture baseline; hybrid SSM–attention models such as Zamba (Glorioso et al., 2024) are out of scope.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "wikitext-2 supplied a 30-document sample for class-conditioned activation extraction and primary scoring.",
+      "quote": "For each (layer, channel) in Mamba-1 and (layer, head) in Mamba-2, we compute mean pre-softplus activation āℓ,u,c on tokens of class c ∈ {BOS, newline, punctuation, whitespace_word} over a 30-document wikitext-2 sample",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "The NeelNanda/pile-10k subset supplied 30 documents per cell for cross-corpus replication with WikiText-defined sets transferred unchanged.",
+      "quote": "Cross-dataset replication uses the NeelNanda/pile-10k subset of The Pile (Gao et al., 2020): 30 documents per cell, filtered to contain at least two newline tokens per chunk for parity with the wikitext-2 sampling.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RULER-style Needle-in-a-Haystack was evaluated at 1024 and 2048 context on two flagship Mamba checkpoints.",
+      "quote": "We test whether the bos-specialist set transfers to a qualitatively different task by running a RULER-style Needle-in-a-Haystack (Hsieh et al., 2024) probe at 1024 and 2048 context on the two flagship Mamba checkpoints.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Phenomenological sink-mass comparisons covered all seven Mamba checkpoints.",
+      "quote": "two prior-work metrics (Chiang et al., 2025; Ye et al., 2025) and two analytic baselines (right-tail Pr(∆pre > 0.7) and − log A from the stored Alog parameter) are evaluated per channel/head per layer for all 7 Mamba checkpoints.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Compute class-conditioned mean pre-softplus gate activation, subtract reference-token activation, and threshold the differential at τ = 0.5.",
+      "quote": "The threshold τ = 0.5 is fixed across all 7 models and pre-registered to mark the gate’s “on” state (softplus(0.5) ≈ 0.97); values below threshold map to the low-state mode of the bimodal pre-∆ distribution (§3.3).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run the pre-registered factorial intervention grid over models, interventions, scopes, layer scopes, tasks, and seeds.",
+      "quote": "totalling 12,096 cells of which 6,048 are evaluated (parity and Dyck-2 task loaders deferred per pre-registration).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Construct 95% bootstrap intervals from 30 scored documents using 5,000 bootstrap samples.",
+      "quote": "Each cell uses a 30-document bootstrap CI (nboot = 5,000).",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Score next-token NLL on BOS-context and newline targets on both corpora.",
+      "quote": "We score next-token NLL on two target classes, BOS-context (the first eight tokens after BOS) and newline (positions whose target token is a newline), each on wikitext-2 and Pile-10k.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Interpret intervention labels by their actual hook surface, including the retained learned bias in Mamba-2 delta_zero.",
+      "quote": "In Mamba-2, delta_zero zeros the pre-softplus timestep input, leaving the post-softplus timestep set by the learned bias.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compare the single-bucket probe with a size-matched top-K probe, then separately ablate their intersection and two difference sets.",
+      "quote": "The single-bucket probe A and the top-K probe B are matched in size by construction (251 heads at 1.3B, 254 at 2.7B); their intersection holds 11 and 13 heads, so each difference set holds 240 and 241.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Hold the selected units and scored positions fixed while contrasting input-side Δ interventions with output-side knockouts.",
+      "quote": "We hold the head set and the scored positions fixed and change only the intervention surface.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure retrieval using thresholded teacher-forced answer-token NLL over three needle depths.",
+      "quote": "We report a thresholded teacher-forced success rate: a trial counts as retrieved when the mean answer-token NLL is below 3.0, with 10 trials at each of three needle depths (30 per condition).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Specialist-minus-complement differential NLL",
+      "definition": "The mean NLL under specialist-unit ablation minus the mean under a size-matched random-complement ablation.",
+      "quote": "We report differentials: specialist mean minus size-matched random-complement mean, since ratios are unstable when the complement is near zero.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Unit specialty classification",
+      "definition": "A unit is classified by how many token classes exceed the activation-differential threshold.",
+      "quote": "A unit is a c-specialist if exactly one class clears threshold; a dual specialist if two classes clear threshold; a generalist if three or more; silent otherwise.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Dual-to-single-bucket aggregate effect ratio",
+      "definition": "The dual-set ablation differential divided by the single-bucket specialist differential under gate_one on BOS-context.",
+      "quote": "At gate_one ablation on BOS-context at L_all, the dual set carries 4.8–6.4× the single-bucket differential on both M-2 scales and both corpora.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "BOS–newline class-conditional cosine",
+      "definition": "Cosine similarity between class-conditioned mean Δpre vectors for BOS and newline at each selected unit.",
+      "quote": "Dual heads align on BOS and newline at cos = 0.89–0.90, against 0.53–0.54 for the specialists.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-10% Jaccard agreement",
+      "definition": "Overlap between probe-derived bos-specialist sets and sets derived from alternative sink-mass operationalizations.",
+      "quote": "The pre-registered prediction was that ≥ 3 of 4 sink-mass metrics should agree with probe-derived bos-specialist sets at top-10% Jaccard > 0.4.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Answer-span per-token NLL gap",
+      "definition": "Increase in per-token NLL on the retrieved answer span under bos-specialist ablation.",
+      "quote": "The per-token NLL gap on the answer span under bos-specialist ablation is ∼ 8.5 nats on M-1 2.8B and ∼ 9.7 nats on M-2 2.7B, substantially larger than the corresponding BOS-context differentials.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "At Mamba-1 channel granularity, the bos-specialist set carries a substantial causal effect.",
+      "numbers": "+3.76 nats on both wikitext-2 and Pile-10k.",
+      "quote": "Ablating the bos-specialist channel set across all layers (gate_zero × bos_specialist × L_all) on Mamba-1 130M produces a differential of +3.76 nats on both wikitext-2 and Pile-10k against the size-matched random complement",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The Mamba-2 single-bucket bos-specialist effect is positive across the headline grid.",
+      "numbers": "All 8 cells; 2 scales × 2 interventions × 2 corpora.",
+      "quote": "All 8 cells of the 30-seed grid (2 scales × 2 interventions × 2 corpora) show positive single-bucket bos-specialist differentials with bootstrap CI excluding zero (Table 2).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Causal localisation is non-unique because a near-disjoint top-activation set matches or exceeds the single-bucket set.",
+      "numbers": "13 of 254 heads; Jaccard of 0.03; at least as large at both scales.",
+      "quote": "A top-activation probe B that shares just 13 of 254 heads with the single-bucket set A, a Jaccard of 0.03, produces a BOS-context effect at least as large at both scales, so the single-bucket set is not the unique locus.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The shared intersection between the two probes is active, but it cannot account for the whole causal effect.",
+      "numbers": "+1.02 to +3.40 across the four rows.",
+      "quote": "The shared core is causally active on its own, +1.02 to +3.40 across the four rows, but it does not account for the whole effect: removing it from either probe leaves a set that is still load-bearing.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Representationally similar dual heads do not reproduce the bos-specialist causal profile.",
+      "numbers": "27–35% of the total.",
+      "quote": "Dual heads, 27–35% of the total, come from the same probe under a multi-class aggregation rule and are near-collinear with the specialists on BOS and newline, yet under class-conditional ablation they do not stand in for them.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The measured effect dissociates by intervention surface: perturbing the Δ signal read by the probe has little effect, whereas suppressing head output has a much larger effect.",
+      "numbers": "At most 0.16 nats for Δ perturbation; 1.5 to 7.3 nats for output suppression.",
+      "quote": "perturbing the input-dependent ∆ the probe reads moves the loss by at most 0.16 nats, while suppressing the same heads’ output moves it by 1.5 to 7.3 nats.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The identified heads are behaviorally important for long-context retrieval.",
+      "numbers": "30/30 to 0/30 at 1024 context on both flagship checkpoints.",
+      "quote": "The heads still matter behaviourally, dropping needle-retrieval success on a RULER-style probe from 30/30 to 0/30 at 1024 context on both flagship checkpoints.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Pythia lacks the dense dual-head structure observed in Mamba-2.",
+      "numbers": "2–12% of heads per model on Pythia; 27–35% on Mamba-2.",
+      "quote": "Applying the same multi-class rule (exactly 2 classes above threshold) to Pythia yields a sparse dual set covering only 2–12% of heads per model, against 27–35% on Mamba-2.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The main causal grid covers only four Mamba checkpoints and two corpora.",
+      "quote": "The intervention grid covers four Mamba checkpoints (Mamba-1 130M / 2.8B, Mamba-2 1.3B / 2.7B) on wikitext-2 (Merity et al., 2017) and Pile-10k (Gao et al., 2020); the 30-seed cross-dataset confirmation covers all 8 M-2 head-granularity headline cells.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Three additional WikiText-2 findings did not replicate on Pile-10k.",
+      "quote": "Three further wikitext-2-specific findings do not replicate on Pile-10k (Appendix D.2).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Formal-task evaluations were deferred, so primary evidence comes from boundary-token NLL and RULER retrieval.",
+      "quote": "Primary scoring is first-eight-tokens-after-boundary NLL on BOS-context / newline plus RULER NIAH retrieval at 1024 and 2048 ctx; formal-task evaluations (parity, Dyck-2, S3 -permutation) are deferred.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Mamba-2 single-bucket effects are relatively small, and one 1.3B gate_one interval is wide.",
+      "quote": "Mamba-2 single-bucket differentials are small (+0.25–+2.48 on BOS-context vs. +3.76 for M-1 130M); the M-2 1.3B gate_one CI is wide but excludes zero.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The bucketing control does not isolate head dimension, state width, or training-data alternatives.",
+      "quote": "T3 rules out substrate granularity alone, not head dimension, state width, or training-data alternatives.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Headline intervals condition on fixed probe-selected sets and omit document-sampling and specialist-selection uncertainty.",
+      "quote": "The headline bootstrap CIs resample the 30 complement seeds and condition on the fixed probe-selected set; they do not propagate document-sampling or specialist-selection uncertainty.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The NIAH random-complement control consists of only one draw.",
+      "quote": "The NIAH complement is a single random draw, not a multi-seed control.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Headline confidence intervals do not include grid-wide multiple-comparison correction.",
+      "quote": "Headline claims rest on the pre-registered cells of Tables 2 and 3, so we report individual 95% bootstrap CIs without grid-wide multiple-comparison correction.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not test Gemma 4 E2B or KV-shared attention, so the Mamba-2 explanation may not transfer to layers 15–34.",
+     "Probe B is another activation-ranking probe on the same Δ-gate substrate, demonstrating non-uniqueness within one measurement family rather than under genuinely independent representations.",
+     "Because bos-specialists are selected using BOS-conditioned Δ and evaluated primarily on BOS-context NLL, shared BOS structure could partially inflate localisation despite the cross-corpus controls.",
+     "The paper's GPU and custom patched-forward implementation does not establish that equivalent Gemma activation patches will preserve numerical and hook semantics on CPU.",
+     "RULER success relies on a fixed answer-token NLL cutoff of 3.0 without reported cutoff-sensitivity analysis, so the success-rate framing may be threshold-sensitive.",
+     "Single-key RULER retrieval does not test induction, factual recall, multi-fact composition, or free-form generation, so it cannot by itself validate those lab tasks."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Directly relevant as a methodological warning for Gemma 4 E2B's KV-shared layers 15–34: a per-layer embedding or logit-lens top-activation set should be treated as a candidate causal locus, not the circuit. Reuse the paper's audit by deriving a second probe, comparing intersections and difference sets under activation patching, and separating probe-read activations from output suppression before validating on induction and factual recall. The paper provides no Gemma, KV-sharing, CPU, induction-head, or factual-recall validation, so transfer remains unestablished."
+   },
+   "usage": {
+    "total_tokens": 47200,
+    "total_characters": 0,
+    "prompt_tokens": 25308,
+    "completion_tokens": 21892,
+    "completion_tokens_details": {
+     "reasoning_tokens": 18218
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 200
+    }
+   }
+  }
+ }
+}

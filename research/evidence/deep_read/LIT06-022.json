@@ -1,0 +1,479 @@
+{
+ "source_id": "LIT06-022",
+ "arxiv_id": "2404.03646",
+ "title": "Locating and Editing Factual Associations in Mamba",
+ "chars": 62558,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 3,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.969,
+   "data": {
+    "title": "Locating and Editing Factual Associations in Mamba",
+    "research_question": "Can factual recall in Mamba be localized and edited similarly to autoregressive transformer LMs?",
+    "models_and_data": [
+     {
+      "item": "Mamba-2.8b",
+      "quote": "In this work we conduct our experiments on Mamba-2.8b, the largest available LM in Mamba family",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia-2.8b",
+      "quote": "for comparison we conduct the same experiments on the similarly sized Pythia-2.8b",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RELATIONS dataset",
+      "quote": "We randomly sample 400 examples (s, r, o ) across 6 different factual relations",
+      "quote_check": "exact"
+     },
+     {
+      "item": "COUNTERFACT dataset",
+      "quote": "We select the first 2000 examples from this dataset for our module-layer sweep.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WikiText-103",
+      "quote": "10,000 tokens from WikiText-103 by Merity et al. (2016)",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Run clean prompt and cache hidden states",
+      "quote": "clean run G: In the clean run, we simply run the model on a prompt specifying the fact we are interested in.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Create corrupted run by subject swapping",
+      "quote": "In the corrupted run, we swap s with a different subject s∗ (Pelé) such that the LM gives a different answer o ∗ (soccer)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Restore clean state into corrupted run",
+      "quote": "In the patched run, we run the model on the corrupted prompt x ∗ , but intervene on hi by replacing its value with the corresponding state cached from the clean run G.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Perform path-specific blocking of si, gi, oi",
+      "quote": "we sever those paths by also patching si∗ (cached from the corrupted run G ∗ ) to their corresponding locations",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply ROME to Mamba projection matrices",
+      "quote": "We apply ROME on the three different projection matrices of Mamba: Wa which affects only the Conv + SSM path, Wg which affects only the gating path, and Wo , the final output of the MambaBlock",
+      "quote_check": "near"
+     },
+     {
+      "step": "Fit LRE by grid search",
+      "quote": "We find the hyperparameters β, ρ and the layer ℓ (where to extract the enriched s from) using grid search.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Mean-ablate a states for attention knockout",
+      "quote": "we set ak := E a(ℓ) , where E a(ℓ) is the mean of a(ℓ) states collected with 10,000 tokens from WikiText-103",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Indirect effect (IE)",
+      "definition": "Normalized change in correct-answer probability when a clean state is restored into the corrupted run.",
+      "quote": "we define its indirect effect (IE) as:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Efficacy (ES)",
+      "definition": "Portion of edits where post-edit p(o*) > p(o) on the original prompt.",
+      "quote": "we say the edit is effective if, post-edit, the LM assigns p(o ∗ ) > p(o ) in response to the prompt x = (s, r )",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Generalization (PS)",
+      "definition": "Persistence of edit across paraphrases of the prompt.",
+      "quote": "A successful edit should be persistent across different paraphrases of (s, r ).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Specificity (NS)",
+      "definition": "Edit does not change nearby subject mappings to the counterfactual object.",
+      "quote": "the edit should be specific to Pr (s) and should not additionally change the mapping of some nearby subject sn to o ∗",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Score (S)",
+      "definition": "Harmonic mean of efficacy, generalization, and specificity.",
+      "quote": "The final score (S) in the ROME evaluation suite is the harmonic mean of three different scores:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "LRE faithfulness",
+      "definition": "Portion of facts correctly retrieved when LM computation is replaced by affine LRE.",
+      "quote": "The metric faithfulness represents the portion of facts (s, r, o ) that can be correctly retrieved if the LM computation F (s, r ) is replaced with L RE (s), a simple affine transformation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Relative change in p(o)",
+      "definition": "Effect of blocking Conv+SSM information flow, measured as relative probability change.",
+      "quote": "is measured as the relative change in p(o )",
+      "quote_check": "unverified"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Mamba shows causal localization at middle layers at the subject-last token and later layers at the prompt-last token.",
+      "numbers": "not stated",
+      "quote": "specific components within middle layers show strong causal effects at the last token of the subject, while the causal effect of intervening on later layers is most pronounced at the last token of the prompt",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME can edit facts across early-to-middle layers by modifying Wa, Wg, or Wo, with best empirical performance from Wo.",
+      "numbers": "not stated",
+      "quote": "ROME can achieve high scores (S) for a range of early to middle layers by modifying any one of the projection matrices Wa , Wg , or Wo",
+      "quote_check": "near"
+     },
+     {
+      "claim": "LRE achieves >50% faithfulness for only 10 of 26 factual relations in Mamba.",
+      "numbers": "10 out of 26; >50%",
+      "quote": "only for 10 out of 26 factual relations can a linear L RE achieve more than 50% faithfulness",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Pythia-2.8b LRE achieves >50% faithfulness for 11 factual relations.",
+      "numbers": "11 factual relations; >50%",
+      "quote": "in the same sized Pythia-2.8b L RE achives > 50% faithfulness for 11 factual relations",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Blocking non-subject information flow in early-middle layers reduces p(o) by up to 50%.",
+      "numbers": "up to 50%",
+      "quote": "blocking out non-subject information flow in early middle layers can bring down p(o ) by up to 50%",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Residual-state IE is strong at subject-last token up to layer 46 and negligible after.",
+      "numbers": "layer 46",
+      "quote": "hi up to layer 46 only show strong IE at the subject last token position and have negligible impact after that.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME score and generalization drop after around layer 43 for Wg and Wo.",
+      "numbers": "around layer 43",
+      "quote": "in the case of Wg and Wo , the score (S) and generalization (PS) drops after around layer 43",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Attention knockout shows a subject-information valley at layers 43-48.",
+      "numbers": "layers 43-48",
+      "quote": "the valley at layers 43-48 suggest that Mamba uses Conv + SSM paths in those layers to propagate critical information from the subject to later tokens",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Limited to Mamba-2.8b and Pythia-2.8b.",
+      "quote": "our experiments have been limited to Mamba-2.8b, the largest available LM of that family, and comparisons to the similarly-sized transformer Pythia-2.8b",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attention knockout cannot make strong claims about unique final-token role.",
+      "quote": "we cannot make strong claims about the unique role of the final token position (prompt-last) with this experiment",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Mean-ablation intervention is not as surgical as edge cutting.",
+      "quote": "this intervention may not be as surgical as cutting a specific edge",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Some interpretation methods do not transfer easily to Mamba.",
+      "quote": "interpretation methods (such as path-dependent attention patching) that do not transfer to Mamba as easily due to architectural constraints",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Only 26 factual relations used.",
+      "quote": "we only utilize the 26 factual relations from this dataset",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Only Mamba-2.8b and Pythia-2.8b are tested; no evidence that findings transfer to Gemma 4 E2B, KV-shared layers 15-34, or per-layer embeddings.",
+     "Subject-swapping activation patching may entangle entity recognition, relation extraction, and factual recall, especially for multi-token subjects.",
+     "ROME evaluation uses the first 2000 COUNTERFACT examples and a limited set of relations, so edit success may not generalize across broader factual distributions.",
+     "LRE hyperparameters are selected by grid search, which may overfit the small n=5 sample and inflate faithfulness estimates.",
+     "Mean-ablation attention knockout is coarse and can affect multiple token paths, so it cannot isolate specific token-to-token information flow.",
+     "The paper does not test CPU-only feasibility or the cost of Jacobian/activation-patching sweeps for larger models such as Gemma 4 E2B.",
+     "No logit-lens or induction-head analysis is performed, so direct relevance to those lab tools is unverified."
+    ],
+    "code_or_data_url": "romba.baulab.info",
+    "relevance_to_lab": "The paper's activation-patching, path-blocking, ROME, LRE, and attention-knockout protocols are directly analogous to the lab's factual-recall tracing and activation patching on Gemma 4 E2B; however, it studies Mamba-2.8b/Pythia-2.8b, not KV-shared layers 15-34 or per-layer embeddings, so transfer to Gemma internals and CPU constraints must be validated."
+   },
+   "usage": {
+    "prompt_tokens": 18333,
+    "total_tokens": 30274,
+    "completion_tokens": 11941,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "created_cache_tokens": 18304
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 9973
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 27,
+    "near": 5,
+    "unverified": 4,
+    "skip": 0
+   },
+   "verified_frac": 0.889,
+   "data": {
+    "title": "Locating and Editing Factual Associations in Mamba",
+    "research_question": "Can factual recall in Mamba be localized and edited like factual recall in autoregressive transformer LMs, and which transformer interpretability methods transfer to the Mamba architecture?",
+    "models_and_data": [
+     {
+      "item": "Mamba-2.8b, the primary Mamba recurrent state-space language model",
+      "quote": "In this work we conduct our experiments on Mamba-2.8b, the largest available LM in Mamba family, and for comparison we conduct the same experiments on the similarly sized Pythia-2.8b (Biderman et al., 2023) autoregressive transformer LM.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia-2.8b, the similarly sized autoregressive transformer comparison model",
+      "quote": "and for comparison we conduct the same experiments on the similarly sized Pythia-2.8b (Biderman et al., 2023) autoregressive transformer LM.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "COUNTERFACT: 20K counterfactual edit examples; the first 2000 records were used for the module-layer sweep",
+      "quote": "C OUNTER FACT contains 20K counterfactual examples in the form (s, r, o → o ∗ )",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RELATIONS: 47 relations total, 26 factual relations used; six factual relations used for the intervention experiments",
+      "quote": "In the scope of this paper, we only utilize the 26 factual relations from this dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WikiText-103: 10,000-token sample used to estimate mean a-states for mean ablation",
+      "quote": "where E a(ℓ) is the mean of a(ℓ) states collected with 10,000 tokens from WikiText-103 by Merity et al. (2016).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "For each known fact, run a clean pass, a subject-swapped corrupted pass, and a patched pass that restores a selected clean state into its corresponding corrupted-run position.",
+      "quote": "A state from the clean run G is patched into its corresponding position in the corrupted run G ∗ .",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Repeat residual-state restoration while severing selected selective-SSM, gate, or output contribution paths to measure path-specific mediation.",
+      "quote": "The same experiment is replicated to understand the contributions of gi and oi states.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Sweep ROME rank-one edits over the Wa, Wg, and Wo projection matrices at every Mamba layer.",
+      "quote": "We apply ROME on the three different projection matrices of Mamba: Wa which affects only the Conv + SSM path, Wg which affects only the gating path, and Wo , the final output of the MambaBlock",
+      "quote_check": "near"
+     },
+     {
+      "step": "Evaluate edits using the first 2000 COUNTERFACT examples and the original ROME evaluation matrices.",
+      "quote": "We select the first 2000 examples from this dataset for our module-layer sweep.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Grid-search the LRE hyperparameters β, ρ and the layer from which the enriched subject representation is extracted.",
+      "quote": "We find the hyperparameters β, ρ and the layer ℓ (where to extract the enriched s from) using grid search.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure LRE faithfulness using n = 5 samples across all 26 factual relations.",
+      "quote": "We plot the faithfulness of L RE with n = 5 samples on Figure 7.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Mean-ablate a states to block source-token propagation to all future tokens, using 10-layer windows over 700 facts from six relations.",
+      "quote": "However, it is possible to block the propagation of information from the kth token to all the future tokens via Conv + SSM operation by mean-ablation.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Run parallel ROME experiments on the similarly sized Pythia-2.8b model for architectural comparison.",
+      "quote": "We plot ROME performance for a similar sized Pythia model on Figure 6b for comparison.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Indirect Effect (IE)",
+      "definition": "Normalized change in correct-answer probability under state restoration, divided by the clean-versus-corrupted probability gap.",
+      "quote": "Let p(o ), p∗ (o ), and p∗ [← hi ](o ) denote the probability assigned to the correct answer o in G, G ∗ , and G ∗ [← hi ] respectively. To measure the contribution of hi (ℓ) we define its indirect effect (IE) as:",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Efficacy (ES)",
+      "definition": "Fraction of edited examples for which the post-edit model assigns greater probability to the counterfactual object than to the original object.",
+      "quote": "Efficacy (ES): For an edit request (s, r, o → o ∗ ), we say the edit is effective if, post-edit, the LM assigns p(o ∗ ) > p(o ) in response to the prompt x = (s, r ).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Generalization (PS)",
+      "definition": "Whether an edit remains effective across paraphrases of the original subject-relation prompt.",
+      "quote": "Generalization (PS): A successful edit should be persistent across different paraphrases of (s, r ).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Specificity (NS)",
+      "definition": "Whether the edit leaves nearby factual subject-relation mappings unchanged.",
+      "quote": "Specificity (NS): Finally, the edit should be specific to Pr (s) and should not additionally change the mapping of some nearby subject sn to o ∗ .",
+      "quote_check": "exact"
+     },
+     {
+      "name": "ROME Score (S)",
+      "definition": "Harmonic mean of the efficacy, generalization, and specificity scores.",
+      "quote": "The final score (S) in the ROME evaluation suite is the harmonic mean of three different scores:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "LRE Faithfulness",
+      "definition": "Portion of facts correctly retrieved when the model's factual computation is replaced by the affine LRE approximation.",
+      "quote": "The metric faithfulness represents the portion of facts (s, r, o ) that can be correctly retrieved if the LM computation F (s, r ) is replaced with L RE (s), a simple affine transformation.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "LRE Causality",
+      "definition": "Counterfactual test of whether an LRE-consistent subject perturbation moves model output toward a specified alternative object.",
+      "quote": "Besides faithfulness Hernandez et al. (2023) introduced another metric causality to measure the performance of L RE.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Relative Change in p(o)",
+      "definition": "Relative change in correct-answer probability after blocking Conv + SSM information propagation with mean ablation.",
+      "quote": "The effect of blocking out Conv + SSM information flow for certain layer-token (ℓ − k) positions is measured as the relative change in p(o )",
+      "quote_check": "near"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Activation patching reveals localized factual-recall effects at the last subject token and specific layer ranges in Mamba, resembling autoregressive transformer LMs.",
+      "numbers": "not stated",
+      "quote": "with activation patching we have found that, similar to autoregressive transformer LMs, Mamba shows signs of localization at the last subject token and at specific layer ranges while recalling a fact.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Residual-state IE is concentrated at the subject-last token through layer 46, while the later-site IE jumps to 1.0 after layer 46.",
+      "numbers": "up to layer 46; jumps to 1.0 after layer 46",
+      "quote": "hi up to layer 46 only show strong IE at the subject last token position and have negligible impact after that. Whereas IE of hi jumps to 1.0 after layer 46.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "At the subject-last early site, Conv + SSM and Wg mediate strongly but Wo has the largest role; Wo is also the strongest mediator at the late site.",
+      "numbers": "not stated",
+      "quote": "both the Conv + SSM and Wg have a strong role, but Wo plays an even larger role than either. Yet the strongest mediator at the late site is also Wo .",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "ROME can achieve high scores over a range of early-to-middle layers by editing Wa, Wg, or Wo.",
+      "numbers": "not stated",
+      "quote": "ROME can achieve high scores (S) for a range of early to middle layers by modifying any one of the projection matrices Wa , Wg , or Wo , matching observations made by Hase et al. (2024) regarding transformer LMs.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "The best ROME performance is empirically obtained by editing Wo.",
+      "numbers": "not stated",
+      "quote": "Our experiments further show that the best performance for ROME is empirically achieved by modifying Wo .",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "A linear LRE exceeds 50% faithfulness for only 10 of 26 factual relations in Mamba, compared with 11 relations in Pythia-2.8b.",
+      "numbers": "10 out of 26; more than 50%; Pythia-2.8b: > 50% for 11 factual relations",
+      "quote": "Figure 7 shows that only for 10 out of 26 factual relations can a linear L RE achieve more than 50% faithfulness. For comparison, in the same sized Pythia-2.8b L RE achives > 50% faithfulness for 11 factual relations (see Appendix E).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Blocking non-subject Conv + SSM information flow in early-middle layers can reduce correct-answer probability substantially.",
+      "numbers": "up to 50%",
+      "quote": "The purple lines show that blocking out non-subject information flow in early middle layers can bring down p(o ) by up to 50%.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Subject information is propagated to later tokens through Conv + SSM paths in layers 43-48.",
+      "numbers": "layers 43-48",
+      "quote": "However, the valley at layers 43-48 suggest that Mamba uses Conv + SSM paths in those layers to propagate critical information from the subject to later tokens.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The empirical study covers only one Mamba model and one similarly sized transformer comparator.",
+      "quote": "Although our experiments have been limited to Mamba-2.8b, the largest available LM of that family, and comparisons to the similarly-sized transformer Pythia-2.8b, the methods we have introduced are general, and can be used to analyze to any state-space model.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Edge-specific information-flow knockout is difficult because of the interaction between convolution, its nonlinearity, and the selective SSM.",
+      "quote": "The use of Conv with a non-linearity in conjunction with selective-SSM make it challenging to remove the information retained in the qth token from the kth token (see Appendix B for details).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The convolutional receptive field allows information to leak across token edges even after a putative edge-specific intervention.",
+      "quote": "Note that, since ck is a convolved state with a receptive field of size 4 in Mamba-2.8b, the states ck+1 , ck+2 , and ck+3 also retain information from ak .",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "The implemented mean-ablation intervention is less surgical than cutting a specific information-flow edge.",
+      "quote": "We recognize that this intervention may not be as surgical as cutting a specific edge.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The intervention cannot isolate a unique causal role for the prompt-last token.",
+      "quote": "However, unlike Geva et al. (2023), we cannot make strong claims about the unique role of the final token position (prompt-last) with this experiment.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "LRE was evaluated only on factual relations rather than all relation types in RELATIONS.",
+      "quote": "We only calculate L RE for the factual relations in the R ELATIONS dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Some transformer-specific interpretation methods do not transfer to Mamba easily because of architectural constraints.",
+      "quote": "We also discuss mismatches—that is, interpretation methods (such as path-dependent attention patching) that do not transfer to Mamba as easily due to architectural constraints.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Mamba-2.8b findings may not transfer to Gemma 4 E2B because Conv + SSM, attention, parameterization, scale, tokenizer, and training differ despite the shared autoregressive objective.",
+     "In Gemma's KV-shared layers 15-34, restoring one per-layer embedding may influence several downstream layers, making attribution to an individual layer non-identifiable.",
+     "CPU execution and possible numerical or precision differences could alter activation magnitudes and the normalization-sensitive IE denominator.",
+     "Subject-swap counterfactuals require a different answer and may remain out-of-distribution or semantically confounded, making clean-corrupted probability gaps unstable.",
+     "Patching and mean-ablation may impair generic token processing, so a reduction in p(o) need not specifically represent factual-association mediation.",
+     "ROME uses the first 2000 COUNTERFACT records and patching uses 400 examples from six relations, so results may depend on dataset ordering and relation coverage.",
+     "Per-relation LRE grid search with n = 5 can overfit the sampled facts, and high faithfulness alone does not establish a causal mechanism.",
+     "Subject-last effects may shift with tokenization or prompt length, and Mamba-derived layer windows may not correspond to Gemma's layer indexing."
+    ],
+    "code_or_data_url": "romba.baulab.info",
+    "relevance_to_lab": "Directly relevant as a methodological template for Gemma 4 E2B: apply activation patching to per-layer embeddings, contrast subject-last and prompt-last positions, and test whether layers 15-34 show localized causal effects under KV sharing. The paper supplies testable baselines involving early-middle subject-token localization, later prompt-token effects, path attribution, relation-wise linearity, and rank-one edits. These can be combined with logit lens, induction-head analysis, and factual-recall tracing on CPU. Its Conv + SSM knockout caveat is especially relevant because Gemma requires edge-specific interventions to be redesigned around attention and KV paths. The paper's layer ranges and Mamba component roles should be treated as hypotheses rather than directly transferable findings for Gemma."
+   },
+   "usage": {
+    "total_tokens": 45841,
+    "total_characters": 0,
+    "prompt_tokens": 18268,
+    "completion_tokens": 27573,
+    "completion_tokens_details": {
+     "reasoning_tokens": 24339
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    }
+   }
+  }
+ }
+}

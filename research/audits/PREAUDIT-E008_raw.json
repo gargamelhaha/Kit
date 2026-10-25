@@ -1,0 +1,242 @@
+{
+ "prereg": "experiments/E008_window_route/PREREG.md",
+ "deepseek": {
+  "flaws": [
+   {
+    "issue": "Part A distance is manipulated by changing filler length, so distance from subject to final is perfectly confounded with total prompt length and filler content.",
+    "severity": "critical",
+    "consequence": "Any effect at d≈700 could be due to general long-context effects, attention dilution, position encoding, or filler content rather than the 512-token sliding-window boundary.",
+    "fix": "Hold total prompt length constant and place the subject at different positions within a fixed-length filler, or add length-matched controls that separate distance from total length."
+   },
+   {
+    "issue": "Part A selects pairs that are both correct at d≈40, then tests whether accuracy is lower at d≈700.",
+    "severity": "critical",
+    "consequence": "A4 is trivially true if any error occurs at d≈700 because d≈40 is forced to 100% accuracy; the accuracy comparison does not estimate the effect of distance in an unbiased sample.",
+    "fix": "Predefine an unselected sample or report accuracy on all screened items; do not use d≈40 correctness as an inclusion criterion for the accuracy comparison."
+   },
+   {
+    "issue": "Part A A2 conditions on items still answered correctly at d≈700, a post-treatment outcome.",
+    "severity": "major",
+    "consequence": "The route measured among correct d≈700 items may be atypical and selected; if few items remain correct, the cell is underpowered and the result may not generalize.",
+    "fix": "Predefine route analyses on all items with valid recovery, or use a fixed item set not selected on d≈700 correctness; report accuracy and route separately."
+   },
+   {
+    "issue": "Part A KV13_near is defined as all positions within the last 512 not in D, which includes the final position and query template.",
+    "severity": "major",
+    "consequence": "Recovery could be driven by patching the final position's own layer-13 K/V rather than by information copied to intermediate nearer positions, making the competing-outcome test ambiguous.",
+    "fix": "Define KV13_near as positions strictly between subject and final, excluding the final position and query template, or perform position-wise patching to localize the effect."
+   },
+   {
+    "issue": "Part A lacks a KV14_near control.",
+    "severity": "major",
+    "consequence": "If subject information is copied to nearer positions and then stored in layer-14 K/V, the design would miss it and could incorrectly refute both direct layer-14 use and layer-13 copying.",
+    "fix": "Add KV14_near (and possibly KV14_all restricted to near positions) as a preregistered intervention."
+   },
+   {
+    "issue": "Part A and Part B use 'up to' sample sizes rather than a fixed N.",
+    "severity": "major",
+    "consequence": "Optional stopping or selection until a target number of correct pairs is reached can bias the sample and inflate false-positive rates.",
+    "fix": "Predefine exact N and the full selection procedure before data collection, or use all available eligible pairs."
+   },
+   {
+    "issue": "Part B has only one N-W pair and repeats the same N in the query, so the model can answer by copying W without binding W to N.",
+    "severity": "critical",
+    "consequence": "The measured route may reflect simple copying rather than in-context association, so results would not be interpretable for H-013.",
+    "fix": "Include multiple N-W pairs and query one N, or add a mismatched-N control; require the model to select the W associated with the queried N."
+   },
+   {
+    "issue": "Part B uses common nouns for W without controlling frequency or prior color-noun associations.",
+    "severity": "major",
+    "consequence": "The clean-corrupt logit difference and recovery can be confounded by lexical priors or world knowledge rather than the in-context association.",
+    "fix": "Use nonce words or frequency-matched, counterbalanced nouns; measure and report baseline priors for each W."
+   },
+   {
+    "issue": "Part B predictions are asymmetric and lack a pre-specified mixed-outcome rule.",
+    "severity": "major",
+    "consequence": "B-DS can pass when KV14_D is high even if KV13_D is also high, so the result may be reported as support for full-attention binding when both routes contribute.",
+    "fix": "Predefine a mixed outcome (e.g., both KV13_D and KV14_D high) as 'both routes contribute' and require exclusivity for either generator-family claim."
+   },
+   {
+    "issue": "The analysis plan says 'subject-clustered bootstrap' and 'per d', but Part B has no subject and no d.",
+    "severity": "major",
+    "consequence": "The analysis method for Part B is undefined or inappropriate, leaving room for post hoc choices.",
+    "fix": "Specify a separate Part B analysis plan with an appropriate clustering unit (e.g., item, N, or W) and no per-d structure."
+   },
+   {
+    "issue": "Recovery is a ratio and no minimum clean-corrupt logit difference is specified.",
+    "severity": "major",
+    "consequence": "When the denominator is small, recovery can be unstable or extreme, producing false positives or false negatives.",
+    "fix": "Predefine a minimum denominator for usable pairs or use an absolute logit-difference metric; report denominators."
+   },
+   {
+    "issue": "Filler content is not sufficiently controlled: Part A uses repository prose and Part B uses an unspecified short filler.",
+    "severity": "major",
+    "consequence": "Filler may contain task-relevant entities, candidate answers, or other nouns that interfere with retrieval and confound the route measurements.",
+    "fix": "Predefine exact filler text, verify it contains no task-relevant words, and use the same filler structure across conditions."
+   },
+   {
+    "issue": "No power analysis or justification is given for the small sample sizes and thresholds.",
+    "severity": "major",
+    "consequence": "Cells may be underpowered, especially A2 at d≈700 among correct items and Part B with up to 16 pairs, making INCONCLUSIVE results likely and thresholds unreliable.",
+    "fix": "Provide a power analysis or justify N and thresholds; predefine how underpowered cells will be interpreted."
+   },
+   {
+    "issue": "Predictions are stated on medians, but the analysis only says medians plus bootstrap CIs without a decision rule.",
+    "severity": "major",
+    "consequence": "It is unclear whether a prediction passes on the point estimate alone or requires the CI to exclude a threshold, allowing post hoc interpretation.",
+    "fix": "Predefine pass/fail rules using point estimates and/or CI bounds for every prediction."
+   },
+   {
+    "issue": "Part A does not explicitly define the corrupt prompt construction.",
+    "severity": "minor",
+    "consequence": "Ambiguity about whether corrupt uses a different subject of equal length and identical filler could lead to implementation differences.",
+    "fix": "State explicitly that corrupt uses the same template and filler with a different equal-length subject."
+   },
+   {
+    "issue": "Part A A3 at d≈40 largely replicates K-0006 rather than testing a new prediction.",
+    "severity": "minor",
+    "consequence": "It may be reported as confirmation of the route when it is expected from prior data and selection.",
+    "fix": "Label d≈40 as a positive control/replication and focus hypothesis testing on d≈400 and d≈700."
+   }
+  ],
+  "missing_controls": [
+   "Length-matched control for Part A that separates subject-final distance from total prompt length.",
+   "KV14_near intervention in Part A.",
+   "Restricted KV13_near excluding the final position and query template, or position-wise KV13 patching.",
+   "Mismatched-N control in Part B to test whether the model uses the N-W association rather than copying W.",
+   "Multiple N-W pairs in Part B so the model must select the W associated with the queried N.",
+   "Frequency- and prior-matched W items or nonce words in Part B.",
+   "Exact neutral filler content control for both parts, verified to contain no task-relevant words.",
+   "Random-position NULL interventions matched in size to each intervention, especially KV13_near, KV13_all, and KV14_all.",
+   "Minimum clean-corrupt logit-difference criterion for usable recovery pairs.",
+   "Attention-mass-on-D analysis for ATTN_L, not only the largest ATTN_L.",
+   "Baseline prior measurement for W in Part B without the in-context association."
+  ],
+  "trivially_true_predictions": [
+   "A1: KV13_D |recovery| ≤ 0.05 at d≈700 is mechanically guaranteed by the 512-token sliding-window mask if the implementation is correct.",
+   "A4: accuracy at d≈700 lower than at d≈40 is trivially true if any error occurs at d≈700 because d≈40 is selected to be 100% correct.",
+   "A3 at d≈40 is largely a replication of K-0006 and is expected from prior data and selection."
+  ],
+  "suggested_additional_predictions": [
+   "Part A: KV14_near recovery at d≈700 if copied information is stored in layer-14 K/V at near positions.",
+   "Part A: position-wise KV13_near patching to localize which near positions carry copied subject information.",
+   "Part A: a length-matched control should show no distance effect if total length, not sliding-window distance, drives the result.",
+   "Part A: attention mass on D for full-attention blocks at d≈700.",
+   "Part B: KV13_all and KV14_all recovery; if D-only fails but all-position patching succeeds, the association is distributed.",
+   "Part B: mismatched-N condition should fail if the model is using the N-W association rather than copying W.",
+   "Part B: with multiple N-W pairs, patching the queried W should recover but patching a non-queried W should not.",
+   "Part B: attention mass on N and W at the query position.",
+   "Part B: compare layer-13 versus layer-14 K/V at the query N position, not only at W.",
+   "Part A: accuracy at d≈400 versus d≈700 under a length-matched design to separate window boundary from general length effects."
+  ],
+  "verdict": "Not ready to run. Critical confounds and missing controls mean the results would be uninterpretable for H-011 and H-013. Major revisions are required before data collection."
+ },
+ "minimax": {
+  "flaws": [
+   {
+    "issue": "Distance is confounded with filler length, total prompt length, attention dilution, and filler content. The same fixed prose cannot simultaneously have the three stated token lengths, and using different portions of one prose corpus makes the d≈40/400/700 conditions non-matched.",
+    "severity": "critical",
+    "consequence": "The behavioural decrease in A4 and differences in KV/attention patching across distances cannot be attributed specifically to the 512-token sliding window. A distance effect caused by context length or filler semantics would produce the same result.",
+    "fix": "Use several independently sampled or counterbalanced fillers and predefine exact token lengths. Match total prompt length across conditions while varying subject position, and add conditions where a subject is placed near or far within otherwise identical prompts. Verify that the exact final-query-to-key distance differs while all other lexical and positional properties remain balanced."
+   },
+   {
+    "issue": "Part B does not distinguish a sliding-window route from a full-attention route. Its prompt is only about 30 filler tokens long, so layer-13 sliding-window attention can see the entire prompt just as layer-14 full attention can.",
+    "severity": "critical",
+    "consequence": "Layer-13 K/V at the word position can already contain the in-context N→W association. Thus B-MM is not specific to parametric-fact routing, while B-DS is not specific to full-attention binding. Either hypothesis can pass for the wrong reason, and the outcome cannot decide between them as claimed.",
+    "fix": "Manipulate layer-13 access separately from layer-14 access, for example by placing the relevant context outside the layer-13 window while retaining layer-14 access, or by directly masking layer-13 versus layer-14 access to the association. Alternatively, test whether the route changes at the window boundary while total prompt content remains controlled."
+   },
+   {
+    "issue": "Part B patches only the positions of W, although an N→W association can be represented in K/V at the colour-token position, the word position, later positions, or distributed across several positions.",
+    "severity": "critical",
+    "consequence": "A small effect of KV13_D or KV14_D would not refute the corresponding route hypothesis; the relevant information may simply be stored outside D. Conversely, a large effect would not establish where binding occurred without an anatomically matched control.",
+    "fix": "Predefine the association-relevant positions and patch them separately: W only, N only, the clause span, and all positions after the binding phrase. Include position-shuffled and irrelevant-word patches. State in advance how evidence from these patches determines the route."
+   },
+   {
+    "issue": "A1 is guaranteed by the known attention mask if the intervention cannot affect key visibility. It is an implementation sanity check rather than an empirical test of rerouting.",
+    "severity": "major",
+    "consequence": "Reporting A1 as support for the hypothesis would give a mechanically predetermined result the appearance of independent evidence.",
+    "fix": "Label A1 explicitly as a software/mechanical check and do not count it as evidence for H-011. Verify exact distance indices and masking semantics with a direct mask test and an independent implementation."
+   },
+   {
+    "issue": "Exact token distances and window-index conventions are not specified. Values written as approximately 40, 400, and 700 are insufficient for a boundary experiment involving a 511/512-position window.",
+    "severity": "major",
+    "consequence": "An off-by-one error or tokenizer-dependent counting error could put a condition on the wrong side of the window and invert the interpretation of A1–A3.",
+    "fix": "After tokenization, record every subject and final-query index and calculate the implementation's exact relative distance. Define inside, boundary, and outside conditions using exact indices, including explicit 511, 512, and 513 boundary tests rather than approximate distances."
+   },
+   {
+    "issue": "A2 uses the undefined phrase \"among items still answered correctly,\" creating an unspecified post-selection condition.",
+    "severity": "critical",
+    "consequence": "It is unclear whether correctness refers to clean, corrupt, patched, or another run and which denominator defines the eligible items. Selecting only survivors can inflate median recovery and makes the preregistered prediction non-reproducible.",
+    "fix": "Predefine the run and denominator for correctness, such as all preregistered pairs with the clean run correct at d≈700, and report the number excluded with reasons. Prefer reporting recovery for all eligible pairs first, followed by a clearly labelled secondary analysis among clean-correct items."
+   },
+   {
+    "issue": "The pair selection procedure creates substantial selection and regression-to-the-mean effects. Part A retains only up to eight subject pairs whose two clean items are correct at d≈40, and Part B retains only pairs with both items correct, without specifying whether the corrupt item must be incorrect.",
+    "severity": "major",
+    "consequence": "Results are conditional on an adaptively selected easy subset, not on the intended population. Clean correctness may be unstable across distances, so a clean-versus-corrupt recovery metric may have an unstable or near-zero denominator.",
+    "fix": "Use a larger prespecified item set, apply identical selection criteria to every condition, and report the full flow from attempted to analysed items. Require and verify a clean-answer versus corrupt-answer logit separation for each pair and condition. Treat selected subsets as secondary if they are retained."
+   },
+   {
+    "issue": "The samples are too small for the planned cluster-level claims. Part A has at most eight independent subject pairs, yet A3 requires a majority and CIs use a 10,000-sample clustered bootstrap; Part B has at most 16 pairs despite multiple intervention cells.",
+    "severity": "major",
+    "consequence": "Medians and bootstrap intervals will be unstable, the 50% majority criterion can be met by a small random imbalance, and null or contradictory route results will often be inconclusive despite being presented as decisive.",
+    "fix": "Increase the number of independent subjects or colour associations substantially. Predefine a minimum sample based on the smallest effect of interest, report exact paired counts and confidence intervals, and use paired permutation or randomization tests where appropriate. Do not treat six usable pairs as adequate support for a median-threshold claim."
+   },
+   {
+    "issue": "The recovery metric and its denominator are not defined sufficiently for interpretation.",
+    "severity": "major",
+    "consequence": "If recovery is based on the clean-minus-corrupt answer-logit difference, a small denominator can produce unstable ratios, sign changes can occur, and high recovery can be dominated by denominator shrinkage. It is also unclear whether the target answer changes with distance or which logit is used when both candidates are close.",
+    "fix": "Define the numerator, denominator, target token, sign convention, and handling of nonpositive or near-zero denominators before running. Require a prespecified minimum clean-corrupt separation, report raw logit differences and patched logits alongside normalized recovery, and exclude or separately analyse pairs failing the separation criterion."
+   },
+   {
+    "issue": "Using the largest ATTN_L patch as a mechanistic route diagnostic does not establish that the layer carries subject information causally.",
+    "severity": "major",
+    "consequence": "Large attention contributions can reflect generic magnitude or broad contextual effects, and A2 can pass merely because full-attention blocks have larger outputs. This repeats the interpretive weakness identified in K-0007, where block 25 was not necessary despite large attention contribution.",
+    "fix": "For each candidate layer, include local head-level attribution to the subject or association span, a specificity comparison against other layers, and a mean-ablation or unrelated-token control. Require causal evidence from targeted patching, not only a maximum-over-layers comparison."
+   },
+   {
+    "issue": "The Part A competing outcome based on KV13_near is not specific to copied subject information.",
+    "severity": "major",
+    "consequence": "Changing the subject can alter many other positions in the clean and corrupt K/V tensors. Patching all nearby non-D positions can therefore recover the answer because of broad contextual differences rather than an explicit copy of the subject to nearer positions.",
+    "fix": "Identify candidate copy positions independently or patch individual nearby positions and spans. Add an irrelevant-subject corruption control and a shuffled-position patch. Attribute a copied representation only if a subject-specific, spatially localized patch has the predicted effect while matched irrelevant patches do not."
+   },
+   {
+    "issue": "The Part B hypotheses are framed as mutually exclusive even though redundant or mixed causal routes are possible.",
+    "severity": "major",
+    "consequence": "Partial recovery through both layers, or recovery only when the two patches are combined, would be misclassified as refuting both hypotheses. The claimed binary decision would conceal biologically plausible parallel routing.",
+    "fix": "Predefine a route-classification scheme allowing layer-13-only, layer-14-only, mixed, redundant, and neither outcomes. Include single-patch and joint-patch conditions and test whether each source is sufficient and whether the sources are redundant."
+   },
+   {
+    "issue": "The NULL criterion is stated only as a global absolute threshold and is not tied to a paired, condition-specific control.",
+    "severity": "minor",
+    "consequence": "A single NULL value may conceal conditioning artefacts, especially if numerical noise differs across long prompts or intervention types. It also does not substitute for checks that patches alter the intended representation.",
+    "fix": "Run paired identity/no-op controls within every prompt, distance, layer, and intervention category. Report the distribution of paired differences and bootstrap bounds, and separately verify that each patch changes its intended K/V or attention tensor."
+   }
+  ],
+  "missing_controls": [
+   "Exact-distance boundary controls at relative distances 511, 512, and 513, with logged tokenizer indices and mask semantics.",
+   "A total-length-matched subject-relocation control that varies subject distance without varying filler amount or total prompt length.",
+   "Multiple counterbalanced fillers, with each filler represented at more than one distance if feasible.",
+   "An irrelevant-subject or irrelevant-fact corruption control matched to the real corruption for Part A.",
+   "A Part B control that swaps the colour while holding W fixed and another that swaps W while holding the colour fixed, to separate lexical priors from N→W binding.",
+   "Patch controls for N-token positions, W-token positions, the complete binding clause, and shuffled or semantically unrelated positions.",
+   "Individual and joint layer-13/layer-14 patches to detect parallel or redundant routes.",
+   "A direct visibility manipulation or layer-specific masking control to separate layer-13 access from layer-14 access, especially in Part B.",
+   "Head-level and mean-ablation controls for any candidate ATTN_L route, rather than selecting only the largest contribution.",
+   "Condition-specific paired NULL controls and explicit clean-versus-corrupt logit-separation checks.",
+   "A route ablation that prevents the purported source from reaching the final position while preserving the rest of the computation."
+  ],
+  "trivially_true_predictions": [
+   "A1 is mechanically implied by the 512-token layer-13 attention mask whenever the subject K/V keys are outside the permitted relative-position range; it tests implementation correctness rather than the rerouting hypothesis."
+  ],
+  "suggested_additional_predictions": [
+   "At an exactly matched d≈700 prompt, if layer-14 K/V is the causal route, KV14_D should recover the clean answer while an irrelevant-position layer-14 patch and the layer-13 subject patch should not.",
+   "The distance effect should persist across independently sampled fillers and should remain when total prompt length is held constant; otherwise it should be classified as a length or content effect.",
+   "At the exact window boundary, layer-13 subject accessibility should change sharply between relative distances 511 and 512, whereas an unrelated-position control should show no comparable discontinuity.",
+   "If layer-14 and layer-13 routes are redundant, single-source patches may be weak while a joint clean patch should have a larger effect; if they are exclusive, each should dominate in the visibility condition assigned to it.",
+   "For Part B, patching the colour-token or clause-span K/V should reveal any representation of the association that patching W alone misses.",
+   "Swapping N while holding W fixed should alter the predicted answer, while swapping W with an unrelated colour should preserve the colour prior; this would demonstrate binding rather than lexical frequency.",
+   "Any candidate route layer should lose its causal advantage under targeted mean ablation or removal of the relevant head, even if it has the largest raw attention contribution."
+  ],
+  "verdict": "Do not run this preregistration as written. Part A has a testable core but requires exact distance control, matched filler and prompt-length designs, a fully specified survivor denominator, stronger selection accounting, larger samples, and more specific causal route controls. Part B is not currently capable of distinguishing its competing hypotheses because both layer-13 and layer-14 can access the short prompt, and the intervention is localized only to W. A revised design should treat A1 as a mechanical check and should preregister parallel-route and mixed-route outcomes rather than forcing a binary decision."
+ }
+}

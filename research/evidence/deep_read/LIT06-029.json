@@ -1,0 +1,443 @@
+{
+ "source_id": "LIT06-029",
+ "arxiv_id": "2602.21204",
+ "title": "Test-Time Training with KV Binding Is Secretly Linear Attention",
+ "chars": 69779,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 30,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.938,
+   "data": {
+    "title": "Test-Time Training with KV Binding Is Secretly Linear Attention",
+    "research_question": "Does TTT with KV binding actually perform test-time memorization, or can it be reformulated as learned linear attention?",
+    "models_and_data": [
+     {
+      "item": "LaCT-LLM baseline",
+      "quote": "We use the 760M parameter LaCT-LLM (Zhang et al., 2025) as our baseline model.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "LaCT-NVS baseline",
+      "quote": "We use 12-layer 768 hidden dimension LaCT-NVS (Zhang et al., 2025) model as baseline, totaling 114M parameters.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "ViTTT-B baseline",
+      "quote": "We use ViTTT-B (Han et al., 2025) as our baseline model, totaling 90M parameters.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "FineWeb-Edu training data",
+      "quote": "All models are trained on 100B tokens sampled from the FineWeb-Edu dataset (Penedo et al., 2024)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Book-3 evaluation data",
+      "quote": "we report perplexity on 2.5B tokens from the Book-3 dataset (Gao et al., 2020).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "RealEstate10K NVS data",
+      "quote": "We train our model on the RealEstate10K (Zhou et al., 2018) dataset",
+      "quote_check": "exact"
+     },
+     {
+      "item": "ImageNet-1K classification data",
+      "quote": "we train our model on the ImageNet-1K (Deng et al., 2009) dataset",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Vary inner-loop gradient steps at inference",
+      "quote": "we vary the number of inner-loop gradient steps at inference time",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Retrain with gradient ascent in the inner loop",
+      "quote": "each gradient-ascent model is retrained from scratch with the sign-flipped inner-loop update applied throughout both training and inference",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Replace query Q with key K",
+      "quote": "we perform a simple experiment in which we replace the query Q with the key K when computing the TTT output.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Visualize Q/K distributions with t-SNE",
+      "quote": "we collect Q and K vectors across all tokens and visualize their distributions using t-SNE (Maaten & Hinton, 2008).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Unroll inner-loop updates analytically",
+      "quote": "we re-examine TTT by explicitly unrolling the inner-loop updates.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply sequential ablation trajectory",
+      "quote": "The ablation steps are applied sequentially: Variant 1 is the Baseline with Step 1 applied",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use parallel prefix scan for parallel form",
+      "quote": "allowing the recurrence in Theorem 5.3 to be computed via a parallel prefix scan rather than sequential token-by-token updates.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Perplexity",
+      "definition": "Language-modeling evaluation on Book-3; lower is better.",
+      "quote": "we report perplexity on 2.5B tokens from the Book-3 dataset (Gao et al., 2020).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "PSNR",
+      "definition": "Peak Signal-to-Noise Ratio for novel view synthesis; higher is better.",
+      "quote": "We train using only the MSE loss and evaluate using the Peak Signal-to-Noise Ratio (PSNR) metric.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-1 accuracy",
+      "definition": "ImageNet-1K validation classification accuracy; higher is better.",
+      "quote": "We evaluate on the ImageNet-1K (Deng et al., 2009) validation set using the top-1 accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Inner-loop loss",
+      "definition": "Self-supervised key-value binding objective optimized in the TTT inner loop.",
+      "quote": "L = ∥fθ (k) − v∥2",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Inference throughput",
+      "definition": "Tokens per second for the TTT layer; higher is better.",
+      "quote": "improves the inference throughput of the TTT layer by up to 4.0× (measured in tokens per second, single batch).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "End-to-end training speedup",
+      "definition": "Wall-clock speedup while maintaining comparable convergence.",
+      "quote": "The parallel form achieves a 1.19× end-to-end speedup while maintaining comparable convergence.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Gradient ascent in the inner loop preserves or slightly improves performance.",
+      "numbers": "Perplexity: 16.43 baseline, 16.19 gradient ascent, 16.18 replace Q with K; PSNR: 25.94, 25.85, 25.95; Top-1: 79.34, 79.61, 79.18.",
+      "quote": "TTT with gradient ascent performs comparably to, and in some cases even slightly better than, standard gradient descent (Table 1).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Replacing queries with keys causes little to no degradation.",
+      "numbers": "Perplexity 16.18; PSNR 25.95; Top-1 79.18.",
+      "quote": "we observe little to no degradation in TTT’s performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "More inner-loop iterations improve inner loss but degrade downstream performance.",
+      "numbers": "not stated",
+      "quote": "Increasing inner-loop iterations improves inner-loop loss but degrades task performance",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Full TTT exceeds the reduced linear-attention variant only marginally.",
+      "numbers": "+0.87 perplexity on LLM, +0.24 dB on NVS",
+      "quote": "the full TTT model exceeds this reduced linear-attention variant only marginally (+0.87 perplexity on LLM, +0.24 dB on NVS)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Variant 1, updating only the last layer, performs best across tasks.",
+      "numbers": "Perplexity 15.93; PSNR 25.97; Top-1 79.63%",
+      "quote": "Variant 1 achieves the best performance across all three tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Reducing TTT to standard linear attention causes only minor degradation.",
+      "numbers": "+0.4 perplexity on LLM and −0.2 dB on NVS",
+      "quote": "reducing the full TTT formulation to a basic linear attention operator (Variant 6) results in only minor performance degradation (+0.4 perplexity on LLM and −0.2 dB on NVS).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Parallel implementation improves inference throughput.",
+      "numbers": "up to 4.0×",
+      "quote": "switching from the recurrent to the parallel implementation improves the inference throughput of the TTT layer by up to 4.0×",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Parallel form yields end-to-end training speedup.",
+      "numbers": "1.19×",
+      "quote": "The parallel form achieves a 1.19× end-to-end speedup while maintaining comparable convergence.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Analysis is limited to settings where the inner-loop final layer is linear and bias-free.",
+      "quote": "Our analysis applies broadly to TTT formulations based on key–value binding, but is limited to settings where the inner-loop final layer is linear and bias-free.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Empirical focus is on LaCT and ViTTT as case studies.",
+      "quote": "Empirically, we focus on LaCT (Zhang et al., 2025) and ViTTT (Han et al., 2025) as case studies because they are representative methods with open-source implementations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Empirical validation on Titans and Atlas is left to future work.",
+      "quote": "empirical validation on these models is left to future work as their implementations become available.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Nonlinear final layers and deeper TTT-linear-attention connections are future work.",
+      "quote": "Extending these insights to nonlinear final layers, and exploring deeper connections between TTT and modern linear attention mechanisms in both directions, remain additional avenues for future work.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not evaluate Gemma 4 E2B, KV-shared layers 15-34, or per-layer embeddings, so the linear-attention equivalence may not transfer to the lab's target architecture.",
+     "The analysis assumes a linear, bias-free final inner-loop layer; nonlinear final layers are left to future work, which limits applicability to arbitrary TTT or KV-binding mechanisms.",
+     "Empirical evidence covers only LaCT and ViTTT on LLM, NVS, and ImageNet classification; it does not test induction heads, factual recall, activation patching, or logit lens.",
+     "The paper's parallelization and ablation results are on GPU implementations; CPU-specific behavior and efficiency for the lab's CPU tracing setup are not addressed.",
+     "The claim that TTT is 'secretly linear attention' is a representational equivalence under specific assumptions, not a causal account of internal circuits, so it may not identify where factual recall or induction behavior is implemented.",
+     "The paper does not study KV-sharing across layers or per-layer embedding interactions, which are central to Gemma 4 E2B and could alter the proposed linear-attention interpretation."
+    ],
+    "code_or_data_url": "https://research.nvidia.com/labs/sil/projects/tttla/",
+    "relevance_to_lab": "The paper's reframing of KV-binding TTT as learned linear attention is conceptually relevant for interpreting KV-like mechanisms and feature mixing, but it does not directly study Gemma 4 E2B, KV-shared layers, per-layer embeddings, activation patching, logit lens, induction heads, or factual-recall tracing on CPU. It may inform hypotheses and controls for the lab's tracing work rather than provide direct evidence about Gemma internals."
+   },
+   "usage": {
+    "prompt_tokens": 19659,
+    "total_tokens": 30623,
+    "completion_tokens": 10964,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 19328
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8982
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.933,
+   "data": {
+    "title": "Test-Time Training with KV Binding Is Secretly Linear Attention",
+    "research_question": "Does test-time training with KV binding genuinely memorize and retrieve key–value associations, or is it better understood as a learned linear-attention operator, and what architectural simplifications and parallelization benefits follow from that reinterpretation?",
+    "models_and_data": [
+     {
+      "item": "LaCT-LLM baseline with 760M parameters, trained on 100B FineWeb-Edu tokens.",
+      "quote": "We use the 760M parameter LaCT-LLM (Zhang et al., 2025) as our baseline model. All models are trained on 100B tokens sampled from the FineWeb-Edu dataset",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Book-3 evaluation corpus for language-model perplexity.",
+      "quote": "For evaluation, we report perplexity on 2.5B tokens from the Book-3 dataset (Gao et al., 2020).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "LaCT-NVS baseline with 12 layers, 768 hidden dimensions, and 114M parameters, trained on RealEstate10K.",
+      "quote": "We use 12-layer 768 hidden dimension LaCT-NVS (Zhang et al., 2025) model as baseline, totaling 114M parameters. We train our model on the RealEstate10K (Zhou et al., 2018) dataset",
+      "quote_check": "exact"
+     },
+     {
+      "item": "ViTTT-B baseline with 90M parameters, trained on ImageNet-1K.",
+      "quote": "We use ViTTT-B (Han et al., 2025) as our baseline model, totaling 90M parameters. Follow (Han et al., 2025), we train our model on the ImageNet-1K (Deng et al., 2009) dataset",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Sweep the number of inner-loop gradient steps at inference time.",
+      "quote": "we vary the number of inner-loop gradient steps at inference time, which usually yields lower inner-loop loss in pretrained TTT models",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Retrain gradient-ascent models from scratch with sign-flipped updates during both training and inference.",
+      "quote": "each gradient-ascent model is retrained from scratch with the sign-flipped inner-loop update applied throughout both training and inference",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Replace the query with the key when computing the TTT output.",
+      "quote": "we perform a simple experiment in which we replace the query Q with the key K when computing the TTT output.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Collect per-layer query and key vectors across tokens and visualize their distributions with t-SNE.",
+      "quote": "For each layer, we collect Q and K vectors across all tokens and visualize their distributions using t-SNE (Maaten & Hinton, 2008).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Analytically unroll one inner-loop gradient-descent step per input and evaluate the resulting state on the query.",
+      "quote": "Given a sequence of query–key pairs {(q0 , k0 ), (q1 , k1 ), . . . , (qt , kt )}, suppose the TTT model performs one gradient descent step per input in sequence.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply six sequential simplifications from the baseline TTT formulation to standard linear attention.",
+      "quote": "The ablation steps are applied sequentially: Variant 1 is the Baseline with Step 1 applied, Variant 2 adds Step 2 on top of Variant 1, and so on",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Implement the parallel TTT formulation for the LaCT language-modeling task.",
+      "quote": "We implement this parallel formulation for LaCT on the LLM task.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Perplexity",
+      "definition": "Language-model perplexity on 2.5B Book-3 tokens; lower is better.",
+      "quote": "For evaluation, we report perplexity on 2.5B tokens from the Book-3 dataset (Gao et al., 2020).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "PSNR",
+      "definition": "Peak signal-to-noise ratio for novel-view synthesis; higher is better.",
+      "quote": "We train using only the MSE loss and evaluate using the Peak Signal-to-Noise Ratio (PSNR) metric.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-1 accuracy",
+      "definition": "Top-1 classification accuracy on the ImageNet-1K validation set; higher is better.",
+      "quote": "We evaluate on the ImageNet-1K (Deng et al., 2009) validation set using the top-1 accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Inner-loop loss",
+      "definition": "Self-supervised key–value binding loss monitored as a measure of inner-loop fitting quality.",
+      "quote": "inner-loop loss serves as a natural proxy for memorization quality: lower loss indicates more accurate encoding of key–value mappings",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Tokens per second",
+      "definition": "TTT-layer inference throughput, measured in tokens per second for a single batch; higher is better.",
+      "quote": "switching from the recurrent to the parallel implementation improves the inference throughput of the TTT layer by up to 4.0× (measured in tokens per second, single batch).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "TTT variants with multi-layer MLPs or momentum can, under the stated final-layer assumptions, be rewritten as learned linear attention.",
+      "numbers": "not stated",
+      "quote": "We show analytically that even TTT variants with complex fast-weight parameterizations (including multi-layer MLPs and momentum) can be equivalently rewritten as a form of learned linear attention operator (Katharopoulos et al., 2020).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Increasing inner-loop iterations improves the inner-loop objective but degrades downstream task performance.",
+      "numbers": "not stated",
+      "quote": "Increasing inner-loop iterations improves inner-loop loss but degrades task performance, contradicting the memorization-based interpretation of TTT.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Gradient ascent performs comparably to, and sometimes slightly better than, gradient descent.",
+      "numbers": "Perplexity: 16.43 baseline vs 16.19 gradient ascent; PSNR: 25.94 vs 25.85; Top-1 Acc: 79.34 vs 79.61.",
+      "quote": "Contrary to this expectation, across all evaluated models and tasks, TTT with gradient ascent performs comparably to, and in some cases even slightly better than, standard gradient descent (Table 1).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Replacing queries with keys causes little to no degradation across the evaluated LaCT and ViTTT tasks.",
+      "numbers": "Perplexity: 16.43 baseline vs 16.18 with Q replaced by K; PSNR: 25.94 vs 25.95; Top-1 Acc: 79.34 vs 79.18.",
+      "quote": "Contrary to the expectation, we observe little to no degradation in TTT’s performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "LaCT-NVS exhibits a pronounced layerwise mismatch between query/key and value/output distributions.",
+      "numbers": "not stated",
+      "quote": "we observe a pronounced and consistent mismatch between Q/K and V /O across layers, indicating that the parametric function optimized on keys, is systematically evaluated on out-of-distribution inputs when applied to queries",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Restricting the inner loop to update only the final-layer parameters gives the best performance across all three evaluated tasks.",
+      "numbers": "LaCT-LLM perplexity 15.93; LaCT-NVS PSNR 25.97; ViTTT top-1 accuracy 79.63%.",
+      "quote": "Variant 1 achieves the best performance across all three tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Reducing full TTT to standard linear attention causes only minor performance degradation.",
+      "numbers": "+0.4 perplexity on LLM and −0.2 dB on NVS.",
+      "quote": "Overall, reducing the full TTT formulation to a basic linear attention operator (Variant 6) results in only minor performance degradation (+0.4 perplexity on LLM and −0.2 dB on NVS).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The parallel implementation substantially improves TTT-layer throughput and yields an end-to-end training speedup after simplification.",
+      "numbers": "up to 4.0× TTT-layer inference throughput; 1.19× end-to-end training speedup.",
+      "quote": "4.0× (measured in tokens per second, single batch). Combined with the simplifications from Step 1 and Step 2, this yields a 1.19× end-to-end training speedup without degrading model quality",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The theoretical result requires the inner-loop final layer to be linear and bias-free.",
+      "quote": "Our analysis applies broadly to TTT formulations based on key–value binding, but is limited to settings where the inner-loop final layer is linear and bias-free.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Empirical validation is focused on LaCT and ViTTT as representative case studies.",
+      "quote": "Empirically, we focus on LaCT (Zhang et al., 2025) and ViTTT (Han et al., 2025) as case studies because they are representative methods with open-source implementations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Empirical validation on Titans and Atlas is deferred until implementations become available.",
+      "quote": "empirical validation on these models is left to future work as their implementations become available.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Extension to nonlinear final layers and deeper links with modern linear-attention mechanisms remains future work.",
+      "quote": "Extending these insights to nonlinear final layers, and exploring deeper connections between TTT and modern linear attention mechanisms in both directions, remain additional avenues for future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The paper focuses exclusively on TTT with KV binding rather than end-to-end TTT.",
+      "quote": "Among the various TTT formulations (Sun et al., 2025; Gandelsman et al., 2022; Sun et al., 2020; Tandon et al., 2025; Behrouz et al., 2025b), this paper exclusively focuses on this variant.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The proposed parallel form is blocked by weight normalization or dynamically updated kernel functions.",
+      "quote": "In Appendix I, we further show that introducing weight normalization or dynamic kernel functions breaks associativity, thereby preventing parallelization.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "There are no Gemma 4 E2B experiments or evidence that the TTT-to-linear-attention account transfers to the lab's KV-shared layers.",
+     "No activation patching, logit-lens analysis, induction-head tracing, or factual-recall tracing is performed, so the proposed mechanism is not connected to layer-specific circuitry.",
+     "The query/key distributional claim relies on t-SNE without quantitative divergence statistics, confidence intervals, or stability checks.",
+     "No seed counts, error bars, hypothesis tests, or confidence intervals are reported for the task comparisons, making small score differences difficult to interpret.",
+     "The experiments use A100 and H100 GPUs, while throughput, numerical behavior, and intervention cost on the lab's CPU target remain uncharacterized.",
+     "The text gives two non-reconciled estimates for reduction to linear attention: +0.87 perplexity and +0.24 dB in one passage, versus +0.4 perplexity and −0.2 dB in another.",
+     "No matched softmax-attention baseline, energy measurement, or memory-footprint comparison establishes the practical advantage of the reduction for transformer-like deployments."
+    ],
+    "code_or_data_url": "https://research.nvidia.org/labs/sil/projects/tttla/; https://github.com/fla-org/flame",
+    "relevance_to_lab": "Moderate conceptual relevance but low direct applicability. The paper supplies falsifiable diagnostics for distinguishing storage/retrieval from feature mixing: query/key distributional asymmetry, weak sensitivity to query-to-key substitution, and sensitivity to update direction and iteration count. These can be adapted to per-layer Gemma 4 E2B embeddings in layers 15–34 using activation patching, logit lens, induction-head tracing, and factual-recall tracing; quantitative layerwise distances could replace t-SNE for CPU practicality. However, the evidence concerns TTT-KVB models such as LaCT and ViTTT, not Gemma, KV-shared transformer layers, or CPU execution, so its equivalence should be treated as a hypothesis for the lab rather than established evidence."
+   },
+   "usage": {
+    "total_tokens": 38048,
+    "total_characters": 0,
+    "prompt_tokens": 19761,
+    "completion_tokens": 18287,
+    "completion_tokens_details": {
+     "reasoning_tokens": 15500
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    }
+   }
+  }
+ }
+}

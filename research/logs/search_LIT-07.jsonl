@@ -1,0 +1,20 @@
+{"ts": "2026-10-25T12:25:05Z", "source": "arxiv_api", "query": "ti:\"DoLa\" AND all:decoding", "n_results": 2, "n_new": 2, "error": null}
+{"ts": "2026-10-25T12:25:09Z", "source": "arxiv_api", "query": "all:\"contrastive decoding\" AND all:layers AND all:factuality", "n_results": 10, "n_new": 10, "error": null}
+{"ts": "2026-10-25T12:25:13Z", "source": "arxiv_api", "query": "all:\"inference-time intervention\" AND all:truthfulness", "n_results": 16, "n_new": 15, "error": null}
+{"ts": "2026-10-25T12:25:16Z", "source": "arxiv_api", "query": "all:\"activation steering\" AND all:\"without fine-tuning\"", "n_results": 8, "n_new": 8, "error": null}
+{"ts": "2026-10-25T12:25:20Z", "source": "arxiv_api", "query": "all:\"early exit\" AND all:\"language model\" AND all:confidence", "n_results": 25, "n_new": 25, "error": null}
+{"ts": "2026-10-25T12:25:23Z", "source": "arxiv_api", "query": "ti:\"LayerSkip\"", "n_results": 1, "n_new": 1, "error": null}
+{"ts": "2026-10-25T12:25:27Z", "source": "arxiv_api", "query": "ti:\"Confident Adaptive Language Modeling\"", "n_results": 1, "n_new": 0, "error": null}
+{"ts": "2026-10-25T12:25:31Z", "source": "arxiv_api", "query": "all:\"hallucination detection\" AND all:\"internal states\"", "n_results": 25, "n_new": 24, "error": null}
+{"ts": "2026-10-25T12:25:34Z", "source": "arxiv_api", "query": "all:\"semantic entropy probes\"", "n_results": 2, "n_new": 2, "error": null}
+{"ts": "2026-10-25T12:25:38Z", "source": "arxiv_api", "query": "all:\"truthfulness\" AND all:\"linear probe\" AND all:\"hidden states\"", "n_results": 5, "n_new": 5, "error": null}
+{"ts": "2026-10-25T12:25:42Z", "source": "arxiv_api", "query": "all:\"KV cache\" AND all:quantization AND all:accuracy", "n_results": 25, "n_new": 25, "error": null}
+{"ts": "2026-10-25T12:25:46Z", "source": "arxiv_api", "query": "all:\"KV cache eviction\" AND all:\"long context\" AND all:evaluation", "n_results": 16, "n_new": 16, "error": null}
+{"ts": "2026-10-25T12:25:49Z", "source": "arxiv_api", "query": "all:\"weight quantization\" AND all:\"hidden degradation\"", "n_results": 0, "n_new": 0, "error": null}
+{"ts": "2026-10-25T12:25:54Z", "source": "arxiv_api", "query": "all:\"quantization\" AND all:\"interpretability\" AND all:circuits", "n_results": 20, "n_new": 20, "error": null}
+{"ts": "2026-10-25T12:25:57Z", "source": "arxiv_api", "query": "all:\"layer pruning\" AND all:\"large language models\" AND all:redundancy", "n_results": 9, "n_new": 9, "error": null}
+{"ts": "2026-10-25T12:26:01Z", "source": "arxiv_api", "query": "all:\"self-consistency\" AND all:\"small language models\"", "n_results": 13, "n_new": 13, "error": null}
+{"ts": "2026-10-25T12:26:04Z", "source": "arxiv_api", "query": "all:\"logit lens\" AND all:\"calibration\"", "n_results": 1, "n_new": 1, "error": null}
+{"ts": "2026-10-25T12:26:09Z", "source": "arxiv_api", "query": "all:\"speculative decoding\" AND all:\"self-speculative\"", "n_results": 25, "n_new": 23, "error": null}
+{"ts": "2026-10-25T12:26:13Z", "source": "arxiv_api", "query": "all:\"per-layer embeddings\" AND all:offloading", "n_results": 0, "n_new": 0, "error": null}
+{"ts": "2026-10-25T12:26:17Z", "source": "arxiv_api", "query": "all:\"knowledge conflict\" AND all:\"context\" AND all:\"parametric\" AND all:mechanism", "n_results": 9, "n_new": 8, "error": null}

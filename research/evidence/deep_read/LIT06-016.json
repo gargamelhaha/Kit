@@ -1,0 +1,475 @@
+{
+ "source_id": "LIT06-016",
+ "arxiv_id": "2405.10637",
+ "title": "Layer-Condensed KV Cache for Efficient Inference of Large Language Models",
+ "chars": 54015,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.939,
+   "data": {
+    "title": "Layer-Condensed KV Cache for Efficient Inference of Large Language Models",
+    "research_question": "How can KV cache memory consumption and inference throughput be improved by reducing the number of layers whose KVs are computed and cached?",
+    "models_and_data": [
+     {
+      "item": "Llama models of 1.1B, 7B, and 30B parameters",
+      "quote": "We test our method with 1.1B, 7B, and 30B parameters on an NVIDIA GeForce RTX 3090 (24GB) GPU and an NVIDIA A100 (80GB) GPU respectively.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TinyLlama baseline",
+      "quote": "We use TinyLlama as our baseline, whose size is also 1.1B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama 100B subset",
+      "quote": "We pre-train the models on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MiniPile dataset",
+      "quote": "The input is a randomly picked segment of text from the MiniPile (Kaddour, 2023) dataset with 2048 tokens (i.e., n = 2048).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WikiText-103, MiniPile, and SlimPajama datasets",
+      "quote": "We use the WikiText-103 (Merity et al., 2017) (licensed under CC-BY-SA 3.0), MiniPile (Kaddour, 2023) (licensed under MIT) and SlimPajama (Soboleva et al., 2023) (various licenses depending on the data source) as our datasets.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "PG19 dataset",
+      "quote": "The results are collected on the first text sample of PG19 (Rae et al., 2020).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "StreamingLLM integration",
+      "quote": "Here we integrate our method with StreamingLLM (Xiao et al., 2024).",
+      "quote_check": "unverified"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Pair queries of all layers with KVs of only the top layer",
+      "quote": "we pair the queries of all layers with KVs of only the top layer",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Drop self-attention by masking the attention diagonal",
+      "quote": "A straightforward solution to this cyclic dependency problem is to drop the attention of each token to itself, which is equivalent to masking the diagonal of the attention matrix.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Retain standard attention in sandwich warmup layers",
+      "quote": "we propose to keep the top w/2 layers and the bottom w/2 layers as warmup layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use parallel training with n iterations and previous-iteration top-layer KVs",
+      "quote": "we perform n iterations of bottom-up transformer computation on all tokens in parallel, and in each iteration, we pair the queries of all layers with KVs of the top layer from the previous iteration",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply gradient stopping through the last b iterations",
+      "quote": "we follow the practice of gradient stopping in Transformer-XL (Dai et al., 2019) and backpropagate the loss only through the last b iterations (b ≪ n).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Approximate KVs with m iterations",
+      "quote": "Therefore, we use m iterations (m ≪ n) to approximate the KVs of n − b iterations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate end-to-end generation latency and throughput",
+      "quote": "For a prompt of length s, we let the model generate output sequences of length n with batch size b.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run zero-shot commonsense evaluation with lm-eval-harness",
+      "quote": "The tests are conducted using the lm-eval-harness framework (Gao et al., 2023).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Generation throughput",
+      "definition": "Tokens generated per second, computed as bn/t.",
+      "quote": "The generation throughput is defined as bn/t tokens per second.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Latency",
+      "definition": "Total time in seconds to process prompts and generate all bn tokens.",
+      "quote": "The latency t is defined as the total time in seconds spent in processing the prompts and generating all the bn tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Perplexity",
+      "definition": "Perplexity on a 10M subset of the SlimPajama development set.",
+      "quote": "We report the perplexity on a 10M subset of the development set of SlimPajama.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-shot accuracy",
+      "definition": "Zero-shot performance on commonsense reasoning tasks.",
+      "quote": "We also test the zero-shot performance on commonsense reasoning tasks following Zhang et al. (2024),",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KV convergence MSE",
+      "definition": "Mean squared error measuring change of KVs over consecutive iterations.",
+      "quote": "We measure the change of KVs over consecutive iterations using the mean squared error.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Method achieves up to 26× higher throughput than standard transformers with competitive language modeling and downstream performance.",
+      "numbers": "up to 26×",
+      "quote": "Our experiments on large language models show that our method achieves up to 26× higher throughput than standard transformers and competitive performance in language modeling and downstream tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Method achieves up to 32× larger batch sizes and up to 26× higher throughput for 1B–30B Llama models.",
+      "numbers": "up to 32× larger batch sizes; up to 26× higher throughput; 1B–30B parameters",
+      "quote": "Our experiments on Llama (Touvron et al., 2023) show that our model achieves up to 32× larger batch sizes and up to 26× higher throughput than standard transformers for LLMs of 1B–30B parameters",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The w = 10 model has almost no performance degradation while improving throughput.",
+      "numbers": "w = 10",
+      "quote": "our model with w = 10 has almost no performance degradation",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The w = 2 model has a small performance decrease but higher throughput increase.",
+      "numbers": "w = 2",
+      "quote": "Our model with w = 2 has a small but noticeable decrease in performance for most of the tasks, but it achieves even higher increase in throughput.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Pre-training costs about 3 times the time of TinyLlama with the same data due to iterative training.",
+      "numbers": "about 3 times",
+      "quote": "pre-training our model costs about 3 times the time of pre-training TinyLlama with the same amount of data due to the iterative training process.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "m = 7 is sufficient for training and larger m does not further improve performance.",
+      "numbers": "m = 7",
+      "quote": "We empirically find that m = 7 is sufficient for model training and larger values of m do not further improve the performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "b = 2 is the default, backpropagating through two iterations.",
+      "numbers": "b = 2; two iterations",
+      "quote": "To reduce memory consumption, we set b = 2 by default, which means we only backpropagate through two iterations.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Integration with StreamingLLM at w = 10 lowers latency and memory versus original StreamingLLM.",
+      "numbers": "w = 10",
+      "quote": "the integration of StreamingLLM and our model (w = 10) achieves lower latency and memory consumption compared to the original StreamingLLM on different cache sizes",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Iterative training requires about 3× the pre-training time for the same amount of data.",
+      "quote": "Due to the iterative training, our model requires about 3× the time to pre-train a model with the same amount of data.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Throughput degrades when prompts are much longer than generation length.",
+      "quote": "Since our method requires iteratively processing the prompts, the throughput degrades when the prompts are much longer than the generation length, e.g., in document summarization.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Method is more suitable for tasks with large generation length.",
+      "quote": "Generally, our method is more suitable for tasks with a large generation length, such as translation, dialogue, question answering, CoT problem solving, etc.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Models are trained only with context length 2048 due to computational resources.",
+      "quote": "Due to the limitation of computational resources, we only train models with context length 2048.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Exact reason for the throughput improvement is not clear.",
+      "quote": "The exact reason for this phenomenon is not yet clear",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates Llama/TinyLlama only; it does not test Gemma 4 E2B or models with pre-existing KV-shared layers 15-34, so transfer to the lab's architecture is unverified.",
+     "The method changes which layers supply KVs and masks self-attention; this may alter induction-head and factual-recall circuits, but the paper reports no activation patching, logit lens, or head-level tracing.",
+     "All efficiency measurements are on GPUs; CPU inference, activation patching, and logit-lens workflows used by the lab are not benchmarked.",
+     "The approximate training scheme (m=7, b=2, diagonal masking) may change learned representations; no interpretability-probe ablations are provided.",
+     "Warmup-layer placement is studied only as sandwich vs all-top/all-bottom; interaction with per-layer embeddings and existing KV-sharing boundaries is not analyzed.",
+     "Long-context evaluation is limited to 2048 training tokens and StreamingLLM integration; internal behavior at longer contexts is not traced.",
+     "The paper does not release analysis code for internal probing; only the main implementation URL is given, so reproducing interpretability experiments would require reimplementation."
+    ],
+    "code_or_data_url": "https://github.com/whyNLP/LCKV",
+    "relevance_to_lab": "Directly relevant to KV-sharing/caching across layers: it shows that all-layer queries can attend to top-layer KVs and that warmup layers matter. This can inform controls for activation patching and logit lens in Gemma 4 E2B, especially around KV-shared layers 15-34, but the paper does not study Gemma internals or CPU tracing."
+   },
+   "usage": {
+    "prompt_tokens": 15163,
+    "total_tokens": 27041,
+    "completion_tokens": 11878,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "created_cache_tokens": 15104
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 9784
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 34,
+    "near": 1,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Layer-Condensed KV Cache for Efficient Inference of Large Language Models",
+    "research_question": "Can transformer inference memory consumption and throughput be improved by computing and caching keys and values for only the top layer plus a small number of warmup layers, without materially degrading language-modeling or downstream-task performance?",
+    "models_and_data": [
+     {
+      "item": "Llama-family inference models at 1.1B, 7B, and 30B scale",
+      "quote": "We test our method with 1.1B, 7B, and 30B parameters",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Two from-scratch 1.1B LCKV models with m = 7, b = 2, and w = {2, 10}",
+      "quote": "To evaluate the performance of our model in language modeling and downstream tasks, we pretrain from scratch two 1.1B models with m = 7, b = 2 and w = {2, 10}.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TinyLlama 1.1B baseline",
+      "quote": "We use TinyLlama as our baseline, whose size is also 1.1B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama 100B-token pretraining subset",
+      "quote": "We pre-train the models on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama 10M-token development subset",
+      "quote": "We report the perplexity on a 10M subset of the development set of SlimPajama.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Zero-shot commonsense benchmark suite",
+      "quote": "We also test the zero-shot performance on commonsense reasoning tasks following Zhang et al. (2024)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MiniPile text segment with 2048 tokens for KV-convergence analysis",
+      "quote": "of text from the MiniPile (Kaddour, 2023) dataset",
+      "quote_check": "exact"
+     },
+     {
+      "item": "PG19 concatenated test set for long-context evaluation",
+      "quote": "the concatenated test set of the PG19 dataset",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Condense the KV cache by pairing queries from all layers with top-layer KVs and omitting lower-layer KV computation.",
+      "quote": "As shown in Figure 1(b), we pair the queries of all layers with KVs of only the top layer, so that we do not have to cache or even compute KVs for layers other than the top layer",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Mask each token's attention to itself to break the cyclic dependency between lower layers and the top layer.",
+      "quote": "drop the attention of each token to itself, which is equivalent to masking the diagonal of the attention matrix.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Retain standard attention in a sandwich configuration, using half of the warmup layers at the top and half at the bottom.",
+      "quote": "keep the top w/2 layers and the bottom w/2 layers as warmup layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Parallelize training across tokens using n bottom-up iterations, with each iteration consuming top-layer KVs from the previous iteration.",
+      "quote": "we perform n iterations of bottom-up transformer computation on all tokens in parallel, and in each iteration, we pair the queries of all layers with KVs of the top layer from the previous iteration",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply gradient stopping by backpropagating through only the final b iterations, with b = 2 by default.",
+      "quote": "we set b = 2 by default, which means we only backpropagate through two iterations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Approximate the converged KVs with m forward iterations, using m = 7 by default.",
+      "quote": "we use m iterations (m ≪ n) to approximate the KVs of n − b iterations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Encode prompts iteratively using m + b iterations before autoregressive generation.",
+      "quote": "we encode the prompts with the same number of iterations (m + b = 9) as in training.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure generation efficiency with an end-to-end evaluation covering prompt processing and token generation.",
+      "quote": "Following FlexGen (Sheng et al., 2023), the evaluation is conducted in an end-to-end fashion.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "End-to-end latency",
+      "definition": "Total time in seconds to process prompts and generate all bn output tokens.",
+      "quote": "The latency t is defined as the total time in seconds spent in processing the prompts and generating all the bn tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Generation throughput",
+      "definition": "Number of generated tokens divided by end-to-end latency, reported in tokens per second.",
+      "quote": "The generation throughput is defined as bn/t tokens per second.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Maximum generation batch size",
+      "definition": "Largest feasible batch size for each model, GPU, prompt length, and generation length.",
+      "quote": "Table 1 compares the maximum batch sizes and throughput of standard Llama models and our models on the two types of GPUs.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Development perplexity",
+      "definition": "Perplexity on a 10M subset of the SlimPajama development set.",
+      "quote": "We report the perplexity on a 10M subset of the development set of SlimPajama.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-shot task accuracy",
+      "definition": "Accuracy on Hellaswag, OpenBookQA, WinoGrande, ARC-Easy, ARC-Challenge, BoolQ, PIQA, and their reported average.",
+      "quote": "We also test the zero-shot performance on commonsense reasoning tasks",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KV-convergence mean squared error",
+      "definition": "Mean squared error between KVs before and after each iterative update.",
+      "quote": "We measure the change of KVs over consecutive iterations using the mean squared error.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Cache memory and latency",
+      "definition": "Memory consumption in GiB and latency in ms for different KV-cache sizes, including the StreamingLLM integration.",
+      "quote": "achieves lower latency and memory consumption compared to the original StreamingLLM on different cache sizes",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Across Llama models from 1B–30B parameters, the method reaches substantially larger batch sizes and higher throughput than standard transformers.",
+      "numbers": "up to 32× larger batch sizes; up to 26× higher throughput; 1B–30B parameters",
+      "quote": "Our experiments on Llama (Touvron et al., 2023) show that our model achieves up to 32× larger batch sizes and up to 26× higher throughput than standard transformers for LLMs of 1B–30B parameters",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For the 30B CPU-offload setting on RTX 3090, layer-condensed KV caching greatly increases the feasible batch size and generation throughput.",
+      "numbers": "30B (CPU-offload), 512+1024: batch 4 for Llama, 83 (20.8×) for Ours (w = 2), and 23 (5.8×) for Ours (w = 10); throughput 0.23, 5.99 (26.0×), and 1.63 (7.1×) tokens/s",
+      "quote": "our method achieves significantly larger batch sizes and higher throughput on all of the settings.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The w = 10 model retains performance close to TinyLlama while providing higher inference efficiency.",
+      "numbers": "Dev ppl.: TinyLlama 9.219, Ours (w = 2) 9.746, Ours (w = 10) 9.265; zero-shot Avg.: 46.65, 45.45, 46.84, respectively",
+      "quote": "our model with w = 10 has almost no performance degradation",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The sandwich placement of warmup layers outperforms placing all warmup layers at the bottom or all at the top.",
+      "numbers": "50M dev ppl.: all-bottom 14.556, all-top 221.850, sandwich 14.069; 1.1B dev ppl.: 7.668, 9.098, 7.381",
+      "quote": "It can be seen that the sandwich style performs the best.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "KVs converge quickly enough that seven forward iterations are sufficient for training, and additional iterations do not improve performance.",
+      "numbers": "m = 7; performance converges with m ≥ 6",
+      "quote": "We empirically find that m = 7 is sufficient for model training and larger values of m do not further improve the performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Integration with StreamingLLM preserves stable perplexity while processing extremely long inputs.",
+      "numbers": "4M tokens; 4 initial tokens",
+      "quote": "We also let the model handle inputs with a sequence length of four million tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Initializing LCKV from a pretrained TinyLlama checkpoint improves quality relative to random initialization.",
+      "numbers": "TinyLlama checkpoint trained on 2.5T tokens; perplexity 8.514; TinyLlama-500B 9.046; TinyLlama-2.5T 7.822",
+      "quote": "Our model initialized with a TinyLlama checkpoint trained on 2.5T tokens achieves a perplexity of 8.514, which is much better than the randomly initialized model.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The inference savings come with a substantial iterative-training time overhead.",
+      "numbers": "about 3 times; 2.77x (w = 2); 2.71x (w = 10)",
+      "quote": "pre-training our model costs about 3 times the time of pre-training TinyLlama with the same amount of data",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Iterative training substantially increases pretraining time for the same amount of data.",
+      "quote": "our method requires about 3× the time to pre-train a model with the same amount of data",
+      "quote_check": "near"
+     },
+     {
+      "text": "Iterative prompt processing reduces throughput when prompts greatly exceed the generation length, making the method less suitable for document summarization.",
+      "quote": "the throughput degrades when the prompts are much longer than the generation length, e.g., in document summarization.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The reported trained models have a context length of 2048 because of computational-resource limitations.",
+      "quote": "Due to the limitation of computational resources, we only train models with context length 2048.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors do not know precisely why throughput improves independently of increased batch size.",
+      "quote": "The exact reason for this phenomenon is not yet clear",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No Gemma 4 E2B experiments are reported, so transfer of layer sharing, warmup placement, m = 7, b = 2, and throughput behavior to the target architecture is unverified.",
+     "No activation-patching, logit-lens, induction-head, factual-recall, or per-layer-embedding analyses isolate the mechanism responsible for the observed gains.",
+     "The headline throughput results use GPU-specific fused kernels on RTX 3090 and A100 hardware, limiting direct transfer to a CPU-only laboratory.",
+     "Evaluation is concentrated in language modeling and commonsense reasoning; no factual-recall, safety, or hallucination evaluation is reported.",
+     "No seed variance, confidence intervals, or significance tests are reported, making small quality differences difficult to interpret.",
+     "There is no extensive direct empirical comparison with alternative shared-KV or cross-layer attention architectures, so the source of the gains is not fully isolated.",
+     "The layer-sharing and warmup hyperparameters may not transfer to Gemma 4 E2B, particularly for activation-patching workloads that emphasize specific layers or factual pathways."
+    ],
+    "code_or_data_url": "https://github.com/whyNLP/LCKV",
+    "relevance_to_lab": "High conceptual relevance but limited direct empirical relevance. LCKV provides a concrete architectural hypothesis for Gemma 4 E2B: all-layer queries can consume shared top-layer KVs while selected warmup layers retain standard attention. Activation patching across layers 15–34 could compare routed versus layer-local KVs, logit lens and per-layer embeddings could localize information bottlenecks, and induction-head and factual-recall tracing could test whether shared-KV layers preserve retrieval pathways. However, the paper contains no Gemma 4, CPU, activation-patching, logit-lens, induction-head, factual-recall, or per-layer-embedding evidence, and its GPU throughput results do not transfer directly to a CPU lab."
+   },
+   "usage": {
+    "total_tokens": 34430,
+    "total_characters": 0,
+    "prompt_tokens": 15183,
+    "completion_tokens": 19247,
+    "completion_tokens_details": {
+     "reasoning_tokens": 16369
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   }
+  }
+ }
+}

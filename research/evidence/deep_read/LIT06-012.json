@@ -1,0 +1,457 @@
+{
+ "source_id": "LIT06-012",
+ "arxiv_id": "2604.13556",
+ "title": "YOCO++: Enhancing YOCO with KV Residual Connections for Efficient LLM Inference",
+ "chars": 24147,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 30,
+    "near": 0,
+    "unverified": 0,
+    "skip": 1
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "YOCO++: Enhancing YOCO with KV Residual Connections for Efficient LLM Inference",
+    "research_question": "Can YOCO be enhanced with weighted KV residual connections to improve model capacity and downstream performance while maintaining the same training and inference efficiency?",
+    "models_and_data": [
+     {
+      "item": "YOCO baseline",
+      "quote": "YOCO (Sun et al., 2024) is a decoder-decoder model with L layers consists of two parts",
+      "quote_check": "exact"
+     },
+     {
+      "item": "YOCO++ proposed method",
+      "quote": "We propose YOCO++, which enhances YOCO by introducing a weighted residual connection between the KVs of each bottom-half layer and the bottom layer.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "FusedKV baseline",
+      "quote": "FusedKV (Lin et al., 2025) uses weighted combinations of the KVs of the bottom and middle layers in the top-half layers",
+      "quote_check": "exact"
+     },
+     {
+      "item": "FusedKV-Lite baseline",
+      "quote": "FusedKV-Lite shares the keys of the middle layer and the values of the bottom layer with the top-half layers.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TinyLlama configuration",
+      "quote": "The models follow the configuration of TinyLlama (Zhang et al., 2024), a 1.1B model built on the architecture and tokenizer of Llama 2",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama training data",
+      "quote": "We train all the models on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) from scratch.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Commonsense reasoning evaluation tasks",
+      "quote": "We test the zero-shot performance on commonsense reasoning tasks including Hellaswag (Zellers et al., 2019), OpenBookQA (Mihaylov et al., 2018), WinoGrande (Sakaguchi et al., 2021), ARC-Easy and ARC-Challenge (Clark et al., 2018), and PIQA (Bisk et al., 2020).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Train YOCO++ with TinyLlama configuration",
+      "quote": "We train YOCO++ following the configuration of TinyLlama (Zhang et al., 2024), which is a Llama 2 (Touvron et al., 2023) model with 1.1B parameters and L = 22 layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Introduce scaling factor for residual weights",
+      "quote": "In order to facilitate the learning of residual weights, we introduce a scaling factor λ ∈ R, which is a fixed hyperparameter set to be greater than 1.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Cache combined KVs to avoid decoding I/O overhead",
+      "quote": "To avoid additional cache I/O overhead during decoding, we cache the combined KVs instead of the original ones.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train on SlimPajama subset",
+      "quote": "We train all the models on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) from scratch.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use AdamW optimizer",
+      "quote": "We use the AdamW optimizer (Loshchilov & Hutter, 2019) with β1 = 0.9, β2 = 0.95.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use cosine learning rate schedule",
+      "quote": "We use a cosine learning rate schedule with a maximum learning rate of 3 × 10−4 and a warmup ratio of 0.015.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run ablation on 10B subset",
+      "quote": "We conduct ablation studies on models trained on a 10B subset of the SlimPajama dataset (Soboleva et al., 2023).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Zero-shot accuracy",
+      "definition": "Accuracy on commonsense reasoning tasks.",
+      "quote": "Zero-shot accuracy on commonsense reasoning tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Validation loss",
+      "definition": "Loss on a 10M subset of the SlimPajama validation set.",
+      "quote": "We evaluate the models on a 10M subset of the SlimPajama validation set and report validation loss in Table 2.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Prefilling latency (TTFT)",
+      "definition": "Time to first token.",
+      "quote": "We report the prefilling latency (time to first token, TTFT) and the maximum decoding throughput at different batch sizes of all the models on an NVIDIA H20 (96GB) GPU in Figure 3.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Decoding throughput",
+      "definition": "Maximum decoding throughput at different batch sizes.",
+      "quote": "maximum decoding throughput at different batch sizes",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KV cache compression rate",
+      "definition": "Reduction in KV cache size; YOCO/YOCO++ cache only bottom-half layers.",
+      "quote": "KV cache is reduced by 50% because we only need to cache the KVs in the bottom-half layers.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Training loss",
+      "definition": "Training loss curves during training.",
+      "quote": "The training loss curves are shown in Table 4, and the downstream task accuracies are shown in Table 1.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "YOCO++ achieves the best average zero-shot accuracy among compared models.",
+      "numbers": "Avg: YOCO++ 48.99; Transformer 48.37; YOCO 47.98; FusedKV-Lite 48.43; FusedKV 48.42.",
+      "quote": "Among all the models, YOCO++ achieves the best performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++ has the lowest validation loss in the ablation table.",
+      "numbers": "YOCO++ 2.4194; FusedKV 2.4204; FusedKV-Lite 2.4258; Transformer 2.4266; YOCO 2.4372.",
+      "quote": "2.4194",
+      "quote_check": "skip"
+     },
+     {
+      "claim": "YOCO++ has almost the same prefilling latency as YOCO/FusedKV and half that of standard Transformer.",
+      "numbers": "half",
+      "quote": "YOCO, FusedKV, FusedKV-Lite and YOCO++ have almost the same prefilling latency, which is half that of the standard Transformer",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++ has almost the same decoding throughput as YOCO and FusedKV-Lite.",
+      "numbers": "same",
+      "quote": "YOCO, FusedKV-Lite and YOCO++ have almost the same decoding throughput",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "FusedKV decoding throughput degrades to standard Transformer level due to additional I/O overhead.",
+      "numbers": "same level",
+      "quote": "its throughput degrades to the same level as the standard Transformer because it introduces additional I/O overhead.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++ achieves state-of-the-art performance among cross-layer KV compression methods at 50% KV cache compression and outperforms standard Transformer.",
+      "numbers": "50%",
+      "quote": "YOCO++ achieves state-of-the-art performance among the cross-layer KV compression methods at a 50% KV cache compression rate, outperforming the standard Transformer.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "YOCO++ adds I/O overhead during training and prefilling compared to YOCO.",
+      "quote": "during the training and prefilling stages, YOCO++ requires accessing K1 , V1 and Ki , Vi in each layer i ∈ {2, ..., L2 }, introducing additional I/O overhead compared to YOCO.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Residual weights are not learned well without scaling.",
+      "quote": "indicating that these parameters have not been learned well.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Without scaling factor, validation loss is similar to YOCO, showing residual weights cannot be learned effectively.",
+      "quote": "The validation loss of YOCO++ without the scaling factor λ is similar to that of YOCO, showing that the residual weights cannot be learned effectively without scaling.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Removing key residual connections degrades performance.",
+      "quote": "Removing residual connections of keys from YOCO++ also leads to performance degradation",
+      "quote_check": "exact"
+     },
+     {
+      "text": "YOCO underperforms the standard Transformer.",
+      "quote": "YOCO underperforms the standard Transformer",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Evaluation is limited to a 1.1B TinyLlama-scale model and SlimPajama subsets; generalization to larger models or Gemma 4 E2B is not established.",
+     "The paper reports downstream accuracy and loss but does not analyze internal mechanisms such as activation patching, logit lens, induction heads, or factual-recall tracing.",
+     "The architecture and KV-sharing pattern differ from Gemma 4 E2B KV-shared layers 15-34, so direct transfer of findings is uncertain.",
+     "Efficiency is measured on NVIDIA H20/H800 GPUs, not CPU; CPU inference behavior and memory I/O may differ substantially.",
+     "No multiple seeds or statistical significance tests are reported, so small accuracy differences may be noise."
+    ],
+    "code_or_data_url": "https://github.com/wuyou2002/YOCO-plus",
+    "relevance_to_lab": "Relevant as a cross-layer KV-sharing/compression baseline: YOCO++ adds learnable weighted KV residuals in bottom-half layers and caches combined KVs, which may inform analysis of KV-shared layers and per-layer KV contributions, but it does not study Gemma 4 E2B, activation patching, logit lens, induction heads, factual recall, or CPU inference."
+   },
+   "usage": {
+    "prompt_tokens": 7178,
+    "total_tokens": 18073,
+    "completion_tokens": 10895,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "created_cache_tokens": 7168
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8988
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 30,
+    "near": 1,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.912,
+   "data": {
+    "title": "YOCO++: Enhancing YOCO with KV Residual Connections for Efficient LLM Inference",
+    "research_question": "Can learnable, scaled weighted residual connections between the bottom layer's KVs and each bottom-half layer's KVs improve YOCO's model capacity while preserving its training and inference efficiency at a 50% KV-cache compression rate?",
+    "models_and_data": [
+     {
+      "item": "TinyLlama/Llama 2 architecture: 1.1B parameters, 22 layers, 32 attention heads, and 4 KV heads",
+      "quote": "The models follow the configuration of TinyLlama (Zhang et al., 2024), a 1.1B model built on the architecture and tokenizer of Llama 2 (Touvron et al., 2023). The models have 22 layers, 32 attention heads and 4 KV heads.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Standard Transformer baseline",
+      "quote": "We conduct experiments to compare the efficiency and performance of YOCO++ with the standard Transformer, YOCO (Sun et al., 2024), FusedKV and FusedKV-Lite (Lin et al., 2025).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "YOCO baseline: a decoder-decoder model whose middle-layer global KV cache is reused by the top-half layers",
+      "quote": "The bottom-half L2 layers are called the self-decoder, where the middle layer generates the global KV cache. The top-half L2 layers are called the cross-decoder, which reuses the global KV cache and does not generate KV cache by itself.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "FusedKV baseline using weighted combinations of bottom- and middle-layer KVs",
+      "quote": "FusedKV (Lin et al., 2025) uses weighted combinations of the KVs of the bottom and middle layers in the top-half layers",
+      "quote_check": "exact"
+     },
+     {
+      "item": "FusedKV-Lite baseline sharing middle-layer keys and bottom-layer values",
+      "quote": "FusedKV-Lite shares the keys of the middle layer and the values of the bottom layer with the top-half layers.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "YOCO++ with weighted residual connections between each bottom-half layer and the bottom layer",
+      "quote": "We propose YOCO++, which enhances YOCO by introducing a weighted residual connection between the KVs of each bottom-half layer and the bottom layer.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama training corpus",
+      "quote": "We train all the models on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) from scratch.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Zero-shot commonsense reasoning benchmarks: HellaSwag, OpenBookQA, WinoGrande, ARC-Easy, ARC-Challenge, and PIQA",
+      "quote": "We test the zero-shot performance on commonsense reasoning tasks including Hellaswag (Zellers et al., 2019), OpenBookQA (Mihaylov et al., 2018), WinoGrande (Sakaguchi et al., 2021), ARC-Easy and ARC-Challenge (Clark et al., 2018), and PIQA (Bisk et al., 2020).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Add weighted KV residual connections to the bottom-half layers of YOCO",
+      "quote": "By introducing KV residual connections in the bottom-half layers of YOCO, we propose YOCO++.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Select a fixed scaling factor of λ = 35",
+      "quote": "We empirically finds that setting λ = 35 yields the best performance.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train all models from scratch on a 100B-token subset of SlimPajama",
+      "quote": "We train all the models on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) from scratch.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Optimize with AdamW and a cosine learning-rate schedule with warmup",
+      "quote": "We use the AdamW optimizer (Loshchilov & Hutter, 2019) with β1 = 0.9, β2 = 0.95. We use a cosine learning rate schedule with a maximum learning rate of 3 × 10−4 and a warmup ratio of 0.015.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train on 32 NVIDIA H800 GPUs with a batch size of 512K tokens",
+      "quote": "The models are trained on 32 NVIDIA H800 (80G) GPUs. The batch size is 512K tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure prefilling latency and maximum decoding throughput on an NVIDIA H20 GPU",
+      "quote": "We report the prefilling latency (time to first token, TTFT) and the maximum decoding throughput at different batch sizes of all the models on an NVIDIA H20 (96GB) GPU in Figure 3.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate zero-shot commonsense reasoning with the LM Evaluation Harness",
+      "quote": "The tests are based on the LM Evaluation Harness framework (Gao et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run ablations on a 10B-token subset and evaluate validation loss on a 10M-token subset",
+      "quote": "We conduct ablation studies on models trained on a 10B subset of the SlimPajama dataset (Soboleva et al., 2023). We use 8 NVIDIA H800 (80G) GPUs and a batch size of 128K tokens.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "KV cache compression rate",
+      "definition": "Reduction in KV-cache memory achieved by caching only the bottom-half layers' KVs.",
+      "quote": "The size of the KV cache is reduced by 50% because we only need to cache the KVs in the bottom-half layers.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Prefilling latency (TTFT)",
+      "definition": "Time required to prefill the prompt and produce the first token.",
+      "quote": "We report the prefilling latency (time to first token, TTFT) and the maximum decoding throughput at different batch sizes of all the models on an NVIDIA H20 (96GB) GPU in Figure 3.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Maximum decoding throughput",
+      "definition": "Maximum number of decoding operations completed per unit time at each tested batch size.",
+      "quote": "We report the prefilling latency (time to first token, TTFT) and the maximum decoding throughput at different batch sizes of all the models on an NVIDIA H20 (96GB) GPU in Figure 3.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-shot accuracy",
+      "definition": "Accuracy on each commonsense reasoning benchmark without task-specific fine-tuning.",
+      "quote": "Table 1. Zero-shot accuracy on commonsense reasoning tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Average zero-shot accuracy",
+      "definition": "Average accuracy across HellaSwag, OBQA, WinoGrande, ARC-c, ARC-e, and PIQA.",
+      "quote": "Avg\n\n48.37\n47.98\n48.43\n48.42\n48.99",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Validation loss",
+      "definition": "Loss measured on a 10M-token subset of the SlimPajama validation set.",
+      "quote": "We evaluate the models on a 10M subset of the SlimPajama validation set and report validation loss in Table 2.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Training loss",
+      "definition": "Loss measured during training on the 100B-token SlimPajama subset.",
+      "quote": "The training loss curves are shown in Table 4, and the downstream task accuracies are shown in Table 1.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "YOCO++ achieves state-of-the-art performance among cross-layer KV compression methods at a 50% compression rate and outperforms the standard Transformer.",
+      "numbers": "50% KV cache compression rate",
+      "quote": "YOCO++ achieves state-of-the-art performance among the cross-layer KV compression methods at a 50% KV cache compression rate, outperforming the standard Transformer.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++ maintains the same inference efficiency as YOCO.",
+      "numbers": "not stated",
+      "quote": "YOCO++ maintains the same inference efficiency as YOCO",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++ has the same cache-memory consumption as YOCO despite adding KV residual connections.",
+      "numbers": "not stated",
+      "quote": "In terms of cache memory, YOCO++ caches K1 , V1 and Ki′ , Vi′ for i ∈ {2, ..., L2 }, whose memory consumption is the same as that of YOCO, which caches Ki , Vi for i ∈ {1, ..., L2 }.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++ has the highest average zero-shot accuracy among the compared models.",
+      "numbers": "YOCO++ 48.99; Transformer 48.37; YOCO 47.98; FusedKV-Lite 48.43; FusedKV 48.42",
+      "quote": "Among all the models, YOCO++ achieves the best performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO++, YOCO, FusedKV, and FusedKV-Lite have nearly identical prefilling latency, approximately half that of the standard Transformer.",
+      "numbers": "half that of the standard Transformer",
+      "quote": "YOCO, FusedKV, FusedKV-Lite and YOCO++ have almost the same prefilling latency, which is half that of the standard Transformer, because they can exit early before computing the top-half layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "YOCO, FusedKV-Lite, and YOCO++ have nearly identical decoding throughput that is consistently higher than the standard Transformer's across context lengths.",
+      "numbers": "not stated",
+      "quote": "YOCO, FusedKV-Lite and YOCO++ have almost the same decoding throughput, which is consistently higher than that of the standard Transformer at different context lengths, because they reduce the memory consumption, allowing for larger batch sizes.",
+      "quote_check": "near"
+     },
+     {
+      "claim": "In the 10B-token ablation, full YOCO++ has the lowest reported validation loss.",
+      "numbers": "Transformer 2.4266; YOCO 2.4372; FusedKV-Lite 2.4258; FusedKV 2.4204; YOCO++ 2.4194; w/o scaling 2.4333; w/o key residual 2.4264",
+      "quote": "Transformer\nYOCO\nFusedKV-Lite\nFusedKV\n\n2.4266\n2.4372\n2.4258\n2.4204\n\nYOCO++\nw/o scaling\nw/o key residual\n\n2.4194\n2.4333\n2.4264",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A scaling factor of λ = 35 produced the best empirical performance.",
+      "numbers": "λ = 35",
+      "quote": "We empirically finds that setting λ = 35 yields the best performance.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "YOCO++ introduces additional cache I/O during training and prefilling relative to YOCO, although the authors state that compute-bound efficiency is not affected.",
+      "quote": "In terms of cache I/O, during the training and prefilling stages, YOCO++ requires accessing K1 , V1 and Ki , Vi in each layer i ∈ {2, ..., L2 }, introducing additional I/O overhead compared to YOCO.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Without the scaling factor, the residual weights are not learned effectively and validation loss remains similar to YOCO.",
+      "quote": "The validation loss of YOCO++ without the scaling factor λ is similar to that of YOCO, showing that the residual weights cannot be learned effectively without scaling.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The residual mechanism incorporates only the bottom layer's KVs rather than the KVs of all previous layers.",
+      "quote": "Based on this observation, we add only the KVs of the bottom layer to those of each layer.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The experiments use only a 1.1B-parameter, 22-layer TinyLlama/Llama-2-style configuration, so generalization to Gemma 4 E2B or larger models is unestablished.",
+     "No activation patching, logit-lens analysis, induction-head tracing, or factual-recall tracing is reported, so the causal internal effects of the KV residual connections remain opaque.",
+     "All reported training and efficiency measurements use NVIDIA H800 or H20 GPUs; CPU inference performance and memory behavior are not evaluated.",
+     "The downstream evaluation is limited to six commonsense reasoning tasks and does not directly test factual recall, code generation, long-context reasoning, or multilingual behavior.",
+     "The architecture is evaluated at one principal 50% cache-compression setting, without a compression-ratio sweep or comparison to broader families of KV-compression methods.",
+     "No repeated-run uncertainty, confidence intervals, or statistical significance tests are reported for the accuracy and loss differences.",
+     "Exact numerical prefilling latencies and decoding throughputs are deferred to figures, limiting quantitative comparison without extracting the plotted data."
+    ],
+    "code_or_data_url": "https://github.com/wuyou2002/YOCO-plus",
+    "relevance_to_lab": "Architecturally relevant because YOCO++ provides explicit per-layer intervention points where bottom-layer K/V states are combined with each bottom-half layer's K/V states, while the middle-layer KV cache is reused across the top half. These mechanisms can motivate activation-patching and logit-lens experiments analogous to the lab's work on KV-shared Gemma 4 E2B layers 15-34, including tests of induction-head and factual-recall behavior. However, the evidence comes from aggregate accuracy, loss, and GPU-efficiency measurements on a 1.1B, 22-layer model; it does not establish Gemma-specific, CPU-specific, or layer-15-34-specific behavior."
+   },
+   "usage": {
+    "total_tokens": 24399,
+    "total_characters": 0,
+    "prompt_tokens": 7208,
+    "completion_tokens": 17191,
+    "completion_tokens_details": {
+     "reasoning_tokens": 14472
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 197
+    }
+   }
+  }
+ }
+}

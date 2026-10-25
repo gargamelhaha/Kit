@@ -1,0 +1,430 @@
+{
+ "source_id": "LIT06-005",
+ "arxiv_id": "2410.14442",
+ "title": "A Systematic Study of Cross-Layer KV Sharing for Efficient LLM Inference",
+ "chars": 31998,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 1,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "A Systematic Study of Cross-Layer KV Sharing for Efficient LLM Inference",
+    "research_question": "How do different cross-layer KV sharing configurations affect generation throughput and performance in language modeling and downstream tasks?",
+    "models_and_data": [
+     {
+      "item": "Standard Llama baseline and nine cross-layer KV sharing configurations",
+      "quote": "We conduct experiments to compare the generation throughput and performance of the standard Llama baseline (Touvron et al., 2023) and the nine configurations with different numbers of KV layers.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "110M and 1.1B parameter models",
+      "quote": "Our experiments are conducted on models with 110M and 1.1B parameters, whose configurations are shown in Appendix A.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Minipile dataset",
+      "quote": "We train the standard Llama and the nine configurations with 110M and 1.1B parameters from scratch4 on the Minipile dataset (Kaddour, 2023)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama dataset",
+      "quote": "We train the standard Llama and the four wellperforming configurations with 1.1B parameters from scratch on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) for one epoch and evaluate their perplexity and downstream task accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama development subset",
+      "quote": "We evaluate the perplexity on a 10M subset of the development set of SlimPajama.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Commonsense reasoning downstream tasks",
+      "quote": "We also use the LM Eval Harness framework (Gao et al., 2023) to test the zero-shot performance on commonsense reasoning tasks",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TinyLlama checkpoint initialization",
+      "quote": "We use the TinyLlama checkpoint trained on 2.5T tokens to initialize the models with 1.1B parameters.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Define a unified framework by layer partitioning and target-layer positioning",
+      "quote": "We define a configuration by partitioning transformer layers and positioning target layer(s) differently.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use iterative training for top and middle positioning to break sequential dependencies",
+      "quote": "Following Wu and Tu (2024), we perform iterative training to break the sequential dependencies.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Set iterative training hyperparameters m = 7 and b = 2 for top and middle configurations",
+      "quote": "We set m = 7 and b = 2 for the top and middle configurations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure generation throughput on an RTX 3090 with different sequence lengths",
+      "quote": "We test the generation throughput of the standard Llama and the nine configurations with 1.1B parameters on an RTX 3090 (24GB) GPU with different sequence lengths.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train standard Llama and nine configurations from scratch on Minipile",
+      "quote": "We train the standard Llama and the nine configurations with 110M and 1.1B parameters from scratch4 on the Minipile dataset (Kaddour, 2023)",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train four well-performing configurations on a 100B SlimPajama subset",
+      "quote": "We train the standard Llama and the four wellperforming configurations with 1.1B parameters from scratch on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) for one epoch and evaluate their perplexity and downstream task accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate zero-shot commonsense reasoning with LM Eval Harness",
+      "quote": "We also use the LM Eval Harness framework (Gao et al., 2023) to test the zero-shot performance on commonsense reasoning tasks",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Generation throughput",
+      "definition": "Maximum generation throughput on an RTX 3090 (24GB) GPU with different sequence lengths.",
+      "quote": "We test the generation throughput of the standard Llama and the nine configurations with 1.1B parameters on an RTX 3090 (24GB) GPU with different sequence lengths.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Perplexity",
+      "definition": "Language-modeling perplexity on a 10M subset of the SlimPajama development set.",
+      "quote": "We evaluate the perplexity on a 10M subset of the development set of SlimPajama.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Downstream task accuracy",
+      "definition": "Average accuracy on downstream tasks.",
+      "quote": "Figure 1(c) reports the perplexity and average accuracy of downstream tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Zero-shot commonsense reasoning performance",
+      "definition": "Zero-shot performance on commonsense reasoning tasks using LM Eval Harness.",
+      "quote": "We also use the LM Eval Harness framework (Gao et al., 2023) to test the zero-shot performance on commonsense reasoning tasks",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KV cache size",
+      "definition": "Size of the KV cache, varied by the number of KV layers.",
+      "quote": "when reducing the size of the KV cache by 2×",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Reducing KV cache size by 2× lets most configurations achieve higher throughput than standard transformers while maintaining competitive performance.",
+      "numbers": "2×",
+      "quote": "We find that when reducing the size of the KV cache by 2×, most configurations can achieve higher throughput than standard transformers while maintaining competitive performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For short prompts (5+2043), all nine configurations have almost identical generation throughput.",
+      "numbers": "5+2043",
+      "quote": "When the prompt is short (i.e., 5+2043), the prefilling time can be ignored and the generation throughputs of all the nine configurations are almost identical",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For long prompts (512+1024), top and middle configurations suffer significant prefilling time due to iterative prompt encoding.",
+      "numbers": "512+1024",
+      "quote": "When the prompt is long (i.e., 512+1024), the prefilling time becomes significant for the top and middle configurations because of iterative encoding of the prompt.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "When KV layers are half of total layers, most configurations are comparable to the baseline.",
+      "numbers": "half of the total number of layers",
+      "quote": "When the number of KV layers is half of the total number of layers, the performance of most configurations is comparable with that of the baseline.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Reducing KV layers degrades performance for almost all configurations, but top and middle configurations are less affected than bottom configurations.",
+      "numbers": "not stated",
+      "quote": "As we reduce the number of KV layers, the performance degrades for almost all the configurations, but the top and middle configurations are less affected compared to the bottom configurations.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Sandwich-top performs better than the two bottom configurations in perplexity and downstream accuracy, except for lasagna-bottom with 7 KV layers on downstream accuracy.",
+      "numbers": "7 KV layers",
+      "quote": "It can be seen that the sandwich-top configuration performs better than the two bottom configurations in both perplexity and downstream task accuracy, except for an outlier of the lasagna-bottom configuration with 7 KV layers in downstream task accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Sandwich-middle performs best when the number of KV layers is small.",
+      "numbers": "not stated",
+      "quote": "The sandwich-middle configuration performs best when the number of KV layers is small.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Experiments only on models with 1.1B parameters.",
+      "quote": "In this study, we only conduct experiments on models with 1.1B parameters",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Training set limited to 100B tokens.",
+      "quote": "and training set with 100B tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "No exploration of larger models with more training data due to limited computational resources.",
+      "quote": "Due to the limited computational resources, we do not explore the performance of larger models with more training data.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates Llama-style models, not Gemma 4 E2B, so its KV-sharing configurations may not transfer to Gemma's KV-shared layers 15-34 or per-layer embeddings.",
+     "Throughput is measured on GPU (RTX 3090) and training on A100/A800, not CPU inference, so latency and memory conclusions may differ for the lab's CPU setting.",
+     "The study does not use activation patching, logit lens, induction-head analysis, or factual-recall tracing, so it offers no direct mechanistic evidence about internal circuits.",
+     "Downstream evaluation is limited to commonsense reasoning tasks; long-context, instruction-following, safety, and generation-quality effects are not assessed.",
+     "Iterative training with m=7 and b=2 is an approximation; sensitivity to these hyperparameters and training stability are not systematically analyzed.",
+     "No variance across random seeds or statistical significance tests are reported, so small performance differences may be unreliable.",
+     "The framework assumes uniform layer partitioning and target positioning; interactions with per-layer embeddings or non-uniform KV-shared layer ranges are not tested."
+    ],
+    "code_or_data_url": "https://github.com/whyNLP/LCKV",
+    "relevance_to_lab": "The paper's cross-layer KV sharing framework and layer partitioning/target positioning are directly relevant to interpreting KV-shared layers 15-34 in Gemma 4 E2B; its layer-wise KV reuse patterns can inform activation patching, logit lens, induction-head, and factual-recall tracing, though it does not study Gemma or CPU inference."
+   },
+   "usage": {
+    "prompt_tokens": 9046,
+    "total_tokens": 20824,
+    "completion_tokens": 11778,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 8704
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 9856
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 29,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.968,
+   "data": {
+    "title": "A Systematic Study of Cross-Layer KV Sharing for Efficient LLM Inference",
+    "research_question": "Which cross-layer KV-sharing configurations provide the best trade-offs among KV-cache reduction, generation throughput, language-modeling and downstream-task performance, training cost, and prefilling latency under different prompt lengths?",
+    "models_and_data": [
+     {
+      "item": "Standard Llama baseline and nine cross-layer KV-sharing configurations with different numbers of KV layers.",
+      "quote": "We conduct experiments to compare the generation throughput and performance of the standard Llama baseline (Touvron et al., 2023) and the nine configurations with different numbers of KV layers.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Experimental model scales of 110M and 1.1B parameters.",
+      "quote": "Our experiments are conducted on models with 110M and 1.1B parameters, whose configurations are shown in Appendix A.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Minipile training corpus with 1.7B tokens and one or two epochs.",
+      "quote": "on the Minipile dataset (Kaddour, 2023) with 1.7B tokens for one epoch and two epochs, respectively, and evaluate their perplexity.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama development subset for perplexity evaluation.",
+      "quote": "We evaluate the perplexity on a 10M subset of the development set of SlimPajama.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SlimPajama large-training-set experiment using a 100B-token subset.",
+      "quote": "We train the standard Llama and the four wellperforming configurations with 1.1B parameters from scratch on a 100B subset of the SlimPajama dataset (Soboleva et al., 2023) for one epoch and evaluate their perplexity and downstream task accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Zero-shot commonsense reasoning suite containing Hellaswag, OpenBookQA, WinoGrande, ARC-Easy, ARC-Challenge, BoolQ, PIQA, and SciQ.",
+      "quote": "Hellaswag (Zellers et al., 2019), OpenBookQA (Mihaylov et al., 2018), WinoGrande (Sakaguchi et al., 2021), ARC-Easy and ARC-Challenge (Clark et al., 2018), BoolQ (Clark et al., 2019), PIQA (Bisk et al., 2020), and SciQ (Welbl et al., 2017).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TinyLlama 1.1B initialization checkpoint trained on 2.5T tokens.",
+      "quote": "We use the TinyLlama checkpoint trained on 2.5T tokens to initialize the models with 1.1B parameters.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Represent each layer's KV source with kv(i), the index of the layer whose KVs are paired with that layer's queries.",
+      "quote": "We denote kv(i) ∈ {1, ..., L} as the index of the layer whose KVs are paired with the queries of the i-th layer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Choose a layer partitioning and a target-layer position for each cross-layer KV-sharing configuration.",
+      "quote": "We define a configuration by partitioning transformer layers and positioning target layer(s) differently.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For top and middle positioning, mask each token's attention to itself to remove the cyclic dependency.",
+      "quote": "So, we follow Wu and Tu (2024) and drop the attention of each token to itself, which is equivalent to masking the diagonal of the attention matrix in each layer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train bottom-positioning configurations using the standard-transformer training procedure.",
+      "quote": "For the bottom positioning, the model can be trained in the same way as a standard transformer model.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For iterative training, pair each layer's queries with its target layer's KVs from the previous iteration.",
+      "quote": "In each iteration, we pair the queries of each layer with the KVs of its target layer from the previous iteration.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Reduce iterative-training cost by backpropagating only through the last b iterations and approximating earlier KVs using m iterations.",
+      "quote": "In order to reduce the training cost, we backpropagate the loss only through the last b iterations, and use m ≪ n − b iterations to approximate the KVs of the first n − b iterations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use m = 7 and b = 2 for top and middle configurations and apply iterative computation during prompt encoding.",
+      "quote": "We set m = 7 and b = 2 for the top and middle configurations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate generation throughput and language-modeling and downstream-task performance against the standard Llama baseline.",
+      "quote": "We conduct experiments to compare the generation throughput and performance of the standard Llama baseline (Touvron et al., 2023) and the nine configurations with different numbers of KV layers.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Maximum generation throughput",
+      "definition": "Maximum generation throughput for each model and configuration across batch sizes and sequence-length settings.",
+      "quote": "The highest point of each curve indicates the maximum throughput of the model, which has been shown in Figure 1(a), and the rightmost point indicates the maximum batch size.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Development perplexity",
+      "definition": "Perplexity reported for language-modeling evaluations on development data.",
+      "quote": "Figure 1(b) reports the perplexity.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Average downstream-task accuracy",
+      "definition": "Average accuracy over the evaluated downstream reasoning tasks.",
+      "quote": "Figure 1(c) reports the perplexity and average accuracy of downstream tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KV-cache memory budget",
+      "definition": "The available KV-cache budget varied through different numbers of retained KV layers.",
+      "quote": "We conduct systematic experiments on various configurations of the framework with different KV cache memory budgets and observe their generation throughput and performance in language modeling and downstream tasks.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Reducing the KV cache by 2× allows most configurations to exceed standard-transformer throughput while maintaining competitive performance.",
+      "numbers": "2×",
+      "quote": "We find that when reducing the size of the KV cache by 2×, most configurations can achieve higher throughput than standard transformers while maintaining competitive performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "With further KV-cache reduction, pairing queries from all layers with upper-layer KVs performs better but adds training cost and prefilling latency.",
+      "numbers": "not stated",
+      "quote": "When further reducing the size of the KV cache, however, pairing queries of all layers with KVs of upper layers performs better, at the expense of additional training cost and prefilling latency.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For short prompts, all nine configurations have almost identical throughput that is much higher than baseline, and throughput increases as the number of KV layers decreases.",
+      "numbers": "5+2043; nine",
+      "quote": "When the prompt is short (i.e., 5+2043), the prefilling time can be ignored and the generation throughputs of all the nine configurations are almost identical, which are much higher than the baseline throughput",
+      "quote_check": "near"
+     },
+     {
+      "claim": "For long prompts, top- and middle-positioned configurations can degrade dramatically and fall below baseline throughput.",
+      "numbers": "512+1024",
+      "quote": "Consequently, their throughputs degrade dramatically, falling below the baseline in some cases.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For long prompts, bottom configurations retain significantly higher throughput than baseline because they require no additional prompt computation.",
+      "numbers": "not stated",
+      "quote": "On the other hand, the bottom configurations still achieve significantly higher throughputs than the baseline because no additional computation for prompt is required.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "When half of the layers retain their own KVs, most configurations perform comparably to the standard-transformer baseline.",
+      "numbers": "half of the total number of layers",
+      "quote": "When the number of KV layers is half of the total number of layers, the performance of most configurations is comparable with that of the baseline.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Reducing the number of KV layers degrades performance for almost all configurations, but top and middle positionings are less affected than bottom positionings.",
+      "numbers": "not stated",
+      "quote": "As we reduce the number of KV layers, the performance degrades for almost all the configurations, but the top and middle configurations are less affected compared to the bottom configurations.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The sandwich-middle configuration performs best when few KV layers are retained.",
+      "numbers": "not stated",
+      "quote": "The sandwich-middle configuration performs best when the number of KV layers is small.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The large-training-set experiments are restricted to 1.1B-parameter models and a 100B-token training set.",
+      "quote": "In this study, we only conduct experiments on models with 1.1B parameters and training set with 100B tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Larger models and additional training data were not explored because of limited computational resources.",
+      "quote": "Due to the limited computational resources, we do not explore the performance of larger models with more training data.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Top and middle positioning drops each token's attention to itself and therefore differs from the standard transformer.",
+      "quote": "Notice that for the top and middle positioning, we drop the attention of each token to itself and therefore differ from the standard transformer.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The authors leave specially computing self-attention to address this difference to future work.",
+      "quote": "In future work, we will try to make up for this gap by specially computing the attention of each token to its self, and we hope to get a better performance.",
+      "quote_check": "unverified"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Architecture and scale mismatch: the learned evidence comes from 110M- and 1.1B-parameter Llama-style models rather than Gemma 4 E2B, so the effects may not transfer to shared layers 15–34.",
+     "Hardware mismatch: throughput was measured on GPUs, including an RTX 3090, whereas the lab studies CPU inference; speedups and bottlenecks may not transfer.",
+     "Kernel sensitivity: results depend on FlashAttention 2 and fused operators, and the paper does not compare CPU attention implementations or alternative inference backends.",
+     "Mechanistic opacity: aggregate perplexity, accuracy, and throughput do not reveal whether shared KVs preserve induction-head or factual-recall circuits; no activation patching, logit lens, or circuit tracing is reported.",
+     "Potential confounding: top and middle configurations require iterative training and diagonal self-attention masking, so their quality differences may reflect training dynamics or altered self-token access rather than KV sharing alone.",
+     "Robustness is difficult to assess because the reported results provide no error bars, seed variation, confidence intervals, or significance tests for small performance differences."
+    ],
+    "code_or_data_url": "https://github.com/whyNLP/LCKV",
+    "relevance_to_lab": "High conceptual relevance but limited direct transfer. The paper's kv(i) source-target abstraction can represent the lab's KV-shared layers 15–34 and guide activation patching between query layers and their shared KV sources. Bottom-positioned configurations provide low-overhead baselines, while sandwich-middle and other upper-layer configurations are hypotheses for stronger compression at the cost of iterative training and prefilling. Per-layer embedding and logit-lens traces, induction-head tests, and factual-recall tracing could determine whether these mappings preserve Gemma 4 E2B internals. The Llama-scale, GPU-based evidence should therefore be treated as hypothesis-generating rather than direct validation for CPU-based Gemma experiments."
+   },
+   "usage": {
+    "total_tokens": 27810,
+    "total_characters": 0,
+    "prompt_tokens": 9110,
+    "completion_tokens": 18700,
+    "completion_tokens_details": {
+     "reasoning_tokens": 16067
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   }
+  }
+ }
+}

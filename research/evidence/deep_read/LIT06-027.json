@@ -1,0 +1,489 @@
+{
+ "source_id": "LIT06-027",
+ "arxiv_id": "2607.23054",
+ "title": "Through the Bottleneck: How Multi-head Latent Attention Separates Content from Position in Language Models",
+ "chars": 35055,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 1,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Through the Bottleneck: How Multi-head Latent Attention Separates Content from Position in Language Models",
+    "research_question": "What information does the MLA bottleneck preserve or discard, and how does it reshape the internal circuits of a transformer?",
+    "models_and_data": [
+     {
+      "item": "114M-parameter MLA transformer",
+      "quote": "training a 114M-parameter MLA transformer (pretrained on a web/code/math mixture, fine-tuned on TinyStories)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pretraining duration",
+      "quote": "The model was pretrained for 16,500 steps on a mixed corpus",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pretraining mixture",
+      "quote": "60% FineWeb-Edu [Penedo et al., 2024] (general web text, for foundational language and grammar), 25% The Stack [Kocetkov et al., 2022] (source code, for coding logic and structured reasoning), and 15% OpenWebMath [Paster et al., 2023]",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TinyStories fine-tuning",
+      "quote": "It was then fine-tuned for 7,200 steps on TinyStories [Eldan & Li, 2023], achieving a perplexity of 4.3 on the TinyStories validation set.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Tokenizer",
+      "quote": "We use a BPE tokenizer with vocabulary size 32,768.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Analysis checkpoint and input",
+      "quote": "All interpretability analyses in this paper are run on the fine-tuned checkpoint, using TinyStories-distribution passages as the analysis input unless otherwise stated",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Hardware",
+      "quote": "All experiments are inference-only and run on a single NVIDIA T4 GPU.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "SVD analysis of compression matrices",
+      "quote": "Decompose compression matrices WDKV and WDQ to measure effective dimensionality.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Attention head taxonomy",
+      "quote": "Classify all 24 × 8 = 192 heads by function (previous-token, induction, BOS-sink, local window).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Linear probing",
+      "quote": "Compare what linguistic features are linearly decodable from cKV (128-dim) vs. the residual stream (512-dim).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "cKV disruption attribution",
+      "quote": "Measure how strongly corruption-induced changes to cKV at each layer correlate with degraded predictions, as a lightweight proxy for causal importance.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Corruption procedure",
+      "quote": "Add Gaussian noise (σ = 3.0) to early token embeddings (positions 1–3), and re-run the model on the corrupted input (5 noise trials per example).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Disruption map scoring",
+      "quote": "For each layer, compute the cosine dissimilarity between clean and corrupted cKV at every position, then scale the resulting per-(layer, position) disruption map by the trial’s drop in probability on the correct next token, max(0, pclean − pcorrupt ).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Effective rank",
+      "definition": "Number of singular values needed to capture 99% of total energy.",
+      "quote": "the number of singular values needed to capture 99% of the total energy ( σi2 ).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Retention",
+      "definition": "Ratio relative to residual-stream baseline, noted as potentially misleading when baseline is weak.",
+      "quote": "The retention ratio is a misleading metric here because it is computed relative to a residual-stream baseline that is itself far from ceiling",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Probe accuracy",
+      "definition": "Accuracy of a linear classifier trained on intermediate representations.",
+      "quote": "Training a linear classifier on intermediate representations to test what information they encode",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Disruption-attribution score",
+      "definition": "Correlational measure of cKV corruption change reweighted by output probability drop.",
+      "quote": "measures how much corruption changes cKV at each (layer, position) and reweights this by the resulting drop in output probability",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Induction score",
+      "definition": "Attention on positions following a matching prefix.",
+      "quote": "attention on positions following a matching prefix",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Perplexity",
+      "definition": "Validation perplexity on TinyStories.",
+      "quote": "perplexity of 4.3 on the TinyStories validation set",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "cKV learns a content-only representation preserving entity identity while discarding position.",
+      "numbers": "98% retention; near chance accuracy",
+      "quote": "the cKV bottleneck learns a pure content representation, preserving entity identity (98% retention) while discarding positional information (near chance accuracy)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "All detected induction heads co-locate at Layer 12.",
+      "numbers": "5 induction heads; Layer 12",
+      "quote": "All five detected induction heads are at Layer 12 exclusively.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Layer 15 has both highest disruption-attribution score and highest SVD effective rank.",
+      "numbers": "1.0 normalized; 88/128",
+      "quote": "Layer 15 has the highest disruption-attribution score (1.0 normalized) and the highest SVD effective rank (88/128).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The KV bottleneck is globally over-provisioned.",
+      "numbers": "46%; 128-dim",
+      "quote": "On average, the model uses only 46% of its 128-dim KV bottleneck capacity.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Mean effective rank of WDKV is below full capacity.",
+      "numbers": "58.8 / 128 (46%)",
+      "quote": "58.8 / 128 (46%)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Fine-tuned model reaches low TinyStories validation perplexity.",
+      "numbers": "4.3",
+      "quote": "achieving a perplexity of 4.3 on the TinyStories validation set.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Position probe accuracy from cKV is near chance.",
+      "numbers": "21.7%; 6.25%",
+      "quote": "c_KV accuracy (21.7%) is barely above chance (6.25%)",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Single model and single seed.",
+      "quote": "Every finding in this paper (induction-head co-location at Layer 12, the Layer 15 semantic hub, the specific retention percentages) comes from one training run of one 114M-parameter model.",
+      "quote_check": "near"
+     },
+     {
+      "text": "No matched MHA baseline.",
+      "quote": "Our claim that induction heads co-locate “unlike” standard MHA rests on a qualitative comparison to Olsson et al. [2022], who studied different models, different scale, and different training data.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Narrow analysis domain after TinyStories fine-tuning.",
+      "quote": "all of our interpretability analyses (probing, attention-head taxonomy, disruption attribution) are run on the model after fine-tuning on TinyStories, using TinyStories-distribution passages as input.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Linear probes only.",
+      "quote": "Our probing results establish what is linearly decodable from cKV ; they cannot rule out nonlinearly encoded information the model could still exploit downstream.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Disruption attribution is correlational, not causal patching.",
+      "quote": "Our signal is correlational: it identifies layers whose cKV changes coincide with degraded predictions, not layers where restoring information is proven to fix predictions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Model scale is far below production MLA models.",
+      "quote": "At 114M parameters, our model is roughly 2,000× smaller than DeepSeek-V2 (236B) and over 5,800× smaller than DeepSeek-V3 (671B)",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper studies a 114M MLA model, not Gemma 4 E2B; its findings about KV-shared layers 15-34 and per-layer embeddings are not directly tested.",
+     "The disruption-attribution method uses a single trial-level probability-drop scalar, so layer importance may be confounded by examples where corruption does not reduce the target probability.",
+     "Head taxonomy thresholds and classification criteria are not fully specified, so induction-head co-location may be sensitive to detection thresholds and the small 50-passage, length-64 analysis set.",
+     "Probing only on TinyStories-distribution text after fine-tuning may inflate entity/position separability and may not transfer to broader pretraining or Gemma activation distributions.",
+     "The over-provisioning claim is based on SVD effective rank at a 99% energy threshold and is not validated by actual rank ablation or heterogeneous-rank training.",
+     "The study lacks activation patching, logit lens, and factual-recall tracing, so it cannot directly support causal circuit claims comparable to the lab's planned Gemma internals work."
+    ],
+    "code_or_data_url": "https://github.com/Dhruvil-sr24/Small-Language-Model-From-Scratch/tree/main/interp",
+    "relevance_to_lab": "Relevant as a mechanistic-interpretability template for KV-compression and induction-head analysis, but it studies a 114M MLA model rather than Gemma 4 E2B; its SVD, probing, and disruption-attribution methods could inform KV-shared layer analysis, while its lack of activation patching, logit lens, factual-recall tracing, and different architecture limit direct transfer."
+   },
+   "usage": {
+    "prompt_tokens": 8940,
+    "total_tokens": 17983,
+    "completion_tokens": 9043,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 8576
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7170
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 39,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "Through the Bottleneck: How Multi-head Latent Attention Separates Content from Position in Language Models",
+    "research_question": "What does a shared MLA cKV bottleneck preserve or discard, especially content versus position, how does it affect circuit formation such as induction-head localization, and which layer bottlenecks are most behaviorally important?",
+    "models_and_data": [
+     {
+      "item": "A 114M-parameter MLA transformer trained on a web/code/math mixture and fine-tuned on TinyStories.",
+      "quote": "training a 114M-parameter MLA transformer (pretrained on a web/code/math mixture, fine-tuned on TinyStories)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "A 24-layer architecture with hidden dimension 512, 8 attention heads, 8 KV heads, head dimension 64, KV bottleneck 128, Q bottleneck 256, QK nope dimension 48, QK RoPE dimension 16, and 81% KV-cache reduction.",
+      "quote": "Layers\nHidden dim (dmodel )\nAttention heads (nh )\nKV heads (nkv )\nHead dim (dhead )\nKV bottleneck (rKV )\nQ bottleneck (rQ )\nQK nope dim\nQK rope dim\nTotal parameters\nKV-cache reduction\n\n24\n512\n8\n8\n64\n128\n256\n48\n16\n114.1M\n81%",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The model was pretrained for 16,500 steps on a mixed corpus.",
+      "quote": "The model was pretrained for 16,500 steps on a mixed corpus:",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The pretraining mixture was 60% FineWeb-Edu, 25% The Stack, and 15% OpenWebMath.",
+      "quote": "Our pretraining corpus was reasonably heterogeneous (60% FineWeb-Edu, 25% The Stack, 15% OpenWebMath), so the representations we analyze were not shaped by TinyStories alone.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The model was fine-tuned for 7,200 steps on TinyStories and reached validation perplexity 4.3.",
+      "quote": "It was then fine-tuned for 7,200 steps on TinyStories [Eldan & Li, 2023], achieving a perplexity of 4.3 on the TinyStories validation set.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "All interpretability analyses use the fine-tuned checkpoint and TinyStories-distribution passages unless otherwise stated.",
+      "quote": "All interpretability analyses in this paper are run on the fine-tuned checkpoint, using TinyStories-distribution passages as the analysis input unless otherwise stated",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The tokenizer is byte-pair encoding with vocabulary size 32,768.",
+      "quote": "We use a BPE tokenizer with vocabulary size 32,768.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Perform SVD analysis of the KV and query compression matrices at every layer to estimate effective dimensionality.",
+      "quote": "SVD Analysis (Section 4.1): Decompose compression matrices WDKV and WDQ to measure effective dimensionality.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Classify all 24 × 8 = 192 attention heads by previous-token, induction, BOS-sink, and local-window function.",
+      "quote": "Classify all 24 × 8 = 192 heads by function (previous-token, induction, BOS-sink, local window).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Train linear probes using 12,800 token positions from 100 passages of 128 tokens with an 80/20 train-validation split.",
+      "quote": "Probes are trained on 12,800 token positions (100 passages × 128 tokens) with a 80/20 train/val split.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run the model on clean input while caching all cKV activations.",
+      "quote": "Run the model cleanly, caching all cKV activations.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Corrupt positions 1–3 with Gaussian noise of σ = 3.0 and rerun the model using five noise trials per example.",
+      "quote": "Add Gaussian noise (σ = 3.0) to early token embeddings (positions 1–3), and re-run the model on the corrupted input (5 noise trials per example).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute per-layer, per-position clean-versus-corrupted cKV cosine dissimilarity and scale it by the trial-level probability drop.",
+      "quote": "For each layer, compute the cosine dissimilarity between clean and corrupted cKV at every position, then scale the resulting per-(layer, position) disruption map by the trial’s drop in probability on the correct next token, max(0, pclean − pcorrupt ).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Do not restore clean activations during the corrupted forward pass; treat the resulting attribution as correlational.",
+      "quote": "Unlike classic activation patching, we do not restore clean activations into the corrupted forward pass and re-measure the output;",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Run all experiments as inference-only analyses on one NVIDIA T4 GPU.",
+      "quote": "All experiments are inference-only and run on a single NVIDIA T4 GPU.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Effective rank",
+      "definition": "Number of singular values needed to capture 99% of total singular-value energy; ranks are also reported at 90% and 95% energy thresholds.",
+      "quote": "the number of singular values needed to capture 99% of the total energy ( σi2 ).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Previous-token score",
+      "definition": "Fraction of a head's attention directed to position t − 1.",
+      "quote": "previous-token score: fraction of attention on position t − 1",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Induction score",
+      "definition": "Attention directed to positions following a matching prefix.",
+      "quote": "induction score: attention on positions following a matching prefix",
+      "quote_check": "exact"
+     },
+     {
+      "name": "BOS score",
+      "definition": "Attention directed to the beginning-of-sequence token.",
+      "quote": "BOS score: attention on the beginning-of-sequence token",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Local-window score",
+      "definition": "Attention falling within a 5-token window.",
+      "quote": "local window score: attention within a 5-token window",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Probe validation accuracy and retention",
+      "definition": "Validation accuracy of linear probes on cKV and the residual stream, with retention comparing cKV accuracy against the residual-stream baseline.",
+      "quote": "Table 4: Probing accuracy (validation) and bottleneck retention at Layer 12.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Disruption-attribution score",
+      "definition": "A normalized per-layer, per-position cKV cosine-dissimilarity disruption map scaled by the trial-level drop in correct-token probability.",
+      "quote": "scale the resulting per-(layer, position) disruption map by the trial’s drop in probability on the correct next token, max(0, pclean − pcorrupt ).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "KV-cache reduction",
+      "definition": "Reduction in KV-cache memory relative to standard MHA when only the shared cKV representation is cached.",
+      "quote": "MLA achieves dramatic reductions in KV-cache memory, up to 81% compared to standard Multi-Head Attention (MHA), without sacrificing generation quality.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "The cKV bottleneck behaves as a content-only representation, preserving entity identity while discarding positional information.",
+      "numbers": "98% entity retention; position near chance",
+      "quote": "the cKV bottleneck learns a pure content representation, preserving entity identity (98% retention) while discarding positional information (near chance accuracy), validating MLA’s architectural separation of content from position via RoPE;",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "All detected induction heads are localized exclusively to Layer 12.",
+      "numbers": "5 detected induction heads; Layer 12",
+      "quote": "All five detected induction heads are at Layer 12 exclusively.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Layer 15 is the semantic hub, jointly showing the highest effective rank and disruption-attribution score.",
+      "numbers": "1.0 normalized disruption-attribution score; 88/128 effective rank",
+      "quote": "Layer 15 has the highest disruption-attribution score (1.0 normalized) and the highest SVD effective rank (88/128).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The KV bottleneck is globally over-provisioned and exhibits substantial heterogeneity.",
+      "numbers": "58.8 / 128 (46%); 17 dimensions at the 90% energy threshold",
+      "quote": "Key finding: On average, the model uses only 46% of its 128-dim KV bottleneck capacity. At the 90% energy threshold, only 17 dimensions suffice on average—suggesting significant over-provisioning.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The highest group-level attribution occurs in the semantic-integration layer group.",
+      "numbers": "L13–19; attribution score 0.88",
+      "quote": "3. Semantic integration (L13–19, attribution score 0.88): The “high-attribution cluster” where corruption to cKV is most strongly associated with degraded predictions.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Despite hosting all induction heads, Layer 12 has only moderate disruption attribution.",
+      "numbers": "0.50",
+      "quote": "Layer 12 paradox: Despite containing all induction heads, Layer 12 has only a moderate disruptionattribution score (0.50).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Caching only the shared cKV produces substantial KV-cache savings relative to standard MHA.",
+      "numbers": "up to 81%",
+      "quote": "MLA achieves dramatic reductions in KV-cache memory, up to 81% compared to standard Multi-Head Attention (MHA), without sacrificing generation quality.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The authors estimate that heterogeneous layer-specific bottleneck allocation could yield further cache savings.",
+      "numbers": "∼30%",
+      "quote": "In our model, this would reduce KV-cache memory by an additional ∼30% with minimal performance impact.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Every reported finding comes from one training run of one model, so robustness across seeds is unknown.",
+      "quote": "Every finding in this paper (induction-head co-location at Layer 12, the Layer 15 semantic hub, the specific retention percentages) comes from one training run of one 114Mparameter model.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The comparison with standard MHA is qualitative rather than a matched, controlled baseline.",
+      "quote": "Our claim that induction heads co-locate “unlike” standard MHA rests on a qualitative comparison to Olsson et al. [2022], who studied different models, different scale, and different training data.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "All interpretability analyses use a fine-tuned model and TinyStories-distribution input, limiting domain generality.",
+      "quote": "However, all of our interpretability analyses (probing, attention-head taxonomy, disruption attribution) are run on the model after fine-tuning on TinyStories, using TinyStories-distribution passages as input.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Linear probing cannot exclude nonlinearly encoded information.",
+      "quote": "Our probing results establish what is linearly decodable from cKV ; they cannot rule out nonlinearly encoded information the model could still exploit downstream.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Disruption attribution is correlational and does not demonstrate that restoring a layer fixes predictions.",
+      "quote": "Our signal is correlational: it identifies layers whose cKV changes coincide with degraded predictions, not layers where restoring information is proven to fix predictions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The 114M-parameter model is far smaller than the production models that motivate the work.",
+      "quote": "At 114M parameters, our model is roughly 2,000× smaller than DeepSeek-V2 (236B) and over 5,800× smaller than DeepSeek-V3 (671B), the production models that motivate this study.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The work is framed as hypothesis-generating rather than a definitive characterization of MLA.",
+      "quote": "Given these limitations, we present this work as an initial, hypothesis-generating investigation into MLA’s internals rather than a definitive characterization.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The study lacks direct evidence that induction heads consume entity features rather than other content encoded in cKV.",
+      "quote": "We do not have direct evidence that the induction heads specifically consume entity features rather than other content encoded in cKV ; this would require a more targeted causal experiment",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No confidence intervals, repeated-probe seeds, or statistical tests are reported for layerwise probe accuracies, retention values, head scores, or layer rankings, so small differences may reflect noise.",
+     "Probe optimization details such as regularization, initialization, class weighting, stopping criteria, and random seeds are not specified in the provided text, limiting reproducibility and potentially affecting near-ceiling versus near-chance comparisons.",
+     "Head-classification thresholds and sensitivity to the 50-passage sample are not reported, so exclusive Layer-12 induction localization could depend on metric cutoffs or passage sampling.",
+     "SVD effective rank is measured on projection weights without data-dependent activation covariance or a functional bottleneck ablation, so it may not equal effective information capacity.",
+     "The Gaussian corruption protocol has no reported noise-scale robustness sweep and may induce off-manifold effects that do not generalize to natural model errors.",
+     "The proposed heterogeneous rank allocation is not implemented or benchmarked, so its estimated cache saving and minimal performance impact remain speculative."
+    ],
+    "code_or_data_url": "https://github.com/Dhruvil-sr24/Small-Language-Model-From-Scratch/tree/main/interp",
+    "relevance_to_lab": "Moderate methodological relevance but no direct architectural replication. The paper provides layerwise linear probes, head-function scoring, induction-head localization, and corruption-based attribution templates that can be redirected to Gemma 4 E2B's KV-shared layers 15–34 and per-layer embeddings. Its strongest lab-relevant warning is that corruption without clean-activation restoration is correlational; Gemma studies using activation patching can test causality directly. The paper does not study Gemma, per-layer embeddings, logit lens, factual recall, multilingual inputs, long-context behavior, or CPU execution, and its 24-layer MLA/cKV architecture and TinyStories setting differ, so layer indices and findings should not be assumed to transfer."
+   },
+   "usage": {
+    "total_tokens": 28558,
+    "total_characters": 0,
+    "prompt_tokens": 8921,
+    "completion_tokens": 19637,
+    "completion_tokens_details": {
+     "reasoning_tokens": 16890
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    }
+   }
+  }
+ }
+}

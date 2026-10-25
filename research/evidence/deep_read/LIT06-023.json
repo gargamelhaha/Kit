@@ -1,0 +1,444 @@
+{
+ "source_id": "LIT06-023",
+ "arxiv_id": "2505.24244",
+ "title": "Mamba Knockout for Unraveling Factual Information Flow",
+ "chars": 52162,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 24,
+    "near": 1,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.926,
+   "data": {
+    "title": "Mamba Knockout for Unraveling Factual Information Flow",
+    "research_question": "How does factual information flow through Mamba-1 and Mamba-2, and can attention-knockout and feature-knockout methods adapted from Transformers reveal shared and distinct token/layer dynamics?",
+    "models_and_data": [
+     {
+      "item": "Mamba-1 and Mamba-2",
+      "quote": "we adapt attentional interpretability techniques originally developed for Transformers—specifically, the Attention Knockout methodology—to both Mamba-1 and Mamba-2.",
+      "quote_check": "near"
+     },
+     {
+      "item": "GPT-2 baseline",
+      "quote": "compare the emerging patterns with those in the GPT-2 model (Radford et al., 2019).",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "COUNTERFACT dataset",
+      "quote": "we utilized the COUNTERFACT dataset (Meng et al., 2022), which consists of factual triplets in the form (subject, relation, attribute).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "672-triplet subset",
+      "quote": "We focus on a subset of 672 triplets in which all models presented correctly predicted the next token.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama 3 and Mistral",
+      "quote": "we extended our information flow analysis to two additional variants of transformer-based LLMs, Llama 3 (Grattafiori et al., 2024) and Mistral (Jiang, 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Falcon-Mamba",
+      "quote": "both Mamba-1 and Falcon-Mamba display a pronounced knockout response",
+      "quote_check": "unverified"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Attention knockout zeroes attention weights between positions",
+      "quote": "they prevent the cth token at layer l from attending to rth token at layer l by zeroing the attention weights for that layer at index c, r.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Mamba-1 hidden-attention knockout",
+      "quote": "To apply knockout between two tokens at a specific layer, we simply assign Mi,j = 0.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Mamba-2 implicit linear attention",
+      "quote": "the SSM layer can be interpreted as a masked linear attention mechanism, allowing it to be expressed as a matrix multiplication.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Feature knockout",
+      "quote": "perform knockout by zeroing out their outputs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Main knockout window size",
+      "quote": "Throughout these subsections, the results are presented with a knockout window of size 9.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Source-token interventions",
+      "quote": "we knockout the information flow to the final token from various sources—subject tokens, relation tokens, the first token, and the final token itself",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Relative change in correct-token prediction probability",
+      "definition": "Performance change after removing information flow from a source token to the last token.",
+      "quote": "Relative change in correct-token prediction probability when removing information flow to the last token from various source tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Correct-token probability",
+      "definition": "Probability assigned to the correct next token; plotted before and after knockout.",
+      "quote": "The x-axis displays the baseline probability for each query, while the y-axis shows the probability after knockout.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Knockout window size",
+      "definition": "Continuous layer window over which knockout is applied.",
+      "quote": "application in continuous layer windows",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Context-dependent feature category",
+      "definition": "Features with largest one-third of ||Abar||1 values.",
+      "quote": "context-dependent features as those with the largest one-third of ∥Ā∥1 values",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Subject-token knockout in late-intermediate layers consistently reduces correct-token probability across models.",
+      "numbers": "not stated",
+      "quote": "Across all models, inhibiting the final token’s attention to subject tokens in late-intermediate layers consistently causes a notable drop in correcttoken probability",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Blocking last-token self-attention in later layers raises correct-token probability to nearly 1.",
+      "numbers": "nearly 1",
+      "quote": "finding that it consistently surges to nearly 1, regardless of the initial likelihood.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Context-dependent feature knockout mirrors all-feature knockout.",
+      "numbers": "not stated",
+      "quote": "knocking out context-dependent features alone closely mirrors the effect of removing all features.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Window size 9 blocks 37.5% of blocks/layers.",
+      "numbers": "37.5%; 9",
+      "quote": "blocking 37.5% of blocks for window size 9",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Experiments use 672 COUNTERFACT triplets where all models were correct.",
+      "numbers": "672",
+      "quote": "We focus on a subset of 672 triplets in which all models presented correctly predicted the next token.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Mamba-1 relies on last and relation tokens later; Mamba-2 primarily on relation tokens later.",
+      "numbers": "not stated",
+      "quote": "Mamba-1 models rely on both the last token and relation tokens in the later layers",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Continuous layer windows affect all SSMs in a layer simultaneously.",
+      "quote": "our use of this approach is limited by its application in continuous layer windows, with all SSMs in a layer affected simultaneously.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Method does not identify what information passes through connections.",
+      "quote": "our method does not elaborate on what information actually passes through these connections.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attention knockout is not ecological.",
+      "quote": "As the attention knockout effect is not ecological, any change in probability could be attributed to it",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Cannot explain token-independent operations.",
+      "quote": "it cannot be used in order to explain the role of token-independent operations (e.g. gating, convolution, etc.).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Does not explain why Transformers and Mamba converge to similar patterns.",
+      "quote": "they do not shed light on why both Transformers and Mamba models converge to these similar patterns.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Architecture mismatch: the paper studies Mamba SSMs, not Gemma 4 E2B, so findings may not transfer to KV-shared layers 15-34 or per-layer embeddings.",
+     "Coarse layer-window knockout may miss fine-grained per-layer, per-head, or per-embedding effects relevant to activation patching and logit lens.",
+     "The 672-triplet subset selected where all models are correct may introduce selection bias and limit factual diversity.",
+     "The paper does not use activation patching, logit lens, induction-head tracing, or factual-recall tracing, so direct methodological overlap with the lab is partial.",
+     "Feature knockout is described as correlational and does not establish causation for feature roles.",
+     "CPU feasibility is not addressed; the paper uses an A100 and reimplements Mamba-2 attention-matrix computation, which may be costly to reproduce on CPU."
+    ],
+    "code_or_data_url": "https://github.com/nirendy/mamba-knockout",
+    "relevance_to_lab": "Provides attention-knockout and feature-knockout methodology for tracing factual information flow, analogous to activation patching and factual-recall tracing, but on Mamba SSMs rather than Gemma 4 E2B. Its layer-window and feature-category interventions suggest experiments for KV-shared layers and per-layer embeddings, though architecture and CPU constraints require adaptation."
+   },
+   "usage": {
+    "prompt_tokens": 12269,
+    "total_tokens": 20270,
+    "completion_tokens": 8001,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "created_cache_tokens": 12160
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 6523
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 4,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.972,
+   "data": {
+    "title": "Mamba Knockout for Unraveling Factual Information Flow",
+    "research_question": "How is factual information transmitted and localized across tokens and layers in Mamba-1, Mamba-2, Falcon-Mamba, and Transformer models, and which SSM feature classes mediate inter-token transfer?",
+    "models_and_data": [
+     {
+      "item": "COUNTERFACT factual triplets in subject-relation-attribute form",
+      "quote": "To evaluate the performance of the models with attention knocked-out, we utilized the COUNTERFACT dataset (Meng et al., 2022), which consists of factual triplets in the form (subject, relation, attribute).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Shared evaluation subset of 672 correctly predicted triplets",
+      "quote": "We focus on a subset of 672 triplets in which all models presented correctly predicted the next token.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Mamba-1 models: 130M, 1.4B, and 2.8B",
+      "quote": "This figure is identical to Figure 1, but presents the performance of Mamba-1 models of sizes 130M, 1.4B, and 2.8B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Mamba-2 models: 130M, 1.3B, and 2.7B",
+      "quote": "This figure is identical to Figure 1, but presents the performance of Mamba-2 models of sizes 130M, 1.3B, and 2.7B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT-2 models: 355M, 774M, and 1.5B",
+      "quote": "This figure is identical to Figure 1, but presents the performance of GPT-2 models of sizes 355M, 774M, and 1.5B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Transformer comparators: three Llama 3 variants and two Mistral variants",
+      "quote": "Specifically, we analyzed three variants of the Llama 3 model (Grattafiori et al., 2024) and two variants of the Mistral model (Jiang, 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Falcon-Mamba, represented by Mamba-1 7B Falcon",
+      "quote": "Mamba-1 7B Falcon",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Select COUNTERFACT triplets that every evaluated model predicted correctly.",
+      "quote": "We focus on a subset of 672 triplets in which all models presented correctly predicted the next token.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Perform fine-grained token-to-token attention knockout by preventing one token at one layer from attending to another token.",
+      "quote": "they prevent the cth token at layer l from attending to rth token at layer l by zeroing the attention weights for that layer at index c, r.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Implement Mamba-1 knockout through its hidden-attention kernel representation.",
+      "quote": "To apply knockout between two tokens at a specific layer, we simply assign Mi,j = 0.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Re-implement the Mamba-2 selective SSM layer so that its attention matrix can be explicitly constructed for knockout.",
+      "quote": "As the original Mamba-2 implementation doesn’t compute the attention matrix, relying instead on a more efficient computation strategy, we re-implemented the selective SSM layer to explicitly construct the attention matrix while maintaining the functionality.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Knock out information flow to the final token from subject, relation, first-token, and final-token sources.",
+      "quote": "Specifically, we knock out the information flow to the final token from various sources—subject tokens, relation tokens, the first token, and the final token itself—with results shown in Figure 1.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Classify features as context-dependent or context-independent using the magnitude of their fixed-state decay weights.",
+      "quote": "We therefore define context-dependent features as those with the largest one-third of ∥Ā∥1 values",
+      "quote_check": "near"
+     },
+     {
+      "step": "Perform feature-category interventions by zeroing selected feature outputs.",
+      "quote": "perform knockout by zeroing out their outputs.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Sweep knockout windows across different contiguous layer ranges and model sizes.",
+      "quote": "using several window sizes - 1, 5, 9, 12, 15",
+      "quote_check": "near"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Relative change in correct-token prediction probability",
+      "definition": "Change from baseline in the probability assigned to the correct answer token after removing a selected token-to-token information path.",
+      "quote": "Relative change in correct-token prediction probability when removing information flow to the last token from various source tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Baseline and post-knockout correct-token probability",
+      "definition": "The model's probability for the correct answer token before and after knockout, respectively.",
+      "quote": "The x-axis displays the baseline probability for each query, while the y-axis shows the probability after knockout.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Relative knockout depth",
+      "definition": "Relative depth of the first layer within the contiguous knockout window.",
+      "quote": "The x-axis represents the relative depth of the first layer within the 9-layer attention knockout window, while the y-axis indicates the resulting performance change.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Context-dependence decay behavior",
+      "definition": "Decay-based classification of SSM features using the fixed-state weight Ā: near-zero values lose memory quickly, whereas near-one values retain history.",
+      "quote": "This product exhibits exponential decay, dependent on the matrix Ā so features parameterized by Ā ≈ 0 quickly lose memory and concentrate on localized information.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "Feature-knockout condition",
+      "definition": "Experimental contrast among all-feature, context-independent-only, and context-dependent-only knockout.",
+      "quote": "We compare three settings: knockout of all features (blue), knockout of context-independent features (red), and knockout of context-dependent features (green).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Across the evaluated models, blocking subject-token flow into the final token in late-intermediate layers caused a notable reduction in correct-token probability.",
+      "numbers": "not stated",
+      "quote": "Across all models, inhibiting the final token’s attention to subject tokens in late-intermediate layers consistently causes a notable drop in correct-token probability, mirroring patterns observed in Transformer-based models by Geva et al. (2023).",
+      "quote_check": "near"
+     },
+     {
+      "claim": "GPT-2 exhibited a pronounced first-position bias that was not shared by the SSM-based models.",
+      "numbers": "not stated",
+      "quote": "First, we observe that, consistent with Geva et al. (2023), GPT-2 exhibits a pronounced first-position bias—a feature not shared by the SSM-based models.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "SSM-based models showed significant dependence on relation-token information in later layers.",
+      "numbers": "not stated",
+      "quote": "In contrast, SSM-based models only exhibit significant dependence on relation tokens in the later layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Knocking out context-dependent features from subject tokens closely reproduced the effect of knocking out all features.",
+      "numbers": "not stated",
+      "quote": "These observations underscore the pivotal role of context-dependent features in subject tokens, effectively mirroring the impact of knocking out all features.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In Mamba-1, removing final-token-to-itself information flow across the last 9 layers significantly increased correct-token probability.",
+      "numbers": "last 9 layers",
+      "quote": "removing the information flow from the final token to itself across the last 9 layers yields a significant increase in correct-token probability.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For the reported Mamba-1 final-token knockout, correct-token probability surged to nearly 1 regardless of its initial value.",
+      "numbers": "nearly 1",
+      "quote": "finding that it consistently surges to nearly 1, regardless of the initial likelihood.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The preferred knockout-window size depends on model size, with smaller windows providing better resolution for smaller models.",
+      "numbers": "not stated",
+      "quote": "we can see that it is better to use smaller window sizes with smaller models.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "With a window size of 9, knockout blocked 37.5% of the layers in smaller models, helping explain their stronger intervention effects.",
+      "numbers": "37.5% of blocks; window size 9",
+      "quote": "The reason for that is that the smaller model has less parameters and, therefore, larger window sizes blocks a large portion of the information, e.g., blocking 37.5% of blocks for window size 9.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Continuous layer windows simultaneously affect all SSMs in a layer.",
+      "quote": "First, our use of this approach is limited by its application in continuous layer windows, with all SSMs in a layer affected simultaneously.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The windowed intervention may fail to recognize more diffuse and intricate information-flow patterns.",
+      "quote": "A much more diffuse and intricate pattern could occur in reality, while this approach would fail to recognize it.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The method identifies critical token connections but does not reveal the information carried by those connections.",
+      "quote": "While we identify critical connections between tokens, our method does not elaborate on what information actually passes through these connections.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Knockout is not ecologically valid, so probability changes could have causes other than missing specific information.",
+      "quote": "As the attention knockout effect is not ecological, any change in probability could be attributed to it, however the localized pattern suggests that changes are due to specific missing information.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Attention knockout cannot explain token-independent operations such as gating and convolution.",
+      "quote": "Attention-knockout focuses only on the flow of information between tokens, thus it cannot be used in order to explain the role of token-independent operations (e.g. gating, convolution, etc.).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The experiments do not explain the architectural inductive biases that cause Transformers and Mamba models to converge on similar flow patterns.",
+      "quote": "Our methods recognize how information flows between tokens and the critical points in this contextualization, however, they do not shed light on why both Transformers and Mamba models converge to these similar patterns.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Selecting only the shared correctly predicted subset may introduce selection bias.",
+      "quote": "A potential drawback of this approach is that the selected subset could introduce bias, potentially leading to misleading conclusions.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The feature-level analysis is correlational and does not establish causation.",
+      "quote": "While this analysis remains correlational and does not yet establish causation, it opens promising directions for future interpretability research in SSM-based architectures",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No experiment tests Gemma 4 E2B or a KV-shared architecture, so the Mamba-specific interventions may not transfer to the lab's target model.",
+     "No confidence intervals, repeated-run variability estimates, or statistical significance tests are reported, so cross-model consistency is not statistically established.",
+     "The evaluation centers on next-token probability over a 672-triple correctly predicted subset, limiting claims about broader factual recall, answer quality, calibration, and multi-token generation.",
+     "CPU feasibility is unassessed because the reported experiments use a single NVIDIA A100 GPU.",
+     "The one-third cutoff for assigning context-dependent versus context-independent features is heuristic and is not validated against independent feature-function labels.",
+     "The analysis assumes reliable identification of subject, relation, first-token, and final-token roles, but reports no tokenization or annotation-error analysis for those roles.",
+     "Scaling behavior beyond the reported model configurations is unresolved, so the stability of the observed routing in substantially larger models is unknown."
+    ],
+    "code_or_data_url": "https://github.com/nirendy/mamba-knockout",
+    "relevance_to_lab": "High methodological relevance but low direct architectural relevance. The source-to-final-token knockout logic can be implemented with activation patching over Gemma 4 E2B layers 15–34, while per-layer logit-lens readouts and narrow layer-window sweeps could localize factual-recall emergence. However, the paper intervenes on Mamba hidden-attention kernels or explicitly reconstructed SSD attention matrices, not KV-shared layers or per-layer embeddings, and it provides no Gemma-specific induction-head evidence. The A100-based implementation also leaves CPU cost and scaling for Gemma E2B unestablished."
+   },
+   "usage": {
+    "total_tokens": 34419,
+    "total_characters": 0,
+    "prompt_tokens": 12231,
+    "completion_tokens": 22188,
+    "completion_tokens_details": {
+     "reasoning_tokens": 19391
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 256
+    }
+   }
+  }
+ }
+}

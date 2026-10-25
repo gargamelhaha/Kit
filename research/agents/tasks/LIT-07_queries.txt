@@ -1,0 +1,20 @@
+ti:"DoLa" AND all:decoding
+all:"contrastive decoding" AND all:layers AND all:factuality
+all:"inference-time intervention" AND all:truthfulness
+all:"activation steering" AND all:"without fine-tuning"
+all:"early exit" AND all:"language model" AND all:confidence
+ti:"LayerSkip"
+ti:"Confident Adaptive Language Modeling"
+all:"hallucination detection" AND all:"internal states"
+all:"semantic entropy probes"
+all:"truthfulness" AND all:"linear probe" AND all:"hidden states"
+all:"KV cache" AND all:quantization AND all:accuracy
+all:"KV cache eviction" AND all:"long context" AND all:evaluation
+all:"weight quantization" AND all:"hidden degradation"
+all:"quantization" AND all:"interpretability" AND all:circuits
+all:"layer pruning" AND all:"large language models" AND all:redundancy
+all:"self-consistency" AND all:"small language models"
+all:"logit lens" AND all:"calibration"
+all:"speculative decoding" AND all:"self-speculative"
+all:"per-layer embeddings" AND all:offloading
+all:"knowledge conflict" AND all:"context" AND all:"parametric" AND all:mechanism

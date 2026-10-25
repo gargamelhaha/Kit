@@ -37,5 +37,28 @@ Both cannot hold; result decides between them or refutes both.
 Medians + subject-clustered bootstrap CIs (10 000, seed 0), per d. Fewer than 6 usable pairs in a cell → INCONCLUSIVE for that cell.
 NULL must be |r| < 1e-4. Exploratory: per-head attention mass on D in the block with the largest ATTN_L.
 
-## Changes after pre-audit
-(filled in after the audit, before running)
+## Changes after pre-audit (PREAUDIT-E008: DeepSeek 17 issues, MiniMax 15; before any E008 data) — this section supersedes the above where they differ
+1. **Distance no longer confounded with length**: every Part A/B prompt has the same filler budget (720 filler tokens) and
+   query; only the position of the note/binding sentence inside the filler moves. Exact distances (last subject token → final
+   position) d ∈ {60, 400, 505, 525, 700}; 505/525 bracket the 512 window (keys with distance ≥ 512 are masked for layer-13 K/V
+   readers; recorded from the mask). Filler A (5 distances) and an independently generated filler B (d ∈ {60, 700}) —
+   `benchmarks/fillers_v1.json`, both checked against all subject/answer names.
+2. **No outcome selection**: pairs are drawn (seed 0) from landmark items answered correctly in the *short* E006 template; Part A
+   uses exactly N = 10 pairs; all pairs enter route analyses at every d. Accuracy is reported for all 20 items at every d.
+   Usable cell ⇔ |LD_a − LD_b| ≥ 2 (pre-specified denominator floor); denominators reported.
+3. **A1 is a mechanical check** (mask semantics), not evidence for H-011.
+4. **Positions**: KV{13,14}_D (subject span), KV{13,14}_BETWEEN (strictly between note and query template),
+   KV{13,14}_TPL (query template incl. final), KV13_all, KV14_all, KVBOTH_all, NULL, ATTN_L (15..34).
+5. **Part B redesigned** so copying is insufficient: three bindings in one sentence ("the red box holds the word W1, the blue …
+   W2, and the green … W3"), the query names one colour; corrupt = different word for the queried colour only. Exactly N = 12
+   items (queried colour rotates), at d ∈ {60, 700} with the same 720-token filler budget, so layer-13 access is manipulated
+   (inside vs outside its window) while layer-14 access is constant. Positions patched: W (D), queried colour (N), the queried
+   clause, all positions after the binding sentence, both K/V sources separately and jointly.
+6. **Route classification rule** (per cell, medians): L13-only (KV13 ≥ 0.5, KV14 < 0.2); L14-only (KV14 ≥ 0.5, KV13 < 0.2);
+   mixed (both ≥ 0.2); redundant (both < 0.5 but KVBOTH ≥ 0.5); neither (KVBOTH < 0.5). The generator predictions map to
+   L13-only (MiniMax) vs L14-only (DeepSeek) at d = 60; at d = 700 H-011 predicts L14-only.
+7. **Decision rule**: a prediction is "supported" when the median passes and the subject-clustered (Part B: item-clustered) 95%
+   bootstrap CI lies on the predicted side of the threshold; "weak" when only the median passes; cells with < 6 usable pairs are
+   INCONCLUSIVE. d = 60 is a positive control (replication of K-0006 in a long prompt), not a new test.
+Rejected: several fillers per pair beyond A/B and power analysis (CPU budget: each long-prompt cell costs ≈ 35 s; N fixed in
+advance instead); nonce words for Part B (single-token common nouns used; prior bias measured by the corrupt run).

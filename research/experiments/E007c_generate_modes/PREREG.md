@@ -35,3 +35,14 @@ steps before the first divergence; TTFT (time of the first model call), total wa
 
 ## Failure handling
 Any SKIP divergence → inspect masks/position handling for that mode; keep outputs; claim scope restricted to passing modes.
+
+## Changes after pre-audit (PREAUDIT-E007c, before any E007c data)
+Accepted: (1) C5 uses one immutable context (prompt + REF answer + follow-up) for all arms; chunk-1 prefill then cached
+continuation; control = REF full re-prefill without cache reuse. (2) BF16 effect measured vs SKIP (precision effect), and vs REF
+separately. (3) Warm-up + 2 interleaved repeats per arm (orders REF,SKIP,BF16 and reversed); report all values. (4) Premise check:
+max |diff| of all cached K/V tensors SKIP vs REF. (5) C1 has 3 prompts; C3b = equal-length batch without padding (separates
+batching from padding). (6) Assert bias-free linears for the bf16 path. (7) Metric renamed: `prefill_s` (first model call),
+`frac_identical_tokens_all` over all G positions. Rejected: CUDA sync (CPU only); right padding (not a supported HF generation
+mode); no-op-hook arm (hook overhead = 20 Python calls per prefill, negligible vs seconds); human quality evaluation (greedy
+token identity is a stricter criterion than task quality for the exactness claim; for the bf16 arm task quality is not measured
+and this is stated). P3's C1 bound is uninformative (pre-audit): reported descriptively only.
