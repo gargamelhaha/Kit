@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 research/papers/*.pdf
 research/state/knowledge.sqlite
+research/logs/llm_cache/

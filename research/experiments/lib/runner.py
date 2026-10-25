@@ -8,6 +8,8 @@ Hook points, fn(tensor, layer) -> tensor | None (None keeps the value):
   head_in     o_proj input split per head                  [b, t, h, dh]
   resid_post  residual leaving layer L (after layer_scalar)
   attn_probs  read-only attention probabilities [b, h, q, k] (requires attn="eager")
+  kv_store    (key, value) [b, 1, t, dh] that layer 13 (sliding) / 14 (full) stores for the KV-shared layers 15-34;
+              runs after that layer's own attention, so it changes only what the shared layers read
 `last_only_from=K` runs layers >= K on the final position only. Exact for final-position outputs when
 K >= first KV-shared layer (15): those layers read K/V produced by layers 13/14 only (verified in E001).
 """
@@ -65,7 +67,7 @@ class Runner:
         return torch.tanh(logits / self.cap) * self.cap if self.cap else logits
 
     @torch.no_grad()
-    def forward(self, ids, hooks=None, last_only_from=None, keep_resid=False, attn="sdpa", logits="last"):
+    def forward(self, ids, hooks=None, last_only_from=None, keep_resid=False, attn="sdpa", logits="last", return_shared=False):
         if last_only_from is not None and last_only_from < self.first_shared:
             raise ValueError(f"last_only_from must be >= {self.first_shared}: earlier layers still write K/V for other positions")
         self.cfg._attn_implementation = attn
@@ -94,6 +96,11 @@ class Runner:
             if keep_resid:
                 resid.append(h.detach().clone())
             h = layer(h, pli, shared_kv_states=shared, position_embeddings=p, attention_mask=m, position_ids=pos)
+            fn = self._active.get(("kv_store", i))
+            if fn is not None and layer.self_attn.store_full_length_kv:
+                r = fn(shared[lt], i)
+                if r is not None:
+                    shared[lt] = r
             fn = self._active.get(("resid_post", i))
             if fn is not None:
                 r = fn(h, i); h = h if r is None else r
@@ -101,6 +108,8 @@ class Runner:
             resid.append(h.detach().clone())
         self._active = {}
         out = {"resid": resid, "final_h": h}
+        if return_shared:
+            out["shared"] = {k: tuple(t.clone() for t in v) for k, v in shared.items()}
         if logits == "last":
             out["logits"] = self.unembed(h[:, -1])
         elif logits == "all":

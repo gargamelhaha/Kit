@@ -1,0 +1,54 @@
+{
+ "free-deepseek-4.1-flash": [
+  {
+   "model": "free-deepseek-4.1-flash",
+   "concurrency": 1,
+   "n": 8,
+   "ok": 7,
+   "wall_s": 149.1,
+   "req_per_s": 0.047,
+   "p50_s": 2.93,
+   "p90_s": 13.16,
+   "errors": [
+    "TimeoutError: The read operation timed out"
+   ]
+  }
+ ],
+ "minimax-m3.1-flash": [
+  {
+   "model": "minimax-m3.1-flash",
+   "concurrency": 1,
+   "n": 8,
+   "ok": 8,
+   "wall_s": 27.0,
+   "req_per_s": 0.296,
+   "p50_s": 3.12,
+   "p90_s": 8.6,
+   "errors": []
+  },
+  {
+   "model": "minimax-m3.1-flash",
+   "concurrency": 4,
+   "n": 8,
+   "ok": 8,
+   "wall_s": 6.5,
+   "req_per_s": 1.236,
+   "p50_s": 3.08,
+   "p90_s": 3.39,
+   "errors": []
+  },
+  {
+   "model": "minimax-m3.1-flash",
+   "concurrency": 8,
+   "n": 16,
+   "ok": 9,
+   "wall_s": 8.0,
+   "req_per_s": 1.122,
+   "p50_s": 2.65,
+   "p90_s": 8.02,
+   "errors": [
+    "HTTP 429: b'{\"error\":{\"message\":\"Too many parallel requests: up to 6 at a time. "
+   ]
+  }
+ ]
+}

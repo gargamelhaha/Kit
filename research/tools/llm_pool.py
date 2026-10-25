@@ -1,0 +1,119 @@
+"""Parallel client for the lab's external OpenAI-compatible LLM API (used as logical subagents / auditors).
+
+Credentials are read from env or ~/.config/lab/api.env (LAB_API_BASE, LAB_API_KEY) and never written to the repo.
+Every call is appended to research/logs/llm_calls.jsonl (model, prompt hash, latency, tokens, outcome; no key).
+Identical (model, messages, temperature, max_tokens) requests are served from research/logs/llm_cache/ unless
+cache=False, so re-running an analysis is free and deterministic.
+
+    from llm_pool import Pool
+    outs = Pool(concurrency=16).map([{"model": "free-deepseek-4.1-flash", "messages": [...]}, ...])
+CLI: python llm_pool.py ramp   -> concurrency/throughput measurement (logs/llm_ramp.json)
+"""
+import hashlib, json, os, sys, threading, time, urllib.error, urllib.request
+from concurrent.futures import ThreadPoolExecutor
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+LOG = os.path.join(ROOT, "logs", "llm_calls.jsonl")
+CACHE = os.path.join(ROOT, "logs", "llm_cache")
+MODELS = {"deepseek": "free-deepseek-4.1-flash", "minimax": "minimax-m3.1-flash"}  # display names: Deepseek 4.1 Flash, MiniMax M3.1 Flash
+_lock = threading.Lock()
+MAX_PARALLEL = 6  # server-enforced per key (HTTP 429 "up to 6 at a time", measured 2026-10-25, logs/llm_ramp.json)
+_slots = threading.BoundedSemaphore(MAX_PARALLEL)
+
+
+def _creds():
+    base, key = os.environ.get("LAB_API_BASE"), os.environ.get("LAB_API_KEY")
+    p = os.path.expanduser("~/.config/lab/api.env")
+    if (not base or not key) and os.path.exists(p):
+        kv = dict(l.strip().split("=", 1) for l in open(p) if "=" in l)
+        base, key = base or kv.get("LAB_API_BASE"), key or kv.get("LAB_API_KEY")
+    if not base or not key:
+        raise RuntimeError("LAB_API_BASE / LAB_API_KEY not configured")
+    return base.rstrip("/"), key
+
+
+class Pool:
+    def __init__(self, concurrency=MAX_PARALLEL, timeout=300, retries=4, tag=""):
+        self.base, self.key = _creds()
+        self.concurrency, self.timeout, self.retries, self.tag = concurrency, timeout, retries, tag
+        os.makedirs(CACHE, exist_ok=True)
+
+    def _key(self, req):
+        blob = json.dumps({k: req.get(k) for k in ("model", "messages", "temperature", "max_tokens")}, sort_keys=True)
+        return hashlib.sha256(blob.encode()).hexdigest()[:24]
+
+    def call(self, req, cache=True):
+        req = {"temperature": 0.0, "max_tokens": 4096, **req}
+        req["model"] = MODELS.get(req["model"], req["model"])
+        h = self._key(req); cp = os.path.join(CACHE, h + ".json")
+        if cache and os.path.exists(cp):
+            return {**json.load(open(cp)), "cached": True}
+        body = json.dumps({k: v for k, v in req.items() if k not in ("meta",)}).encode()
+        err, t0 = None, time.time()
+        attempt, busy = 0, 0
+        while attempt <= self.retries:
+            t0 = time.time()
+            try:
+                r = urllib.request.Request(self.base + "/chat/completions", data=body, headers={
+                    "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
+                with _slots:
+                    d = json.load(urllib.request.urlopen(r, timeout=self.timeout))
+                msg = d["choices"][0]["message"]
+                out = {"content": msg.get("content") or "", "reasoning": msg.get("reasoning_content") or "",
+                       "usage": d.get("usage", {}), "finish": d["choices"][0].get("finish_reason"),
+                       "latency_s": round(time.time() - t0, 2), "model": req["model"], "hash": h}
+                if cache:
+                    json.dump(out, open(cp, "w"))
+                self._log(req, h, out["latency_s"], "ok", out["usage"], attempt)
+                return {**out, "cached": False}
+            except urllib.error.HTTPError as e:
+                err = f"HTTP {e.code}: {e.read()[:200]!r}"
+                if e.code == 429 and busy < 30:  # parallelism cap hit (other process sharing the key): wait, don't burn a retry
+                    busy += 1; time.sleep(2); continue
+            except Exception as e:  # network / timeout / malformed
+                err = f"{type(e).__name__}: {e}"[:300]
+            self._log(req, h, round(time.time() - t0, 2), "error", {}, attempt, err)
+            time.sleep(min(30, 2 ** attempt)); attempt += 1
+        return {"content": "", "error": err, "model": req["model"], "hash": h, "cached": False}
+
+    def _log(self, req, h, lat, outcome, usage, attempt, err=None):
+        rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "tag": self.tag, "model": req["model"], "hash": h,
+               "latency_s": lat, "outcome": outcome, "attempt": attempt, "prompt_tokens": usage.get("prompt_tokens"),
+               "completion_tokens": usage.get("completion_tokens"), "meta": req.get("meta")}
+        if err:
+            rec["error"] = err
+        with _lock, open(LOG, "a") as f:
+            f.write(json.dumps(rec) + "\n")
+
+    def map(self, reqs, cache=True):
+        with ThreadPoolExecutor(self.concurrency) as ex:
+            return list(ex.map(lambda r: self.call(r, cache), reqs))
+
+
+def ramp(levels=(1, 4, 8, 16, 32, 64), model="free-deepseek-4.1-flash"):
+    """Throughput vs concurrency; stops when errors >10% or throughput gain <10% at a level."""
+    res, prev = [], 0.0
+    for c in levels:
+        n = max(8, 2 * c)
+        reqs = [{"model": model, "max_tokens": 64, "meta": {"ramp": c},
+                 "messages": [{"role": "user", "content": f"Ramp probe {c}-{i}: reply with the single word OK."}]}
+                for i in range(n)]
+        t0 = time.time(); outs = Pool(concurrency=c, retries=0, timeout=120, tag="ramp").map(reqs, cache=False)
+        wall = time.time() - t0
+        ok = [o for o in outs if not o.get("error")]
+        lat = sorted(o["latency_s"] for o in ok)
+        row = {"model": model, "concurrency": c, "n": n, "ok": len(ok), "wall_s": round(wall, 1),
+               "req_per_s": round(len(ok) / wall, 3), "p50_s": lat[len(lat) // 2] if lat else None,
+               "p90_s": lat[int(len(lat) * 0.9)] if lat else None,
+               "errors": sorted({o["error"][:80] for o in outs if o.get("error")})}
+        print(json.dumps(row), flush=True); res.append(row)
+        if len(ok) < 0.9 * n or row["req_per_s"] < 1.1 * prev:
+            break
+        prev = row["req_per_s"]
+    return res
+
+
+if __name__ == "__main__":
+    if sys.argv[1:2] == ["ramp"]:
+        out = {m: ramp(model=m) for m in sys.argv[2:] or MODELS.values()}
+        json.dump(out, open(os.path.join(ROOT, "logs", "llm_ramp.json"), "w"), indent=1)
