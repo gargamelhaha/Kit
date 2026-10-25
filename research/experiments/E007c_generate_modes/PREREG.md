@@ -55,3 +55,4 @@ and this is stated). P3's C1 bound is uninformative (pre-audit): reported descri
   REF prefill also paid ≈ 3% extra time at T=128). Fixed with functools.wraps + assertion; all rows so far moved to
   `biased_run1/` (kept, not analysed); E007c is rerun from scratch after E008.
 - PL-17 (14:52Z): second RSS-guard exit in C2 REF (6.80 GB) after the PL-15 fix. Changes: malloc_trim(0) + RSS logged before each generate (tests heap-fragmentation hypothesis), C2 moved last, RSS guard 7.2 GB for this run only (memwatch 1 GB floor remains). Completed C1 rows kept (resume).
+- PL-17 root cause (16:15Z, third RSS-guard exit, 7.23 GB in C3): the harness kept complete outputs (scores [b, G, 262144] fp32 ≈ 100 MB/generation at b=4, plus KV caches) for every repeat. Fix: one full output per arm, timings only for repeats; malloc_trim per item. Fragmentation hypothesis not needed to explain the growth.

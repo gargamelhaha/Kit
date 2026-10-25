@@ -159,3 +159,10 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
   roughly symmetric. AUDIT-001 had pointed this out for E004's control in cycle 1; the lesson lived in an audit file, not in the skill.
 - Fix: corrected K-0007; H-016 refuted. Rule added to the skill: every normalised intervention metric must be reported together with
   its empirical neutral point (a fully information-removing ablation) and, where useful, rescaled to it.
+
+## PL-17 E007c memory growth (three RSS-guard exits)
+- Hypotheses in order: (1) full-length logits — real, fixed (PL-15); (2) heap fragmentation — added malloc_trim, did not stop it;
+  (3) **harness retention** — confirmed by code reading: every repeat's full output (scores [b, G, 262 144] fp32 ≈ 100 MB at b = 4,
+  KV cache, sequences) was kept in `times[arm]` until the item finished → +0.6 GB per batched item.
+- Fix: keep one full output per arm for the comparisons, timings only for repeats. Lesson: measurement harnesses must store
+  summaries, not raw outputs, for repeated runs; and the guard did its job three times (no reset).

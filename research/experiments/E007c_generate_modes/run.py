@@ -116,19 +116,24 @@ for cname, items in conds.items():
         outs, times = {}, {a: [] for a in ARMS}
         for order in ((ARMS, ARMS[::-1]) if cname != "C4" else (ARMS,)):
             for arm in order:
-                set_arm(arm); o = gen(ids, mask, G); times[arm].append(o)
+                set_arm(arm); o = gen(ids, mask, G)
+                times[arm].append({k2: o[k2] for k2 in ("wall", "ttft", "decode_per_tok", "rss_before")})  # PL-17: timings only
                 if arm not in outs: outs[arm] = o
+                else: del o
         summarize(cname, k, ids, G, outs, times)
+        _libc.malloc_trim(0)
         if cname == "C4":  # C5: identical immutable context (prompt + REF answer + follow-up) for every arm
             follow = tok("<end_of_turn>\n<start_of_turn>user\nNow say it again in five words.<end_of_turn>\n<start_of_turn>model\n", add_special_tokens=False).input_ids
             ctx = outs["REF"]["full_seq"][:, :-1]  # last generated token is not yet in any cache
             ids5 = torch.cat([outs["REF"]["full_seq"], torch.tensor([follow])], 1)
+            for a_ in ARMS:  # free per-arm C4 outputs except what C5 needs (REF full_seq)
+                if a_ != "REF": outs[a_].pop("scores", None)
             o5, t5 = {}, {a: [] for a in ARMS}
             for arm in ARMS:
                 set_arm(arm)
                 with torch.no_grad():
                     past = model(input_ids=ctx, use_cache=True).past_key_values  # chunk 1 (prefill)
-                o = gen(ids5, None, 24, past=past); o5[arm] = o; t5[arm].append(o)    # chunk 2 (continuation) + decode
+                o = gen(ids5, None, 24, past=past); o5[arm] = o; t5[arm].append({k2: o[k2] for k2 in ("wall", "ttft", "decode_per_tok", "rss_before")})
             set_arm("REF"); full = gen(ids5, None, 24)                                 # control: full re-prefill, no cache reuse
             summarize("C5", k, ids5, 24, o5, t5, {"ref_cached_vs_full_reprefill": compare(full, o5["REF"])})
 print("done", flush=True)
