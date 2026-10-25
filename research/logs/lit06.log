@@ -1,0 +1,20 @@
+'all:"cross-layer" AND all:"KV cache" AND all:sharing': 22 results, 21 new
+'all:"cross-layer attention" AND all:"key-value"': 2 results, 0 new
+'ti:"You Only Cache Once"': 1 results, 0 new
+'ti:"layer-condensed KV cache"': 1 results, 1 new
+'all:"Gemma 3n"': 12 results, 12 new
+'all:"Gemma 4" AND all:model': 25 results, 21 new
+'all:"per-layer embeddings"': 3 results, 3 new
+'ti:MatFormer': 2 results, 1 new
+'all:"KV sharing" AND all:interpretability': 0 results, 0 new
+'all:"prefill" AND all:"layer skipping"': 1 results, 1 new
+'all:"attention knockout" AND all:"factual"': 2 results, 2 new
+'all:"information flow" AND all:"factual recall" AND all:layers': 1 results, 0 new
+'all:"Kimi Delta Attention"': 20 results, 17 new
+'all:"DeepSeek Sparse Attention"': 10 results, 10 new
+'ti:"Mamba-3"': 4 results, 3 new
+'all:"multi-head latent attention" AND all:interpretability': 3 results, 3 new
+'all:"test-time training" AND all:"sequence modeling" AND all:layers': 10 results, 8 new
+'all:"native sparse attention"': 14 results, 13 new
+'all:"mechanistic interpretability" AND all:"mixture of experts"': 6 results, 5 new
+'all:"mechanistic interpretability" AND all:"state space model"': 4 results, 4 new

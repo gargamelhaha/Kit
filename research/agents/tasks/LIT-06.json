@@ -1,0 +1,8 @@
+{"task_id": "LIT-06", "role": "Literature Scout (arxiv_scout.py) + dual-model screening (DeepSeek 4.1 Flash, MiniMax M3.1 Flash)",
+ "objective": "Find sources not yet in SOURCE_REGISTRY on (a) cross-layer KV sharing / per-layer embeddings (mechanism + efficiency) needed to judge novelty of E006/E007, (b) interpretability of non-MHA architectures (MoE, SSM, MLA, sparse/linear attention, TTT).",
+ "research_question": "Has the information routing through shared K/V (Gemma 3n/4, YOCO, CLA, LCKV) or the prefill saving from it been measured mechanistically/quantitatively before?",
+ "allowed_methods": ["arXiv API search (20 logged queries)", "abstract screening by two model families"],
+ "evidence_requirements": "abstract screening is triage only; inclusion in registry as abstract_only; claims need deep_read",
+ "deliverables": ["evidence/LIT-06_candidates.json", "logs/search_LIT-06.jsonl"],
+ "budget": "20 arXiv queries, <=2 LLM calls per candidate", "acceptance_criteria": "every query logged; kappa between screeners reported",
+ "stop_condition": "queries exhausted", "limitations": "no claim of saturation; arXiv only (no S2/OpenAlex in this pass)"}

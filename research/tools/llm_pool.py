@@ -9,7 +9,7 @@ cache=False, so re-running an analysis is free and deterministic.
     outs = Pool(concurrency=16).map([{"model": "free-deepseek-4.1-flash", "messages": [...]}, ...])
 CLI: python llm_pool.py ramp   -> concurrency/throughput measurement (logs/llm_ramp.json)
 """
-import hashlib, json, os, sys, threading, time, urllib.error, urllib.request
+import fcntl, hashlib, json, os, sys, tempfile, threading, time, urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -18,7 +18,25 @@ CACHE = os.path.join(ROOT, "logs", "llm_cache")
 MODELS = {"deepseek": "free-deepseek-4.1-flash", "minimax": "minimax-m3.1-flash"}  # display names: Deepseek 4.1 Flash, MiniMax M3.1 Flash
 _lock = threading.Lock()
 MAX_PARALLEL = 6  # server-enforced per key (HTTP 429 "up to 6 at a time", measured 2026-10-25, logs/llm_ramp.json)
-_slots = threading.BoundedSemaphore(MAX_PARALLEL)
+SLOT_DIR = os.path.join(tempfile.gettempdir(), "lab_llm_slots")
+
+
+class _Slot:
+    """Cross-process slot (flock on one of MAX_PARALLEL files): the cap is per key, so it must hold across processes.
+    PL-7b: a per-process semaphore let 3 concurrent tools put up to 18 requests in flight -> 78 HTTP 429s."""
+    def __enter__(self):
+        os.makedirs(SLOT_DIR, exist_ok=True)
+        while True:
+            for i in range(MAX_PARALLEL):
+                f = open(os.path.join(SLOT_DIR, f"{i}.lock"), "w")
+                try:
+                    fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB); self.f = f; return self
+                except BlockingIOError:
+                    f.close()
+            time.sleep(0.2)
+
+    def __exit__(self, *a):
+        fcntl.flock(self.f, fcntl.LOCK_UN); self.f.close()
 
 
 def _creds():
@@ -56,7 +74,7 @@ class Pool:
             try:
                 r = urllib.request.Request(self.base + "/chat/completions", data=body, headers={
                     "Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
-                with _slots:
+                with _Slot():
                     d = json.load(urllib.request.urlopen(r, timeout=self.timeout))
                 msg = d["choices"][0]["message"]
                 out = {"content": msg.get("content") or "", "reasoning": msg.get("reasoning_content") or "",
@@ -68,7 +86,7 @@ class Pool:
                 return {**out, "cached": False}
             except urllib.error.HTTPError as e:
                 err = f"HTTP {e.code}: {e.read()[:200]!r}"
-                if e.code == 429 and busy < 30:  # parallelism cap hit (other process sharing the key): wait, don't burn a retry
+                if e.code == 429 and busy < 150:  # parallelism cap hit (other process sharing the key): wait, don't burn a retry
                     busy += 1; time.sleep(2); continue
             except Exception as e:  # network / timeout / malformed
                 err = f"{type(e).__name__}: {e}"[:300]

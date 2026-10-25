@@ -1,0 +1,31 @@
+{
+ "info": {
+  "variant": "it",
+  "repo": "google/gemma-4-E2B-it",
+  "missing": [],
+  "unexpected": [],
+  "meta_leftover": [],
+  "load_s": 19.0
+ },
+ "torch_threads": 2,
+ "n_text_tokens": 16331,
+ "rows": [
+  {
+   "T": 64,
+   "full_s": [
+    7.834,
+    8.84,
+    9.054
+   ],
+   "skip_s": [
+    3.191,
+    5.12,
+    4.802
+   ],
+   "speedup_median": 1.841,
+   "max_abs_dlogit": 2.3603439331054688e-05,
+   "top1_same": true,
+   "top10_overlap": 10
+  }
+ ]
+}

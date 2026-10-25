@@ -36,7 +36,7 @@ a = {"n_pairs": len(pairs), "n_held_out": len(ho), "held_out": block(ho),
      "R2_held_out": block([p for p in ho if p["relation"] == "R2"])}
 h = a["held_out"]; med = lambda c: h[c]["median"]
 a["predictions"] = {
-    "control_null_ok": h["_null_max_abs"] < 1e-4,
+    "control_null_ok": bool(h["_null_max_abs"] < 1e-4),
     "P1": med("KV13_all") >= 0.8 and med("KV14_all") <= 0.2 and h["_frac_kv13_minus_kv14_ge_0.5"] >= 0.7,
     "P2": med("KVBOTH_all") >= 0.9,
     "P3": med("KV13_D") >= 0.7 and med("KV13_T") <= 0.3,
@@ -46,7 +46,7 @@ a["predictions"] = {
 P = a["predictions"]
 a["H-008"] = "SUPPORTED" if P["P1"] else ("REFUTED" if med("KV14_all") >= med("KV13_all") else "INCONCLUSIVE")
 a["H-009"] = ("SUPPORTED" if P["P4"] and P["P5"] else "PARTIAL (sufficient, not necessary)" if P["P4"] else "REFUTED")
-json.dump(a, open(os.path.join(D, "analysis.json"), "w"), indent=1)
-print(json.dumps({k: a[k] for k in ("n_pairs", "n_held_out", "predictions", "H-008", "H-009")}, indent=1))
+json.dump(a, open(os.path.join(D, "analysis.json"), "w"), indent=1, default=lambda o: o.item())
+print(json.dumps({k: a[k] for k in ("n_pairs", "n_held_out", "predictions", "H-008", "H-009")}, indent=1, default=lambda o: o.item()))
 for c in ("KV13_all", "KV14_all", "KVBOTH_all", "KV13_D", "KV14_D", "KV13_S", "KV13_T", "ATTN_25", "NOISE_ATTN25", "NULL"):
     print(c, h[c])

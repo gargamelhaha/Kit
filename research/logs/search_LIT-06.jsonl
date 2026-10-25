@@ -1,0 +1,40 @@
+{"ts": "2026-10-25T10:03:07Z", "source": "arxiv_api", "query": "all:\"cross-layer\" AND all:\"KV cache\" AND all:sharing", "n_results": 22, "n_new": 21, "error": null}
+{"ts": "2026-10-25T10:03:11Z", "source": "arxiv_api", "query": "all:\"cross-layer attention\" AND all:\"key-value\"", "n_results": 2, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:03:14Z", "source": "arxiv_api", "query": "ti:\"You Only Cache Once\"", "n_results": 1, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:03:18Z", "source": "arxiv_api", "query": "ti:\"layer-condensed KV cache\"", "n_results": 1, "n_new": 1, "error": null}
+{"ts": "2026-10-25T10:03:21Z", "source": "arxiv_api", "query": "all:\"Gemma 3n\"", "n_results": 12, "n_new": 12, "error": null}
+{"ts": "2026-10-25T10:03:25Z", "source": "arxiv_api", "query": "all:\"Gemma 4\" AND all:model", "n_results": 25, "n_new": 21, "error": null}
+{"ts": "2026-10-25T10:03:29Z", "source": "arxiv_api", "query": "all:\"per-layer embeddings\"", "n_results": 3, "n_new": 3, "error": null}
+{"ts": "2026-10-25T10:03:32Z", "source": "arxiv_api", "query": "ti:MatFormer", "n_results": 2, "n_new": 1, "error": null}
+{"ts": "2026-10-25T10:03:36Z", "source": "arxiv_api", "query": "all:\"KV sharing\" AND all:interpretability", "n_results": 0, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:03:39Z", "source": "arxiv_api", "query": "all:\"prefill\" AND all:\"layer skipping\"", "n_results": 1, "n_new": 1, "error": null}
+{"ts": "2026-10-25T10:03:42Z", "source": "arxiv_api", "query": "all:\"attention knockout\" AND all:\"factual\"", "n_results": 2, "n_new": 2, "error": null}
+{"ts": "2026-10-25T10:03:46Z", "source": "arxiv_api", "query": "all:\"information flow\" AND all:\"factual recall\" AND all:layers", "n_results": 1, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:03:50Z", "source": "arxiv_api", "query": "all:\"Kimi Delta Attention\"", "n_results": 20, "n_new": 17, "error": null}
+{"ts": "2026-10-25T10:03:53Z", "source": "arxiv_api", "query": "all:\"DeepSeek Sparse Attention\"", "n_results": 10, "n_new": 10, "error": null}
+{"ts": "2026-10-25T10:03:57Z", "source": "arxiv_api", "query": "ti:\"Mamba-3\"", "n_results": 4, "n_new": 3, "error": null}
+{"ts": "2026-10-25T10:04:00Z", "source": "arxiv_api", "query": "all:\"multi-head latent attention\" AND all:interpretability", "n_results": 3, "n_new": 3, "error": null}
+{"ts": "2026-10-25T10:04:05Z", "source": "arxiv_api", "query": "all:\"test-time training\" AND all:\"sequence modeling\" AND all:layers", "n_results": 10, "n_new": 8, "error": null}
+{"ts": "2026-10-25T10:04:08Z", "source": "arxiv_api", "query": "all:\"native sparse attention\"", "n_results": 14, "n_new": 13, "error": null}
+{"ts": "2026-10-25T10:04:12Z", "source": "arxiv_api", "query": "all:\"mechanistic interpretability\" AND all:\"mixture of experts\"", "n_results": 6, "n_new": 5, "error": null}
+{"ts": "2026-10-25T10:04:16Z", "source": "arxiv_api", "query": "all:\"mechanistic interpretability\" AND all:\"state space model\"", "n_results": 4, "n_new": 4, "error": null}
+{"ts": "2026-10-25T10:16:44Z", "source": "arxiv_api", "query": "all:\"cross-layer\" AND all:\"KV cache\" AND all:sharing", "n_results": 22, "n_new": 21, "error": null}
+{"ts": "2026-10-25T10:16:47Z", "source": "arxiv_api", "query": "all:\"cross-layer attention\" AND all:\"key-value\"", "n_results": 2, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:16:50Z", "source": "arxiv_api", "query": "ti:\"You Only Cache Once\"", "n_results": 1, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:16:53Z", "source": "arxiv_api", "query": "ti:\"layer-condensed KV cache\"", "n_results": 1, "n_new": 1, "error": null}
+{"ts": "2026-10-25T10:16:56Z", "source": "arxiv_api", "query": "all:\"Gemma 3n\"", "n_results": 12, "n_new": 12, "error": null}
+{"ts": "2026-10-25T10:16:59Z", "source": "arxiv_api", "query": "all:\"Gemma 4\" AND all:model", "n_results": 25, "n_new": 21, "error": null}
+{"ts": "2026-10-25T10:17:02Z", "source": "arxiv_api", "query": "all:\"per-layer embeddings\"", "n_results": 3, "n_new": 3, "error": null}
+{"ts": "2026-10-25T10:17:06Z", "source": "arxiv_api", "query": "ti:MatFormer", "n_results": 2, "n_new": 1, "error": null}
+{"ts": "2026-10-25T10:17:09Z", "source": "arxiv_api", "query": "all:\"KV sharing\" AND all:interpretability", "n_results": 0, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:17:12Z", "source": "arxiv_api", "query": "all:\"prefill\" AND all:\"layer skipping\"", "n_results": 1, "n_new": 1, "error": null}
+{"ts": "2026-10-25T10:17:15Z", "source": "arxiv_api", "query": "all:\"attention knockout\" AND all:\"factual\"", "n_results": 2, "n_new": 2, "error": null}
+{"ts": "2026-10-25T10:17:18Z", "source": "arxiv_api", "query": "all:\"information flow\" AND all:\"factual recall\" AND all:layers", "n_results": 1, "n_new": 0, "error": null}
+{"ts": "2026-10-25T10:17:22Z", "source": "arxiv_api", "query": "all:\"Kimi Delta Attention\"", "n_results": 20, "n_new": 17, "error": null}
+{"ts": "2026-10-25T10:17:25Z", "source": "arxiv_api", "query": "all:\"DeepSeek Sparse Attention\"", "n_results": 10, "n_new": 10, "error": null}
+{"ts": "2026-10-25T10:17:28Z", "source": "arxiv_api", "query": "ti:\"Mamba-3\"", "n_results": 4, "n_new": 3, "error": null}
+{"ts": "2026-10-25T10:17:31Z", "source": "arxiv_api", "query": "all:\"multi-head latent attention\" AND all:interpretability", "n_results": 3, "n_new": 3, "error": null}
+{"ts": "2026-10-25T10:17:34Z", "source": "arxiv_api", "query": "all:\"test-time training\" AND all:\"sequence modeling\" AND all:layers", "n_results": 10, "n_new": 8, "error": null}
+{"ts": "2026-10-25T10:17:37Z", "source": "arxiv_api", "query": "all:\"native sparse attention\"", "n_results": 14, "n_new": 13, "error": null}
+{"ts": "2026-10-25T10:17:40Z", "source": "arxiv_api", "query": "all:\"mechanistic interpretability\" AND all:\"mixture of experts\"", "n_results": 6, "n_new": 5, "error": null}
+{"ts": "2026-10-25T10:17:44Z", "source": "arxiv_api", "query": "all:\"mechanistic interpretability\" AND all:\"state space model\"", "n_results": 4, "n_new": 4, "error": null}

@@ -2,3 +2,41 @@ correct R1 31 / 32 R2 29 / 30 plan 40
 R1 in_sample Petronas Towers -> Parthenon {'KV13_all': 1.071, 'KV14_all': 0.032, 'ATTN_25': 0.915, 'NULL': -0.0} 220 s
 R1 in_sample Big Ben -> Space Needle {'KV13_all': 1.065, 'KV14_all': 0.023, 'ATTN_25': 0.682, 'NULL': 0.0} 249 s
 R1 in_sample Tower of London -> Sagrada Familia {'KV13_all': 1.0, 'KV14_all': 0.018, 'ATTN_25': 0.7, 'NULL': 0.0} 281 s
+R1 in_sample CN Tower -> Charles Bridge {'KV13_all': 0.998, 'KV14_all': 0.021, 'ATTN_25': 0.767, 'NULL': -0.0} 314 s
+R1 in_sample CN Tower -> Eiffel Tower {'KV13_all': 1.011, 'KV14_all': 0.011, 'ATTN_25': 0.663, 'NULL': 0.0} 337 s
+R1 in_sample CN Tower -> Hollywood Sign {'KV13_all': 0.955, 'KV14_all': 0.032, 'ATTN_25': 0.87, 'NULL': 0.0} 365 s
+R1 in_sample Petronas Towers -> Reichstag building {'KV13_all': 1.033, 'KV14_all': 0.018, 'ATTN_25': 0.856, 'NULL': -0.0} 396 s
+R1 in_sample Alhambra -> CN Tower {'KV13_all': 0.974, 'KV14_all': 0.002, 'ATTN_25': 0.616, 'NULL': -0.0} 424 s
+R1 in_sample Atomium -> Golden Temple {'KV13_all': 1.031, 'KV14_all': 0.02, 'ATTN_25': 0.833, 'NULL': 0.0} 453 s
+R1 in_sample Space Needle -> Forbidden City {'KV13_all': 0.985, 'KV14_all': 0.018, 'ATTN_25': 0.705, 'NULL': 0.0} 482 s
+R1 in_sample Acropolis -> Taj Mahal {'KV13_all': 0.969, 'KV14_all': 0.003, 'ATTN_25': 0.783, 'NULL': -0.0} 510 s
+R1 in_sample Petronas Towers -> Sagrada Familia {'KV13_all': 1.103, 'KV14_all': 0.008, 'ATTN_25': 1.051, 'NULL': -0.0} 539 s
+R1 held_out Sydney Opera House -> Tower of London {'KV13_all': 0.986, 'KV14_all': 0.107, 'ATTN_25': 0.826, 'NULL': 0.0} 569 s
+R1 held_out Space Needle -> Burj Khalifa {'KV13_all': 0.969, 'KV14_all': 0.011, 'ATTN_25': 0.72, 'NULL': 0.0} 599 s
+R1 held_out Hollywood Sign -> Golden Temple {'KV13_all': 0.997, 'KV14_all': 0.015, 'ATTN_25': 0.969, 'NULL': 0.0} 629 s
+R1 held_out Sydney Opera House -> Parthenon {'KV13_all': 0.985, 'KV14_all': 0.014, 'ATTN_25': 0.857, 'NULL': -0.0} 659 s
+R1 held_out Golden Temple -> Alhambra {'KV13_all': 0.993, 'KV14_all': 0.012, 'ATTN_25': 0.817, 'NULL': 0.0} 688 s
+R1 held_out CN Tower -> Big Ben {'KV13_all': 0.887, 'KV14_all': 0.027, 'ATTN_25': 0.616, 'NULL': -0.0} 717 s
+R1 held_out CN Tower -> Brandenburg Gate {'KV13_all': 1.016, 'KV14_all': 0.002, 'ATTN_25': 0.604, 'NULL': 0.0} 745 s
+R1 held_out Big Ben -> Brandenburg Gate {'KV13_all': 1.118, 'KV14_all': 0.017, 'ATTN_25': 0.67, 'NULL': 0.0} 775 s
+R1 held_out Atomium -> Big Ben {'KV13_all': 0.951, 'KV14_all': 0.014, 'ATTN_25': 0.757, 'NULL': -0.0} 802 s
+R1 held_out CN Tower -> Burj Khalifa {'KV13_all': 0.953, 'KV14_all': 0.038, 'ATTN_25': 0.767, 'NULL': 0.0} 830 s
+R1 held_out Eiffel Tower -> Burj Khalifa {'KV13_all': 0.923, 'KV14_all': 0.028, 'ATTN_25': 0.756, 'NULL': 0.0} 860 s
+R1 held_out Burj Khalifa -> Alhambra {'KV13_all': 1.019, 'KV14_all': 0.037, 'ATTN_25': 0.817, 'NULL': 0.0} 888 s
+R2 held_out Iraq -> Japan {'KV13_all': 0.992, 'KV14_all': 0.009, 'ATTN_25': 0.62, 'NULL': 0.0} 916 s
+R2 held_out Egypt -> Japan {'KV13_all': 0.963, 'KV14_all': 0.001, 'ATTN_25': 0.745, 'NULL': -0.0} 943 s
+R2 held_out Finland -> Spain {'KV13_all': 0.979, 'KV14_all': 0.016, 'ATTN_25': 0.625, 'NULL': 0.0} 969 s
+R2 held_out Peru -> Poland {'KV13_all': 1.004, 'KV14_all': 0.009, 'ATTN_25': 0.807, 'NULL': 0.0} 995 s
+R2 held_out Chile -> Ireland {'KV13_all': 0.886, 'KV14_all': 0.022, 'ATTN_25': 0.615, 'NULL': -0.0} 1014 s
+R2 held_out Germany -> Greece {'KV13_all': 1.014, 'KV14_all': 0.02, 'ATTN_25': 0.826, 'NULL': 0.0} 1033 s
+R2 held_out Portugal -> Hungary {'KV13_all': 0.943, 'KV14_all': -0.013, 'ATTN_25': 0.719, 'NULL': -0.0} 1067 s
+R2 held_out France -> Spain {'KV13_all': 1.037, 'KV14_all': 0.014, 'ATTN_25': 0.876, 'NULL': -0.0} 1095 s
+R2 held_out Poland -> China {'KV13_all': 0.906, 'KV14_all': 0.025, 'ATTN_25': 0.615, 'NULL': -0.0} 1123 s
+R2 held_out France -> Norway {'KV13_all': 1.035, 'KV14_all': 0.007, 'ATTN_25': 0.804, 'NULL': 0.0} 1153 s
+R2 held_out Russia -> Spain {'KV13_all': 0.994, 'KV14_all': 0.035, 'ATTN_25': 0.922, 'NULL': 0.0} 1186 s
+R2 held_out Egypt -> Vietnam {'KV13_all': 0.942, 'KV14_all': 0.025, 'ATTN_25': 0.749, 'NULL': -0.0} 1214 s
+R2 held_out India -> Japan {'KV13_all': 0.993, 'KV14_all': 0.02, 'ATTN_25': 0.902, 'NULL': -0.0} 1240 s
+R2 held_out Chile -> Spain {'KV13_all': 0.923, 'KV14_all': 0.018, 'ATTN_25': 0.638, 'NULL': 0.0} 1266 s
+R2 held_out Germany -> Spain {'KV13_all': 0.986, 'KV14_all': 0.03, 'ATTN_25': 0.835, 'NULL': 0.0} 1292 s
+R2 held_out Poland -> Russia {'KV13_all': 0.913, 'KV14_all': -0.006, 'ATTN_25': 0.63, 'NULL': -0.0} 1317 s
+done

@@ -1,0 +1,2 @@
+text tokens 16331
+{"T": 64, "full_s": [7.834, 8.84, 9.054], "skip_s": [3.191, 5.12, 4.802], "speedup_median": 1.841, "max_abs_dlogit": 2.3603439331054688e-05, "top1_same": true, "top10_overlap": 10}
