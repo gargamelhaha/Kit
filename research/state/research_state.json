@@ -1,6 +1,6 @@
 {
  "cycle": 3,
- "updated": "2026-10-25T13:50Z",
+ "updated": "2026-10-25T16:20Z",
  "repo_note": "Cycle 1 lived in github.com/rapidsainov-cmyk/Axg (read-only for this session); cycle 2 continues with full history in gargamelhaha/Kit branch hoplite/ambrakia-a2a0753c.",
  "environment": {
   "host": "Modal 2 vCPU / 8 GiB, no GPU",
@@ -9,18 +9,19 @@
   "external_llm_api": "tools/llm_pool.py; cap 6 parallel (PL-7); creds in ~/.config/lab/api.env (never committed)"
  },
  "running": [
-  "queue: E009_reliability (793 items) -> E008_window_route -> E007c_generate_modes (rerun after PL-15)"
+  "E008_window_route (started 16:10Z)",
+  "queued: E010_quant_quality, E007c_generate_modes (flock-serialised)"
  ],
  "open_tasks": [
-  "Analyze E009 -> calibration / DoLa / early-exit claims; AUDIT-004 (E009 + E006c)",
-  "Analyze E008 -> H-011/H-013 routes",
-  "Analyze E007c -> K-0008 generation modes + bf16 decode (quality) + PLE pread memory note",
-  "E006d: H-016 (early-layer final-position attention + late MLP share)",
-  "Cycle-3 review + process experiment outcome (pre-audit utility)",
-  "Engineering next: int8 weight-only quantisation quality test on the K-0006/7 route and on factset accuracy",
+  "Analyze E008 (analyze.py) -> H-011/H-013",
+  "Analyze E010 -> quantisation quality + mechanism preservation",
+  "Analyze E007c -> K-0008 generation modes",
+  "AUDIT-006 for E007c/E008/E010",
+  "Cycle-3 review",
+  "Next cycle candidates: H-018 retest (knowledge-only scoring, new items), H-020 cross-architecture transfer (small MLA/SSM/MoE models), H-019 retargeted (late answer demotion in both checkpoints)",
   "Gemma 2 2B control blocked: no HF token"
  ],
- "next_step": "When E009 finishes: run E009_reliability/analyze.py; then E008 analyze; then E007c analyze.",
+ "next_step": "Wait for E008; run E008_window_route/analyze.py; queue continues automatically (E010, E007c).",
  "completed_this_cycle": [
   "E000_prefix_equiv (PL-12)",
   "PL-13 pread PLE loader",
@@ -33,6 +34,12 @@
   "LIT-07 (179 sources)",
   "deep reads x15",
   "factset_v1 (793 cross-verified items)",
-  "K-0008 prior art (YOCO)"
+  "K-0008 prior art (YOCO)",
+  "E009 IT+base (K-0009, K-0010; H-017 refuted; H-018 INCONCLUSIVE)",
+  "E006d (H-016 refuted; K-0007 corrected)",
+  "AUDIT-004 (bootstrap multiplicity bug fixed)",
+  "AUDIT-005",
+  "HYPGEN-02 (H-019, H-020)",
+  "PL-15..PL-18"
  ]
 }

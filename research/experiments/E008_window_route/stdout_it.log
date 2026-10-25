@@ -4,3 +4,4 @@ A A 60 Big Ben -> Space Needle ok True True LDs 19.9 -25.3 {'KV13_D': 0.958, 'KV
 A A 60 Tower of London -> Sagrada Familia ok True True LDs 24.5 -16.8 {'KV13_D': 0.833, 'KV14_D': 0.133, 'KVBOTH_D': 0.936, 'ATTN_25': 0.624, 'NULL': -0.0} 232 s
 A A 60 CN Tower -> Charles Bridge ok True True LDs 16.8 -9.1 {'KV13_D': 0.782, 'KV14_D': 0.124, 'KVBOTH_D': 0.911, 'ATTN_25': 0.813, 'NULL': -0.0} 276 s
 A A 60 CN Tower -> Eiffel Tower ok True True LDs 16.0 -15.2 {'KV13_D': 0.467, 'KV14_D': 0.032, 'KVBOTH_D': 0.715, 'ATTN_25': 0.475, 'NULL': -0.0} 314 s
+A A 60 CN Tower -> Hollywood Sign ok True True LDs 16.5 -17.2 {'KV13_D': 0.88, 'KV14_D': 0.015, 'KVBOTH_D': 1.048, 'ATTN_25': 0.706, 'NULL': -0.0} 354 s

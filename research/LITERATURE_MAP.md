@@ -154,3 +154,13 @@ Already `partial` and still needing full reading: LIT01-046, LIT01-048, LIT01-04
   queries (`logs/search_LIT-06.jsonl`), 125 new candidates, dual screening κ = 0.733, 40 included by both → `LIT06-001…040`
   (abstract_only). Not saturated (single database; no citation chasing). No abstract described a mechanistic study of
   information routing through shared K/V in Gemma 3n/4, which bounds — but does not establish — the novelty of K-0006/K-0007.
+
+## Cycle 3 update
+- **LIT-07** (inference-time improvement without retraining, error detection from internals, early exit, memory/quality trade-offs):
+  20 logged arXiv queries, 207 candidates, dual screening κ = 0.812, 179 included (`LIT07-*`, abstract_only).
+- Full-text machine reads (quote-verified) added: LIT03-019 YOCO (prior art for K-0008's prefill early exit), LIT06-005/-012/-016/
+  -022/-023/-027/-029/-039, LIT07-001 DoLa, LIT07-016 controlled study of decoding-time truthfulness methods (null result, consistent
+  with K-0009), LIT07-041 diminishing returns of early exit (consistent with K-0010), LIT07-042 CALM, LIT07-058 LayerSkip,
+  LIT07-061 INSIDE.
+- NOVELTY-001: K-0006/K-0007 vs 7 closest full texts — no "same" result; analogues Geva et al. 2023, ROME-in-Mamba, YOCO.
+- Registry: 850 unique sources.
