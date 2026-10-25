@@ -1,0 +1,194 @@
+{
+ "env": {
+  "torch": "2.14.1+cpu",
+  "transformers": "5.20.2",
+  "python": "3.12.3",
+  "threads": 2,
+  "cpu_flags_bf16": false
+ },
+ "load": {
+  "variant": "it",
+  "repo": "google/gemma-4-E2B-it",
+  "missing": [],
+  "unexpected": [],
+  "meta_leftover": [],
+  "load_s": 41.1
+ },
+ "peak_rss_gb_after_load": 5.23,
+ "tokenizer": {
+  "default_adds_bos": false,
+  "roundtrip_ok": true
+ },
+ "generate_bf16": {
+  "new_tokens": 32,
+  "tok_per_s": 0.46,
+  "text": "A sparse autoencoder is a type of neural network designed to learn efficient, low-dimensional representations of input data by forcing the hidden layer activations to be sparse,"
+ },
+ "batch16x32_forward_s": {
+  "bf16": 107.05,
+  "fp32_compute": 63.77
+ },
+ "probes": {
+  "The capital of France is|bos=False": {
+   "bf16": {
+    "ppl": 23195102.0,
+    "top3": [
+     " France",
+     " not",
+     " capital"
+    ]
+   },
+   "fp32": {
+    "ppl": 23755576.0,
+    "top3": [
+     " France",
+     " not",
+     " to"
+    ]
+   },
+   "max_abs_logit_diff": 0.879,
+   "top1_agree": 1
+  },
+  "The capital of France is|bos=True": {
+   "bf16": {
+    "ppl": 257.21,
+    "top3": [
+     " Paris",
+     " **",
+     "**"
+    ]
+   },
+   "fp32": {
+    "ppl": 244.83,
+    "top3": [
+     " Paris",
+     " **",
+     "**"
+    ]
+   },
+   "max_abs_logit_diff": 0.419,
+   "top1_agree": 1
+  },
+  "Two plus two equals|bos=False": {
+   "bf16": {
+    "ppl": 38327.6,
+    "top3": [
+     " plus",
+     " two",
+     " three"
+    ]
+   },
+   "fp32": {
+    "ppl": 41276.36,
+    "top3": [
+     " plus",
+     " two",
+     " three"
+    ]
+   },
+   "max_abs_logit_diff": 2.321,
+   "top1_agree": 1
+  },
+  "Two plus two equals|bos=True": {
+   "bf16": {
+    "ppl": 7836.73,
+    "top3": [
+     " four",
+     "...",
+     " **"
+    ]
+   },
+   "fp32": {
+    "ppl": 7786.41,
+    "top3": [
+     " four",
+     "...",
+     " **"
+    ]
+   },
+   "max_abs_logit_diff": 0.652,
+   "top1_agree": 1
+  },
+  "def fibonacci(n):\n    if|bos=False": {
+   "bf16": {
+    "ppl": 151509.53,
+    "top3": [
+     " <",
+     " ",
+     "\n"
+    ]
+   },
+   "fp32": {
+    "ppl": 149982.22,
+    "top3": [
+     " <",
+     " ",
+     "\n"
+    ]
+   },
+   "max_abs_logit_diff": 0.259,
+   "top1_agree": 1
+  },
+  "def fibonacci(n):\n    if|bos=True": {
+   "bf16": {
+    "ppl": 16.27,
+    "top3": [
+     " ",
+     "0",
+     " min"
+    ]
+   },
+   "fp32": {
+    "ppl": 16.71,
+    "top3": [
+     " ",
+     "0",
+     " min"
+    ]
+   },
+   "max_abs_logit_diff": 0.616,
+   "top1_agree": 1
+  },
+  "The mitochondrion is an |bos=False": {
+   "bf16": {
+    "ppl": 23986.72,
+    "top3": [
+     " It",
+     "<turn|>",
+     " They"
+    ]
+   },
+   "fp32": {
+    "ppl": 23477.86,
+    "top3": [
+     " It",
+     "<turn|>",
+     " They"
+    ]
+   },
+   "max_abs_logit_diff": 0.6,
+   "top1_agree": 1
+  },
+  "The mitochondrion is an |bos=True": {
+   "bf16": {
+    "ppl": 19.95,
+    "top3": [
+     "\n\n",
+     " This",
+     " It"
+    ]
+   },
+   "fp32": {
+    "ppl": 19.69,
+    "top3": [
+     "\n\n",
+     " This",
+     " It"
+    ]
+   },
+   "max_abs_logit_diff": 0.534,
+   "top1_agree": 1
+  }
+ },
+ "peak_rss_gb": 7.19
+}

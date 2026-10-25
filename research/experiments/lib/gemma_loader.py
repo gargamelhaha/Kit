@@ -1,10 +1,11 @@
 """Memory-lean loader for the Gemma 4 E2B text decoder on CPU.
 
-Loads only `model.language_model.*` weights into a Gemma4ForCausalLM. All weights are zero-copy,
-read-only memory maps of the safetensors file (clean file-backed pages the kernel can reclaim), so
-anonymous memory stays ~1-2 GB even though the text decoder is 9.3 GB in bf16 (4.7 GB of it is the
-per-layer-embedding lookup table). Cycle-1 lesson: copying weights to RAM put peak RSS at 8.6 GB on an
-8 GiB box and the sandbox was lost.
+Loads only `model.language_model.*` weights into a Gemma4ForCausalLM. Decoder weights and the token
+embedding (4.6 GB bf16) are copied to RAM; the 4.7 GB per-layer-embedding (PLE) table stays a read-only
+memory map, since a forward pass only reads the rows of the tokens present.
+Cycle-1 lessons (PROCESS_LEDGER): memory-mapping *all* weights made forward passes I/O-bound on this
+sandbox's filesystem (~10% CPU); the 8.6 GB peak that preceded the sandbox loss came from transient fp32
+copies (e.g. the 1.6 GB unembedding upcast), which `use_fp32_compute` now avoids by chunking.
 """
 import json, os, struct, time, warnings
 import numpy as np
@@ -14,6 +15,7 @@ from transformers.models.gemma4.modeling_gemma4 import Gemma4ForCausalLM
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".models"))
 MODELS = {"it": "google/gemma-4-E2B-it", "base": "google/gemma-4-E2B"}
+MMAP_KEYS = {"model.embed_tokens_per_layer.weight"}
 
 
 def _header(path):
@@ -34,7 +36,7 @@ def _tensor(path, info, base, mmap=True):
     return t if mmap else t.clone()
 
 
-def load(variant="it", mmap=True):
+def load(variant="it"):
     t0 = time.time()
     path = os.path.join(ROOT, MODELS[variant])
     cfg = AutoConfig.from_pretrained(path).text_config
@@ -44,7 +46,7 @@ def load(variant="it", mmap=True):
         model = Gemma4ForCausalLM(cfg)
     st = os.path.join(path, "model.safetensors")
     h, base = _header(st)
-    sd = {k: _tensor(st, h["model.language_model." + k[len("model."):]], base, mmap)
+    sd = {k: _tensor(st, h["model.language_model." + k[len("model."):]], base, k in MMAP_KEYS)
           for k in model.state_dict() if k != "lm_head.weight"}
     missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
     model.tie_weights()
@@ -78,9 +80,15 @@ def use_fp32_compute(model):
     """
     import torch.nn.functional as F
     from torch import nn
+    def chunked(m, x, rows=32768):  # avoids a 1.6 GB fp32 copy of the 262k-row unembedding
+        x = x.float()
+        return torch.cat([F.linear(x, m.weight[r:r + rows].float()) for r in range(0, m.weight.shape[0], rows)], dim=-1)
     for mod in model.modules():
         if isinstance(mod, nn.Linear):
-            mod.forward = (lambda m: (lambda x: F.linear(x.float(), m.weight.float())))(mod)
+            if mod.weight.shape[0] > 65536:
+                mod.forward = (lambda m: (lambda x: chunked(m, x)))(mod)
+            else:
+                mod.forward = (lambda m: (lambda x: F.linear(x.float(), m.weight.float())))(mod)
         elif isinstance(mod, nn.Embedding):
             mod.register_forward_hook(lambda m, i, o: o.float())
     for p in model.parameters():

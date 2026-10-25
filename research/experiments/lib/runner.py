@@ -57,7 +57,8 @@ class Runner:
         return hook
 
     def unembed(self, h):
-        logits = torch.nn.functional.linear(self.tm.norm(h).float(), self.model.lm_head.weight.float())
+        x, W = self.tm.norm(h).float(), self.model.lm_head.weight
+        logits = torch.cat([torch.nn.functional.linear(x, W[r:r + 32768].float()) for r in range(0, W.shape[0], 32768)], dim=-1)
         return torch.tanh(logits / self.cap) * self.cap if self.cap else logits
 
     @torch.no_grad()
