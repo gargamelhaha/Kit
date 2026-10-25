@@ -64,7 +64,7 @@ def main():
     os.makedirs(os.path.join(ROOT, "benchmarks"), exist_ok=True)
     with open(os.path.join(ROOT, "benchmarks", "factset_v1.jsonl"), "w") as f:
         for n, it in enumerate(kept):
-            f.write(json.dumps({"id": f"F{n:04d}", **it}, ensure_ascii=False) + "\n")
+            f.write(json.dumps({**it, "id": f"F{n:04d}"}, ensure_ascii=False) + "\n")
     stats = {"generated": len(items), "verified_true": sum(1 for i in items if i.get("verified")),
              "verified_false": sum(1 for i in items if i.get("verified") is False),
              "unverified": sum(1 for i in items if "verified" not in i), "kept_unique": len(kept)}

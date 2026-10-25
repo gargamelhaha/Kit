@@ -118,9 +118,9 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 ## K-0006 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** In Gemma 4 E2B-IT factual recall on short prompts, the subject information that determines the answer reaches the final position through the K/V stored by layer 13 (read by KV-shared layers 15-34), not through the K/V stored by layer 14: replacing the corrupt run's layer-13 stored K/V by the clean one recovers a median 0.986 of the logit difference (subject-cluster bootstrap 95% CI [0.947, 0.995]) vs 0.017 [0.011, 0.025] for layer 14 (28 held-out pairs); the effect is carried by the subject-span positions (0.980) and not by template positions (0.006).
+**Claim.** In Gemma 4 E2B-IT factual recall on short prompts, the subject information that determines the answer reaches the final position through the K/V stored by layer 13 (read by KV-shared layers 15-34), not through the K/V stored by layer 14: replacing the corrupt run's layer-13 stored K/V by the clean one recovers a median 0.986 of the logit difference (subject-cluster bootstrap 95% CI [0.947, 0.995]) vs 0.017 [0.011, 0.025] for layer 14 (28 held-out pairs); the effect is carried by the subject-span positions (0.980) and not by template positions (0.006). The same pattern holds in the pretrained base checkpoint google/gemma-4-E2B on a disjoint set of 28 held-out pairs (KV13_all 0.994 [cluster CI 0.963, 1.015] vs KV14_all -0.001), i.e. it is not a product of instruction tuning.
 
-**Scope.** google/gemma-4-E2B-it; two relations (landmark->city 12 pairs, country->capital 16 pairs) with single-token answers; prompts 7-14 tokens (far below the 512-token sliding window, so this distinguishes the two stored K/V tensors, not sliding vs full attention); counterfactual patching with logit-difference recovery
+**Scope.** google/gemma-4-E2B-it and google/gemma-4-E2B (base); two relations (landmark->city 12 pairs, country->capital 16 pairs) with single-token answers; prompts 7-14 tokens (far below the 512-token sliding window, so this distinguishes the two stored K/V tensors, not sliding vs full attention); counterfactual patching with logit-difference recovery
 
 **Conditions.** fp32 compute, BOS, Runner(last_only_from=15) with kv_store hook replacing (key, value) tensors stored after layer 13/14 for all/selected positions; corrupt prompt = same template, different subject, equal length
 
@@ -129,19 +129,20 @@ checks; REFUTED / INCONCLUSIVE as named.
 - supports: `experiments/E006_kv_route/analysis.json` — preregistered P1-P3 pass on held-out pairs; NULL control max|r| 1.1e-6; R2-only (never used before) KV13_all 0.982 vs KV14_all 0.017
 - supports: `experiments/E004_factual_patching/analysis.json` — consistent precursor: last-subject resid patch recovery 0.595 at layer 13 vs 0.010 at layer 14
 - supports: `audits/AUDIT-002.md` — two non-Anthropic auditors: no implementation bug; conclusions bounded as here
+- supports: `experiments/E006_kv_route/analysis_base.json` — base checkpoint, same preregistered code/criteria: P1-P5 pass, NULL ok; 0/28 held-out pairs shared with the IT run
 
-**Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/lib/runner.py`
+**Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/lib/runner.py`, `experiments/E006_kv_route/result_base.json`, `experiments/E006_kv_route/analysis_base.json`
 
 **Audit.** `audits/AUDIT-002.md`
 
 **Uncertainty / limits.** Two templates/relations only; short prompts; IT checkpoint only; R1 held-out pairs share subjects with in-sample pairs. Layer-14 K/V may matter for other tasks or beyond the sliding window (H-011).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008)
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008); 2026-10-25: cycle 3: transfer to base checkpoint added (same lab code: not an independent replication)
 
 ## K-0007 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** In the tested factual-recall assay on Gemma 4 E2B-IT, block-25 attention at the final position is the largest single-layer causal contributor among the 20 KV-shared layers: patching only its clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]; largest of 20 single-layer patches in 28/28 held-out pairs), and substituting the corrupt run's contribution leaves a median 0.227 at block 25 vs per-layer medians >= 0.929 at every other KV-shared layer (individual pairs down to 0.85 at layer 31). Head 0 of block 25 had the strongest individual effect (single-head corruption leaves 0.37 vs >= 0.98 for heads 1-7; multi-head interactions untested) and puts a median 0.88 of its final-query attention on the positions where the two prompts differ. Replacing block 25's contribution by a (leave-one-in, not norm-matched) mean over prompts retains 0.84, so block 25 is not necessary in that sense; redundancy or a backup route is consistent with this but unidentified.
+**Claim.** In the tested factual-recall assay on Gemma 4 E2B-IT, block-25 attention at the final position is the largest single-layer causal contributor among the 20 KV-shared layers: patching only its clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]; largest of 20 single-layer patches in 28/28 held-out pairs), and substituting the corrupt run's contribution leaves a median 0.227 at block 25 vs per-layer medians >= 0.929 at every other KV-shared layer (individual pairs down to 0.85 at layer 31). Head 0 of block 25 had the strongest individual effect (single-head corruption leaves 0.37 vs >= 0.98 for heads 1-7; multi-head interactions untested) and puts a median 0.88 of its final-query attention on the positions where the two prompts differ. Replacing block 25's contribution by a (leave-one-in, not norm-matched) mean over prompts retains 0.84, so block 25 is not necessary in that sense; redundancy or a backup route is consistent with this but unidentified. In the base checkpoint the same layer (block 25, largest in 28/28 pairs; sufficiency 0.654) and the same head (head 0: 0.423; other heads <= 0.06) dominate; corruption of block 25 leaves more of the logit difference in base (0.337 [0.313, 0.419]) than in IT (0.227).
 
 **Scope.** as K-0006 (two relations, short prompts, IT checkpoint); head-level results from E006b (preregistered Q1, Q4 exploratory)
 
@@ -153,16 +154,17 @@ checks; REFUTED / INCONCLUSIVE as named.
 - supports: `experiments/E004_factual_patching/analysis.json` — final-position residual recovery 0.056 entering block 25 vs 0.846 entering block 26
 - supports: `experiments/E002_logit_lens/analysis.json` — logit-lens answer emergence median residual index 28 (after block 25), consistent
 - supports: `experiments/E006b_route_controls/analysis.json` — preregistered Q1 (head-0 subject attention), Q2 (layer specificity) pass; Q3 (mean ablation <= 0.6) FAILS -> necessity claim withdrawn
+- supports: `experiments/E006_kv_route/analysis_base.json` — base: ATTN_25 0.654 [0.578, 0.698], argmax 28/28, NOISE_ATTN25 0.337, HEAD25_0 0.423
 - contradicts: `experiments/E006b_route_controls/analysis.json` — MEAN_ATTN25 retained 0.84: block-25 subject-specific content is not necessary for recall
 
-**Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/E006b_route_controls/PREREG.md`, `experiments/E006b_route_controls/run.py`, `experiments/E006b_route_controls/result_it.json`, `experiments/E006b_route_controls/analysis.json`
+**Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/E006b_route_controls/PREREG.md`, `experiments/E006b_route_controls/run.py`, `experiments/E006b_route_controls/result_it.json`, `experiments/E006b_route_controls/analysis.json`, `experiments/E006_kv_route/analysis_base.json`
 
 **Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-003.md`
 
 **Uncertainty / limits.** AUDIT-003: E006b captured reference vectors with eager attention but ran patched conditions with SDPA (numerical mismatch expected ~1e-5, to be quantified in E006c); 'subject span' = token positions differing between paired prompts, not verified subject offsets; mean ablation was leave-one-in and not norm-matched; bootstrap clustering by subject only. Head-level results exploratory. Two relations, short templates, IT checkpoint (base replication running in cycle 3).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c; 2026-10-25: cycle 3: base-checkpoint transfer added
 
 ## K-0008 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
@@ -174,16 +176,19 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Verification.** Preregistered E007 (PREREG.md); transformers source inspected (Gemma4TextModel loops all layers; logits_to_keep only slices lm_head)
 
+**Primary sources.** LIT03-019 (You Only Cache Once: Decoder-Decoder Architectures for Language Models)
+
 - supports: `experiments/E007_prefill_skip/analysis.json` — preregistered P1 exactness, P2 >=2x for T>=256, P4 trend pass; T=2048 FULL missing (RSS guard)
 - supports: `experiments/E007_prefill_skip/result_b_it.json` — exploratory: SKIP at T=2048 completes; FULL vs SKIP peak RSS growth at T=1024 0.35 vs 0.12 GB (allocator-order confounded)
 - supports: `experiments/E001_arch/result.json` — K-0001/K-0002: non-final positions inert after layer 14
+- supports: `LIT03-019` — YOCO (Sun et al. 2024, arXiv 2405.05254) states the principle for decoder-decoder models: 'the computation flow enables prefilling to early exit without changing the final output' (quote checked in papers/txt/2405.05254.txt)
 
 **Artifacts.** `experiments/E007_prefill_skip/PREREG.md`, `experiments/E007_prefill_skip/run.py`, `experiments/E007_prefill_skip/result_it.json`, `experiments/E007_prefill_skip/analysis.json`, `experiments/E007_prefill_skip/run_b.py`, `experiments/E007_prefill_skip/result_b_it.json`
 
 **Audit.** `audits/AUDIT-003.md`
 
-**Uncertainty / limits.** Timing: 3 repeats, noisy host (FULL T=1024 61-85 s). Preregistered cost-model bound invalid (it ignored the skipped TxT attention of layers 15-34). Inputs were repository prose, not exactly the files named in the prereg order (AUDIT-003). Real generation modes (KV-cache decode, batching, chat, multi-turn) tested separately in E007c.
+**Uncertainty / limits.** Timing: 3 repeats, noisy host (FULL T=1024 61-85 s). Preregistered cost-model bound invalid (it ignored the skipped TxT attention of layers 15-34). Inputs were repository prose, not exactly the files named in the prereg order (AUDIT-003). Real generation modes (KV-cache decode, batching, chat, multi-turn) tested separately in E007c. Novelty: the principle is prior art (YOCO, LIT03-019); the contribution here is only its verification and measurement for Gemma 4 E2B in HF transformers 5.20.2, which does not implement it.
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E007/E007b; 2026-10-25: AUDIT-003: removed unverified Google on-device statement; top-10 'set'; T=2048 marked exploratory with log references; numerical-equivalence wording
+**History.** 2026-10-25: created from E007/E007b; 2026-10-25: AUDIT-003: removed unverified Google on-device statement; top-10 'set'; T=2048 marked exploratory with log references; numerical-equivalence wording; 2026-10-25: novelty check: principle attributed to YOCO (LIT03-019)
 

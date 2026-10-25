@@ -121,3 +121,9 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
   loader's design assumption (mmap materialises only touched rows) is a property of the host FS, not guaranteed.
 - Fix: `PreadEmbedding` — PLE rows read with `os.pread` (17.9 KB/token). Verified bit-identical (E006 pair ld 37.920166015625 /
   −35.74284744262695 before = after); RSS after forward 6.19 GB. Status: accepted. Lesson: don't rely on mmap laziness in sandboxes.
+
+## PL-14 Queue waiters never fired (self-matching pgrep)
+- Symptom: model idle 4 min after E006-base ended; chained queues never started.
+- Root cause: `bash -c 'while pgrep -f "queue.sh E006_kv_route:base" …'` — `pgrep -f` matched the waiter's own command line.
+- Fix: one sequential `queue.sh A B C D` invocation per batch; never chain via pgrep on a pattern contained in the waiter itself.
+- Status: accepted.

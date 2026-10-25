@@ -2,7 +2,7 @@
 import json, os, statistics as st
 import numpy as np
 D = os.path.dirname(os.path.abspath(__file__))
-res = json.load(open(os.path.join(D, "result_it.json")))
+res = json.load(open(os.path.join(D, "result_" + os.environ.get("VARIANT", "it") + ".json")))
 pairs = res["pairs"]
 
 
@@ -69,7 +69,7 @@ ins = {frozenset((p["clean"], p["corrupt"])) for p in pairs if p["split"] == "in
 a["split_check"] = {"held_out_pairs_overlapping_in_sample_pairs": sum(frozenset((p["clean"], p["corrupt"])) in ins for p in ho),
                     "held_out_R1_pairs_sharing_a_subject_with_in_sample": sum(bool({p["clean"], p["corrupt"]} & {s for q in ins for s in q})
                                                                          for p in ho if p["relation"] == "R1")}
-json.dump(a, open(os.path.join(D, "analysis.json"), "w"), indent=1, default=lambda o: o.item())
+json.dump(a, open(os.path.join(D, "analysis_" + os.environ.get("VARIANT", "it") + ".json"), "w"), indent=1, default=lambda o: o.item())
 print(json.dumps({k: a[k] for k in ("n_pairs", "n_held_out", "predictions", "H-008", "H-009")}, indent=1, default=lambda o: o.item()))
 for c in ("KV13_all", "KV14_all", "KVBOTH_all", "KV13_D", "KV14_D", "KV13_S", "KV13_T", "ATTN_25", "NOISE_ATTN25", "NULL"):
     print(c, h[c])

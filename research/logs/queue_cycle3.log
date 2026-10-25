@@ -5,3 +5,5 @@
 [2026-10-25T12:10:10Z] start E000_prefix_equiv variant=it
 [2026-10-25T12:12:40Z] end E000_prefix_equiv variant=it exit=0
 [2026-10-25T12:13:39Z] start E006_kv_route variant=base
+[2026-10-25T12:35:52Z] end E006_kv_route variant=base exit=0
+[2026-10-25T12:36:57Z] start E007c_generate_modes variant=it
