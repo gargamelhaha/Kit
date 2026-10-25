@@ -62,3 +62,14 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
   results after every item. Equivalence of the buffered path is tested in E001b (must be bit-identical).
 - Status: mitigated; root cause remains a hypothesis unless E002 now completes repeatedly (weak evidence) — a direct
   churn test would risk another reset and is deferred.
+
+## PL-7 External LLM API: real parallelism limit (cycle 2)
+- Symptom: the API was described as "no limits"; a naive pool at concurrency 8 lost 7/16 requests.
+- Evidence: `logs/llm_ramp.json` — MiniMax c=1 0.30 req/s, c=4 1.24 req/s (p50 3.1 s), c=8 → HTTP 429
+  `"Too many parallel requests: up to 6 at a time"`; DeepSeek c=1 had one 120 s read timeout (heavy latency tail).
+- Root cause: server-side per-key cap of 6 in-flight requests (a specification property, not a client bug).
+- Fix: process-wide `BoundedSemaphore(6)` in `tools/llm_pool.py`, 429 → wait 2 s without consuming a retry, 300 s timeout.
+  Measured: requested concurrency 12 → 12/12 ok in 7.1 s (before the fix: 9/16 ok at c=8).
+- Second root cause found on first real task: both models spent the entire `max_tokens=8000` on hidden reasoning for a
+  21k-token paper (completion_tokens = reasoning_tokens = 8000, empty answer). Fix: 32k budget for extraction tasks.
+- Status: accepted. Ceiling for the lab = 6 concurrent calls shared by all processes using the key.

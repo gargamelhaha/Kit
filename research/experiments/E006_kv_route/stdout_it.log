@@ -1,0 +1,4 @@
+correct R1 31 / 32 R2 29 / 30 plan 40
+R1 in_sample Petronas Towers -> Parthenon {'KV13_all': 1.071, 'KV14_all': 0.032, 'ATTN_25': 0.915, 'NULL': -0.0} 220 s
+R1 in_sample Big Ben -> Space Needle {'KV13_all': 1.065, 'KV14_all': 0.023, 'ATTN_25': 0.682, 'NULL': 0.0} 249 s
+R1 in_sample Tower of London -> Sagrada Familia {'KV13_all': 1.0, 'KV14_all': 0.018, 'ATTN_25': 0.7, 'NULL': 0.0} 281 s

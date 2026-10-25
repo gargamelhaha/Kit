@@ -1,0 +1,463 @@
+{
+ "info": {
+  "variant": "it",
+  "repo": "google/gemma-4-E2B-it",
+  "missing": [],
+  "unexpected": [],
+  "meta_leftover": [],
+  "load_s": 23.1
+ },
+ "n_correct": {
+  "R1": [
+   31,
+   32
+  ],
+  "R2": [
+   29,
+   30
+  ]
+ },
+ "items_R2": [
+  {
+   "subj": "France",
+   "city": "Paris",
+   "aid": 9079,
+   "last_subj_pos": 4,
+   "top1": " Paris",
+   "correct": 1
+  },
+  {
+   "subj": "Germany",
+   "city": "Berlin",
+   "aid": 15687,
+   "last_subj_pos": 4,
+   "top1": " Berlin",
+   "correct": 1
+  },
+  {
+   "subj": "Italy",
+   "city": "Rome",
+   "aid": 13706,
+   "last_subj_pos": 4,
+   "top1": " Rome",
+   "correct": 1
+  },
+  {
+   "subj": "Spain",
+   "city": "Madrid",
+   "aid": 19627,
+   "last_subj_pos": 4,
+   "top1": " Madrid",
+   "correct": 1
+  },
+  {
+   "subj": "Japan",
+   "city": "Tokyo",
+   "aid": 21038,
+   "last_subj_pos": 4,
+   "top1": " Tokyo",
+   "correct": 1
+  },
+  {
+   "subj": "China",
+   "city": "Beijing",
+   "aid": 30530,
+   "last_subj_pos": 4,
+   "top1": " Beijing",
+   "correct": 1
+  },
+  {
+   "subj": "Russia",
+   "city": "Moscow",
+   "aid": 18749,
+   "last_subj_pos": 4,
+   "top1": " Moscow",
+   "correct": 1
+  },
+  {
+   "subj": "Egypt",
+   "city": "Cairo",
+   "aid": 59546,
+   "last_subj_pos": 4,
+   "top1": " Cairo",
+   "correct": 1
+  },
+  {
+   "subj": "Greece",
+   "city": "Athens",
+   "aid": 43594,
+   "last_subj_pos": 4,
+   "top1": " Athens",
+   "correct": 1
+  },
+  {
+   "subj": "Turkey",
+   "city": "Ankara",
+   "aid": 80554,
+   "last_subj_pos": 4,
+   "top1": " Ankara",
+   "correct": 1
+  },
+  {
+   "subj": "Canada",
+   "city": "Ottawa",
+   "aid": 41824,
+   "last_subj_pos": 4,
+   "top1": " Ottawa",
+   "correct": 1
+  },
+  {
+   "subj": "Australia",
+   "city": "Canberra",
+   "aid": 72710,
+   "last_subj_pos": 4,
+   "top1": " Canberra",
+   "correct": 1
+  },
+  {
+   "subj": "Argentina",
+   "city": "Buenos",
+   "aid": 44135,
+   "last_subj_pos": 4,
+   "top1": " Buenos",
+   "correct": 1
+  },
+  {
+   "subj": "India",
+   "city": "New",
+   "aid": 1799,
+   "last_subj_pos": 4,
+   "top1": " New",
+   "correct": 1
+  },
+  {
+   "subj": "Kenya",
+   "city": "Nairobi",
+   "aid": 69628,
+   "last_subj_pos": 4,
+   "top1": " Nairobi",
+   "correct": 1
+  },
+  {
+   "subj": "Peru",
+   "city": "Lima",
+   "aid": 49830,
+   "last_subj_pos": 4,
+   "top1": " Lima",
+   "correct": 1
+  },
+  {
+   "subj": "Poland",
+   "city": "Warsaw",
+   "aid": 60671,
+   "last_subj_pos": 4,
+   "top1": " Warsaw",
+   "correct": 1
+  },
+  {
+   "subj": "Sweden",
+   "city": "Stockholm",
+   "aid": 54206,
+   "last_subj_pos": 4,
+   "top1": " Stockholm",
+   "correct": 1
+  },
+  {
+   "subj": "Norway",
+   "city": "Oslo",
+   "aid": 68912,
+   "last_subj_pos": 4,
+   "top1": " Oslo",
+   "correct": 1
+  },
+  {
+   "subj": "Finland",
+   "city": "Helsinki",
+   "aid": 74520,
+   "last_subj_pos": 4,
+   "top1": " Helsinki",
+   "correct": 1
+  },
+  {
+   "subj": "Portugal",
+   "city": "Lisbon",
+   "aid": 72449,
+   "last_subj_pos": 4,
+   "top1": " Lisbon",
+   "correct": 1
+  },
+  {
+   "subj": "Austria",
+   "city": "Vienna",
+   "aid": 34493,
+   "last_subj_pos": 4,
+   "top1": " Vienna",
+   "correct": 1
+  },
+  {
+   "subj": "Hungary",
+   "city": "Budapest",
+   "aid": 52178,
+   "last_subj_pos": 4,
+   "top1": " Budapest",
+   "correct": 1
+  },
+  {
+   "subj": "Ireland",
+   "city": "Dublin",
+   "aid": 27071,
+   "last_subj_pos": 4,
+   "top1": " Dublin",
+   "correct": 1
+  },
+  {
+   "subj": "Thailand",
+   "city": "Bangkok",
+   "aid": 50214,
+   "last_subj_pos": 4,
+   "top1": " Bangkok",
+   "correct": 1
+  },
+  {
+   "subj": "Vietnam",
+   "city": "Hanoi",
+   "aid": 112171,
+   "last_subj_pos": 4,
+   "top1": " Hanoi",
+   "correct": 1
+  },
+  {
+   "subj": "Iran",
+   "city": "Tehran",
+   "aid": 84401,
+   "last_subj_pos": 4,
+   "top1": " **",
+   "correct": 0
+  },
+  {
+   "subj": "Iraq",
+   "city": "Baghdad",
+   "aid": 104349,
+   "last_subj_pos": 4,
+   "top1": " Baghdad",
+   "correct": 1
+  },
+  {
+   "subj": "Cuba",
+   "city": "Havana",
+   "aid": 99162,
+   "last_subj_pos": 4,
+   "top1": " Havana",
+   "correct": 1
+  },
+  {
+   "subj": "Chile",
+   "city": "Santiago",
+   "aid": 44554,
+   "last_subj_pos": 4,
+   "top1": " Santiago",
+   "correct": 1
+  }
+ ],
+ "pairs": [
+  {
+   "clean": "Petronas Towers",
+   "corrupt": "Parthenon",
+   "T": 11,
+   "D": [
+    2,
+    3,
+    4
+   ],
+   "S": 4,
+   "ld_clean": 37.920166015625,
+   "ld_corrupt": -35.74284744262695,
+   "tokens": [
+    "<bos>",
+    "The",
+    " Petron",
+    "as",
+    " Towers",
+    " is",
+    " located",
+    " in",
+    " the",
+    " city",
+    " of"
+   ],
+   "recovery": {
+    "KV13_all": 1.0713671445846558,
+    "KV14_all": 0.03153904899954796,
+    "KVBOTH_all": 1.0521161556243896,
+    "KV13_D": 1.089870572090149,
+    "KV14_D": 0.021915694698691368,
+    "KV13_S": 0.021370338276028633,
+    "KV13_T": 0.03653057664632797,
+    "NULL": -6.732153110533545e-07,
+    "ATTN_15": 0.009445003233850002,
+    "ATTN_16": 0.015448426827788353,
+    "ATTN_17": 0.021358169615268707,
+    "ATTN_18": 0.012673485092818737,
+    "ATTN_19": 0.02493247576057911,
+    "ATTN_20": 0.0034980783239006996,
+    "ATTN_21": -0.000877717393450439,
+    "ATTN_22": 0.0017889401642605662,
+    "ATTN_23": -0.002443823264911771,
+    "ATTN_24": 0.007035824935883284,
+    "ATTN_25": 0.9152610301971436,
+    "ATTN_26": -0.004404433537274599,
+    "ATTN_27": -0.0063485754653811455,
+    "ATTN_28": 0.030718140304088593,
+    "ATTN_29": -0.012347027659416199,
+    "ATTN_30": -0.001269476837478578,
+    "ATTN_31": 0.03497244790196419,
+    "ATTN_32": -0.010573416016995907,
+    "ATTN_33": 0.026472948491573334,
+    "ATTN_34": 0.01115481462329626,
+    "HEAD25_0": 0.0836227610707283,
+    "HEAD25_1": -9.316264186054468e-05,
+    "HEAD25_2": -0.07000061869621277,
+    "HEAD25_3": -0.004406608175486326,
+    "HEAD25_4": 0.0009027299238368869,
+    "HEAD25_5": -0.014868115074932575,
+    "HEAD25_6": -0.009477525018155575,
+    "HEAD25_7": -0.00500571820884943,
+    "NOISE_ATTN25": 0.329679936170578
+   },
+   "relation": "R1",
+   "split": "in_sample"
+  },
+  {
+   "clean": "Big Ben",
+   "corrupt": "Space Needle",
+   "T": 10,
+   "D": [
+    2,
+    3
+   ],
+   "S": 3,
+   "ld_clean": 31.783416748046875,
+   "ld_corrupt": -47.484901428222656,
+   "tokens": [
+    "<bos>",
+    "The",
+    " Big",
+    " Ben",
+    " is",
+    " located",
+    " in",
+    " the",
+    " city",
+    " of"
+   ],
+   "recovery": {
+    "KV13_all": 1.0647263526916504,
+    "KV14_all": 0.022657962515950203,
+    "KVBOTH_all": 1.0763932466506958,
+    "KV13_D": 1.0335159301757812,
+    "KV14_D": 0.012393048033118248,
+    "KV13_S": 1.0382945537567139,
+    "KV13_T": 0.006403552833944559,
+    "NULL": 9.62477173516163e-08,
+    "ATTN_15": 0.004813204053789377,
+    "ATTN_16": 0.0032158768735826015,
+    "ATTN_17": 0.001817926880903542,
+    "ATTN_18": 0.008418835699558258,
+    "ATTN_19": 0.006818861700594425,
+    "ATTN_20": 0.001720764790661633,
+    "ATTN_21": 0.001100015128031373,
+    "ATTN_22": -0.00030534586403518915,
+    "ATTN_23": 0.04223773255944252,
+    "ATTN_24": 0.011959260329604149,
+    "ATTN_25": 0.681943416595459,
+    "ATTN_26": 0.0007463048095814884,
+    "ATTN_27": 0.012422211468219757,
+    "ATTN_28": 0.011447510682046413,
+    "ATTN_29": -0.002917749574407935,
+    "ATTN_30": -0.013112403452396393,
+    "ATTN_31": -0.0030649122782051563,
+    "ATTN_32": 0.007745342329144478,
+    "ATTN_33": 0.010858426801860332,
+    "ATTN_34": 0.004782116040587425,
+    "HEAD25_0": 0.2522190809249878,
+    "HEAD25_1": -0.0007265739841386676,
+    "HEAD25_2": 0.0047225868329405785,
+    "HEAD25_3": 0.0003669444122351706,
+    "HEAD25_4": 0.0014904921408742666,
+    "HEAD25_5": 0.0021925228647887707,
+    "HEAD25_6": -0.00247563561424613,
+    "HEAD25_7": 0.003634024877101183,
+    "NOISE_ATTN25": 0.31120091676712036
+   },
+   "relation": "R1",
+   "split": "in_sample"
+  },
+  {
+   "clean": "Tower of London",
+   "corrupt": "Sagrada Familia",
+   "T": 11,
+   "D": [
+    2,
+    3,
+    4
+   ],
+   "S": 4,
+   "ld_clean": 47.350685119628906,
+   "ld_corrupt": -50.00834655761719,
+   "tokens": [
+    "<bos>",
+    "The",
+    " Tower",
+    " of",
+    " London",
+    " is",
+    " located",
+    " in",
+    " the",
+    " city",
+    " of"
+   ],
+   "recovery": {
+    "KV13_all": 1.0004212856292725,
+    "KV14_all": 0.017996177077293396,
+    "KVBOTH_all": 1.0053507089614868,
+    "KV13_D": 1.005940556526184,
+    "KV14_D": 0.015093750320374966,
+    "KV13_S": 0.1081019788980484,
+    "KV13_T": -0.0011760402703657746,
+    "NULL": 7.836349880108173e-08,
+    "ATTN_15": 0.002494310261681676,
+    "ATTN_16": 0.00036055047530680895,
+    "ATTN_17": -0.0030904996674507856,
+    "ATTN_18": -0.0015399211551994085,
+    "ATTN_19": 0.002138657495379448,
+    "ATTN_20": 0.0009021989535540342,
+    "ATTN_21": -0.0011486521689221263,
+    "ATTN_22": 0.004350428003817797,
+    "ATTN_23": -0.004367354791611433,
+    "ATTN_24": -0.0016028470126911998,
+    "ATTN_25": 0.7002018690109253,
+    "ATTN_26": 0.004874405451118946,
+    "ATTN_27": -0.00037046344368718565,
+    "ATTN_28": 0.012949255295097828,
+    "ATTN_29": 0.008390380069613457,
+    "ATTN_30": -0.006067842710763216,
+    "ATTN_31": 0.03702346235513687,
+    "ATTN_32": 0.00022176869970280677,
+    "ATTN_33": 0.015305841341614723,
+    "ATTN_34": 0.008055219426751137,
+    "HEAD25_0": 0.4579519033432007,
+    "HEAD25_1": 0.002768817590549588,
+    "HEAD25_2": 0.035740338265895844,
+    "HEAD25_3": 0.001201234059408307,
+    "HEAD25_4": -0.0019154390320181847,
+    "HEAD25_5": 0.007718922570347786,
+    "HEAD25_6": 0.01616278477013111,
+    "HEAD25_7": -0.0024177490267902613,
+    "NOISE_ATTN25": 0.4195530414581299
+   },
+   "relation": "R1",
+   "split": "in_sample"
+  }
+ ]
+}

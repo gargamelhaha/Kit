@@ -1,0 +1,57 @@
+{
+ "source_id": "LIT01-091",
+ "arxiv_id": "2309.16042",
+ "title": "Towards Best Practices of Activation Patching in Language Models: Metrics and Methods",
+ "chars": 153083,
+ "truncated": true,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": false,
+   "error": null,
+   "quote_stats": {
+    "exact": 0,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": null,
+   "data": null,
+   "usage": {
+    "prompt_tokens": 20834,
+    "completion_tokens": 8000,
+    "total_tokens": 28834,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8000
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": false,
+   "error": null,
+   "quote_stats": {
+    "exact": 0,
+    "near": 0,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": null,
+   "data": null,
+   "usage": {
+    "prompt_tokens": 20902,
+    "completion_tokens": 8000,
+    "total_tokens": 28902,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7999
+    }
+   }
+  }
+ }
+}

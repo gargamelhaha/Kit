@@ -2,4 +2,8 @@
   warnings.warn(
 [90mHint: The `hf-cli` skill is not installed. Run `hf skills add -g` to teach your AI agents how to use the `hf` CLI.[0m
 Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Fetching 9 files:  67%|██████▋   | 6/9 [00:00<00:00, 59.80it/s]Fetching 9 files:  89%|████████▉ | 8/9 [00:10<00:00, 59.80it/s]
+Fetching 9 files:  67%|██████▋   | 6/9 [00:00<00:00, 59.80it/s]Fetching 9 files:  89%|████████▉ | 8/9 [00:10<00:00, 59.80it/s]Fetching 9 files: 100%|██████████| 9/9 [10:06<00:00, 84.26s/it]Fetching 9 files: 100%|██████████| 9/9 [10:06<00:00, 67.41s/it]
+[32m✓ Downloaded[0m
+  path: /tmp/hoplite/workspace/.models/google/gemma-4-E2B-it
+it exit=0 607s
+2db5482b20d746879bb3ef79b5203e9075a2e2b98f54ec7c2f281c1477ddc550  .models/google/gemma-4-E2B-it/model.safetensors

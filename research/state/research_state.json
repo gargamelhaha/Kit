@@ -1,0 +1,19 @@
+{
+  "cycle": 2,
+  "updated": "2026-10-25",
+  "repo_note": "Cycle 1 lived in github.com/rapidsainov-cmyk/Axg (read-only for this session); cycle 2 continues with full history in gargamelhaha/Kit branch hoplite/ambrakia-a2a0753c.",
+  "environment": {"host": "Modal 2 vCPU / 8 GiB, no GPU", "venv": ".venv (torch 2.14.1+cpu, transformers 5.20.2)",
+                  "weights": "gemma-4-E2B-it rev 3e22461f sha256 verified (logs/download_c2.log)",
+                  "external_llm_api": "tools/llm_pool.py; cap 6 parallel (PL-7); creds in ~/.config/lab/api.env (never committed)"},
+  "running": ["E006_kv_route (H-008/H-009)", "deep_read --priority (25 sources, 2 models, quote verification)"],
+  "open_tasks": [
+    "E006 analysis + independent API audit (different families) -> update H-008/H-009, KB",
+    "E004b identity / answer-suppression controls (AUDIT-001)",
+    "H-006 PLE vs residual patching",
+    "H-007 untrained shared k/v remnants: compare with base checkpoint",
+    "Engineering: prefill cost saving from KV-sharing (layers 15-34 only needed at last position) - measure vs literature (Gemma 3n claims)",
+    "Literature: citation chasing LIT-01, LIT-05 saturation; cross-layer KV sharing / PLE novelty check",
+    "Gemma 2 2B control blocked: no HF token"
+  ],
+  "next_step": "Analyze E006 (analyze.py), audit via API, curate KB."
+}

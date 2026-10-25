@@ -67,7 +67,7 @@ class Runner:
         return torch.tanh(logits / self.cap) * self.cap if self.cap else logits
 
     @torch.no_grad()
-    def forward(self, ids, hooks=None, last_only_from=None, keep_resid=False, attn="sdpa", logits="last", return_shared=False):
+    def forward(self, ids, hooks=None, last_only_from=None, keep_resid=False, attn="sdpa", logits="last", return_shared=False, allow_long=False):
         if last_only_from is not None and last_only_from < self.first_shared:
             raise ValueError(f"last_only_from must be >= {self.first_shared}: earlier layers still write K/V for other positions")
         self.cfg._attn_implementation = attn
@@ -84,7 +84,7 @@ class Runner:
             lt = self.cfg.layer_types[i]
             m, p, pli = masks[lt], pe[lt], ple[:, :, i, :]
             if last_only_from is not None and i >= last_only_from:
-                if ids.shape[1] > self.cfg.sliding_window:
+                if ids.shape[1] > self.cfg.sliding_window and not allow_long:
                     raise NotImplementedError("last_only mode is only validated for inputs <= sliding window")
                 if not sliced:
                     h, sliced = h[:, -1:], True

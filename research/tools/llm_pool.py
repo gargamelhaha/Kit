@@ -39,7 +39,7 @@ class Pool:
         os.makedirs(CACHE, exist_ok=True)
 
     def _key(self, req):
-        blob = json.dumps({k: req.get(k) for k in ("model", "messages", "temperature", "max_tokens")}, sort_keys=True)
+        blob = json.dumps({k: req.get(k) for k in ("model", "messages", "temperature", "max_tokens", "reasoning_effort")}, sort_keys=True)
         return hashlib.sha256(blob.encode()).hexdigest()[:24]
 
     def call(self, req, cache=True):
