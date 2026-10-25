@@ -19,9 +19,12 @@ def rss():
 
 calls = []
 orig_forward = model.forward
+import functools
+@functools.wraps(orig_forward)  # keep the signature: generate() checks it for `logits_to_keep` (PL-15)
 def timed_forward(*a, **k):
     t0 = time.perf_counter(); o = orig_forward(*a, **k); calls.append(time.perf_counter() - t0); return o
 model.forward = timed_forward
+assert model._supports_logits_to_keep(), "timing wrapper hides logits_to_keep"
 
 
 def gen(ids, mask, G, past=None):

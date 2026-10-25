@@ -8,3 +8,23 @@ R1 CN Tower -> Big Ben {'B25_MEAN': 0.669, 'B25_MEANNM': 0.506, 'H1to7_NOISE': 0
 R1 CN Tower -> Brandenburg Gate {'B25_MEAN': 0.796, 'B25_MEANNM': 0.667, 'H1to7_NOISE': 0.913, 'LATE_ALL_MEAN': 0.387} eager-sdpa 4e-06 310 s
 R1 Big Ben -> Brandenburg Gate {'B25_MEAN': 0.748, 'B25_MEANNM': 0.744, 'H1to7_NOISE': 0.924, 'LATE_ALL_MEAN': 0.586} eager-sdpa 2.1e-05 327 s
 R1 Atomium -> Big Ben {'B25_MEAN': 0.813, 'B25_MEANNM': 0.789, 'H1to7_NOISE': 0.917, 'LATE_ALL_MEAN': 0.468} eager-sdpa 6.1e-05 350 s
+R1 CN Tower -> Burj Khalifa {'B25_MEAN': 0.868, 'B25_MEANNM': 0.757, 'H1to7_NOISE': 0.836, 'LATE_ALL_MEAN': 0.56} eager-sdpa 1.9e-05 375 s
+R1 Eiffel Tower -> Burj Khalifa {'B25_MEAN': 0.995, 'B25_MEANNM': 0.973, 'H1to7_NOISE': 0.945, 'LATE_ALL_MEAN': 0.687} eager-sdpa 0.0 396 s
+R1 Burj Khalifa -> Alhambra {'B25_MEAN': 0.782, 'B25_MEANNM': 0.727, 'H1to7_NOISE': 0.971, 'LATE_ALL_MEAN': 0.486} eager-sdpa 8e-06 416 s
+R2 Iraq -> Japan {'B25_MEAN': 0.83, 'B25_MEANNM': 0.804, 'H1to7_NOISE': 0.954, 'LATE_ALL_MEAN': 0.333} eager-sdpa 1.1e-05 435 s
+R2 Egypt -> Japan {'B25_MEAN': 0.792, 'B25_MEANNM': 0.78, 'H1to7_NOISE': 0.968, 'LATE_ALL_MEAN': 0.305} eager-sdpa 3.1e-05 454 s
+R2 Finland -> Spain {'B25_MEAN': 0.731, 'B25_MEANNM': 0.706, 'H1to7_NOISE': 0.97, 'LATE_ALL_MEAN': 0.294} eager-sdpa 3.1e-05 473 s
+R2 Peru -> Poland {'B25_MEAN': 0.757, 'B25_MEANNM': 0.751, 'H1to7_NOISE': 0.989, 'LATE_ALL_MEAN': 0.462} eager-sdpa 2.3e-05 491 s
+R2 Chile -> Ireland {'B25_MEAN': 0.865, 'B25_MEANNM': 0.837, 'H1to7_NOISE': 0.99, 'LATE_ALL_MEAN': 0.524} eager-sdpa 1.9e-05 509 s
+R2 Germany -> Greece {'B25_MEAN': 0.831, 'B25_MEANNM': 0.82, 'H1to7_NOISE': 0.962, 'LATE_ALL_MEAN': 0.504} eager-sdpa 2.9e-05 528 s
+R2 Portugal -> Hungary {'B25_MEAN': 0.905, 'B25_MEANNM': 0.882, 'H1to7_NOISE': 0.968, 'LATE_ALL_MEAN': 0.542} eager-sdpa 8e-06 547 s
+R2 France -> Spain {'B25_MEAN': 0.768, 'B25_MEANNM': 0.747, 'H1to7_NOISE': 0.922, 'LATE_ALL_MEAN': 0.413} eager-sdpa 2.7e-05 566 s
+R2 Poland -> China {'B25_MEAN': 0.802, 'B25_MEANNM': 0.783, 'H1to7_NOISE': 0.923, 'LATE_ALL_MEAN': 0.369} eager-sdpa 4e-06 585 s
+R2 France -> Norway {'B25_MEAN': 0.826, 'B25_MEANNM': 0.819, 'H1to7_NOISE': 0.959, 'LATE_ALL_MEAN': 0.511} eager-sdpa 5.3e-05 603 s
+R2 Russia -> Spain {'B25_MEAN': 0.908, 'B25_MEANNM': 0.869, 'H1to7_NOISE': 1.006, 'LATE_ALL_MEAN': 0.467} eager-sdpa 2e-06 621 s
+R2 Egypt -> Vietnam {'B25_MEAN': 0.753, 'B25_MEANNM': 0.75, 'H1to7_NOISE': 0.976, 'LATE_ALL_MEAN': 0.416} eager-sdpa 2.3e-05 640 s
+R2 India -> Japan {'B25_MEAN': 0.803, 'B25_MEANNM': 0.789, 'H1to7_NOISE': 0.974, 'LATE_ALL_MEAN': 0.406} eager-sdpa 2e-06 659 s
+R2 Chile -> Spain {'B25_MEAN': 0.692, 'B25_MEANNM': 0.688, 'H1to7_NOISE': 0.966, 'LATE_ALL_MEAN': 0.301} eager-sdpa 1.1e-05 677 s
+R2 Germany -> Spain {'B25_MEAN': 0.804, 'B25_MEANNM': 0.782, 'H1to7_NOISE': 0.95, 'LATE_ALL_MEAN': 0.405} eager-sdpa 3.4e-05 696 s
+R2 Poland -> Russia {'B25_MEAN': 0.894, 'B25_MEANNM': 0.874, 'H1to7_NOISE': 0.81, 'LATE_ALL_MEAN': 0.443} eager-sdpa 8e-06 715 s
+done

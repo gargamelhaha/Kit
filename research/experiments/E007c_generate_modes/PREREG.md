@@ -50,3 +50,7 @@ and this is stated). P3's C1 bound is uninformative (pre-audit): reported descri
 - Cost cut at ~13:20Z (decided from run time, without seeing outcomes of the dropped cells): fp32 REF decode costs ~3 s/token,
   projected E007c wall ≈ 100 min. C1 reduced to its first prompt (already complete), C4 G 48 → 32, C4/C5 one repetition (timing
   from a single run, flagged). Completed rows are kept (resume); partial run copy in result_it_part1.json.
+- PL-15 (13:25Z): the run died on the RSS guard in C2 REF. Root cause: the timing wrapper replaced `model.forward` with
+  `(*a, **k)`, hiding `logits_to_keep` from `generate()`, which then computed logits for all prompt positions (+1.07 GB at T=1024;
+  REF prefill also paid ≈ 3% extra time at T=128). Fixed with functools.wraps + assertion; all rows so far moved to
+  `biased_run1/` (kept, not analysed); E007c is rerun from scratch after E008.

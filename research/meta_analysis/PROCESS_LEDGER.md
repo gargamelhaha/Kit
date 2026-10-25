@@ -127,3 +127,12 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Root cause: `bash -c 'while pgrep -f "queue.sh E006_kv_route:base" …'` — `pgrep -f` matched the waiter's own command line.
 - Fix: one sequential `queue.sh A B C D` invocation per batch; never chain via pgrep on a pattern contained in the waiter itself.
 - Status: accepted.
+
+## PL-15 Instrumentation changed the measured system (timing wrapper hid `logits_to_keep`)
+- Symptom: E007c REF arm at T=1024 exceeded the RSS guard (6.85 GB); E007 (same T, plain Runner) peaked at 6.11 GB.
+- Root cause: `model.forward = timed_forward(*a, **k)` — `generate()` inspects `inspect.signature(model.forward)` for
+  `logits_to_keep`; the wrapper hid it, so HF computed T × 262 144 fp32 logits (1.07 GB at T=1024) in the REF prefill only
+  (SKIP slices to the last position anyway) → memory blow-up and a ~3% timing bias in favour of SKIP.
+- Fix: `functools.wraps` + `assert model._supports_logits_to_keep()`; biased rows quarantined in `E007c/biased_run1/`; full rerun.
+- Rule: instrumentation wrappers must preserve signatures, and a measurement harness needs an assertion that the measured
+  code path equals the production path.
