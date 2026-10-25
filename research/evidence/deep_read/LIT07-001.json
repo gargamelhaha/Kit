@@ -1,0 +1,508 @@
+{
+ "source_id": "LIT07-001",
+ "arxiv_id": "2309.03883",
+ "title": "DoLa: Decoding by Contrasting Layers Improves Factuality in Large Language Models",
+ "chars": 82810,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.946,
+   "data": {
+    "title": "DoLa: Decoding by Contrasting Layers Improves Factuality in Large Language Models",
+    "research_question": "Can a decoding strategy that contrasts logits from later versus earlier transformer layers reduce hallucinations and improve factual accuracy in pretrained LLMs without retrieval or fine-tuning?",
+    "models_and_data": [
+     {
+      "item": "LLaMA 7B/13B/33B/65B",
+      "quote": "We examine four sizes of LLaMA models (Touvron et al., 2023) (7B, 13B, 33B, 65B)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MPT-7B",
+      "quote": "We also try to apply DoLa to a non-LLaMA model, MPT-7B (MosaicML, 2023)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT2-Medium",
+      "quote": "We apply DoLa to the GPT2 Medium model with 335M parameters",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TruthfulQA and FACTOR",
+      "quote": "For multiple choices, we use TruthfulQA (Lin et al., 2022) and FACTOR (News/Wiki) (Muhlgay et al., 2023)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "StrategyQA and GSM8K",
+      "quote": "For open-ended generation, we use TruthfulQA (rated by fine-tuned GPT-3) (Lin et al., 2022) and tasks involving chain-of-thought (Wei et al., 2022b) reasoning: StrategyQA (Geva et al., 2021) and GSM8K Cobbe et al. (2021).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Vicuna QA",
+      "quote": "Finally, we test Vicuna QA (Chiang et al., 2023) which uses GPT-4 to evaluate instruction-following abilities as chatbot assistants.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CoNLL-2003 NER validation set",
+      "quote": "We use the validation set of the CoNLL-2003 name entity recognition dataset Sang & De Meulder (2003) with 3.25K examples.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Compute early-layer next-token distributions with the vocabulary head",
+      "quote": "for the j-th early layer, we also compute the next-token probability using ϕ(·)",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Select the premature layer dynamically by Jensen-Shannon divergence",
+      "quote": "The premature layer is dynamically selected in each decoding step using a distributional distance measure d(·, ·) (we use Jensen-Shannon Divergence) between the mature layer and all the candidate layers in J .",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Contrast mature and premature log probabilities",
+      "quote": "we subtract the log probabilities of the premature layer outputs from those of the mature layer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply adaptive plausibility constraint",
+      "quote": "we set the token probability to zero to minimize false positive and false negative cases.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply repetition penalty during decoding",
+      "quote": "Here we include a simple repetition penalty introduced in Keskar et al. (2019) with θ = 1.2 during decoding.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Select candidate layer bucket via validation",
+      "quote": "We use either two-fold validation (TruthfulQA-MC, FACTOR) or a validation set (GSM8K, StrategyQA) to select the best bucket.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use even-indexed candidate layers for efficiency",
+      "quote": "For efficiency, only even-indexed layers (0th, 2nd, etc.) are considered as candidates.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "MC1",
+      "definition": "Winner-takes-all multiple-choice metric.",
+      "quote": "a “winner takes all” metric that is more sensitive to fluctuations",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MC2/MC3",
+      "definition": "Stable metrics averaging all true/false answers.",
+      "quote": "MC2/MC3 are relatively more stable metrics as they consider all true/false answers together and average them for calculating the scores.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%Truth",
+      "definition": "Truthful score from fine-tuned GPT-3.",
+      "quote": "TruthfulQA is rated by fine-tuned GPT-3 on truthful and informative scores.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%Info",
+      "definition": "Informative score; can be 0% for “I have no comment”.",
+      "quote": "A 100% truthful score can be easily achievable by answering “I have no comment”, but results in a 0% informative score.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%T∗I",
+      "definition": "Product of truth and info scores.",
+      "quote": "%T∗I stands for %Truth∗Info in TruthfulQA.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%Reject",
+      "definition": "Ratio of “I have no comment” responses.",
+      "quote": "has a ratio of “I have no comment” (%Reject) under 10%.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "JSD",
+      "definition": "Jensen-Shannon divergence between mature and candidate layer distributions.",
+      "quote": "we use Jensen-Shannon Divergence",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Latency/throughput",
+      "definition": "Decoding latency in ms/token and throughput in token/s.",
+      "quote": "Decoding latency (ms/token) and throughput (token/s).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "DoLa improves LLaMA TruthfulQA by 12-17 absolute points.",
+      "numbers": "12-17% absolute points",
+      "quote": "improving the performance of LLaMA family models on TruthfulQA by 12-17% absolute points",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Overall %Truth∗Info improves by 12-17% across four models.",
+      "numbers": "12-17%",
+      "quote": "It improves the overall (%Truth∗Info) scores by 12-17% across four models, reaching the performance level of ITI, which relies on supervised training with labels.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DoLa boosts StrategyQA accuracy by 1-4% for four models.",
+      "numbers": "1-4%",
+      "quote": "DoLa boosts accuracy by 1-4% for four models",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "GSM8K accuracy improves by 2% for most LLaMA sizes except 7B.",
+      "numbers": "2%",
+      "quote": "Table 1 shows a 2% accuracy improvement for most LLaMA sizes, except 7B.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "FACTOR gains 2-4% over baselines.",
+      "numbers": "2-4%",
+      "quote": "Table 1 shows DoLa outperforms baselines by 2-4%, and is more effective than CD, except for 13B on Wiki.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Decoding time increases by factors 1.01 to 1.08.",
+      "numbers": "1.01 to 1.08",
+      "quote": "DoLa increases the decoding time by factors of 1.01 to 1.08",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DoLa outperforms baseline in Vicuna QA, especially 13B and 33B.",
+      "numbers": "not stated",
+      "quote": "DoLa notably outperforms the baseline, especially in the 13B and 33B models",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "MPT-7B also improves on most datasets.",
+      "numbers": "not stated",
+      "quote": "Table 11 shows gains on most datasets, suggesting the potential of DoLa to generalize across various transformer LLMs.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Only factuality is explored, not other dimensions such as RLHF.",
+      "quote": "Focusing on factuality: We have not explored DoLa in other dimensions such as reinforcement learning from human feedback (Ouyang et al., 2022).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Inference-only method without human labels or factual knowledge bases for fine-tuning.",
+      "quote": "Inference only: We rely on existing models and pre-trained parameters, not using human labels or factual knowledge bases for fine-tuning (Li et al., 2023), limiting possible improvements.",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "No external retrieval grounding.",
+      "quote": "Not grounding on external knowledge: Our method relies on the model’s internal knowledge without using external retrieval modules (Izacard et al., 2022; Borgeaud et al., 2022; Ram et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Cannot correct misinformation learned during training.",
+      "quote": "Thus, it cannot correct misinformation acquired during training.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa can repeat content on reasoning tasks.",
+      "quote": "DoLa sometimes repeats content, particularly in StrategyQA and GSM8K.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa can be less relevant to the question than baseline.",
+      "quote": "although DoLa tends to generate detailed factual information, sometimes it will not be as relevant to the question as the baseline’s answer.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa does not help GPT2-Medium factuality on multiple-choice tasks.",
+      "quote": "DoLa cannot help GPT2 to be more factual on the multiple choices tasks.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Layer-contrast assumptions may not transfer to Gemma 4 E2B: KV-shared layers 15-34 and per-layer embeddings can break the paper's premise that factual knowledge is localized in later layers.",
+     "The paper's dynamic JSD layer selection and even-indexed candidate buckets were tuned for LLaMA layer counts; they may miss useful premature layers in Gemma 4 E2B's 20 KV-shared layers.",
+     "No activation patching, logit-lens, induction-head, or factual-recall tracing is used, so causal localization claims are indirect and may not match internals tracing on CPU.",
+     "GPT-3/GPT-4 judge-based TruthfulQA and Vicuna QA evaluations introduce judge bias, prompt sensitivity, and reproducibility concerns not analyzed by the authors.",
+     "Fixed APC α=0.1 and repetition penalty θ=1.2 are not fully ablated across models/tasks; contrastive logit subtraction can amplify low-probability artifacts.",
+     "Latency/throughput and memory are measured on V100 GPUs, not CPU, so practical costs for the lab's CPU-only Gemma 4 E2B workflow are unknown.",
+     "Benchmarks are English-centric and do not test multilingual, domain-shift, or KV-cache-sharing-specific failure modes."
+    ],
+    "code_or_data_url": "https://github.com/voidism/DoLa",
+    "relevance_to_lab": "DoLa's layer-contrast and JSD premature-layer selection are directly relevant to logit-lens and factual-recall tracing, but its LLaMA layer assumptions must be re-tested on Gemma 4 E2B's KV-shared layers 15-34 and per-layer embeddings; CPU latency and activation-patching protocols are not covered."
+   },
+   "usage": {
+    "prompt_tokens": 24972,
+    "total_tokens": 35225,
+    "completion_tokens": 10253,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 24704
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8100
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 2,
+    "unverified": 0,
+    "skip": 0
+   },
+   "verified_frac": 1.0,
+   "data": {
+    "title": "DoLa: Decoding by Contrasting Layers Improves Factuality in Large Language Models",
+    "research_question": "Can contrasting logits from later and dynamically selected earlier transformer layers improve factual recall and reduce hallucinations in pretrained language models without external retrieval or additional fine-tuning?",
+    "models_and_data": [
+     {
+      "item": "LLaMA-7B, LLaMA-13B, LLaMA-33B, and LLaMA-65B",
+      "quote": "We examine four sizes of LLaMA models (Touvron et al., 2023) (7B, 13B, 33B, 65B)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MPT-7B as a non-LLaMA replication",
+      "quote": "We also try to apply DoLa to a non-LLaMA model, MPT-7B (MosaicML, 2023), and show that DoLa can still improve the performance for the LLMs beyond LLaMA in Appendix G.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "GPT2 Medium with 335M parameters as a small-model test",
+      "quote": "We apply DoLa to the GPT2 Medium model with 335M parameters, to mimic the setting of Gera et al. (2023) and investigate the effects of DoLa on small LMs.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Baselines: original decoding, Contrastive Decoding, and Inference Time Intervention",
+      "quote": "1) original decoding (greedy decoding or sampling depending on the tasks), 2) Contrastive Decoding (CD) (Li et al., 2022), where LLaMA-7B serves as the amateur model and LLaMA-13B/33B/65B act as expert models, and 3) Inference Time Intervention (ITI).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TruthfulQA and FACTOR (News/Wiki) for multiple-choice factuality",
+      "quote": "For multiple choices, we use TruthfulQA (Lin et al., 2022) and FACTOR (News/Wiki) (Muhlgay et al., 2023) to assess LMs’ factuality in short-answer/long-paragraph settings, respectively.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TruthfulQA open-ended generation, StrategyQA, and GSM8K",
+      "quote": "For open-ended generation, we use TruthfulQA (rated by fine-tuned GPT-3) (Lin et al., 2022) and tasks involving chain-of-thought (Wei et al., 2022b) reasoning: StrategyQA (Geva et al., 2021) and GSM8K Cobbe et al., 2021).",
+      "quote_check": "near"
+     },
+     {
+      "item": "Vicuna QA for GPT-4-rated instruction following",
+      "quote": "Finally, we test Vicuna QA (Chiang et al., 2023) which uses GPT-4 to evaluate instruction-following abilities as chatbot assistants.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CoNLL-2003 named-entity-recognition validation set",
+      "quote": "We use the validation set of the CoNLL-2003 name entity recognition dataset Sang & De Meulder (2003) with 3.25K examples.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Probe how predictions evolve across layers by comparing early-exit and final-layer distributions with JSD.",
+      "quote": "Figure 2 shows the JSDs when decoding the answer for the input question, from which we can observe two patterns.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "At each decoding step, select the premature layer with maximum distributional divergence from the mature layer.",
+      "quote": "The premature layer, i.e., the M -th layer (0 ≤ M < N ), is then selected as the layer with the maximum divergence among the subset of early layers,",
+      "quote_check": "near"
+     },
+     {
+      "step": "Partition each model’s layers into 2 to 4 candidate-layer buckets.",
+      "quote": "For LLaMA models with various number of layers, we divide the layers into 2 to 4 buckets of J based on their total layers, in order to focus on contrasting from a certain range of layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Select the candidate-layer bucket using task-specific validation data.",
+      "quote": "The best bucket for each task is chosen using a validation set, as detailed in Section 3.1.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Contrast the mature layer against the premature layer by subtracting premature-layer log probabilities from mature-layer log probabilities.",
+      "quote": "Following the Contrastive Decoding approach from Li et al. (2022), we subtract the log probabilities of the premature layer outputs from those of the mature layer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply the adaptive plausibility constraint by assigning zero probability to implausibly low-scoring mature-layer tokens.",
+      "quote": "If the predicted probability of a token is too small in the mature layer, it is not likely to be a reasonable prediction, so we set the token probability to zero to minimize false positive and false negative cases.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply a repetition penalty during decoding to limit repeated sentences in long generations.",
+      "quote": "Here we include a simple repetition penalty introduced in Keskar et al. (2019) with θ = 1.2 during decoding.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use greedy decoding for factual and reasoning tasks and random sampling for Vicuna QA.",
+      "quote": "When decoding responses from the language models, we use greedy decode for TruthfulQA, StrategyQA, and GSM8K. For the Vicuna QA Benchmark, we use random sampling with temperature 0.7 and max new tokens 1024 to generate the responses.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Jensen-Shannon Divergence (JSD)",
+      "definition": "Distance between mature-layer and candidate early-layer next-token distributions, used for layer analysis and premature-layer selection.",
+      "quote": "where JSD(·, ·) is the Jensen-Shannon divergence.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "TruthfulQA MC1",
+      "definition": "Multiple-choice accuracy using a winner-takes-all metric that is sensitive to fluctuations among answers.",
+      "quote": "The only exception is LLaMA-33B on MC1, a “winner takes all” metric that is more sensitive to fluctuations.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "TruthfulQA MC2 and MC3",
+      "definition": "Multiple-choice accuracies that jointly consider and average over true and false answers.",
+      "quote": "In contrast, MC2/MC3 are relatively more stable metrics as they consider all true/false answers together and average them for calculating the scores.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "FACTOR News/Wiki accuracy",
+      "definition": "Accuracy in selecting the one correct completion among four completions for each long paragraph.",
+      "quote": "In FACTOR, each example has a long paragraph and four completions, with one being correct.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "TruthfulQA open-ended truthfulness and informativeness metrics",
+      "definition": "Fine-tuned-GPT-3 ratings reported as %Truth, %Info, and %Truth∗Info, with %Reject tracking “I have no comment” responses.",
+      "quote": "In open-ended settings, TruthfulQA is rated by fine-tuned GPT-3 on truthful and informative scores.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "StrategyQA and GSM8K accuracy",
+      "definition": "Accuracy on multi-hop chain-of-thought and math word-problem reasoning benchmarks.",
+      "quote": "Further experiments on chain-of-thought reasoning for StrategyQA (Geva et al., 2021) and GSM8K (Cobbe et al., 2021) also show that it can facilitate more factual reasoning.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "GPT-4 pairwise win/tie/loss rating",
+      "definition": "GPT-4 judgments comparing DoLa responses with baseline responses on Vicuna QA.",
+      "quote": "Pairwise comparisons rated by GPT-4 are in Figure 4, showing DoLa notably outperforms the baseline, especially in the 13B and 33B models, indicating DoLa is effective even in open-ended chatbot scenarios.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Greedy-decoding latency and throughput",
+      "definition": "Decoding time in milliseconds per token and generation speed in tokens per second, including factors relative to baseline decoding.",
+      "quote": "Table 2: Decoding latency (ms/token) and throughput (token/s).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "DoLa improves LLaMA-family truthfulness on TruthfulQA.",
+      "numbers": "12-17% absolute points",
+      "quote": "DoLa consistently improves the truthfulness across multiple choices tasks and open-ended generation tasks, for example improving the performance of LLaMA family models on TruthfulQA by 12-17% absolute points, demonstrating its potential in making LLMs reliably generate truthful facts.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DoLa improves FACTOR factuality relative to the reported baselines.",
+      "numbers": "2-4%",
+      "quote": "Table 1 shows DoLa outperforms baselines by 2-4%, and is more effective than CD, except for 13B on Wiki.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DoLa improves StrategyQA accuracy across the four LLaMA sizes.",
+      "numbers": "1-4%",
+      "quote": "In Table 1, DoLa boosts accuracy by 1-4% for four models, while CD mostly worsens it",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DoLa improves GSM8K accuracy for most tested LLaMA sizes, with LLaMA-7B as the exception.",
+      "numbers": "2%",
+      "quote": "Table 1 shows a 2% accuracy improvement for most LLaMA sizes, except 7B.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Dynamic layer selection reduces the candidate-layer hyperparameter search compared with DoLa-static.",
+      "numbers": "2-4 bucket tests; almost 10x fewer; 16-40 tests",
+      "quote": "Additionally, DoLa simplifies hyperparameter search space: it needs only 2-4 bucket tests, almost 10x fewer than the 16-40 tests needed in DoLa-static.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "DoLa adds relatively little greedy-decoding latency.",
+      "numbers": "1.01 to 1.08",
+      "quote": "The greedy decoding latency in Table 2 shows DoLa increases the decoding time by factors of 1.01 to 1.08, suggesting DoLa can be widely applied with negligible cost.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For LLaMA-7B, DoLa has modestly higher forward-pass memory overhead than vanilla decoding.",
+      "numbers": "2.5%; 3.6%",
+      "quote": "We can see that during the forward pass of LLaMA-7B, the overhead for vanilla decoding is 2.5% while DoLa requires 3.6%.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The study focuses on factuality and does not explore other dimensions such as reinforcement learning from human feedback.",
+      "quote": "Focusing on factuality: We have not explored DoLa in other dimensions such as reinforcement learning from human feedback (Ouyang et al., 2022).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa is inference-only and does not use human labels or factual knowledge bases for fine-tuning, limiting possible improvements.",
+      "quote": "Inference only: We rely on existing models and pre-trained parameters, not using human labels or factual knowledge bases for finetuning (Li et al., 2023), limiting possible improvements.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Without external grounding or retrieval, the method cannot correct misinformation acquired during training.",
+      "quote": "Not grounding on external knowledge: Our method relies on the model’s internal knowledge without using external retrieval modules (Izacard et al., 2022; Borgeaud et al., 2022; Ram et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa can produce more detailed answers that are less relevant to the question.",
+      "quote": "although DoLa tends to generate detailed factual information, sometimes it will not be as relevant to the question as the baseline’s answer.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa does not improve factuality for GPT2 Medium on the evaluated multiple-choice tasks.",
+      "quote": "As shown in Table 17, DoLa cannot help GPT2 to be more factual on the multiple choices tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "DoLa can increase repetition, particularly during long chain-of-thought generation.",
+      "quote": "we found that the resulting DoLa distribution to sometimes have a higher tendency to repeat previously generated sentences (Xu et al., 2022), especially during generation of long sequences of chain-of-thought reasoning.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "Gemma 4 E2B is not evaluated; transfer of the layer-bucket and logit-contrast assumptions to its KV-shared layers 15-34 is untested.",
+     "Latency and memory measurements use V100 GPUs and multi-GPU sharding, so the reported latency factor of 1.01 to 1.08 may not hold on CPU or for a smaller E2B model.",
+     "Fine-tuned GPT-3 and GPT-4 are used as judges, creating evaluator bias and possible reward-model errors in the open-ended and chatbot results.",
+     "Selecting candidate buckets using task validation data can overfit benchmark distributions and may not transfer to deployment prompts, even with a small layer search space.",
+     "The reported aggregate tables omit uncertainty intervals and statistical significance tests, limiting confidence in small performance differences.",
+     "JSD and early-exit logit changes are correlational proxies for factual emergence and may instead reflect token difficulty, syntax, confidence, or surface copying.",
+     "Contrastive decoding can sharpen incorrect internal knowledge or distributional calibration errors, while aggregate truthfulness metrics may conceal regressions on particular factual categories or response types."
+    ],
+    "code_or_data_url": "https://github.com/voidism/DoLa",
+    "relevance_to_lab": "The method is directly relevant as a layer-local test of whether intermediate logits contain factual information: map the premature-versus-mature contrast onto Gemma 4 E2B’s KV-shared layers 15-34, apply the vocabulary head through logit lens to per-layer embeddings or hidden states, and select the premature layer by JSD. Activation patching can test whether the selected layer differences are causally involved in factual recall, while induction-head tracing can help separate factual recall from copied or syntactically easy tokens. The paper’s LLaMA/MPT results do not establish behavior for Gemma 4 E2B, and its V100 measurements do not transfer directly to CPU, so candidate buckets and computational cost require revalidation."
+   },
+   "usage": {
+    "total_tokens": 49105,
+    "total_characters": 0,
+    "prompt_tokens": 24810,
+    "completion_tokens": 24295,
+    "completion_tokens_details": {
+     "reasoning_tokens": 21449
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 197
+    }
+   }
+  }
+ }
+}

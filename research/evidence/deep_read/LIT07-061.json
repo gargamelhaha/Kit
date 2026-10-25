@@ -1,0 +1,499 @@
+{
+ "source_id": "LIT07-061",
+ "arxiv_id": "2402.03744",
+ "title": "INSIDE: LLMs' Internal States Retain the Power of Hallucination Detection",
+ "chars": 69379,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 33,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.971,
+   "data": {
+    "title": "INSIDE: LLM’S INTERNAL STATES RETAIN POWER OF HALLUCINATION DETECTION",
+    "research_question": "Can dense semantic information retained within LLMs’ internal states be used for hallucination detection?",
+    "models_and_data": [
+     {
+      "item": "LLaMA and OPT open-source LLMs",
+      "quote": "We use two representative open source LLMs, including LLaMA (Touvron et al., 2023a) and OPT (Zhang et al., 2022) in our experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "LLaMA-7B, LLaMA-13B, OPT-6.7B",
+      "quote": "we evaluate the performance of different methods in LLaMA-7B, LLaMA-13B and OPT-6.7B.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Four QA datasets: CoQA, SQuAD, TriviaQA, NQ",
+      "quote": "We utilize four widely used question answering (QA) datasets for evaluation",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CoQA development split with 7983 QA pairs",
+      "quote": "the development split of CoQA with 7983 QA pairs",
+      "quote_check": "exact"
+     },
+     {
+      "item": "NQ validation split with 3610 QA pairs",
+      "quote": "the validation split of NQ with 3610 QA pairs",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TriviaQA rc.nocontext subset with 9,960 deduplicated QA pairs",
+      "quote": "the validation split of the TriviaQA (rc.nocontext subset) with 9,960 deduplicated QA pairs",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SQuAD development-v2.0 subset with 5928 QA pairs",
+      "quote": "utilize the subset of the developmentv2.0 split with 5928 QA pairs",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TruthfulQA benchmark",
+      "quote": "TruthfulQA is an important benchmark to evaluate the truthfulness of LLMs (Joshi et al., 2017).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Generate multiple responses by top-p/top-k sampling",
+      "quote": "multiple responses could be easily obtained by the top-p/top-k sampling strategy during inference time",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Set decoder sampling hyperparameters",
+      "quote": "we set temperature to 0.5, top-p to 0.99 and top-k to 5 through the experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Set number of generations to K = 10",
+      "quote": "The number of generations is set to K = 10.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use last-token embedding in the middle layer as sentence embedding",
+      "quote": "we use the embedding of the last token in the middle layer as the sentence embedding",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute covariance matrix of K sentence embeddings",
+      "quote": "the covariance matrix of K sentence embeddings can be computed as",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute EigenScore as LogDet of covariance matrix",
+      "quote": "the proposed EigenScore can be defined as the logarithm determinant (LogDet) of the covariance matrix",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply test-time feature clipping during EigenScore computation",
+      "quote": "a test time feature clipping approach is introduced during the computation of EigenScore.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Set clipping thresholds from memory-bank percentiles and p = 0.2",
+      "quote": "the thresholds hmin and hmax are set to the top and bottom p-th percentiles of the features in the memory bank.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "AUROC",
+      "definition": "Area under the receiver operator characteristic curve; used to evaluate binary classifier and uncertainty measure quality.",
+      "quote": "AUROC is a popular metric to evaluate the quality of a binary classifier and uncertainty measure",
+      "quote_check": "exact"
+     },
+     {
+      "name": "PCC",
+      "definition": "Pearson correlation between hallucination detection metric and correctness measure.",
+      "quote": "PCC is utilized to measure the correlation between the hallucination detection metric and the correctness measure",
+      "quote_check": "exact"
+     },
+     {
+      "name": "EigenScore",
+      "definition": "Average logarithm of eigenvalues of the regularized covariance matrix of sentence embeddings.",
+      "quote": "the hallucination degree of LLM’s generation can be measured by the average logarithm of the eigenvalues.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Perplexity",
+      "definition": "Sequence uncertainty from joint token probability, length-normalized.",
+      "quote": "a straightforward sequence uncertainty can be defined as the joint probability of different tokens, which is known as Perplexity",
+      "quote_check": "exact"
+     },
+     {
+      "name": "LN-Entropy",
+      "definition": "Length-normalized entropy over multiple generations.",
+      "quote": "the Length Normalized Entropy is proposed to measure the sequence-level uncertainty by making use of multiple generations",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Lexical Similarity",
+      "definition": "Average similarity across multiple answers as a consistency measure.",
+      "quote": "An intuitive semantic consistency metric is Lexical Similarity",
+      "quote_check": "exact"
+     },
+     {
+      "name": "ROUGE-L",
+      "definition": "n-gram based correctness measure using longest common subsequence.",
+      "quote": "ROUGE-L 5 is an n-gram based metric that computes the longest common subsequence between two pieces of text.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Sentence similarity",
+      "definition": "Cosine similarity between generation and ground-truth embeddings; threshold 0.9.",
+      "quote": "the generation is regarded as true when the cosine similarity between two embeddings is larger than 0.9.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "EigenScore outperforms Lexical Similarity by 5.6% in CoQA and 8.9% in SQuAD with AUROC at most.",
+      "numbers": "5.6%, 8.9%",
+      "quote": "the EigenScore outperforms Lexical Similarity by 5.6% in CoQA and 8.9% in SQuAD with AUROC metric at most.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Feature clipping consistently improves methods, with largest improvement 1.8% AUROC.",
+      "numbers": "1.8%",
+      "quote": "the introduced feature clipping consistently improves the performance of different methods, with the largest improvement being 1.8% in AUROC.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Performance increases for K < 15 and stabilizes for K > 15.",
+      "numbers": "K < 15, K > 15",
+      "quote": "When K < 15, the performance of different methods increases as K increases and when K > 15, the performance tends to remain stable.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "K = 20 provides optimal trade-off between performance and inference cost.",
+      "numbers": "K to 20",
+      "quote": "setting K to 20 provides the optimal trade-off between performance and inference cost.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EigenScore is about 10 times more efficient than methods relying on another large model for self-consistency.",
+      "numbers": "10 times",
+      "quote": "our EigenScore is about 10 times more efficient than the methods that rely on another large model to measure the self-consistency",
+      "quote_check": "near"
+     },
+     {
+      "claim": "Feature clipping and EigenScore computation cost is negligible at 0.06s.",
+      "numbers": "0.06s",
+      "quote": "the cost of feature clipping and EigenScore computation is negligible (0.06s).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On TruthfulQA, proposal is comparable to ITI when using 50 in-distribution prompts.",
+      "numbers": "50",
+      "quote": "our proposal consistently outperforms the baseline methods and achieves comparable performance as ITI when we utilize 50 in-distribution prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Average performance in LLaMA-13B is better than LLaMA-7B and OPT-6.7B.",
+      "numbers": "LLaMA-13B, LLaMA-7B, OPT-6.7B",
+      "quote": "On average, the performance in LLaMA-13B is better than that in LLaMA-7B and OPT-6.7B",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Requires internal information, so cannot be applied to black-box models.",
+      "quote": "the proposed method relies on the internal information of the LLMs, therefore cannot be applied to the black-box models",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Sampling-based approach requires multiple outputs and adds inference overhead.",
+      "quote": "our proposal is a sampling-based approach, necessitating the generation of multiple outputs, which introduces additional inference overhead for accurate hallucination detection.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Focuses only on hallucination detection, not mitigation.",
+      "quote": "we only focus on hallucination detection in this study and have not yet mitigate the hallucination with our proposal.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates LLaMA/OPT and does not test Gemma 4 E2B, so transfer to KV-shared layers 15-34 and per-layer embeddings is unverified.",
+     "Sentence embeddings are taken from the last token in a middle layer; this layer choice may not align with Gemma 4 E2B’s KV-shared architecture or per-layer embedding design.",
+     "Feature clipping uses a memory bank and fixed p=0.2; threshold sensitivity across models, datasets, and CPU inference is not analyzed.",
+     "Correctness labels depend on ROUGE-L and sentence-similarity thresholds, which can change AUROC/PCC and may not reflect factual recall.",
+     "The method is sampling-based with K=10, adding inference cost; CPU feasibility and latency are not reported.",
+     "No activation patching, logit lens, induction-head, or factual-recall tracing is used, so internal mechanisms are not localized."
+    ],
+    "code_or_data_url": "https://github.com/alibaba/eigenscore",
+    "relevance_to_lab": "Relevant as a baseline for using internal states and sentence embeddings for hallucination detection; EigenScore and feature clipping could be adapted to Gemma 4 E2B, but the paper does not address KV-shared layers 15-34, per-layer embeddings, activation patching, logit lens, induction heads, factual-recall tracing, or CPU constraints."
+   },
+   "usage": {
+    "prompt_tokens": 20679,
+    "total_tokens": 31182,
+    "completion_tokens": 10503,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 20352
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8160
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 3,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.919,
+   "data": {
+    "title": "INSIDE: LLMs’ Internal States Retain Power of Hallucination Detection",
+    "research_question": "Can dense semantic information retained in LLM internal states provide an effective sampling-based signal for detecting knowledge hallucinations, including self-consistent overconfident hallucinations, and can test-time clipping of extreme activations improve that detection?",
+    "models_and_data": [
+     {
+      "item": "Primary evaluated models are LLaMA-7B, LLaMA-13B, and OPT-6.7B.",
+      "quote": "We use two representative open source LLMs, including LLaMA (Touvron et al., 2023a) and OPT (Zhang et al., 2022) in our experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Additional robustness evaluation uses LLaMA2-7B and Falcon-7B.",
+      "quote": "Performance evaluation on LLaMA2-7B and Falcon-7B.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The evaluated models use pretrained weights without fine-tuning.",
+      "quote": "We use the pre-trained wights and do not finetune these models in all cases.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Main QA evaluation covers open-book CoQA and SQuAD and closed-book TriviaQA and Natural Questions.",
+      "quote": "two open-book conversational QA datasets CoQA (Reddy et al., 2019) and SQuAD (Rajpurkar et al., 2016), as well as two closed-book QA datasets TriviaQA (Joshi et al., 2017) and Natural Questions (NQ) (Kwiatkowski et al., 2019).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The CoQA, NQ, and TriviaQA evaluation splits contain 7983, 3610, and 9,960 QA pairs, respectively.",
+      "quote": "We follow Lin et al. (2023) to utilize the development split of CoQA with 7983 QA pairs, the validation split of NQ with 3610 QA pairs and the validation split of the TriviaQA (rc.nocontext subset) with 9,960 deduplicated QA pairs.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The filtered SQuAD developmentv2.0 subset contains 5928 QA pairs.",
+      "quote": "For the SQuAD dataset, we filter out the QA pairs with their flag is impossible = True, and utilize the subset of the developmentv2.0 split with 5928 QA pairs.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TruthfulQA is evaluated separately as a truthfulness benchmark.",
+      "quote": "TruthfulQA is an important benchmark to evaluate the truthfulness of LLMs (Joshi et al., 2017).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "The nli-roberta-large model supplies correctness embeddings for generated and ground-truth answers.",
+      "quote": "The sentence embeddings of model generation and the ground truth answer are extracted by the nli-roberta-large model",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Sample multiple responses using temperature 0.5, top-p 0.99, and top-k 5.",
+      "quote": "For the hyperparameters that are used for sampling strategies of LLMs’ decoder, we set temperature to 0.5, top-p to 0.99 and top-k to 5 through the experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Generate K = 10 responses per question.",
+      "quote": "The number of generations is set to K = 10.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Represent each response using its last-token hidden embedding from the middle layer, int(L/2).",
+      "quote": "For the sentence embedding used in our proposal, we use the last token embedding of the sentence in the middle layer, i.e., the layer index is set to int(L/2).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Regularize the response-embedding covariance matrix with α = 0.001 before computing EigenScore.",
+      "quote": "For the regularization term of the covariance matrix, we set α = 0.001.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Clip extreme penultimate-layer activations using percentile-derived bounds from a dynamic memory bank.",
+      "quote": "This implies that the activations falling within the largest and smallest top 0.2% in the memory bank are identified as abnormal features and subsequently truncated for reducing overconfident generation.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Maintain a memory bank of N = 3000 token embeddings.",
+      "quote": "For the memory bank used to conserve token embeddings, we set N = 3000.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Label a response correct when its ROUGE-L f-measure exceeds 0.5 in the main experiments.",
+      "quote": "The generation is regarded as correct when the ROUGE-L (f-measure) is large than a given threshold, which we set to 0.5 in our main experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Sweep the number of generations over {5, 10, 15, 20, 30, 40} on LLaMA-7B and NQ.",
+      "quote": "we select K from {5, 10, 15, 20, 30, 40} and perform experiments with LLaMA-7B and the NQ dataset.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "EigenScore",
+      "definition": "E = (1/K) log det(Σ + αI) = (1/K) sum_i log(λ_i), using the eigenvalues of the regularized covariance matrix of response embeddings; larger values represent greater semantic divergence.",
+      "quote": "Then, the proposed EigenScore can be defined as the logarithm determinant (LogDet) of the covariance matrix,",
+      "quote_check": "exact"
+     },
+     {
+      "name": "AUROC",
+      "definition": "Area under the receiver operator characteristic curve for binary hallucination-versus-correct discrimination; higher is better.",
+      "quote": "Therefore, the area under the receiver operator characteristic curve (AUROC) and Pearson Correlation Coefficient (PCC) are utilized as the performance measure.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "PCC",
+      "definition": "Pearson correlation between a hallucination-detection score and a correctness score; higher is better.",
+      "quote": "PCC is utilized to measure the correlation between the hallucination detection metric and the correctness measure",
+      "quote_check": "exact"
+     },
+     {
+      "name": "ROUGE-L correctness",
+      "definition": "An n-gram-based correctness measure based on the longest common subsequence between a generation and reference, thresholded at 0.5 in the main experiments.",
+      "quote": "The generation is regarded as correct when the ROUGE-L (f-measure) is large than a given threshold, which we set to 0.5 in our main experiments.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Sentence-similarity correctness",
+      "definition": "Cosine similarity between nli-roberta-large embeddings of the generation and ground truth, with correctness assigned when similarity exceeds 0.9.",
+      "quote": "the generation is regarded as true when the cosine similarity between two embeddings is larger than 0.9.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "G-Mean",
+      "definition": "Classification-threshold selection metric defined as G-Mean = T P R ∗ (1 − F P R), used for TruthfulQA.",
+      "quote": "The optimal classification thresholds is determined by maximizing the G-Mean value, which is defined as G-Mean = T P R ∗ (1 − F P R).",
+      "quote_check": "near"
+     },
+     {
+      "name": "Perplexity",
+      "definition": "Length-normalized negative log-likelihood of the generated token sequence.",
+      "quote": "As shorter sequences generally have lower perplexity, the length of the output sequence T is utilized to normalize the joint probability.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Lexical Similarity",
+      "definition": "Average pairwise similarity across multiple generated answers, used as a consistency baseline.",
+      "quote": "An intuitive semantic consistency metric is Lexical Similarity (Lin et al., 2022), which explores the average similarity across multiple answers as consistency measure",
+      "quote_check": "unverified"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "EigenScore's largest reported AUROC advantages over Lexical Similarity occur on CoQA and SQuAD.",
+      "numbers": "5.6% in CoQA; 8.9% in SQuAD",
+      "quote": "In particular, the EigenScore outperforms Lexical Similarity by 5.6% in CoQA and 8.9% in SQuAD with AUROC metric at most.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Test-time feature clipping consistently improves the evaluated detection methods.",
+      "numbers": "largest improvement being 1.8% in AUROC",
+      "quote": "The introduced feature clipping consistently improves the performance of different methods, with the largest improvement being 1.8% in AUROC.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Twenty generations are reported as the preferred trade-off between detection performance and inference cost.",
+      "numbers": "K = 20",
+      "quote": "The results suggeste that setting K to 20 provides an optimal trade-off between performance and inference cost.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Sentence embeddings from layers near the model middle substantially outperform embeddings from shallow and final layers.",
+      "numbers": "not stated",
+      "quote": "The results show that using the sentence embedding in the shallow and final layers yields significantly inferior performance compared to using sentence embedding in the layers close to the middle.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "With 50 in-distribution prompts, EigenScore approaches the reported ITI result on TruthfulQA without TruthfulQA training.",
+      "numbers": "50 in-distribution prompts; EigenScore 81.3; ITI 83.3",
+      "quote": "As can be seen, our proposal consistently outperforms the baseline methods and achieves comparable performance as ITI when we utilize 50 in-distribution prompts.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "EigenScore is reported to be about 10 times more efficient than methods requiring another large model for self-consistency measurement.",
+      "numbers": "about 10 times",
+      "quote": "our EigenScore is about 10 times more efficient than the methods that rely on another large model to measure the self-consistency",
+      "quote_check": "near"
+     },
+     {
+      "claim": "The direct computational cost of feature clipping and EigenScore computation is reported as negligible.",
+      "numbers": "0.06s",
+      "quote": "the cost of feature clipping and EigenScore computation is negligible (0.06s).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "A dynamic memory bank gives slightly better clipping-threshold selection than current-sample or precomputed thresholds.",
+      "numbers": "EigenScore-C 78.1 CoQA, 74.8 NQ; EigenScore-P 79.9 CoQA, 75.3 NQ; EigenScore-MB 80.4 CoQA, 76.5 NQ",
+      "quote": "The results demonstrate that determining the thresholds with a memory bank works slightly better.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The method requires hidden-state access and therefore cannot be applied to black-box models.",
+      "quote": "One critical limitation is that the proposed method relies on the internal information of the LLMs, therefore cannot be applied to the black-box models (OpenAI, 2023), where users can not access the hidden states.",
+      "quote_check": "near"
+     },
+     {
+      "text": "Sampling multiple outputs adds inference overhead.",
+      "quote": "Additionally, our proposal is a sampling-based approach, necessitating the generation of multiple outputs, which introduces additional inference overhead for accurate hallucination detection.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The study detects hallucinations but does not yet mitigate them.",
+      "quote": "Furthermore, another limitation is that we only focus on hallucination detection in this study and have not yet mitigate the hallucination with our proposal.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The experiments are restricted to QA even though broader task applicability is asserted.",
+      "quote": "Although our experiments focus on QA task, our method does not make any assumptions about the task modality, and we believe our method is widely applicable to other tasks, such as summarization and translation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Setting clipping thresholds from only the current input sample is considered risky.",
+      "quote": "Therefore, it is risky to determine the clipping threshold with only the current input sample (EigenScore-C).",
+      "quote_check": "unverified"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No Gemma 4 E2B is evaluated; the evidence comes from LLaMA and OPT variants, leaving transfer to Gemma 4's KV-shared layers 15-34 unverified.",
+     "All timing experiments use NVIDIA-A100, with no CPU latency, memory-footprint, or feasibility measurements for the lab's CPU setup.",
+     "The method is correlational: it does not use activation patching, logit lens, induction-head analysis, or causal attribution to identify where the detection signal originates.",
+     "There is no analysis of whether the signal is KV-cache-specific or whether shared layers 15-34 behave differently from ordinary residual layers.",
+     "Correctness labels depend on fixed ROUGE-L and cosine-similarity thresholds, so semantically correct answers can be marked wrong and factually wrong paraphrases can be marked correct.",
+     "No repeated-seed variance estimates, confidence intervals, or significance tests are reported in the provided text, so improvements such as 1.8% may be unstable.",
+     "The paper reports p = 0.2 but also describes clipping the largest and smallest top 0.2%; without resolving that notation against the code, the percentile implementation remains ambiguous.",
+     "Generalization to summarization, translation, long-context tasks, and domains outside the evaluated QA and TruthfulQA benchmarks is claimed but not tested."
+    ],
+    "code_or_data_url": "https://github.com/alibaba/eigenscore",
+    "relevance_to_lab": "High conceptual relevance and a concrete baseline, but only moderate direct transferability. INSIDE supplies a testable internal-state signal: across K sampled answers, compute the regularized covariance LogDet of hidden-state sentence embeddings. For Gemma 4 E2B, compute this separately across layers 15-34 and compare last-token with pooled representations, then correlate layerwise scores with factual-recall correctness. Activation patching of clean, clipped, and cross-example states could test causality, while logit lens and induction-head tracing could determine whether informative directions align with factual-retrieval circuitry. Test-time percentile clipping is directly compatible with a KV-shared-layer intervention. However, the paper uses one middle layer, LLaMA/OPT, QA, K = 10, and NVIDIA-A100; it provides no Gemma, KV-cache, causal-layer, per-layer, or CPU evidence, so a reduced-K CPU protocol is needed."
+   },
+   "usage": {
+    "total_tokens": 45491,
+    "total_characters": 0,
+    "prompt_tokens": 20614,
+    "completion_tokens": 24877,
+    "completion_tokens_details": {
+     "reasoning_tokens": 21665
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 200
+    }
+   }
+  }
+ }
+}

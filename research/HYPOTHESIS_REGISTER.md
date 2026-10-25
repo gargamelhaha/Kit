@@ -16,5 +16,5 @@ Preliminary hypotheses, ideas and open interpretations. Not verified knowledge. 
 | H-011 | Subject >512 tokens before the query cannot use the block-25/layer-13-sliding route → reroute via layer-14 full K/V or fail | CANDIDATE | E008: distance sweep across the sliding window |
 | H-012 | Multi-token subjects: answer information in layer-13 K/V is spread over the subject span (KV13_S 0.39 for R1 vs 0.98 for R2) | CANDIDATE | new multi-token relation set |
 | H-013 | In-context associations use the same layer-13 K/V → block-25 route as parametric facts (MiniMax) vs. layer-14 full K/V (DeepSeek) — competing generator predictions | CANDIDATE | E008 |
-| H-014 | Causal-effect spectroscopy: single-site effect matrices are low-rank and modular | CANDIDATE | re-analysis of E004/E006 data |
+| H-014 | Causal-effect spectroscopy: single-site effect matrices are low-rank and modular | INCONCLUSIVE — prereg criteria pass nominally (0.83 vs null p99 0.80) but driven by one high-variance column; standardised: 0.40 vs 0.21 (structure, not low rank) | meta_analysis/H014_spectroscopy |
 | H-015 | A backup route carries subject information when block-25 subject content is mean-ablated | CANDIDATE | E006c: joint mean ablations |

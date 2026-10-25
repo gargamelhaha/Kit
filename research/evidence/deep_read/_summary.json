@@ -1,124 +1,7 @@
 [
  {
-  "source_id": "LIT06-005",
+  "source_id": "LIT07-001",
   "model": "deepseek",
-  "parsed": true,
-  "exact": 28,
-  "near": 1,
-  "unverified": 0,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-005",
-  "model": "minimax",
-  "parsed": true,
-  "exact": 29,
-  "near": 1,
-  "unverified": 1,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-016",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 31,
-  "near": 0,
-  "unverified": 2,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-016",
-  "model": "minimax",
-  "parsed": true,
-  "exact": 34,
-  "near": 1,
-  "unverified": 0,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-022",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 28,
-  "near": 3,
-  "unverified": 1,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-022",
-  "model": "minimax",
-  "parsed": true,
-  "exact": 27,
-  "near": 5,
-  "unverified": 4,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-023",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 24,
-  "near": 1,
-  "unverified": 2,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-023",
-  "model": "minimax",
-  "parsed": true,
-  "exact": 31,
-  "near": 4,
-  "unverified": 1,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-027",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 31,
-  "near": 1,
-  "unverified": 0,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-027",
-  "model": "minimax",
-  "parsed": true,
-  "exact": 39,
-  "near": 0,
-  "unverified": 0,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-029",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 30,
-  "near": 0,
-  "unverified": 2,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-029",
-  "model": "minimax",
-  "parsed": true,
-  "exact": 28,
-  "near": 0,
-  "unverified": 2,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-039",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 29,
-  "near": 0,
-  "unverified": 1,
-  "skip": 0
- },
- {
-  "source_id": "LIT06-039",
-  "model": "minimax",
   "parsed": true,
   "exact": 35,
   "near": 0,
@@ -126,20 +9,101 @@
   "skip": 0
  },
  {
-  "source_id": "LIT06-012",
-  "model": "deepseek",
-  "parsed": true,
-  "exact": 30,
-  "near": 0,
-  "unverified": 0,
-  "skip": 1
- },
- {
-  "source_id": "LIT06-012",
+  "source_id": "LIT07-001",
   "model": "minimax",
   "parsed": true,
-  "exact": 30,
+  "exact": 35,
+  "near": 2,
+  "unverified": 0,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-016",
+  "model": "deepseek",
+  "parsed": true,
+  "exact": 26,
   "near": 1,
+  "unverified": 2,
+  "skip": 2
+ },
+ {
+  "source_id": "LIT07-016",
+  "model": "minimax",
+  "parsed": true,
+  "exact": 31,
+  "near": 1,
+  "unverified": 3,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-041",
+  "model": "deepseek",
+  "parsed": true,
+  "exact": 28,
+  "near": 0,
+  "unverified": 2,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-041",
+  "model": "minimax",
+  "parsed": true,
+  "exact": 34,
+  "near": 1,
+  "unverified": 1,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-042",
+  "model": "deepseek",
+  "parsed": true,
+  "exact": 32,
+  "near": 0,
+  "unverified": 1,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-042",
+  "model": "minimax",
+  "parsed": true,
+  "exact": 32,
+  "near": 2,
+  "unverified": 1,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-058",
+  "model": "deepseek",
+  "parsed": true,
+  "exact": 31,
+  "near": 0,
+  "unverified": 1,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-058",
+  "model": "minimax",
+  "parsed": true,
+  "exact": 35,
+  "near": 1,
+  "unverified": 1,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-061",
+  "model": "deepseek",
+  "parsed": true,
+  "exact": 33,
+  "near": 1,
+  "unverified": 1,
+  "skip": 0
+ },
+ {
+  "source_id": "LIT07-061",
+  "model": "minimax",
+  "parsed": true,
+  "exact": 31,
+  "near": 3,
   "unverified": 3,
   "skip": 0
  }

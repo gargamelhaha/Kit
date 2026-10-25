@@ -1,0 +1,481 @@
+{
+ "source_id": "LIT07-058",
+ "arxiv_id": "2404.16710",
+ "title": "LayerSkip: Enabling Early Exit Inference and Self-Speculative Decoding",
+ "chars": 92195,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.969,
+   "data": {
+    "title": "LayerSkip: Enabling Early Exit Inference and Self-Speculative Decoding",
+    "research_question": "How can layer dropout and early exit loss enable early-exit inference and self-speculative decoding to speed up LLM inference?",
+    "models_and_data": [
+     {
+      "item": "Continual pretraining data (52B tokens)",
+      "quote": "Continual Pretraining: start with a pretrained model and continue pretraining on 52B tokens from a corpus of diverse data containing natural language text and code.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama2 7B and 13B continual pretraining",
+      "quote": "We experiment using pretrained Llama2 7B (32 layers), with pmax = 0.1, escale = 0.2, Crot,R=8 , and Llama2 13B (40 layers), with pmax = 0.1, escale = 0.1, Crot,R=39 .",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama3 8B and Llama3.2 1B continual pretraining",
+      "quote": "We later continually pretrained Llama3 8B on 419B tokens with pmax = 0.1, escale = 0.1, Crot,R=8 , and and Llama3.2 1B on 839B tokens with pmax = 0.1, escale = 0.1, Crot,R=8 .",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pretraining from scratch data (26B tokens)",
+      "quote": "Pretraining from Scratch: start with randomly initialized model and pretrain on 26B tokens from a corpus of diverse data containing natural language text and code.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama2 1.5B and 7B pretraining from scratch",
+      "quote": "We experiment with Llama2 1.5B (a custom small Llama-like model with 24 layers) (see A.1.1 for architecture details) with pmax = 0.1, escale = 0.2, Crot,R=23 and Llama2 7B (32 layers) with pmax = 0.2, escale = 0.2, Crot,R=31 .",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama1 7B code finetuning data (5.2B tokens)",
+      "quote": "Finetuning on Code Data: start with pretrained Llama1 7B model Touvron et al. (2023a) and finetune on 5.2B tokens of CodeLlama Rozière et al. (2023) data mix.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama 1.5B TOPv2 finetuning",
+      "quote": "Finetuning on Task-Specific Dataset: start with a pretrained Llama 1.5B (24 layers) and finetune on TOPv2 Chen et al. (2020), a multi-domain task-oriented compositional semantic parsing dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Evaluation tasks: CNN/DM, XSUM, HumanEval",
+      "quote": "CNN/DM Nallapati et al. (2016), XSUM Narayan et al. (2018) abstractive summarization tasks, and HumanEval Chen et al. (2021) coding task.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Apply layer dropout during training with lower rates for earlier layers and higher rates for later layers.",
+      "quote": "during training we apply layer dropout, with low dropout rates for earlier layers and higher dropout rates for later layers",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Add an early exit loss where all transformer layers share the same exit.",
+      "quote": "an early exit loss where all transformer layers share the same exit",
+      "quote_check": "exact"
+     },
+     {
+      "step": "During inference, run first E transformer layers and skip to the model’s LM head.",
+      "quote": "we run the first E transformer layers in a model, and skip to the model’s LM head",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Self-draft tokens using early exit from the same model.",
+      "quote": "Self-Drafting, using the early exit to draft tokens from the same model",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Self-verify draft tokens using remaining layers.",
+      "quote": "Self-Verification, using the remaining layers to validate the prediction",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Reuse KV cache between draft and verification.",
+      "quote": "we are able to effectively maintain a single KV cache for the draft and verify steps",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use greedy decoding and generate a maximum of 512 tokens per sample.",
+      "quote": "All experiments were performed with greedy decoding and generated a maximum of 512 tokens for each sample.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Exact match (EM)",
+      "definition": "Exact match between generated sequence and annotated parse.",
+      "quote": "correctness requires an exact match (EM) between generated sequence and annotated parse",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "ROUGE-2",
+      "definition": "Summarization quality metric implemented in torchmetrics.",
+      "quote": "We report quality metrics, EM (exact match) and ROUGE-2 Ganesan (2018) implemented in torchmetrics Nicki Skafte Detlefsen et al. (2022)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Token acceptance rate",
+      "definition": "How often verification accepts each of the draft tokens.",
+      "quote": "token acceptance rate for the self speculation algorithm (how often verification accepts each of the draft tokens)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Throughput",
+      "definition": "Tokens per second averaged over the sampled dataset.",
+      "quote": "throughput measured as tokens per second averaged over the sampled dataset",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Speedup",
+      "definition": "Acceleration of average inference time per token compared to the autoregressive baseline.",
+      "quote": "speedup is calculated as the acceleration of average inference time per token compared to the “Autoregressive” baseline on the same setting",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Perplexity (PPL)",
+      "definition": "Evaluation perplexity on held-out test sets.",
+      "quote": "We also evaluate perplexity on held out test sets on the following datasets",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "LayerSkip self-speculative decoding achieves speedups up to 2.16× on CNN/DM summarization, 1.82× on coding, and 2.0× on TOPv2.",
+      "numbers": "2.16×; 1.82×; 2.0×",
+      "quote": "show speedups of up to 2.16× on summarization for CNN/DM documents, 1.82× on coding, and 2.0× on TOPv2 semantic parsing task",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Self-speculative decoding obtains speedups between 1.34× and 2.16× depending on model or task.",
+      "numbers": "1.34× and 2.16×",
+      "quote": "We obtain speedups between 1.34× and 2.16× depending on the model or the task.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On CNN/DM, LayerSkip is faster than Draft & Verify (1.81× vs. 1.5×).",
+      "numbers": "1.81× vs. 1.5×",
+      "quote": "we are significantly faster on CNN/DM (1.81× vs. 1.5×) and slightly slower on XSUM (1.34× vs. 1.48×).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Pretraining from scratch reaches 2.16× speedup, exceeding traditional speculative decoding.",
+      "numbers": "2.16×",
+      "quote": "the bigger model has a bigger speedup than the smaller model, reaching 2.16× speedup, which exceeds traditional speculative decoding.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Code finetuning shows up to 1.82× speedup with no accuracy drop.",
+      "numbers": "1.82×",
+      "quote": "We show speedup of upto 1.82× with no accuracy drop.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "TOPv2 self-speculation reaches 2.0× speedup with high token acceptance rates.",
+      "numbers": "E = 6: 76.0%, E = 12: 97.2%, E = 18: 98.9%; 2.0×",
+      "quote": "the model was able to achieve high token acceptance rate, (E = 6: 76.0%, E = 12: 97.2%, E = 18: 98.9%) reaching 2.0× speedup",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "KV cache reuse saves 9-20 ms per token depending on task.",
+      "numbers": "9-20 ms per token",
+      "quote": "We find that the use of KV cache is able to consistently save us 9-20 ms per token depending on the task.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Early exit with LayerSkip improves TOPv2 exact match to 77% at layer 12.",
+      "numbers": "77% at layer 12",
+      "quote": "with LayerSkip, early exit inference improves to 77% at layer 12.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Self-speculative decoding requires finetuning or pretraining with the recipe, unlike Zhang et al. (2023).",
+      "quote": "Our self-speculative decoding solution requires finetuning a model or pretraining it with our recipe, while the self-speculative decoding approach propoposed in Zhang et al. (2023) does not require changing a model’s weights.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Hyperparameters pmax, escale, and R require tuning to avoid last-layer accuracy drop.",
+      "quote": "The introduced hyperparameters, pmax for layer dropout, escale and R for early exit, requires tuning in order to avoid a drop in last layer accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Pretraining with layer dropout from scratch requires increasing learning rate, and tuning it can be tricky and time consuming.",
+      "quote": "When pretraining with layer dropout from scratch, increasing the learning rate is required to maintain accuracy, and tuning learning rate to get optimal accuracy could be tricky and time consuming.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates Llama-family models only; it does not test Gemma 4 E2B or models with KV-shared layers 15-34 and per-layer embeddings, so transfer to the lab’s target architecture is unverified.",
+     "The self-speculative cache-reuse design assumes draft and verification execute the same early layers in the same order; KV-sharing or per-layer embedding schemes could break or complicate this assumption.",
+     "Reported speedups are hardware-dependent (H100/A100, some CPU) and may not translate to the lab’s CPU-only Gemma 4 E2B tracing setup.",
+     "The paper does not analyze internal mechanisms such as activation patching, logit lens, induction heads, or factual-recall circuits, limiting direct relevance to mechanistic interpretability.",
+     "Early-exit accuracy and last-layer degradation vary across model families and training regimes; the paper reports drops for Llama3 models, so accuracy risks may be larger for other architectures.",
+     "The method requires training-recipe changes and hyperparameter tuning; it is not a post-hoc inference-only technique for an already trained Gemma model."
+    ],
+    "code_or_data_url": "https://github.com/facebookresearch/LayerSkip",
+    "relevance_to_lab": "Indirect: LayerSkip offers early-exit, layer-dropout, shared-LM-head, and KV-cache-reuse ideas that could inform experiments on Gemma 4 E2B’s KV-shared layers and per-layer embeddings, but it does not study Gemma, activation patching, logit lens, induction heads, factual recall, or CPU tracing."
+   },
+   "usage": {
+    "prompt_tokens": 26693,
+    "total_tokens": 37616,
+    "completion_tokens": 10923,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 26368
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 8554
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 35,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.973,
+   "data": {
+    "title": "LayerSkip: Enabling Early Exit Inference and Self-Speculative Decoding",
+    "research_question": "Can layer dropout plus a shared-LM-head early-exit loss make shallow exits accurate enough to accelerate LLM inference, and can the remaining layers verify and correct those exits through self-speculative decoding?",
+    "models_and_data": [
+     {
+      "item": "52B-token continual-pretraining corpus containing natural-language text and code",
+      "quote": "start with a pretrained model and continue pretraining on 52B tokens from a\ncorpus of diverse data containing natural language text and code.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama2 7B and Llama2 13B continual-pretraining configurations",
+      "quote": "Llama2 7B (32 layers), with pmax = 0.1, escale = 0.2, Crot,R=8 , and Llama2 13B (40 layers)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama3 8B and Llama3.2 1B continual-pretraining configurations",
+      "quote": "We later continually pretrained Llama3 8B on 419B tokens with\npmax = 0.1, escale = 0.1, Crot,R=8 , and and Llama3.2 1B on 839B tokens",
+      "quote_check": "exact"
+     },
+     {
+      "item": "26B-token diverse-corpus scratch pretraining of a custom Llama2 1.5B with 24 layers",
+      "quote": "start with randomly initialized model and pretrain on 26B tokens from a\ncorpus of diverse data containing natural language text and code. We experiment with Llama2 1.5B\n(a custom small Llama-like model with 24 layers)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama1 7B code finetuning on 5.2B tokens of CodeLlama data",
+      "quote": "start with pretrained Llama1 7B model Touvron et al. (2023a) and finetune on\n5.2B tokens of CodeLlama Rozière et al. (2023) data mix.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Llama 1.5B task-specific finetuning on TOPv2",
+      "quote": "start with a pretrained Llama 1.5B (24 layers) and finetune on\nTOPv2 Chen et al. (2020), a multi-domain task-oriented compositional semantic parsing dataset.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CNN/DM one-shot and XSUM zero-shot summarization evaluations",
+      "quote": "We follow Zhang et al. (2023) and perform CNN/DM with 1-shot\nabstractive summarization, and XSUM with 0-shot.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CPU latency evaluation using 100 TOPv2 test samples, 7 speculations, and 50 generated tokens",
+      "quote": "We conduct\nour experiments using the first 100 samples from the TOPv2 test set, leveraging 7 speculations, generating the next 50 tokens with greedy decoding.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Use exponential per-layer dropout scaling, with the scaling factor rising from 0.0 in layer 0 to 1.0 in the last layer.",
+      "quote": "We found that the best per-layer\nscaling is to increase dropout rate exponentially across layers from 0.0 in layer 0, to 1.0 in last layer, L − 1:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply early-exit loss at each layer while using the same LM head for every exit.",
+      "quote": "Hence, during training, we augment layer dropout with early exit loss at each layer.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "At generation time, execute the first E transformer layers and skip directly to the LM head.",
+      "quote": "When generating each token during autoregressive decoding, we run the first E transformer layers in a model,\nand skip to the model’s LM head, i.e., the model’s final output becomes g(xE ).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Self-draft d tokens autoregressively by using early-exit inference.",
+      "quote": "In our algorithm, we compute the first d draft tokens through early exit.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Verify the draft tokens using the model layers not used during drafting.",
+      "quote": "In our self-speculative decoding algorithm, the self-verification stage critically only requires computing the remaining layers of the model that were not used in the draft stage.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Accept draft tokens through the first disagreement, append the next verified token, and resume drafting.",
+      "quote": "All the draft tokens up till the disagreement point are added to the output along with the next\nverified token and the process continues from the draft stage.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Maintain one KV cache across the drafting and verification stages.",
+      "quote": "we are able to effectively maintain a single KV cache for the\ndraft and verify steps, reducing memory and latency.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Cache the exit-layer query so verification can resume from layer E through the final layer.",
+      "quote": "To further reduce computation of the first E layers, we introduce an exit query cache\nthat saves the query vector of exit layer E − 1 for verification to directly continue from layer E to last\nlayer L.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Exact match (EM)",
+      "definition": "Exact correspondence between the generated sequence and the annotated parse.",
+      "quote": "In semantic parsing, correctness requires an exact match\n(EM) between generated sequence and annotated parse.",
+      "quote_check": "unverified"
+     },
+     {
+      "name": "ROUGE-2",
+      "definition": "Reported generation-quality metric implemented with torchmetrics.",
+      "quote": "We report quality metrics, EM (exact match) and ROUGE-2 Ganesan (2018) implemented in torchmetrics Nicki\nSkafte Detlefsen et al. (2022)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Token acceptance rate",
+      "definition": "How often verification accepts each draft token.",
+      "quote": "token acceptance rate for the self speculation algorithm (how often verification\naccepts each of the draft tokens)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Throughput",
+      "definition": "Tokens per second, averaged over the sampled dataset.",
+      "quote": "throughput measured as tokens per second averaged over the sampled\ndataset",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Speedup",
+      "definition": "Acceleration of average inference time per token relative to the autoregressive baseline.",
+      "quote": "Following Zhang et al. (2023), speedup is calculated as the acceleration of average inference time per token compared to the “Autoregressive” baseline on the same setting.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Evaluation perplexity",
+      "definition": "Perplexity measured on held-out test sets.",
+      "quote": "We also evaluate perplexity on held out test sets on the following datasets:",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Early-exit accuracy",
+      "definition": "Task accuracy obtained when exiting at different model layers.",
+      "quote": "After training each model configuration, we evaluate accuracy of exiting early at different layers.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "LayerSkip reports speedups of up to 2.16× for CNN/DM summarization, 1.82× for coding, and 2.0× for TOPv2 semantic parsing.",
+      "numbers": "2.16×; 1.82×; 2.0×",
+      "quote": "We implement our inference solution and show speedups of up to 2.16× on summarization for CNN/DM documents, 1.82× on coding, and 2.0× on TOPv2 semantic parsing\ntask.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "In the Figure 2 Llama1 7B example, a token required 23.45 layers on average out of 32.",
+      "numbers": "23.45 layers; 32 layers",
+      "quote": "For the particular example we present in Figure 2, we find, on average, a token requires 23.45 layers out of the model’s 32 layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Against Draft & Verify, LayerSkip was faster on CNN/DM but slower on XSUM.",
+      "numbers": "1.81× vs. 1.5×; 1.34× vs. 1.48×",
+      "quote": "When comparing with Draft & Verify Zhang et al. (2023) on the common model\nand tasks of both approaches, we are significantly faster on CNN/DM (1.81× vs. 1.5×) and slightly slower on\nXSUM (1.34× vs. 1.48×).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The code-finetuned Llama1 7B reached 1.82× speedup on HumanEval without an accuracy drop.",
+      "numbers": "1.82×",
+      "quote": "We show speedup of upto 1.82× with no accuracy drop.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On TOPv2, self-speculative decoding achieved high token acceptance and a 2.0× speedup at the shallowest reported exit.",
+      "numbers": "E = 6: 76.0%, E = 12: 97.2%, E = 18: 98.9%; 2.0×",
+      "quote": "With self-speculation, the model was able to achieve high token acceptance rate, (E = 6: 76.0%, E = 12: 97.2%,\nE = 18: 98.9%) reaching 2.0× speedup.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "For TOPv2 semantic parsing, baseline early exit produced 0 EM, whereas LayerSkip reached 77% at layer 12.",
+      "numbers": "0 EM; 77% at layer 12",
+      "quote": "model, the model is not able to generate complete and accurate parses resulting in 0 EM. However, with\nLayerSkip, early exit inference improves to 77% at layer 12.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "KV-cache reuse consistently reduced per-token time across tasks.",
+      "numbers": "9-20 ms per token",
+      "quote": "We find that the use of KV cache is able to consistently save us 9-20 ms per token depending on the task.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The TOPv2 CPU experiment showed a near 2× speedup.",
+      "numbers": "near 2× on CPU",
+      "quote": "We conduct our task specific fine-tuning on Llama 1.5B to measure decoding\nperformance on CPU as well, showing a near 2× speed up on CPU as well, presented in Table 11.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "LayerSkip requires finetuning or pretraining with its recipe.",
+      "quote": "Our self-speculative decoding solution requires finetuning a model or pretraining it with our recipe",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The dropout and early-exit hyperparameters require tuning to avoid reducing last-layer accuracy.",
+      "quote": "The introduced hyperparameters, pmax for layer dropout, escale and R for early exit, requires tuning in order to avoid a drop in last layer accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Scratch pretraining with layer dropout requires learning-rate increases, and finding the appropriate learning rate may be difficult and time consuming.",
+      "quote": "When pretraining with layer dropout from scratch, increasing the learning rate is required to maintain accuracy, and tuning learning rate to get optimal accuracy could be tricky and time consuming.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Using early-exit loss at every layer during every iteration slows training and reduces final-layer accuracy.",
+      "quote": "We find that adding early exit loss of all layers at all iterations during training\nslows down training and reduces the accuracy of the last layer.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Task-specific TOPv2 finetuning regressed final-layer accuracy by 3%.",
+      "quote": "We notice a regression in the final layer reducing\naccuracy by 3%.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Llama3 continual pretraining showed a larger last-layer accuracy drop than Llama2 despite using more training tokens.",
+      "quote": "For Llama3 8B and Llama 3.2 1B, we notice a larger drop in last layer accuracy when continually pretraining\nwith LayerSkip, despite training on more tokens.",
+      "quote_check": "near"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No experiment uses Gemma 4 E2B, so transfer to that architecture, scale, tokenizer, and training regime is unknown.",
+     "KV-shared layers 15-34 may violate the contiguous, independently cached prefix assumptions behind LayerSkip's single-KV and exit-query reuse.",
+     "The study does not use activation patching, induction-head tracing, or factual-recall tracing to establish causal mechanisms for early exits.",
+     "The shared LM-head setup does not directly validate the lab's per-layer-embedding approach, and the two representations may yield different logit-lens signals.",
+     "CPU evidence is limited to one small Llama-like model on TOPv2 plus a cache ablation, so broader CPU accuracy and latency generalization is untested.",
+     "Most reported speedups were measured on H100 or A100 GPUs and may not transfer to the lab's CPU environment.",
+     "The provided results report no confidence intervals, repeated-run variance, or statistical significance tests.",
+     "The conclusion says the method led to up to 1.86× speedup, while the abstract and tables report up to 2.16×, creating an internal reporting inconsistency."
+    ],
+    "code_or_data_url": "https://github.com/facebookresearch/LayerSkip",
+    "relevance_to_lab": "High methodological relevance: LayerSkip explicitly probes each layer by projecting its output through the LM head, corresponding to the lab's logit-lens operation, and its layer-dropout and shared-head early-exit recipe could test whether Gemma 4 E2B's KV-shared layers 15-34 support useful shallow exits. The KVQ reuse design also raises a directly testable hypothesis for cache behavior in shared layers, while the CPU experiment provides a starting point for CPU-oriented replication. However, all model results are Llama-family rather than Gemma, and the paper provides no activation-patching, induction-head, factual-recall, or Gemma-specific per-layer-embedding validation."
+   },
+   "usage": {
+    "total_tokens": 49914,
+    "total_characters": 0,
+    "prompt_tokens": 26442,
+    "completion_tokens": 23472,
+    "completion_tokens_details": {
+     "reasoning_tokens": 20266
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    }
+   }
+  }
+ }
+}

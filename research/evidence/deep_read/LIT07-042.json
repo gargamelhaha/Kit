@@ -1,0 +1,476 @@
+{
+ "source_id": "LIT07-042",
+ "arxiv_id": "2207.07061",
+ "title": "Confident Adaptive Language Modeling",
+ "chars": 87022,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 32,
+    "near": 0,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.97,
+   "data": {
+    "title": "Confident Adaptive Language Modeling",
+    "research_question": "How can an autoregressive LLM dynamically allocate compute per input and generation timestep via early exiting while provably maintaining global sequence-level textual or risk consistency?",
+    "models_and_data": [
+     {
+      "item": "T5 encoder-decoder (8-layer T5 1.1)",
+      "quote": "We use the 8 layers T5 1.1 model that doesn’t share input and output embeddings.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "T5X framework",
+      "quote": "We implement CALM on top of the T5 encoder-decoder model that showed good performance on the tasks above [53], using the T5X framework [55].",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CNN/DM",
+      "quote": "CNN/DM [31] is a collection of news articles to be summarized in few sentences.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WMT15 EN-FR",
+      "quote": "WMT15 EN-FR [13] contains English sentences (one per example) to be machine translated to French.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Open-book SQuAD 1.1",
+      "quote": "Open-book SQ UAD 1.1 [54] is a QA dataset with Wikipedia paragraphs paired with questions, where the target answer is a text span from the input.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "12-layer T5-base",
+      "quote": "We include here results for a 12-layer T5-base model that besides the additional layers is also larger in its internal dimensions",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Train for local consistency and relax it to global consistency at inference",
+      "quote": "we opt to train for local consistency, which requires minimal changes to the training procedure, and relax the local requirement to a global one during inference.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use three local confidence measures",
+      "quote": "We experiment with three confidence measures for Eq. (4) that differ in their parameter and compute operation efficiencies.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Propagate hidden states for skipped layers",
+      "quote": "As an approximation, we set dks = djs for all layers k > j following Elbayad et al. [23]",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Use a decaying early-exit threshold",
+      "quote": "we introduce a decaying early-exiting threshold that is more permissive towards exiting as the decoding process continues.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Specify a grid of candidate thresholds",
+      "quote": "We specify a grid of possible values of Λ = (λ1 , . . . , λk ) that may result in acceptable generations;",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Choose the lowest valid threshold with statistical testing",
+      "quote": "We choose the lowest valid λ ∈ Λ that we can identify with rigorous statistical testing tools.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Apply fixed sequence testing over descending thresholds",
+      "quote": "Here we define a sequence of descending thresholds λ1 > λ2 > . . . λk with a relatively coarse step size (e.g., increments of 0.05).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "ROUGE-L",
+      "definition": "standard metric for CNN/DM",
+      "quote": "We use the standard metrics for each task: ROUGE-L for CNN/DM, BLEU [50] for WMT, and Token-F1 [54] for SQ UAD.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "BLEU",
+      "definition": "standard metric for WMT",
+      "quote": "We use the standard metrics for each task: ROUGE-L for CNN/DM, BLEU [50] for WMT, and Token-F1 [54] for SQ UAD.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Token-F1",
+      "definition": "standard metric for SQuAD",
+      "quote": "We use the standard metrics for each task: ROUGE-L for CNN/DM, BLEU [50] for WMT, and Token-F1 [54] for SQ UAD.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "BLEURT",
+      "definition": "learned metric used for textual distance/risk when BLEU is corpus-level",
+      "quote": "Instead, we use the BLEURT learned metric [61].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Average decoder layers per output token",
+      "definition": "main efficiency metric",
+      "quote": "Our main efficiency metric is the average number of decoder layers used per output token",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Speedup",
+      "definition": "estimated speedup of whole encoder-decoder model",
+      "quote": "we compute an estimated speedup of the whole encoder-decoder model for generating the full sequence, based on TPUv3 benchmarking with 200 examples in Colab",
+      "quote_check": "exact"
+     },
+     {
+      "name": "FLOPs reduction",
+      "definition": "average decoder FLOPs reduction per token",
+      "quote": "For reference, we also report the average decoder FLOPs reduction per token [23].",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "CALM reduces compute with up to ×3 speedup while provably maintaining high performance",
+      "numbers": "×3",
+      "quote": "we demonstrate the efficacy of our framework in reducing compute—speedup of up to ×3—while provably maintaining high performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Oracle state-copying achieves ROUGE-L 38.24 vs 38.32 full with 1.53 layers/token",
+      "numbers": "38.24, 38.32, 1.53",
+      "quote": "This oracle achieves an ROUGE-L score of 38.24, compared to 38.32 with the full model, while only using an average of 1.53 layers per token.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Oracle suggests potential compute saving up to ×5.2",
+      "numbers": "×5.2",
+      "quote": "there is remarkable potential for saving compute—by up to ×5.2—while preserving performance, given a good confidence measure.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Softmax response reduces more than half layers in all three tasks with minor performance loss",
+      "numbers": "more than half",
+      "quote": "The results, presented in Figure 3, show the power of the softmax response measure, allowing only minor performance loss while reducing more than half of the layers in all three tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Dynamic oracle uses 1.5, 1.3, and 1.2 layers on average for summarization, WMT, and QA",
+      "numbers": "1.5, 1.3, 1.2",
+      "quote": "The dynamic oracle obtains compelling efficiency gains, using only 1.5, 1.3, and 1.2 layers on average for summarization, WMT, and QA, respectively, without losing any performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Softmax enables speedup up to about three times faster",
+      "numbers": "about three times",
+      "quote": "Accordingly, softmax mostly enables the highest speedup gains of up to about three times faster than running through all the model’s layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Copying projected K,V to skipped layers drops performance to 23.02 ROUGE-L",
+      "numbers": "23.02",
+      "quote": "This version of the oracle results in a significant drop in performance to 23.02 ROUGE-L.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Guarantees are sometimes conservative",
+      "quote": "These encouraging efficiency gains are enabled even with the rigorous performance guarantees that are sometimes conservative (e.g., Eq. (11)).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Softmax over full vocabulary is FLOPs heavy and can increase total FLOPs",
+      "quote": "The softmax operation over the full output vocabulary is FLOPs heavy (though, this compute can potentially be paralleled), sometime leading to increased total FLOPs, even with fewer used layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Training/inference misalignment due to skipped-layer hidden states",
+      "quote": "We note that there is some misalignment between this training and inference behavior due to the hidden states of skipped layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "ReLU in risk bound does not reward negative risk differences",
+      "quote": "since the Relu in Eq. (11) doesn’t reward negative risk differences, the benefits might not fully materialize.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Perceived difficulties left to future work",
+      "quote": "We leave further investigations on perceived difficulties to future work.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Implementation improvements left to future work",
+      "quote": "We leave studying further technical improvements to the implementation to future work.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper evaluates T5 encoder-decoder models (8/12 layers), not decoder-only Gemma 4 E2B or its KV-shared layers 15-34.",
+     "Early-exit state copying and confidence calibration may not transfer to KV-shared layers or per-layer embedding schemes.",
+     "No activation patching, logit lens, induction-head, or factual-recall tracing is used, so internal-circuit claims are not tested.",
+     "Calibration assumes i.i.d. prompts and bounded metrics; distribution shift and CPU latency are not analyzed.",
+     "Speedup is measured on TPUv3/TPUv4, not CPU, and may not reflect CPU activation-patching workflows.",
+     "The method uses a shared early-exit classifier and output embeddings across layers; this may interact differently with Gemma's per-layer embeddings.",
+     "The paper does not analyze KV-cache sharing or memory effects in layers 15-34."
+    ],
+    "code_or_data_url": "https://github.com/google-research/t5x/tree/main/t5x/contrib/calm",
+    "relevance_to_lab": "CALM is relevant as a layer-wise early-exit and confidence-calibration baseline for hidden-state reuse, but it does not study Gemma 4 E2B KV-shared layers 15-34, per-layer embeddings, activation patching, logit lens, induction heads, factual recall, or CPU tracing."
+   },
+   "usage": {
+    "prompt_tokens": 23424,
+    "total_tokens": 32533,
+    "completion_tokens": 9109,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 23168
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7181
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 32,
+    "near": 2,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.971,
+   "data": {
+    "title": "Confident Adaptive Language Modeling",
+    "research_question": "How can an autoregressive Transformer dynamically allocate decoder depth per generated token while connecting local confidence-based exit decisions to high-probability global sequence-quality guarantees, and how much inference compute can be saved?",
+    "models_and_data": [
+     {
+      "item": "T5 1.1 encoder-decoder with 8 encoder and 8 decoder layers, 6 attention heads, and 64, 512, and 1024 attention-head, embedding, and MLP dimensions.",
+      "quote": "Our main experiments use the T5 1.1 version with 8 layers for both the encoder and decoder modules,\n6 attention heads with dimensions of 64, 512, and 1024 for the attention head, embeddings, and MLP,\nrespectively.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "T5-base with 12 layers, 12 attention heads, and 64, 768, and 2048 attention-head, embedding, and MLP dimensions.",
+      "quote": "We include here results for a 12-layer T5-base model that besides the additional layers is also larger in\nits internal dimensions, having 12 attention heads and 64, 768, and 2048 dimensions for the attention\nhead, embeddings, and MLP, respectively.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "CNN/DM news-article summarization dataset.",
+      "quote": "CNN/DM [31] is a collection\nof news articles to be summarized in few sentences.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "WMT15 English-to-French machine-translation dataset.",
+      "quote": "WMT15\nEN-FR [13] contains English sentences (one per example) to be\nmachine translated to French.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Open-book SQuAD 1.1 extractive question-answering dataset.",
+      "quote": "Open-book SQ UAD 1.1 [54] is a QA dataset with Wikipedia paragraphs paired with questions,\nwhere the target answer is a text span from the input.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Share the softmax output embeddings and the early-exit classifier across decoder layers.",
+      "quote": "We share all output embeddings for the softmax predictions, and\nthe early-exit classifier across all decoder layers.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "At each generation timestep, use an intermediate decoder layer's prediction head and confidence score to decide whether to exit early.",
+      "quote": "the key\nidea in early-exiting is to choose yt+1 more quickly, if confident, by computing p(yt+1 | dit ) =\nsoftmax(Wi dit ) for some intermediate layer i < L.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "When a previous token exited early, copy its exited hidden state into the skipped layers rather than recomputing those layers.",
+      "quote": "As an approximation, we set dks = djs for all layers k > j\nfollowing Elbayad et al. [23], with the understanding that this will introduce some error.",
+      "quote_check": "near"
+     },
+     {
+      "step": "Compute softmax-response confidence from the difference between the two highest intermediate-layer softmax values.",
+      "quote": "We take the difference between the top two values of Softmax(Wi dit ).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Compute hidden-state saturation confidence from cosine similarity between consecutive layer representations.",
+      "quote": "As a simple parameter-free and fast to compute alternative, we take the\ncosine similarity sim(dit , di−1\nt) for i > 1.",
+      "quote_check": "unverified"
+     },
+     {
+      "step": "Train a dedicated linear classifier on the current hidden state to predict whether the intermediate prediction agrees with the full-model prediction.",
+      "quote": "We train a dedicated linear classifier M to predict the likelihood of exiting\nwith local consistency given the current hidden-state: cit = M(dit ).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Calibrate the lowest acceptable exit threshold over a candidate grid using Learn then Test and family-wise-error-controlled threshold selection.",
+      "quote": "we cast our problem as a multiple hypothesis testing problem\nover a large array of k candidate classifier exit thresholds, Λ = (λ1 , . . . , λk ), and apply the Learn\nthen Test (LTT) framework of Angelopoulos et al. [3]",
+      "quote_check": "exact"
+     },
+     {
+      "step": "For each target tolerance and consistency objective, run 50 trials with an 80% calibration and 20% test split.",
+      "quote": "We run 50 random trials per target tolerance δ and consistency objective (textual or risk), where we\npartition the data to 80% calibration (Scal ) and 20% test (Ptest ).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "ROUGE-L",
+      "definition": "Standard generation-quality metric used for CNN/DM summarization.",
+      "quote": "We use the standard metrics for each task: ROUGE-L for CNN/DM, BLEU [50]\nfor WMT, and Token-F1 [54] for SQ UAD.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "BLEU",
+      "definition": "Standard generation-quality metric used for WMT translation evaluation.",
+      "quote": "We use the standard metrics for each task: ROUGE-L for CNN/DM, BLEU [50]\nfor WMT, and Token-F1 [54] for SQ UAD.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Token-F1",
+      "definition": "Standard answer-overlap metric used for SQuAD question answering.",
+      "quote": "We use the standard metrics for each task: ROUGE-L for CNN/DM, BLEU [50]\nfor WMT, and Token-F1 [54] for SQ UAD.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "BLEURT",
+      "definition": "Learned metric substituted for BLEU when computing controlled distance or risk for translation.",
+      "quote": "Instead, we use the BLEURT learned metric [61].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Average decoder layers per output token",
+      "definition": "Primary implementation-independent measure of computational complexity reduction.",
+      "quote": "Our main efficiency metric is the average number of decoder layers used per output token, as it\ndirectly measures complexity reduction without conflating with implementation or infrastructure specific details [19].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Average decoder FLOPs reduction per token",
+      "definition": "Secondary compute-efficiency measure normalized against full-model decoding.",
+      "quote": "For reference, we also report the average decoder FLOPs reduction per token [23].",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Estimated whole-model speedup",
+      "definition": "Estimated encoder-decoder generation speedup based on TPUv3 benchmarking with 200 examples.",
+      "quote": "Also, we compute an estimated speedup of the whole encoder-decoder model for generating the\nfull sequence, based on TPUv3 benchmarking with 200 examples in Colab (see App. C for details).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Metric-derived distance or risk",
+      "definition": "For a normalized quality metric, distance or risk is computed as one minus the metric.",
+      "quote": "For a given metric m(yearly , yfull or ztest ) ∈ [0, 1], we use 1 − m for distance or risk computation, respectively.",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "An oracle that exits at the earliest layer agreeing with the full-model prediction nearly preserves summarization quality while using very few layers.",
+      "numbers": "38.24 ROUGE-L; 38.32 ROUGE-L; 1.53 layers per token.",
+      "quote": "This oracle achieves an ROUGE-L score of 38.24,\ncompared to 38.32 with the full model, while only using an average of 1.53 layers per token.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Copying projected key and value states into skipped layers causes a substantial performance loss.",
+      "numbers": "23.02 ROUGE-L.",
+      "quote": "This version of the oracle results in a significant drop in performance to 23.02 ROUGE-L.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Softmax-response confidence reduces more than half the decoder layers on all three tasks with minor reported performance loss.",
+      "numbers": "more than half of the layers in all three tasks.",
+      "quote": "The results, presented in Figure 3, show the power of the softmax response measure, allowing only minor performance loss while reducing more than half of the layers in all three tasks.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The dynamic oracle can use very few layers on average for summarization, translation, and question answering without losing performance.",
+      "numbers": "1.5, 1.3, and 1.2 layers on average for summarization, WMT, and QA, respectively.",
+      "quote": "The dynamic oracle obtains compelling efficiency gains, using only 1.5, 1.3, and 1.2 layers on average for summarization, WMT, and QA, respectively, without losing any performance.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Under calibrated consistency constraints, softmax confidence provides the largest speedups.",
+      "numbers": "up to about three times faster.",
+      "quote": "Accordingly, softmax mostly enables the highest speedup gains of up to about three times faster than running through all the model’s layers.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The calibration procedure is designed to satisfy the selected consistency constraint with at least 95% probability.",
+      "numbers": "at least 95% of the time; ≤ δ.",
+      "quote": "Since the obtained risk is guaranteed to be valid (i.e., ≤ δ at least 95% of the time), we focus here on efficiency gains per chosen δ.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The empirical calibration results remain within the specified tolerance.",
+      "numbers": "risk values not greater than δ.",
+      "quote": "First, we observe that the calibration holds empirically, achieving risk values that are not greater than the specified δ (i.e., being under the diagonal in the upper subplots).",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Copying an exited hidden state into skipped layers is an approximation that introduces error.",
+      "quote": "As an approximation, we set dks = djs for all layers k > j\nfollowing Elbayad et al. [23], with the understanding that this will introduce some error.",
+      "quote_check": "near"
+     },
+     {
+      "text": "Training and inference are misaligned because skipped-layer hidden states are unavailable during training.",
+      "quote": "We note that there is some misalignment between this training and inference behavior due to the hidden states of skipped layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The risk-consistency estimator is conservative because it does not reward cases where early exit has lower risk than the full model.",
+      "quote": "Eq. (11) computes a conservative estimate of the difference in\nthe empirical risk that doesn’t reward instances in which the risk of the early-exit model is lower.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Full-vocabulary softmax confidence can increase total FLOPs despite using fewer transformer layers.",
+      "quote": "The softmax operation over the full output vocabulary is FLOPs heavy (though, this compute can\npotentially be paralleled), sometime leading to increased total FLOPs, even with fewer used layers.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Conditionals inserted between layers add implementation overhead.",
+      "quote": "Yet, even compared to a conditional-free implementation, the gains\nof CALM’s early exits often outweigh the overheads of the added conditionals.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "In the 12-layer SQuAD setting, very low-layer hidden states may be inadequate representations for subsequent generation.",
+      "quote": "Also, the local oracle measure on SQ UAD obtains slightly lower\nglobal performance compared to the full model, also suggesting that in this case the hidden-state\nof the very low layers might not be a good enough representation for followup generations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Textual consistency with the full model can be unnecessarily strict when multiple acceptable generations exist.",
+      "quote": "Enforcing textual consistency with the original Yfull , however, may be\nunnecessarily strict for certain tasks, especially where multiple generations may be acceptable.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The theoretical calibration assumes independent and identically distributed calibration and test prompts, so distribution shift or correlated prompts could invalidate the guarantees.",
+     "Evidence is limited to T5 encoder-decoder models and three generation tasks; transfer to Gemma 4 E2B internals and KV-shared layers is untested.",
+     "Runtime results are based on TPUv3 rather than the lab's CPU setup, and softmax overhead, conditionals, memory traffic, and cache behavior could produce materially different speedups.",
+     "The evaluation uses greedy predictions, so confidence behavior and error propagation under sampling, beam search, or other decoding strategies remain unclear.",
+     "Agreement with the full model or preservation of a reference-based metric does not establish factual correctness or preservation of induction-head and factual-recall circuits.",
+     "The hidden-state copying approximation may be unreliable in architectures where layer-specific or shared KV representations are causally important.",
+     "Calibration on ROUGE-L, BLEURT, or Token-F1 may not align with downstream factual quality, semantic adequacy, or task-specific safety requirements."
+    ],
+    "code_or_data_url": "https://github.com/google-research/t5x/tree/main/t5x/contrib/calm",
+    "relevance_to_lab": "The paper supplies directly testable per-layer probes: hidden-state saturation is a cosine comparison of consecutive layer states, softmax response is an intermediate-logit margin, and the linear early-exit classifier can be trained against full-model agreement. In Gemma 4 E2B layers 15–34, these signals can be computed alongside per-layer logit-lens outputs, while activation patching could test whether copied states are causally sufficient for later computation. However, the paper studies T5 rather than Gemma, uses shared output embeddings rather than the lab's per-layer embedding setup, reports TPU rather than CPU speedups, and does not examine induction heads or factual recall."
+   },
+   "usage": {
+    "total_tokens": 45455,
+    "total_characters": 0,
+    "prompt_tokens": 23243,
+    "completion_tokens": 22212,
+    "completion_tokens_details": {
+     "reasoning_tokens": 19129
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 199
+    }
+   }
+  }
+ }
+}

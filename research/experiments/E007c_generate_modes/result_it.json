@@ -1,0 +1,104 @@
+{
+ "info": {
+  "variant": "it",
+  "repo": "google/gemma-4-E2B-it",
+  "missing": [],
+  "unexpected": [],
+  "meta_leftover": [],
+  "load_s": 18.1
+ },
+ "rows": [
+  {
+   "cond": "C1",
+   "item": 0,
+   "arm": "REF",
+   "T": 128,
+   "batch": 1,
+   "G": 32,
+   "wall_s": [
+    115.71,
+    98.38
+   ],
+   "prefill_s": [
+    16.755,
+    15.233
+   ],
+   "decode_s_per_step": [
+    3.184,
+    2.674
+   ],
+   "peak_rss_gb": 6.038,
+   "text": "_BASE`).\n\n---\n\n## Synthesis of Scout Reports (LIT-01 to LIT-05)\n\n### 1. LIT-01"
+  },
+  {
+   "cond": "C1",
+   "item": 0,
+   "arm": "SKIP",
+   "T": 128,
+   "batch": 1,
+   "G": 32,
+   "wall_s": [
+    96.98,
+    98.76
+   ],
+   "prefill_s": [
+    6.049,
+    7.781
+   ],
+   "decode_s_per_step": [
+    2.89,
+    2.929
+   ],
+   "peak_rss_gb": 5.877,
+   "text": "_BASE`).\n\n---\n\n## Synthesis of Scout Reports (LIT-01 to LIT-05)\n\n### 1. LIT-01",
+   "vs_ref": [
+    {
+     "identical": true,
+     "first_div": 32,
+     "frac_identical_tokens_all": 1.0,
+     "max_dscore_before_div": 3.147125244140625e-05
+    }
+   ],
+   "cache_maxdiff_vs_ref": 0.0
+  },
+  {
+   "cond": "C1",
+   "item": 0,
+   "arm": "SKIP+BF16",
+   "T": 128,
+   "batch": 1,
+   "G": 32,
+   "wall_s": [
+    32.37,
+    33.77
+   ],
+   "prefill_s": [
+    4.054,
+    4.865
+   ],
+   "decode_s_per_step": [
+    0.872,
+    0.928
+   ],
+   "peak_rss_gb": 5.911,
+   "text": "_BASE`).\n\n---\n\n## Synthesis of Scout Reports (LIT-01 to LIT-05)\n\n### 1. LIT-01",
+   "vs_skip": [
+    {
+     "identical": true,
+     "first_div": 32,
+     "frac_identical_tokens_all": 1.0,
+     "max_dscore_before_div": 0.2446746826171875
+    }
+   ],
+   "vs_ref": [
+    {
+     "identical": true,
+     "first_div": 32,
+     "frac_identical_tokens_all": 1.0,
+     "max_dscore_before_div": 0.2446746826171875
+    }
+   ]
+  }
+ ],
+ "changes": "after PREAUDIT-E007c: warm-up, 2 interleaved repeats, BF16 vs SKIP, cache diff, immutable C5 context"
+}

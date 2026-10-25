@@ -1,0 +1,466 @@
+{
+ "source_id": "LIT07-016",
+ "arxiv_id": "2606.12160",
+ "title": "A Controlled Study of Decoding-Time Truthfulness Methods on Instruction-Tuned LLMs",
+ "chars": 27758,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 26,
+    "near": 1,
+    "unverified": 2,
+    "skip": 2
+   },
+   "verified_frac": 0.931,
+   "data": {
+    "title": "A Controlled Study of Decoding-Time Truthfulness Methods on Instruction-Tuned LLMs⋆",
+    "research_question": "how much do decoding-time methods still contribute on these stronger models, and can we reliably measure their effect?",
+    "models_and_data": [
+     {
+      "item": "Models evaluated",
+      "quote": "Llama-3-8B-Instruct and Qwen2.5-7B-Instruct (local GPU), Llama-3.370B-Instruct and Llama-3.2-1B-Instruct (API), and Llama-3-8B base model.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TruthfulQA benchmark",
+      "quote": "TruthfulQA [11] (N = 817) tests resistance to common misconceptions",
+      "quote_check": "exact"
+     },
+     {
+      "item": "HaluEval QA benchmark",
+      "quote": "HaluEval QA [8] (N = 500) tests knowledge-grounded hallucination detection",
+      "quote_check": "exact"
+     },
+     {
+      "item": "TriviaQA benchmark",
+      "quote": "TriviaQA (N = 500) tests general open-domain factual recall",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Out-of-distribution training data",
+      "quote": "Learned methods are trained on HaluEval QA [8] (512 examples, 0% TruthfulQA overlap).",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "C1: Out-of-distribution training",
+      "quote": "Learned methods are trained on HaluEval QA [8] (512 examples, 0% TruthfulQA overlap).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C2: Multiple judges",
+      "quote": "Llama-3.3-70B [6] and Qwen-235B [15], with 3 prompt variants.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C3: Simple baselines",
+      "quote": "Temperature and top-p sweeps as zero-cost references.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C4: Confound controls",
+      "quote": "Length-matched and non-refusal subsets.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C5: Bootstrap confidence intervals",
+      "quote": "95% CIs from 10k resamples.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C6: Seed variance",
+      "quote": "3 evaluation seeds (±1.3% noise floor).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "%Both",
+      "definition": "percentage of responses judged both truthful and informative",
+      "quote": "%Both (Truthful & Informative)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%Truth",
+      "definition": "percentage of truthful responses",
+      "quote": "%Truthful",
+      "quote_check": "skip"
+     },
+     {
+      "name": "%Info",
+      "definition": "percentage of informative responses",
+      "quote": "%Informative",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Δ",
+      "definition": "change relative to each model's greedy baseline",
+      "quote": "∆ relative to each model’s greedy baseline.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "p-value",
+      "definition": "paired comparison p-value",
+      "quote": "p = .23",
+      "quote_check": "skip"
+     },
+     {
+      "name": "95% CI",
+      "definition": "bootstrap confidence interval",
+      "quote": "95% CIs from 10k resamples.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MDE",
+      "definition": "minimum detectable effect at 80% power",
+      "quote": "MDE = 4.8pp at 80% power",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "No token-level method achieves statistically significant improvement on full TruthfulQA; best learned adapter is below greedy.",
+      "numbers": "N = 817; −2.0 points; p = .23",
+      "quote": "on the full TruthfulQA benchmark (N = 817), no token-level method achieves statistically significant improvement, and the best learned adapter scores −2.0 points below greedy (p = .23).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Standard evaluation suggests a gain, while strict controls reverse it.",
+      "numbers": "+7.5pp; −2.0pp",
+      "quote": "standard conditions suggest +7.5pp, while strict controls reveal −2.0pp.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Self-critique is the only method reaching statistical significance at full scale.",
+      "numbers": "+3.1pp; p = .021",
+      "quote": "Self-critique remains the only method with p < 0.05 (+3.1pp, p = .021)",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "CoT is training-free, single-pass, and improves across benchmarks.",
+      "numbers": "+5.6–19pp",
+      "quote": "CoT achieving +5.6–19pp across benchmarks as a training-free, single-pass method.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Contamination, judge choice, and seed variance can materially change conclusions.",
+      "numbers": "6×; ±1.3%",
+      "quote": "Contamination inflates gains 6×; judge choice can reverse them; seed variance (±1.3%) matches the largest token-level improvements observed.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Different judges produce divergent conclusions about the same method.",
+      "numbers": "−3pp; −21pp",
+      "quote": "Llama-3.3-70B scores TRACE-LD at −3pp relative to greedy; Qwen-235B at −21pp.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "Measurement validity: LLM judges may diverge from human judgment.",
+      "quote": "measurement validity (LLM judges may diverge from human judgment despite our multijudge mitigation)",
+      "quote_check": "exact"
+     },
+     {
+      "text": "External validity: only two model families and three benchmarks were tested.",
+      "quote": "external validity (two model families, three benchmarks—other architectures or scales may differ)",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Statistical power: small genuine effects may be missed.",
+      "quote": "statistical power (N = 200 yields MDE = 4.8pp, so small genuine effects may be missed)",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Implementation fidelity: DoLA and ITI are reimplementations.",
+      "quote": "implementation fidelity (our DoLA/ITI are reimplementations, as official code does not support Llama-3)",
+      "quote_check": "near"
+     },
+     {
+      "text": "The paper does not show token-level methods fail on base models.",
+      "quote": "we do not show that token-level methods fail on base models",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The paper does not show CoT is universally optimal.",
+      "quote": "we do not show CoT is universally optimal",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The paper does not show LLM judges fully replace human evaluation.",
+      "quote": "we do not show LLM judges fully replace human evaluation",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not test Gemma 4 E2B or KV-shared layers 15-34/per-layer embeddings, so architecture-specific conclusions for the lab are unknown.",
+     "It does not use activation patching, logit lens, induction-head analysis, or factual-recall tracing, so it cannot localize where truthfulness signals reside.",
+     "The mechanistic analysis is limited to TRACE-LD token-change statistics and hyperparameter ablations, not circuit-level causal interventions.",
+     "CPU feasibility and runtime costs of the evaluated methods are not reported, which matters for the lab's CPU-only setup.",
+     "The paper relies on LLM judges and QA benchmarks; judge biases and benchmark formatting may interact with decoding-time interventions in ways not tested.",
+     "It does not examine whether KV-sharing or per-layer embeddings alter the effectiveness of token-level interventions."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Indirect but useful: it shows token-level decoding interventions have small/non-significant effects on instruction-tuned LLMs under strict controls, motivating the lab to use activation patching, logit lens, induction-head and factual-recall tracing to test whether Gemma 4 E2B's KV-shared layers 15-34 and per-layer embeddings contain exploitable factual signals; however, the paper does not study Gemma or those internals."
+   },
+   "usage": {
+    "prompt_tokens": 7861,
+    "total_tokens": 17051,
+    "completion_tokens": 9190,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 7552
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 7675
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 31,
+    "near": 1,
+    "unverified": 3,
+    "skip": 0
+   },
+   "verified_frac": 0.914,
+   "data": {
+    "title": "A Controlled Study of Decoding-Time Truthfulness Methods on Instruction-Tuned LLMs",
+    "research_question": "How much do decoding-time methods still contribute on these stronger models, and can we reliably measure their effect?",
+    "models_and_data": [
+     {
+      "item": "Five evaluated models spanning Llama and Qwen instruction-tuned models plus one Llama base model.",
+      "quote": "Llama-3-8B-Instruct and Qwen2.5-7B-Instruct (local GPU), Llama-3.3-70B-Instruct and Llama-3.2-1B-Instruct (API), and Llama-3-8B base model.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Out-of-distribution training data for learned methods consisted of 512 HaluEval QA examples with no TruthfulQA overlap.",
+      "quote": "Learned methods are trained on HaluEval QA [8] (512 examples, 0% TruthfulQA overlap).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Three factual evaluation benchmarks were used: TruthfulQA, HaluEval QA, and TriviaQA.",
+      "quote": "TruthfulQA [11] (N = 817) tests resistance to common misconceptions; HaluEval QA [8] (N = 500) tests knowledge-grounded hallucination detection; TriviaQA (N = 500) tests general open-domain factual recall.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Simple decoding baselines and prior token-level methods included temperature, top-p, DoLA, ITI, and contrastive decoding.",
+      "quote": "15 methods in four categories: (i) simple decoding: temperature and top-p sweeps; (ii) prior methods: DoLA1 (7 layer configs), ITI (α ∈ {0.5, 1.0, 5.0}), contrastive decoding (α ∈ {0.1–2.0]);",
+      "quote_check": "near"
+     },
+     {
+      "item": "Learned and deliberative methods included TRACE-LD, HiddenSteer, LoRA, chain-of-thought, and self-critique.",
+      "quote": "(iii) learned adapters: TRACE-LD (2.3M params), HiddenSteer, LoRA (6.8M); (iv) deliberative: chain-of-thought (CoT), self-critique and five variants.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Evaluation used two judge families and three prompt variants.",
+      "quote": "Llama-3.3-70B [6] and Qwen-235B [15], with 3 prompt variants.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "C1: Train learned methods out of distribution on HaluEval QA rather than TruthfulQA.",
+      "quote": "Learned methods are trained on HaluEval QA [8] (512 examples, 0% TruthfulQA overlap).",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C2: Validate results with multiple judge families and prompt variants.",
+      "quote": "Llama-3.3-70B [6] and Qwen-235B [15], with 3 prompt variants.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C3: Compare methods against zero-cost temperature and top-p decoding sweeps.",
+      "quote": "Temperature and top-p sweeps as zero-cost references.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C4: Analyze length-matched responses and non-refusal subsets separately.",
+      "quote": "Length-matched and non-refusal subsets.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C5: Quantify uncertainty with bootstrap confidence intervals.",
+      "quote": "95% CIs from 10k resamples.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "C6: Measure evaluation noise using multiple seeds.",
+      "quote": "3 evaluation seeds (±1.3% noise floor).",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "%Truth",
+      "definition": "Truthfulness rate reported alongside informativeness and joint scores.",
+      "quote": "Increasing the contrastive weight α from 0.1 to 2.0 raises truthfulness from 84% to 93% but drops informativeness from 76% to 42% (Fig. 3).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%Info",
+      "definition": "Informativeness rate.",
+      "quote": "Increasing α raises truthfulness but drops informativeness faster, yielding a net decrease.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "%Both",
+      "definition": "Joint truthful-and-informative score.",
+      "quote": "%Both (Truthful & Informative)",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Δ",
+      "definition": "Method score minus the same model's greedy baseline, reported in percentage points.",
+      "quote": "∆ relative to each model’s greedy baseline.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "95% bootstrap CI",
+      "definition": "Confidence interval computed from 10k bootstrap resamples.",
+      "quote": "95% CIs from 10k resamples.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "p-value",
+      "definition": "Reported significance value for the method-versus-baseline comparison.",
+      "quote": "Self-critique remains the only method with p < 0.05 (+3.1pp, p = .021), though its gain shrinks from +12.0 at N = 100 to +3.1 at full scale.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "MDE",
+      "definition": "Minimum detectable effect at 80% statistical power.",
+      "quote": "Power analysis shows MDE = 4.8pp at 80% power, meaning effects of ±2pp cannot be reliably detected.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Seed noise floor",
+      "definition": "Variation across three evaluation seeds.",
+      "quote": "3 evaluation seeds (±1.3% noise floor).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "On TruthfulQA under strict controls, no learned or prior method exceeded the simple temperature baseline.",
+      "numbers": "N = 100; T = 0.3; +2.0pp",
+      "quote": "Under these controls, no learned or prior method exceeds simple temperature tuning (T = 0.3, +2.0pp).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "TRACE-LD's apparent small gain reversed and was not statistically significant at full TruthfulQA scale.",
+      "numbers": "N = 817; +1.0 at N = 100; −2.0pp; p = .23; 72 wins vs. 88 losses",
+      "quote": "At full benchmark scale (N = 817, Table 3), TRACE-LD’s apparent +1.0 at N = 100 reverses to −2.0pp (p = .23, 72 wins vs. 88 losses).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Self-critique was the only method reaching statistical significance at full TruthfulQA scale.",
+      "numbers": "+12.0 at N = 100; +3.1pp; p = .021; +3.1 at full scale",
+      "quote": "Self-critique remains the only method with p < 0.05 (+3.1pp, p = .021), though its gain shrinks from +12.0 at N = 100 to +3.1 at full scale.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Training-test overlap inflated the apparent adapter gain, whereas out-of-distribution training nearly removed it.",
+      "numbers": "27.2% overlap; +7.5pp; +1.0",
+      "quote": "Training on TruthfulQA data (27.2% overlap) yields +7.5pp; OOD training reduces this to +1.0.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The judge model materially changed TRACE-LD's measured effect relative to greedy.",
+      "numbers": "−3pp; −21pp",
+      "quote": "Llama-3.3-70B scores TRACE-LD at −3pp relative to greedy; Qwen-235B at −21pp.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "On Llama-3-8B, TRACE-LD degraded across all three benchmarks while CoT improved all three.",
+      "numbers": "−1.4 to −5.8pp; +5.6 to +19.4pp",
+      "quote": "On Llama-3-8B, TRACE-LD shows consistent degradation across all three benchmarks (−1.4 to −5.8pp), while CoT improves on all three (+5.6 to +19.4pp).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "TRACE-LD changed token selections broadly and relatively uniformly across word classes and response positions.",
+      "numbers": "2,946 generated tokens; 15.3%; 53%; 45%; 34/32/34%",
+      "quote": "Across 2,946 generated tokens, the adapter changes selections at 15.3% of positions: 53% function words, 45% content words, uniformly distributed across response positions (34/32/34% early/middle/late).",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Increasing the contrastive weight traded informativeness for truthfulness.",
+      "numbers": "α from 0.1 to 2.0; truthfulness from 84% to 93%; informativeness from 76% to 42%",
+      "quote": "Increasing the contrastive weight α from 0.1 to 2.0 raises truthfulness from 84% to 93% but drops informativeness from 76% to 42% (Fig. 3).",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The study does not claim that token-level methods fail on base models.",
+      "quote": "we do not show that token-level methods fail on base models (prior work demonstrated genuine gains there);",
+      "quote_check": "exact"
+     },
+     {
+      "text": "CoT is not claimed to be universally optimal because its effectiveness depends on benchmark and prompt alignment.",
+      "quote": "we do not show CoT is universally optimal (its effectiveness depends on prompt–benchmark alignment);",
+      "quote_check": "exact"
+     },
+     {
+      "text": "LLM judges are not claimed to fully replace human evaluation.",
+      "quote": "and we do not show LLM judges fully replace human evaluation.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "LLM judges may diverge from human judgment despite multi-judge validation.",
+      "quote": "measurement validity (LLM judges may diverge from human judgment despite our multi-judge mitigation);",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "Results may not generalize beyond the two model families and three benchmarks.",
+      "quote": "external validity (two model families, three benchmarks—other architectures or scales may differ);",
+      "quote_check": "unverified"
+     },
+     {
+      "text": "The reported sample size may miss genuine effects smaller than the minimum detectable effect.",
+      "quote": "statistical power (N = 200 yields MDE = 4.8pp, so small genuine effects may be missed);",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The DoLA and ITI results come from reimplementations rather than the official implementations.",
+      "quote": "implementation fidelity (our DoLA/ITI are reimplementations, as official code does not support Llama3).",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "No Gemma-family model is tested, so transfer of the reported effect sizes to Gemma 4 E2B is unknown.",
+     "Pretraining contamination is not audited; the reported overlap analysis concerns learned-method training data rather than benchmark exposure already present in pretrained models.",
+     "Multi-judge validation may retain correlated family-specific biases because the reported judges are Llama- and Qwen-family models.",
+     "Training-seed variance for learned adapters is not quantified; the ±1.3% figure is explicitly an evaluation-seed noise floor.",
+     "No correction for multiple method–model–benchmark comparisons is reported, and uncertainty is not shown for the cross-benchmark/model effects.",
+     "The mechanistic analysis centers on TRACE-LD, so its diffuse-perturbation explanation may not generalize to DoLA, ITI, or deliberative methods.",
+     "Exact judge prompts, complete generation settings, and released implementation artifacts are not provided in the text, limiting reproducibility.",
+     "CPU/memory use, latency, and scaling costs are not quantified beyond noting that self-critique requires a second generation pass."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "The paper is methodologically relevant but provides no direct Gemma validation. DoLA layer sweeps, ITI activation steering, and learned logit adapters motivate activation-patching and logit-lens scans across Gemma 4 E2B layers 15–34, including tests for whether interventions are diffuse or targeted. TruthfulQA and TriviaQA can serve as misconception and factual-recall endpoints, while the paper's greedy and temperature/top-p baselines, length/refusal controls, multiple judges, bootstrap intervals, and evaluation seeds should be mirrored. However, the study does not examine KV-shared layers, per-layer embeddings, induction heads, factual-recall tracing internals, or CPU feasibility, and transfer of its conclusions to Gemma 4 E2B remains untested."
+   },
+   "usage": {
+    "total_tokens": 28058,
+    "total_characters": 0,
+    "prompt_tokens": 7856,
+    "completion_tokens": 20202,
+    "completion_tokens_details": {
+     "reasoning_tokens": 17351
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 200
+    }
+   }
+  }
+ }
+}

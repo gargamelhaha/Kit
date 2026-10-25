@@ -1,0 +1,465 @@
+{
+ "source_id": "LIT07-041",
+ "arxiv_id": "2603.23701",
+ "title": "The Diminishing Returns of Early-Exit Decoding in Modern LLMs",
+ "chars": 56618,
+ "truncated": false,
+ "extractions": {
+  "deepseek": {
+   "model_id": "free-deepseek-4.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 28,
+    "near": 0,
+    "unverified": 2,
+    "skip": 0
+   },
+   "verified_frac": 0.933,
+   "data": {
+    "title": "The Diminishing Returns of Early-Exit Decoding in Modern LLMs",
+    "research_question": "Are modern LLMs still inherently suitable for layer-wise early-exit, and what factors affect a model’s ability to support early-exit?",
+    "models_and_data": [
+     {
+      "item": "Modern open-weight LLMs",
+      "quote": "we evaluate a diverse set of modern language models with open-sourced weights.",
+      "quote_check": "unverified"
+     },
+     {
+      "item": "Evaluation datasets",
+      "quote": "We evaluate GPQA (Rein et al., 2023), GSM8K (Cobbe et al., 2021), HumanEval (Chen et al., 2021), and MMLU (Hendrycks et al., 2021)",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Fixed prompt subset",
+      "quote": "For each dataset, we use a fixed subset of 100 prompts selected with the same random seed across all models to ensure fair comparisons while keeping the experimental matrix tractable.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pythia checkpoints",
+      "quote": "We analyze Pythia (Biderman et al., 2023), an open-weight transformer model for which intermediate checkpoints throughout pretraining are available.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Qwen3-4B base and instruct variants",
+      "quote": "we evaluate different variants of the Qwen3-4B model, including the base pretrained model, and an instruction-tuned version.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Dense transformer representative",
+      "quote": "Qwen3-8B (Yang et al., 2025) as a representative dense transformer model",
+      "quote_check": "exact"
+     },
+     {
+      "item": "MoE representative",
+      "quote": "Qwen3-30B-A3B (Yang et al., 2025) as a 30 billion parameter MoE model with 3 billion parameters activated per token",
+      "quote_check": "exact"
+     },
+     {
+      "item": "SSM representative",
+      "quote": "Mamba-Codestral-7B (Dao and Gu, 2024) as a representative SSM.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Measure layer-to-final similarity",
+      "quote": "we measure the cosine similarity between exit layers and the final layer using three signals:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Oracle exit threshold",
+      "quote": "the model exits at a layer only if the current similarity exceeds a predefined threshold δ.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Threshold search",
+      "quote": "The exit thresholds δ are selected using a simple linear search to maximize the skip ratio while keeping the accuracy loss within 5%.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Deterministic evaluation",
+      "quote": "we set the model temperature to zero to ensure deterministic results for consistent benchmarking.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Zero-shot and output limit",
+      "quote": "The performances of the downstream tasks are evaluated in a zero-shot manner. The default maximal output limit is set to 1024 tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "OpenCompass framework",
+      "quote": "We implement our benchmarking framework on top of OpenCompass (Contributors, 2023), which is an open-source LLM benchmarking system with tuned instructions and unified evaluation methods for different datasets.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Average EAS",
+      "quote": "To summarize a model over all candidate exit layers, we report the average early-exit adaptability score as",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Skip ratio",
+      "definition": "Fraction of layers skipped at exit layer ℓ; larger values indicate more skipped layers and higher potential speedup.",
+      "quote": "A larger wℓ indicates more skipped layers and higher potential speedup",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Layer-to-final similarity",
+      "definition": "Cosine similarity between hidden state/logit/top-K representation at exit layer and final layer; higher means closer to final-layer representation.",
+      "quote": "Higher Sℓ indicates that the exit-layer representation is closer to the final-layer representation",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Early-exit adaptability score (EAS)",
+      "definition": "Weighted geometric mean of mapped similarity and skip ratio, averaged over candidate exit layers.",
+      "quote": "We define an adaptability score Aℓ for exiting at layer ℓ as a weighted geometric mean that balances efficiency and accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-K token prediction similarity",
+      "definition": "Overlap between candidate sets at intermediate layer and final layer.",
+      "quote": "Top-K token predictions (candidate-set) measures the overlap between the candidate sets predicted at an intermediate layer and the final layer",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Oracle early-exit table metrics",
+      "definition": "Full-depth accuracy, early-exit accuracy, skip ratio, and mean early-exit score.",
+      "quote": "We report the full-depth accuracy (Full Acc.↑), early-exit accuracy (Acc.↑), skip ratio (Skip↑), and the mean early-exit score (↑).",
+      "quote_check": "exact"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Early-exit effectiveness shows a diminishing trend across newer model generations.",
+      "numbers": "not stated",
+      "quote": "Our results show a diminishing trend in early-exit effectiveness across newer model generations.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Dense transformers offer greater early-exit potential than MoE and State Space Models.",
+      "numbers": "not stated",
+      "quote": "dense transformers generally offer greater early-exit potential than Mixture-of-Experts and State Space Models.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Larger models, especially >20B parameters, and base pretrained models tend to have higher early-exit potential.",
+      "numbers": "more than 20 billion parameters",
+      "quote": "larger models, particularly those with more than 20 billion parameters, and base pretrained models without specialized tuning tend to exhibit higher early-exit potential.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Oracle early-exit with logit similarity fails to balance accuracy and acceleration.",
+      "numbers": "not stated",
+      "quote": "fails to achieve a balance between accuracy and acceleration in LLMs.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Logit similarity is the most sensitive signal for early-exit control.",
+      "numbers": "not stated",
+      "quote": "Logit similarity affects the early-exit performance the most.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Post-trained models show delayed logit alignment compared to base models.",
+      "numbers": "not stated",
+      "quote": "post-trained models generally exhibit delayed logit alignment compared to the base model",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The study focuses on inherent early-exit suitability with little or no additional training or architectural changes.",
+      "quote": "our study focuses on a model’s inherent suitability for early-exit, considering methods that require little or no additional training or architectural changes.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Prior work shows finetuning or auxiliary prediction heads can improve early-exit and alter internal representations.",
+      "quote": "prior work (Pan et al., 2024; Xu et al., 2025) has shown that early-exit performance can be improved through finetuning or by introducing auxiliary prediction heads at intermediate layers",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Limited public pretraining recipes mean training-dynamics analysis relies mainly on Pythia checkpoints.",
+      "quote": "due to the limited public availability of detailed pretraining recipes for most open-weight LLMs, our analysis of training dynamics relies primarily on the released checkpoints of Pythia",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Pythia checkpoints provide only a partial view and make general conclusions across model families difficult.",
+      "quote": "While these checkpoints provide useful insights, they offer only a partial view and make it difficult to draw general conclusions across model families.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper does not test Gemma 4 E2B or KV-shared layers 15-34, so its layer-redundancy conclusions may not transfer to the lab’s target architecture.",
+     "Early-exit skip ratios assume independent layer redundancy; KV-shared layers and per-layer embeddings could change which layers are safely skippable.",
+     "The benchmark uses layer-to-final similarity and oracle logit thresholds, not activation patching, logit lens, induction-head tracing, or factual-recall tracing, so it cannot localize internal mechanisms.",
+     "Latency and acceleration claims are hardware-dependent; the paper reports no CPU-only measurements relevant to the lab’s setup.",
+     "The fixed 100-prompt subset and zero-shot, temperature-zero evaluation may limit external validity across prompts and decoding settings.",
+     "Oracle early-exit may overestimate practical benefits because it assumes similarity information is available when selecting the exit layer.",
+     "Model selection omits Gemma 4 E2B and does not analyze per-layer embeddings."
+    ],
+    "code_or_data_url": "not stated",
+    "relevance_to_lab": "Indirectly relevant: it offers layer-wise similarity, EAS, and oracle early-exit methodology that could inform logit-lens and layer-redundancy analyses, but it does not study Gemma 4 E2B, KV-shared layers 15-34, per-layer embeddings, activation patching, induction heads, or factual-recall tracing."
+   },
+   "usage": {
+    "prompt_tokens": 15253,
+    "total_tokens": 27458,
+    "completion_tokens": 12205,
+    "prompt_tokens_details": {
+     "cached_tokens": 256,
+     "created_cache_tokens": 14976
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 10136
+    }
+   }
+  },
+  "minimax": {
+   "model_id": "minimax-m3.1-flash",
+   "parsed": true,
+   "error": null,
+   "quote_stats": {
+    "exact": 34,
+    "near": 1,
+    "unverified": 1,
+    "skip": 0
+   },
+   "verified_frac": 0.972,
+   "data": {
+    "title": "The Diminishing Returns of Early-Exit Decoding in Modern LLMs",
+    "research_question": "RQ1: Are modern LLMs still inherently suitable for layer-wise early-exit? RQ2: What factors affect a model’s ability to support early-exit?",
+    "models_and_data": [
+     {
+      "item": "Primary model families: Llama2, Llama3, Llama4, Qwen2, and Qwen3.",
+      "quote": "Our selection includes (1) Meta’s Llama2 (Touvron et al., 2023), Llama3 (Grattafiori et al., 2024), and Llama4 (Meta Inc., 2025) families, (2) Alibaba’s Qwen2 (Yang et al., 2024) and Qwen3 (Yang et al., 2025) models",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Additional architecture families: OpenAI OSS, Mamba1, and Mamba2.",
+      "quote": "(3) OpenAI’s OSS model (OpenAI et al., 2025), and (4) Mamba1 (Gu and Dao, 2024) and Mamba2 (Dao and Gu, 2024) models.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Evaluation datasets covering scientific reasoning, mathematical problem solving, code generation, and short-form knowledge evaluation.",
+      "quote": "We evaluate GPQA (Rein et al., 2023), GSM8K (Cobbe et al., 2021), HumanEval (Chen et al., 2021), and MMLU (Hendrycks et al., 2021), which cover scientific reasoning, mathematical problem solving, code generation, and short-form knowledge evaluation.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Each dataset uses a fixed subset of 100 prompts with the same random seed across models.",
+      "quote": "For each dataset, we use a fixed subset of 100 prompts selected with the same random seed across all models to ensure fair comparisons while keeping the experimental matrix tractable.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Model-scale experiments use varying sizes from the Qwen3, Llama3, and Llama4 families.",
+      "quote": "we further run experiments using models with varying sizes from the Qwen3 (Yang et al., 2025), Llama3 (Grattafiori et al., 2024), and Llama4 (Meta Inc., 2025) families.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Architecture representatives: dense Qwen3-8B, MoE Qwen3-30B-A3B, and SSM Mamba-Codestral-7B.",
+      "quote": "Figure 7: The layer-to-final similarity and the mean EAS of three different LLM architectures: (a) dense (Qwen3-8B), (b) MoE (Qwen3-30B-A3B), and (c) SSM (Mamba-Codestral-7B).",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Pretraining dynamics are examined using Pythia checkpoints.",
+      "quote": "We analyze Pythia (Biderman et al., 2023), an open-weight transformer model for which intermediate checkpoints throughout pretraining are available.",
+      "quote_check": "exact"
+     },
+     {
+      "item": "Post-training effects are examined using base and instruction-tuned Qwen3-4B variants.",
+      "quote": "We evaluate different variants of the Qwen3-4B model, including the base pretrained model, and an instruction-tuned version.",
+      "quote_check": "exact"
+     }
+    ],
+    "protocol": [
+     {
+      "step": "Implement the benchmark on OpenCompass.",
+      "quote": "We implement our benchmarking framework on top of OpenCompass (Contributors, 2023), which is an open-source LLM benchmarking system with tuned instructions and unified evaluation methods for different datasets.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Set the model temperature to zero for deterministic benchmarking.",
+      "quote": "Following prior evaluation methodology (Chen et al., 2025; Elhoushi et al., 2024), we set the model temperature to zero to ensure deterministic results for consistent benchmarking.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Evaluate downstream tasks in a zero-shot manner.",
+      "quote": "The performances of the downstream tasks are evaluated in a zero-shot manner.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Use a default maximal output limit of 1024 tokens.",
+      "quote": "The default maximal output limit is set to 1024 tokens.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Measure layer-to-final cosine similarity using hidden states, output logits, and top-K predictions.",
+      "quote": "Accordingly, we measure the cosine similarity between exit layers and the final layer using three signals:",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Obtain intermediate-layer logits by applying the language model head to intermediate hidden states.",
+      "quote": "For intermediate layers, logits are obtained by applying the language model head to their hidden states, projecting them into the vocabulary space.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "In oracle experiments, exit only when the current similarity reaches a predefined threshold.",
+      "quote": "In this setting, the model exits at a layer only if the current similarity exceeds a predefined threshold δ.",
+      "quote_check": "exact"
+     },
+     {
+      "step": "Select exit thresholds by linear search to maximize skip ratio while constraining accuracy loss.",
+      "quote": "The exit thresholds δ are selected using a simple linear search to maximize the skip ratio while keeping the accuracy loss within 5%.",
+      "quote_check": "exact"
+     }
+    ],
+    "metrics": [
+     {
+      "name": "Skip ratio",
+      "definition": "At exit layer ℓ, wℓ = (L−ℓ)/L, where L is the total number of layers; it estimates the fraction of layers skipped.",
+      "quote": "A larger wℓ indicates more skipped layers and higher potential speedup (Xu et al., 2025; Chen et al., 2024).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Layer-to-final similarity",
+      "definition": "Cosine similarity Sℓ between exit layer ℓ and final layer L, computed on hidden states, output logits, or top-K candidates.",
+      "quote": "Higher Sℓ indicates that the exit-layer representation is closer to the final-layer representation, similar to prior layer-wise analysis work (Men et al., 2025; Csordás et al., 2025).",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Hidden-state semantic similarity",
+      "definition": "Similarity of an intermediate hidden state to the final-layer representation, indicating whether a final-like semantic state has formed.",
+      "quote": "Hidden state (semantic) similarity measures how close the intermediate-layer representations are to the final-layer representation, indicating whether the model has formed a final-like semantic state for next-token prediction.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Output-logit probability similarity",
+      "definition": "Similarity between the next-token probability distributions produced at an intermediate layer and the final layer.",
+      "quote": "Output logits (probability) measure how closely the next-token probability distribution produced by an intermediate layer matches that of the final layer.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Top-K candidate-set similarity",
+      "definition": "Overlap between intermediate-layer and final-layer top-K prediction sets; the experiments use K = 10.",
+      "quote": "Top-K token predictions (candidate-set) measures the overlap between the candidate sets predicted at an intermediate layer and the final layer, capturing candidate-set stability rather than exact probabilities.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Early-exit adaptability score at a layer",
+      "definition": "Aℓ = S̃ℓ^α · wℓ^(1−α), a weighted geometric mean of mapped similarity and skip ratio with α ∈ [0, 1].",
+      "quote": "We define an adaptability score Aℓ for exiting at layer ℓ as a weighted geometric mean that balances efficiency and accuracy.",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Mean early-exit adaptability score",
+      "definition": "EAS is the average per-layer adaptability score over candidate exit layers ℓ ∈ {1,...,L−1}.",
+      "quote": "To summarize a model over all candidate exit layers, we report the average early-exit adaptability score as",
+      "quote_check": "exact"
+     },
+     {
+      "name": "Oracle early-exit upper bound",
+      "definition": "Maximum achievable skip ratio while maintaining the original generation behavior with acceptable accuracy loss.",
+      "quote": "we estimate the (3) upper bound of early-exit benefits, defined as the maximum achievable layer skip ratio under the constraint of maintaining the original generation behavior with acceptable accuracy loss.",
+      "quote_check": "near"
+     }
+    ],
+    "key_results": [
+     {
+      "claim": "Early-exit adaptability shows a diminishing trend across recent model generations.",
+      "numbers": "not stated",
+      "quote": "Our results also reveal a diminishing trend in early-exit adaptability across recent model generations.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Larger models, particularly those with more than 20 billion parameters, have higher early-exit potential, as do base models without specialized tuning.",
+      "numbers": "more than 20 billion parameters",
+      "quote": "In addition, larger models, particularly those with more than 20 billion parameters, and base pretrained models without specialized tuning tend to exhibit higher early-exit potential.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The dense architecture representative has mean EAS 0.51.",
+      "numbers": "0.51",
+      "quote": "(a) Dense（EAS=0.51）",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The MoE architecture representative has mean EAS 0.49.",
+      "numbers": "0.49",
+      "quote": "(b) MoE （EAS=0.49）",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "The SSM architecture representative has mean EAS 0.48.",
+      "numbers": "0.48",
+      "quote": "(c) SSM （EAS=0.48）",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Continued pretraining and post-training alignment reduce inherent early-exit suitability.",
+      "numbers": "not stated",
+      "quote": "The results indicate that both continued pretraining and post-training alignment tend to reduce the base model’s inherent ability to support effective early-exit.",
+      "quote_check": "unverified"
+     },
+     {
+      "claim": "Early-exit patterns are primarily model-specific and only weakly influenced by the assigned workload.",
+      "numbers": "not stated",
+      "quote": "(4) earlyexit patterns are largely model-specific and only weakly influenced by the assigned workload.",
+      "quote_check": "exact"
+     },
+     {
+      "claim": "Even oracle early exit with advance knowledge of layer-to-final similarity fails to balance accuracy and acceleration when applied directly to base models.",
+      "numbers": "not stated",
+      "quote": "The results show that directly applying earlyexit mechanisms to base models, even when layerto-final similarity information is assumed to be known in advance, fails to achieve a balance between accuracy and acceleration in LLMs.",
+      "quote_check": "exact"
+     }
+    ],
+    "limitations_stated_by_authors": [
+     {
+      "text": "The study evaluates inherent suitability for early exit under methods requiring little or no additional training or architectural changes.",
+      "quote": "First, our study focuses on a model’s inherent suitability for early-exit, considering methods that require little or no additional training or architectural changes.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Finetuning and auxiliary intermediate prediction heads can improve performance but alter internal representations, limiting the scope of the study.",
+      "quote": "In contrast, prior work (Pan et al., 2024; Xu et al., 2025) has shown that early-exit performance can be improved through finetuning or by introducing auxiliary prediction heads at intermediate layers, which can alter the model’s internal representations.",
+      "quote_check": "exact"
+     },
+     {
+      "text": "Training-dynamics conclusions rely primarily on Pythia because detailed pretraining recipes for most open-weight models are unavailable.",
+      "quote": "Second, due to the limited public availability of detailed pretraining recipes for most open-weight LLMs, our analysis of training dynamics relies primarily on the released checkpoints of Pythia (Biderman et al., 2023).",
+      "quote_check": "exact"
+     },
+     {
+      "text": "The available Pythia checkpoints provide only a partial view and do not support broad conclusions across model families.",
+      "quote": "While these checkpoints provide useful insights, they offer only a partial view and make it difficult to draw general conclusions across model families.",
+      "quote_check": "exact"
+     }
+    ],
+    "threats_not_stated_by_authors": [
+     "The paper uses skip ratio as a proxy for acceleration but reports no wall-clock latency, time-per-output-token, memory, or hardware measurements, so realized speedups—especially on the lab’s CPU—remain unknown.",
+     "Each task uses only 100 fixed prompts with one shared random seed, limiting statistical power and making small accuracy differences susceptible to sampling noise.",
+     "No confidence intervals, repeated runs, or significance tests are reported for downstream task accuracy; the analysis emphasizes point estimates and curve shapes.",
+     "EAS depends on cosine similarity, a linear rescaling, and the α accuracy-efficiency trade-off, so rankings may depend on metric-design choices.",
+     "The architecture comparison confounds architecture with model family, scale, active parameters, depth, and training recipe, limiting causal attribution to dense, MoE, or SSM design alone.",
+     "Oracle exits use final-layer similarity information unavailable in a deployed causal decoder, making the upper-bound gains optimistic relative to practical exits.",
+     "The study does not test Gemma 4, E2B models, KV-shared layers, activation patching, induction heads, factual recall, or CPU execution, so direct transfer to the lab setup is untested.",
+     "Layer-average EAS and global thresholds can hide token-, layer-, and task-specific exit behavior, while skip-ratio calculations omit KV-cache and recomputation overhead."
+    ],
+    "code_or_data_url": "https://github.com/open-compass/opencompass (OpenCompass framework; paper-specific benchmark/data URL: not stated)",
+    "relevance_to_lab": "High methodological relevance but no direct Gemma 4 evidence. Applying the LM head to each layer’s hidden state is the paper’s logit-lens analogue, and its layer-to-final hidden-state, logit, and top-K similarities can be computed from Gemma 4 E2B per-layer embeddings over the KV-shared layers 15-34. Activation patching can extend the paper’s observational alignment analysis by testing whether those layers causally carry the final-layer prediction; induction-head and factual-recall tracing can test whether early-exit alignment is task- or circuit-dependent. The paper’s finding that modern models often align logits late suggests that Gemma 4 may have a narrow early-exit window, while its claim that workload effects are weak should be checked directly on factual-recall and induction tasks. Because the study reports layer skip ratios rather than wall-clock latency, CPU TPOT measurements remain necessary. The paper does not address KV sharing, Gemma 4, activation patching, induction heads, or factual recall."
+   },
+   "usage": {
+    "total_tokens": 36705,
+    "total_characters": 0,
+    "prompt_tokens": 15181,
+    "completion_tokens": 21524,
+    "completion_tokens_details": {
+     "reasoning_tokens": 18347
+    },
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    }
+   }
+  }
+ }
+}

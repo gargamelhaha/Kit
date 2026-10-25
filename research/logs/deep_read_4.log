@@ -1,0 +1,129 @@
+Syntax Error: Missing language pack for 'Adobe-Japan1' mapping
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (14910): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (14993): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15027): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15089): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15149): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15210): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15242): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21755): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21778): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21814): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21837): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21874): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21890): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21929): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21939): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21984): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21993): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22020): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22036): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22069): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22078): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22130): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23434): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23460): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23475): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23487): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23514): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23532): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23598): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23619): No font in show
+Syntax Error: Missing language pack for 'Adobe-Japan1' mapping
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (14910): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (14993): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15027): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15089): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15149): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15210): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (15242): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21755): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21778): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21814): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21837): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21874): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21890): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21929): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21939): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21984): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (21993): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22020): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22036): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22069): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22078): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (22130): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23434): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23460): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23475): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23487): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23514): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23532): No font in show
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23598): No font in show/space
+Syntax Error: Unknown font tag 'C1'
+Syntax Error (23619): No font in show
+jobs 12
+LIT07-001 {'deepseek': 0.946, 'minimax': 1.0}
+LIT07-016 {'deepseek': 0.931, 'minimax': 0.914}
+LIT07-041 {'deepseek': 0.933, 'minimax': 0.972}
+LIT07-042 {'deepseek': 0.97, 'minimax': 0.971}
+LIT07-058 {'deepseek': 0.969, 'minimax': 0.973}
+LIT07-061 {'deepseek': 0.971, 'minimax': 0.919}
