@@ -49,12 +49,24 @@ def load(variant="it"):
     sd = {k: _tensor(st, h["model.language_model." + k[len("model."):]], base, k in MMAP_KEYS)
           for k in model.state_dict() if k != "lm_head.weight"}
     missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
+    _drop_page_cache(st)
     model.tie_weights()
     _rebuild_meta_buffers(model, cfg)
     leftover = [n for n, b in list(model.named_parameters()) + list(model.named_buffers()) if b.device.type == "meta"]
     model.eval()
     return model, tok, {"variant": variant, "repo": MODELS[variant], "missing": [m for m in missing if m != "lm_head.weight"],
                         "unexpected": unexpected, "meta_leftover": leftover, "load_s": round(time.time() - t0, 1)}
+
+
+def _drop_page_cache(path):
+    """Ask the kernel to drop cached pages of the checkpoint after the RAM copy (best effort; the sandbox
+    may account page cache against its memory box). PLE rows are re-read on demand."""
+    try:
+        fd = os.open(path, os.O_RDONLY)
+        os.posix_fadvise(fd, 0, 0, os.POSIX_FADV_DONTNEED)
+        os.close(fd)
+    except (OSError, AttributeError):
+        pass
 
 
 def _rebuild_meta_buffers(model, cfg):
@@ -80,6 +92,9 @@ def use_fp32_compute(model):
     """
     import torch.nn.functional as F
     from torch import nn
+    if getattr(model, "_fp32_compute", False):
+        return model
+    model._fp32_compute = True
     def chunked(m, x, rows=32768):  # avoids a 1.6 GB fp32 copy of the 262k-row unembedding
         x = x.float()
         return torch.cat([F.linear(x, m.weight[r:r + rows].float()) for r in range(0, m.weight.shape[0], rows)], dim=-1)
