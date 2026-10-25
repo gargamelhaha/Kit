@@ -1,0 +1,163 @@
+{
+ "variant": "it",
+ "n_pairs": 12,
+ "n_items_correct": 31,
+ "n_items": 32,
+ "P1_frac_pairs_lastsubj_max_ge_0.5": 0.6666666666666666,
+ "P1_pass": false,
+ "P2_frac_pairs_final_late_max_ge_0.5": 1.0,
+ "P2_pass": true,
+ "P3_median_at14": 0.005127268144860864,
+ "P3_median_max": 0.9250794053077698,
+ "P3_pass": true,
+ "P4_template_median_by_layer": [
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.001,
+  0.001,
+  0.001,
+  0.003,
+  0.003,
+  0.003,
+  0.002,
+  0.004,
+  0.001
+ ],
+ "P4_pass": true,
+ "control_median_abs": 0.1464829370379448,
+ "control_pass": false,
+ "mean_recovery_last_subject_by_layer": [
+  0.284,
+  0.196,
+  0.235,
+  0.351,
+  0.473,
+  0.504,
+  0.485,
+  0.534,
+  0.504,
+  0.481,
+  0.486,
+  0.465,
+  0.534,
+  0.595,
+  0.01
+ ],
+ "mean_recovery_final_pos_by_layer_0_14": [
+  -0.0,
+  0.0,
+  -0.0,
+  -0.0,
+  -0.001,
+  -0.002,
+  -0.001,
+  -0.001,
+  -0.001,
+  -0.001,
+  -0.002,
+  -0.003,
+  -0.002,
+  -0.001,
+  -0.003
+ ],
+ "mean_recovery_final_pos_by_layer_15_34": [
+  0.012,
+  0.019,
+  0.025,
+  0.026,
+  0.041,
+  0.042,
+  0.039,
+  0.038,
+  0.04,
+  0.053,
+  0.056,
+  0.846,
+  0.845,
+  0.856,
+  0.924,
+  0.928,
+  0.934,
+  0.981,
+  0.982,
+  0.998
+ ],
+ "pairs": [
+  [
+   "Petronas Towers",
+   "Parthenon",
+   37.92,
+   -35.74
+  ],
+  [
+   "Big Ben",
+   "Space Needle",
+   31.78,
+   -47.48
+  ],
+  [
+   "Tower of London",
+   "Sagrada Familia",
+   47.35,
+   -50.01
+  ],
+  [
+   "CN Tower",
+   "Charles Bridge",
+   44.4,
+   -29.12
+  ],
+  [
+   "CN Tower",
+   "Eiffel Tower",
+   45.87,
+   -39.55
+  ],
+  [
+   "CN Tower",
+   "Hollywood Sign",
+   44.84,
+   -27.61
+  ],
+  [
+   "Petronas Towers",
+   "Reichstag building",
+   36.89,
+   -29.02
+  ],
+  [
+   "Alhambra",
+   "CN Tower",
+   46.44,
+   -47.82
+  ],
+  [
+   "Atomium",
+   "Golden Temple",
+   35.46,
+   -49.01
+  ],
+  [
+   "Space Needle",
+   "Forbidden City",
+   47.26,
+   -45.5
+  ],
+  [
+   "Acropolis",
+   "Taj Mahal",
+   36.09,
+   -45.34
+  ],
+  [
+   "Petronas Towers",
+   "Sagrada Familia",
+   34.31,
+   -51.62
+  ]
+ ]
+}

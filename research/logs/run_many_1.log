@@ -3,3 +3,4 @@ pushed
 {"ts": "2026-10-25T08:17:52Z", "cycle": "1", "step": "E002_logit_lens:it", "kind": "exp", "wall_s": 1380.3, "peak_rss_gb_process": 6.04, "outcome": "ok", "artifact": "experiments/E002_logit_lens", "runner": "run_many"}
 push rc=128
 {"ts": "2026-10-25T08:39:44Z", "cycle": "1", "step": "E004_factual_patching:it", "kind": "exp", "wall_s": 1310.9, "peak_rss_gb_process": 6.59, "outcome": "ok", "artifact": "experiments/E004_factual_patching", "runner": "run_many"}
+pushed

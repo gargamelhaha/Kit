@@ -20,7 +20,7 @@ def e002(var):
         r = i["ranks"]  # index 0..34 = resid_pre of layer k, 35 = final residual
         f = next(k for k, x in enumerate(r) if all(y == 1 for y in r[k:]) or x == 1)
         f1 = next(k for k, x in enumerate(r) if x == 1)
-        first.append(f1); stay.append(sum(1 for x in r[f1:] if x == 1) / len(r[f1:]))
+        first.append(f1); stay.append(sum(1 for x in r[f1 + 1:] if x == 1) / max(1, len(r[f1 + 1:])))  # AUDIT-001 #4
         early.append(st.median(r[:6]))
     res = {"variant": var, "n_items": len(d["items"]), "n_correct": len(items),
            "first_top1_layer": {"median": st.median(first), "ci95": boot(first), "values": first},

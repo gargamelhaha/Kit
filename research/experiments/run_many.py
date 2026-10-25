@@ -41,6 +41,7 @@ def git_push(paths, msg):
     return subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
+failures = []
 for spec in sys.argv[1:]:
     exp, _, variant = spec.partition(":")
     variant = variant or "it"
@@ -51,7 +52,7 @@ for spec in sys.argv[1:]:
     try:
         runpy.run_path(os.path.join(HERE, exp, "run.py"), run_name="__main__")
     except BaseException:
-        rc = "fail"; traceback.print_exc(file=out)
+        rc = "fail"; traceback.print_exc(file=out); failures.append(spec)
     finally:
         sys.stdout = old; out.close()
     line = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "cycle": "1", "step": f"{exp}:{variant}", "kind": "exp",
@@ -62,3 +63,7 @@ for spec in sys.argv[1:]:
     print(json.dumps(line), flush=True)
     pushed = git_push([f"research/experiments/{exp}", "research/logs"], f"Auto: {exp}:{variant} {rc}")
     print("pushed" if pushed == 0 else f"push rc={pushed}", flush=True)
+
+if failures:  # AUDIT-001 #3: never report success when an experiment failed
+    print("FAILED:", failures, flush=True)
+    sys.exit(1)

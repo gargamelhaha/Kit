@@ -66,6 +66,8 @@ class Runner:
 
     @torch.no_grad()
     def forward(self, ids, hooks=None, last_only_from=None, keep_resid=False, attn="sdpa", logits="last"):
+        if last_only_from is not None and last_only_from < self.first_shared:
+            raise ValueError(f"last_only_from must be >= {self.first_shared}: earlier layers still write K/V for other positions")
         self.cfg._attn_implementation = attn
         self._active = dict(hooks or {})
         tm = self.tm

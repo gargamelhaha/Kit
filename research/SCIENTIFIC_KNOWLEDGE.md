@@ -8,7 +8,7 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 ## K-0001 — EXPERIMENTALLY_SUPPORTED (architectural_fact)
 
-**Claim.** In Gemma 4 E2B (google/gemma-4-E2B-it rev 3e22461, transformers 5.20.2), residual-stream states of non-final positions entering any layer >= 15 have exactly zero causal effect on final-position logits; perturbations entering layers <= 14 do affect them.
+**Claim.** In Gemma 4 E2B (google/gemma-4-E2B-it rev 3e22461, transformers 5.20.2), large sampled perturbations (Gaussian, sd 50) of the residual stream at all non-final positions entering layers 15, 16, 25 or 34 left final-position logits exactly unchanged, while the same perturbations entering layers 5, 13 or 14 changed them (max |Δlogit| 17.7-36.4). Together with the implementation (layers >= 15 read only K/V stored by layers 13/14), this indicates non-final positions after layer 14 are causally inert for final-position outputs.
 
 **Scope.** Gemma 4 E2B text decoder, inputs shorter than the 512-token sliding window, no KV cache, fp32 compute; implementation in transformers 5.20.2
 
@@ -23,16 +23,16 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E001_arch/PREREG.md`, `experiments/E001_arch/result.json`, `experiments/E001_arch/run.py`, `experiments/lib/runner.py`
 
-**Audit.** none yet
+**Audit.** `audits/AUDIT-001.md`
 
 **Uncertainty / limits.** Behaviour with KV cache / generation and inputs longer than the sliding window not tested; a different implementation (e.g. official JAX) could differ only if it diverges from the HF reference.
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E001 (run 2, archived)
+**History.** 2026-10-25: created from E001 (run 2, archived); 2026-10-25: wording narrowed per AUDIT-001 (sampled perturbations; tested layers listed)
 
 ## K-0002 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** Running Gemma 4 E2B layers 15-34 on the final position only reproduces full-sequence final-position logits (max |Δ| ≤ 3.6e-5 in fp32) and cut a batched forward from 64.3 s to 29.8 s on the lab host.
+**Claim.** Running Gemma 4 E2B layers 15-34 on the final position only reproduces full-sequence final-position logits (observed max |Δ| = 3.62e-5 in fp32 on 2 single-sequence prompts; batched equivalence not separately tested) and cut a batched forward from 64.3 s to 29.8 s on the lab host.
 
 **Scope.** Final-position metrics only; inputs ≤ 512 tokens; fp32 compute; 2-vCPU host
 
@@ -45,16 +45,16 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E001_arch/result.json`, `experiments/E001b_buffer_selftest/result.json`
 
-**Audit.** none yet
+**Audit.** `audits/AUDIT-001.md`
 
 **Uncertainty / limits.** Speed-up measured on a shared CPU (subagents active); exact factor is host-dependent.
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created
+**History.** 2026-10-25: created; 2026-10-25: wording narrowed per AUDIT-001
 
 ## K-0003 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** The google/gemma-4-E2B-it tokenizer does not prepend <bos> by default; without BOS the model's next-token predictions degrade severely (e.g. 'The capital of France is': perplexity 2.3e7 and top-1 ' France' without BOS vs 257 and ' Paris' with BOS).
+**Claim.** The google/gemma-4-E2B-it tokenizer does not prepend <bos> by default; without BOS, prompt perplexity and next-token predictions degrade severely (e.g. 'The capital of France is': prompt perplexity 2.3e7 and next-token top-1 ' France' without BOS vs 257 and ' Paris' with BOS).
 
 **Scope.** google/gemma-4-E2B-it tokenizer.json/tokenizer_config.json at rev 3e22461; transformers 5.20.2 AutoTokenizer
 
@@ -66,16 +66,16 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E000_smoke/result_it.json`, `experiments/E000_smoke/run.py`
 
-**Audit.** none yet
+**Audit.** `audits/AUDIT-001.md`
 
 **Uncertainty / limits.** Only 4 prompts; chat template path adds BOS itself (generation was coherent).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created
+**History.** 2026-10-25: created; 2026-10-25: clarified 'prompt perplexity' per AUDIT-001
 
 ## K-0004 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** On a CPU without AVX512_BF16, bf16 storage with fp32 matmuls changes Gemma 4 E2B final logits by up to ~0.9 (max abs) relative to native bf16 compute, without changing the top-1 token on the tested prompts; all causal experiments in this lab use fp32 compute.
+**Claim.** On a CPU without AVX512_BF16, bf16 storage with fp32 matmuls changed Gemma 4 E2B final-position logits relative to native bf16 compute by 0.42-0.65 (max abs) on 4 BOS-prefixed prompts and by 0.26-2.32 on the same prompts without BOS, without changing the top-1 token in 8/8 cases; all causal experiments in this lab use fp32 compute.
 
 **Scope.** 8 prompt variants, IT checkpoint, lab host
 
@@ -87,10 +87,10 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E000_smoke/result_it.json`
 
-**Audit.** none yet
+**Audit.** `audits/AUDIT-001.md`
 
 **Uncertainty / limits.** Small prompt set; effect on patching metrics not quantified.
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created
+**History.** 2026-10-25: created; 2026-10-25: corrected understated maximum deviation (AUDIT-001 major #2)
 
