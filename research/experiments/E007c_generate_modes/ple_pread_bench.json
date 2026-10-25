@@ -1,0 +1,7 @@
+{
+ "row_bytes": 17920,
+ "us_per_row_random_cold_or_cached": 1000.3,
+ "us_per_row_hot_1000_vocab_first": 511.8,
+ "us_per_row_hot_second_pass": 26.4,
+ "ple_table_gb": 4.698
+}

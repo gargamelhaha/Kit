@@ -98,6 +98,97 @@
      "max_dscore_before_div": 0.2446746826171875
     }
    ]
+  },
+  {
+   "cond": "C1",
+   "item": 1,
+   "arm": "REF",
+   "T": 128,
+   "batch": 1,
+   "G": 32,
+   "wall_s": [
+    92.33,
+    100.11
+   ],
+   "prefill_s": [
+    12.096,
+    14.038
+   ],
+   "decode_s_per_step": [
+    2.583,
+    2.77
+   ],
+   "peak_rss_gb": 6.119,
+   "text": "; induction LIT02-059; ICL LIT02-060; ICL LIT02-061.\n1"
+  },
+  {
+   "cond": "C1",
+   "item": 1,
+   "arm": "SKIP",
+   "T": 128,
+   "batch": 1,
+   "G": 32,
+   "wall_s": [
+    97.59,
+    90.92
+   ],
+   "prefill_s": [
+    5.789,
+    6.842
+   ],
+   "decode_s_per_step": [
+    2.957,
+    2.688
+   ],
+   "peak_rss_gb": 5.874,
+   "text": "; induction LIT02-059; ICL LIT02-060; ICL LIT02-061.\n1",
+   "vs_ref": [
+    {
+     "identical": true,
+     "first_div": 32,
+     "frac_identical_tokens_all": 1.0,
+     "max_dscore_before_div": 2.759695053100586e-05
+    }
+   ],
+   "cache_maxdiff_vs_ref": 0.0
+  },
+  {
+   "cond": "C1",
+   "item": 1,
+   "arm": "SKIP+BF16",
+   "T": 128,
+   "batch": 1,
+   "G": 32,
+   "wall_s": [
+    38.13,
+    34.0
+   ],
+   "prefill_s": [
+    3.259,
+    4.124
+   ],
+   "decode_s_per_step": [
+    1.118,
+    0.959
+   ],
+   "peak_rss_gb": 5.911,
+   "text": "; induction LIT02-059; ICL LIT02-060; ICL LIT02-061.\n1",
+   "vs_skip": [
+    {
+     "identical": true,
+     "first_div": 32,
+     "frac_identical_tokens_all": 1.0,
+     "max_dscore_before_div": 0.1963329315185547
+    }
+   ],
+   "vs_ref": [
+    {
+     "identical": true,
+     "first_div": 32,
+     "frac_identical_tokens_all": 1.0,
+     "max_dscore_before_div": 0.1963329315185547
+    }
+   ]
   }
  ],
  "changes": "after PREAUDIT-E007c: warm-up, 2 interleaved repeats, BF16 vs SKIP, cache diff, immutable C5 context"

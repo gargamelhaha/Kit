@@ -13,3 +13,4 @@
 {"ts": "2026-10-25T12:07:04Z", "cycle": "3", "step": "E000_prefix_equiv:it", "kind": "exp", "wall_s": 34.8, "cpu_s": 24.9, "peak_rss_gb": 10.12, "outcome": "fail(rc=3)", "artifact": "experiments/E000_prefix_equiv", "notes": ""}
 {"ts": "2026-10-25T12:12:40Z", "cycle": "3", "step": "E000_prefix_equiv:it", "kind": "exp", "wall_s": 150.5, "cpu_s": 133.6, "peak_rss_gb": 6.43, "outcome": "ok", "artifact": "experiments/E000_prefix_equiv", "notes": ""}
 {"ts": "2026-10-25T12:35:52Z", "cycle": "3", "step": "E006_kv_route:base", "kind": "exp", "wall_s": 1332.5, "cpu_s": 802.8, "peak_rss_gb": 6.2, "outcome": "ok", "artifact": "experiments/E006_kv_route", "notes": ""}
+{"ts": "2026-10-25T13:05:59Z", "cycle": "3", "step": "E007c_generate_modes:it", "kind": "exp", "wall_s": 128.7, "cpu_s": 95.9, "peak_rss_gb": 6.69, "outcome": "fail(rc=3)", "artifact": "experiments/E007c_generate_modes", "notes": ""}

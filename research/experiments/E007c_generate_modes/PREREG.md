@@ -47,3 +47,6 @@ mode); no-op-hook arm (hook overhead = 20 Python calls per prefill, negligible v
 token identity is a stricter criterion than task quality for the exactness claim; for the bf16 arm task quality is not measured
 and this is stated). P3's C1 bound is uninformative (pre-audit): reported descriptively only.
 - Run restarted ~12:48Z: first run compared processed scores (EOS = -inf under min_new_tokens -> NaN diffs); now raw logits (output_logits). Aborted partial output kept as *_aborted_nan.*
+- Cost cut at ~13:20Z (decided from run time, without seeing outcomes of the dropped cells): fp32 REF decode costs ~3 s/token,
+  projected E007c wall ≈ 100 min. C1 reduced to its first prompt (already complete), C4 G 48 → 32, C4/C5 one repetition (timing
+  from a single run, flagged). Completed rows are kept (resume); partial run copy in result_it_part1.json.

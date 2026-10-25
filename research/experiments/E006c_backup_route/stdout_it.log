@@ -1,0 +1,10 @@
+captured 60 176 s
+R1 Sydney Opera House -> Tower of London {'B25_MEAN': 0.956, 'B25_MEANNM': 0.88, 'H1to7_NOISE': 0.908, 'LATE_ALL_MEAN': 0.488} eager-sdpa 4.6e-05 194 s
+R1 Space Needle -> Burj Khalifa {'B25_MEAN': 0.885, 'B25_MEANNM': 0.746, 'H1to7_NOISE': 0.966, 'LATE_ALL_MEAN': 0.505} eager-sdpa 1.1e-05 211 s
+R1 Hollywood Sign -> Golden Temple {'B25_MEAN': 0.74, 'B25_MEANNM': 0.676, 'H1to7_NOISE': 0.965, 'LATE_ALL_MEAN': 0.636} eager-sdpa 1.5e-05 228 s
+R1 Sydney Opera House -> Parthenon {'B25_MEAN': 0.937, 'B25_MEANNM': 0.857, 'H1to7_NOISE': 0.867, 'LATE_ALL_MEAN': 0.335} eager-sdpa 3.1e-05 246 s
+R1 Golden Temple -> Alhambra {'B25_MEAN': 0.686, 'B25_MEANNM': 0.617, 'H1to7_NOISE': 0.977, 'LATE_ALL_MEAN': 0.474} eager-sdpa 8e-06 263 s
+R1 CN Tower -> Big Ben {'B25_MEAN': 0.669, 'B25_MEANNM': 0.506, 'H1to7_NOISE': 0.852, 'LATE_ALL_MEAN': 0.327} eager-sdpa 8e-06 290 s
+R1 CN Tower -> Brandenburg Gate {'B25_MEAN': 0.796, 'B25_MEANNM': 0.667, 'H1to7_NOISE': 0.913, 'LATE_ALL_MEAN': 0.387} eager-sdpa 4e-06 310 s
+R1 Big Ben -> Brandenburg Gate {'B25_MEAN': 0.748, 'B25_MEANNM': 0.744, 'H1to7_NOISE': 0.924, 'LATE_ALL_MEAN': 0.586} eager-sdpa 2.1e-05 327 s
+R1 Atomium -> Big Ben {'B25_MEAN': 0.813, 'B25_MEANNM': 0.789, 'H1to7_NOISE': 0.917, 'LATE_ALL_MEAN': 0.468} eager-sdpa 6.1e-05 350 s

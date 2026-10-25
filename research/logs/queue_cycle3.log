@@ -8,3 +8,6 @@
 [2026-10-25T12:35:52Z] end E006_kv_route variant=base exit=0
 [2026-10-25T12:36:57Z] start E007c_generate_modes variant=it
 [2026-10-25T12:47:29Z] start E007c_generate_modes variant=it
+[2026-10-25T13:03:50Z] start E007c_generate_modes variant=it
+[2026-10-25T13:05:59Z] end E007c_generate_modes variant=it exit=3
+[2026-10-25T13:05:59Z] start E006c_backup_route variant=it

@@ -76,7 +76,7 @@ def chat_ids(msgs):
 
 
 conds = {}
-conds["C1"] = [(torch.tensor([[tok.bos_token_id] + base[s0:s0 + 127]]), None, 32) for s0 in (1, 3000, 9000)]
+conds["C1"] = [(torch.tensor([[tok.bos_token_id] + base[s0:s0 + 127]]), None, 32) for s0 in (1,)]  # cost cut (see PREREG)
 conds["C2"] = [(torch.tensor([base[:1024]]), None, 24)]
 lens = [90, 160, 230, 300]; starts = [2000, 4000, 6000, 8000]
 seqs = [[tok.bos_token_id] + base[s:s + n - 1] for s, n in zip(starts, lens)]
@@ -85,8 +85,9 @@ conds["C3"] = [(ids3, mask3, 24)]
 conds["C3b"] = [(torch.tensor([[tok.bos_token_id] + base[s0:s0 + 199] for s0 in (2000, 4000, 6000, 8000)]), None, 24)]  # equal length, no padding
 QS = ["What is the capital of Australia? Answer in one sentence.", "Explain in two sentences what a transformer attention head does.",
       "Name three noble gases."]
-conds["C4"] = [(torch.tensor([chat_ids([{"role": "user", "content": q}])]), None, 48) for q in QS]
-res = {"info": info, "rows": [], "changes": "after PREAUDIT-E007c: warm-up, 2 interleaved repeats, BF16 vs SKIP, cache diff, immutable C5 context"}
+conds["C4"] = [(torch.tensor([chat_ids([{"role": "user", "content": q}])]), None, 32) for q in QS]
+prev = json.load(open(OUT))["rows"] if os.path.exists(OUT) else []
+res = {"info": info, "rows": prev, "changes": "after PREAUDIT-E007c: warm-up, 2 interleaved repeats, BF16 vs SKIP, cache diff, immutable C5 context"}
 ARMS = ("REF", "SKIP", "SKIP+BF16")
 set_arm("SKIP"); gen(torch.tensor([base[:40]]), None, 2); set_arm("REF"); gen(torch.tensor([base[:40]]), None, 2)  # warm-up
 def summarize(cname, k, ids, G, outs, times, extra=None):
@@ -101,10 +102,12 @@ def summarize(cname, k, ids, G, outs, times, extra=None):
         if extra: row.update(extra)
         res["rows"].append(row); json.dump(res, open(OUT, "w"), indent=1)
         print(json.dumps({k2: v for k2, v in row.items() if k2 != "text"}), flush=True)
+done = {(x["cond"], x["item"]) for x in prev}
 for cname, items in conds.items():
     for k, (ids, mask, G) in enumerate(items):
+        if (cname, k) in done: continue
         outs, times = {}, {a: [] for a in ARMS}
-        for order in (ARMS, ARMS[::-1]):
+        for order in ((ARMS, ARMS[::-1]) if cname != "C4" else (ARMS,)):
             for arm in order:
                 set_arm(arm); o = gen(ids, mask, G); times[arm].append(o)
                 if arm not in outs: outs[arm] = o
