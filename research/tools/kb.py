@@ -91,6 +91,15 @@ def merge_sources():
                 seen[key]["notes"] = (seen[key].get("notes") or "") + f" | dup:{r['source_id']}"
                 dups.append((r["source_id"], seen[key]["source_id"])); continue
             r = {k: r.get(k, "") for k in SRC_COLS}; seen[key] = r; rows.append(r)
+    ov = os.path.join(R, "evidence", "source_overrides.csv")  # curator corrections survive re-merges
+    if os.path.exists(ov):
+        byid = {r["source_id"]: r for r in rows}
+        for o in csv.DictReader(open(ov, encoding="utf-8")):
+            if o["action"] == "set" and o["source_id"] in byid:
+                byid[o["source_id"]][o["field"]] = o["value"]
+                byid[o["source_id"]]["notes"] += f" | override {o['field']}: {o['evidence']}"
+            elif o["action"] == "dup" and o["source_id"] in byid and o["value"] in byid:
+                rows.remove(byid.pop(o["source_id"])); dups.append((o["source_id"], o["value"]))
     with open(SRC, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=SRC_COLS); w.writeheader(); w.writerows(rows)
     with open(os.path.join(R, "evidence", "source_dedup_map.csv"), "w", newline="") as f:

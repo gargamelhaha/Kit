@@ -1,0 +1,5 @@
+action,source_id,field,value,evidence
+set,LIT05-102,title,The Curse of Recursion: Training on Generated Data Makes Models Forget,arXiv abs page 2305.17493 fetched 2026-10-25 by coordinator
+set,LIT02-122,read_depth,partial,LIT-03 read Sec. 2 and references of the Gemma 4 report (LIT03-001 duplicate)
+dup,LIT03-043,kept,LIT01-022,same work (Scaling Monosemanticity; transformer-circuits page vs arXiv 2605.29358)
+dup,LIT03-022,kept,LIT01-121,same work (Gemma Scope 2 technical paper / release)
