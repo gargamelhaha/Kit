@@ -17,7 +17,7 @@ for n, it in enumerate(items):
     ids = encode(tok, it["prompt"])[0]; tgt = tok(" " + it["answer"], add_special_tokens=False).input_ids[0]
     ent = {}
     def cap(p, i): ent[i] = p[0, 0, -1].clone()  # head 0, final query
-    o = R.forward(torch.tensor([ids]), hooks={("attn_probs", 25): cap}, last_only_from=15, keep_resid=True, attn="eager")
+    o = R.forward(torch.tensor([ids]), hooks={("attn_probs", 25): cap}, last_only_from=15, keep_resid=True, attn="eager", logits=None)  # final logits = lens row 35
     H = torch.stack([r[0, -1] for r in o["resid"]])            # [36, d]
     lp = torch.log_softmax(R.unembed(H).float(), -1)            # [36, V]
     fin = lp[-1]; top1 = int(fin.argmax())

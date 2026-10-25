@@ -33,3 +33,4 @@ later tokens) — an architectural reason early exit should be cheaper here than
 ## Controls / failure handling
 Exact counts and CIs; if < 60 TEST errors the error-detection AUROCs are reported as underpowered. No item filtering after
 seeing model outputs. All raw per-item signals saved.
+- 13:35Z: restarted with resume (items already written kept) after removing a redundant final unembedding (logits=None; final logits = lens row 35, numerically the same computation on the same residual). No outcome was inspected.

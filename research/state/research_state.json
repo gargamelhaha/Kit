@@ -1,6 +1,6 @@
 {
- "cycle": 2,
- "updated": "2026-10-25T11:05Z",
+ "cycle": 3,
+ "updated": "2026-10-25T13:50Z",
  "repo_note": "Cycle 1 lived in github.com/rapidsainov-cmyk/Axg (read-only for this session); cycle 2 continues with full history in gargamelhaha/Kit branch hoplite/ambrakia-a2a0753c.",
  "environment": {
   "host": "Modal 2 vCPU / 8 GiB, no GPU",
@@ -8,29 +8,31 @@
   "weights": "gemma-4-E2B-it rev 3e22461f sha256 verified (logs/download_c2.log)",
   "external_llm_api": "tools/llm_pool.py; cap 6 parallel (PL-7); creds in ~/.config/lab/api.env (never committed)"
  },
- "running": [],
+ "running": [
+  "queue: E009_reliability (793 items) -> E008_window_route -> E007c_generate_modes (rerun after PL-15)"
+ ],
  "open_tasks": [
-  "E008 (highest VOI): distance sweep across the 512-token sliding window + in-context associations -> H-011, H-013 (competing predictions). Run a pre-run dual-family audit of the PREREG first (cycle-3 process experiment).",
-  "E006c: backup route under block-25 mean ablation (H-015); head-level mean ablation (H-010 -> KB)",
-  "H-014: causal-effect spectroscopy re-analysis of E004/E006 matrices (no model run)",
-  "Audit E006b + E007 externally (AUDIT-003)",
-  "E004b identity / answer-suppression controls (AUDIT-001)",
-  "H-006 PLE vs residual patching; H-007 untrained shared k/v remnants (base checkpoint)",
-  "Base checkpoint replication of K-0006/K-0007 (transfer it -> base)",
-  "Literature: deep-read LIT-06 top candidates (LIT06-005 systematic cross-layer KV sharing, LIT06-022/023 Mamba factual flow) ; citation chasing LIT-01/LIT-05",
-  "Internal error-detector study needs a prompt set with natural errors",
+  "Analyze E009 -> calibration / DoLa / early-exit claims; AUDIT-004 (E009 + E006c)",
+  "Analyze E008 -> H-011/H-013 routes",
+  "Analyze E007c -> K-0008 generation modes + bf16 decode (quality) + PLE pread memory note",
+  "E006d: H-016 (early-layer final-position attention + late MLP share)",
+  "Cycle-3 review + process experiment outcome (pre-audit utility)",
+  "Engineering next: int8 weight-only quantisation quality test on the K-0006/7 route and on factset accuracy",
   "Gemma 2 2B control blocked: no HF token"
  ],
- "next_step": "Write E008 PREREG, run AUDIT of the PREREG with both API families, then run E008.",
+ "next_step": "When E009 finishes: run E009_reliability/analyze.py; then E008 analyze; then E007c analyze.",
  "completed_this_cycle": [
-  "E006",
-  "E006b",
-  "E007",
-  "E007b",
-  "AUDIT-002",
-  "LIT-06",
-  "deep_read x25",
-  "HYPGEN-01",
-  "K-0006..K-0008"
+  "E000_prefix_equiv (PL-12)",
+  "PL-13 pread PLE loader",
+  "E006 base transfer (all prereg predictions pass)",
+  "AUDIT-003",
+  "PREAUDIT-E007c/E008 (design changes before data)",
+  "E006c (C1,C2,C3,C5 pass; C4 fail)",
+  "H-014 spectroscopy (INCONCLUSIVE)",
+  "NOVELTY-001",
+  "LIT-07 (179 sources)",
+  "deep reads x15",
+  "factset_v1 (793 cross-verified items)",
+  "K-0008 prior art (YOCO)"
  ]
 }
