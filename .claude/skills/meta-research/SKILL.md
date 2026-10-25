@@ -64,6 +64,10 @@ family and give it method + data, not the desired conclusion. Stop agents that r
 - Failure at a suspiciously round number (300 s, exactly max_tokens) → a limit somewhere, find whose (PL-9).
 - A status line that never shows failure is itself a suspect (PL-10): cross-check with an independent log.
 
+## 5b. Metric neutral points (cycle 3, PL-18)
+For any normalised effect metric (recovery, retained fraction) measure its empirical neutral point with an ablation that removes all
+information of interest, and interpret effects relative to it. Lessons stored only in audit files get lost: promote them to this skill.
+
 ## 7. Process-change acceptance
 Accept a change only with (a) identical-workload before/after numbers, (b) output equivalence within a stated tolerance
 (or a deliberate correctness fix), (c) a PROCESS_LEDGER entry.

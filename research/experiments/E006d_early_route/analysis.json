@@ -1,0 +1,58 @@
+{
+ "n": 28,
+ "median": {
+  "LATE_ATTN_MEAN": 0.4642,
+  "EARLY_ATTN_MEAN": 1.0072,
+  "ALL_ATTN_MEAN": 0.4598,
+  "LATE_ATTN_RESAMPLE": 0.5111,
+  "LATE_MLP_MEAN": 0.5813,
+  "ALL_ATTN_MEAN+LATE_MLP_MEAN": 0.5013
+ },
+ "ci": {
+  "LATE_ATTN_MEAN": [
+   0.335,
+   0.5244
+  ],
+  "EARLY_ATTN_MEAN": [
+   0.9751,
+   1.0255
+  ],
+  "ALL_ATTN_MEAN": [
+   0.342,
+   0.5206
+  ],
+  "LATE_ATTN_RESAMPLE": [
+   0.4087,
+   0.5716
+  ],
+  "LATE_MLP_MEAN": [
+   0.5157,
+   0.6685
+  ],
+  "ALL_ATTN_MEAN+LATE_MLP_MEAN": [
+   0.4128,
+   0.5313
+  ]
+ },
+ "P1": false,
+ "P2": true,
+ "P3": true,
+ "by_relation": {
+  "R1": {
+   "LATE_ATTN_MEAN": 0.487,
+   "EARLY_ATTN_MEAN": 1.016,
+   "ALL_ATTN_MEAN": 0.487,
+   "LATE_ATTN_RESAMPLE": 0.479,
+   "LATE_MLP_MEAN": 0.577,
+   "ALL_ATTN_MEAN+LATE_MLP_MEAN": 0.493
+  },
+  "R2": {
+   "LATE_ATTN_MEAN": 0.415,
+   "EARLY_ATTN_MEAN": 1.006,
+   "ALL_ATTN_MEAN": 0.411,
+   "LATE_ATTN_RESAMPLE": 0.53,
+   "LATE_MLP_MEAN": 0.586,
+   "ALL_ATTN_MEAN+LATE_MLP_MEAN": 0.501
+  }
+ }
+}

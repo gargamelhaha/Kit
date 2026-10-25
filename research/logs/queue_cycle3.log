@@ -32,3 +32,5 @@
 [2026-10-25T15:50:53Z] end E009_reliability variant=base exit=0
 ./queue.sh: line 13: syntax error near unexpected token `('
 ./queue.sh: line 13: `uto-analysis + durable push after every run (cycle 3: saves idle turns, protects against resets)'
+[2026-10-25T16:00:45Z] end E006d_early_route variant=it exit=0
+[2026-10-25T16:00:45Z] start E007c_generate_modes variant=it

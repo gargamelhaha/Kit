@@ -150,3 +150,12 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Status: accepted.
 - PL-16 addendum: `flock` serialises but is not FIFO — several waiting queues start in arbitrary order (E009-base jumped ahead of
   E006d/E007c). Rule: one ordered queue per batch (`queue.sh A B C D`); flock is only the safety net against concurrency.
+
+## PL-18 Interpretation error: a normalised metric's neutral point read as an effect (E006c → corrected by E006d)
+- Symptom: K-0007 stated "mean-ablating all late attention retains 0.46: about half of the effect does not depend on late attention";
+  H-015/H-016 were built on it.
+- Evidence: E006d — ablating attention in *all* 35 layers (no cross-position path left) gives the same 0.46.
+- Root cause: retained = (LD − LD_b)/(LD_a − LD_b) maps any subject-agnostic output to ≈ 0.5 when clean/corrupt LDs are
+  roughly symmetric. AUDIT-001 had pointed this out for E004's control in cycle 1; the lesson lived in an audit file, not in the skill.
+- Fix: corrected K-0007; H-016 refuted. Rule added to the skill: every normalised intervention metric must be reported together with
+  its empirical neutral point (a fully information-removing ablation) and, where useful, rescaled to it.

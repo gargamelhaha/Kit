@@ -18,3 +18,4 @@
 {"ts": "2026-10-25T14:23:37Z", "cycle": "3", "step": "E009_reliability:it", "kind": "exp", "wall_s": 3322.9, "cpu_s": 2308.7, "peak_rss_gb": 6.21, "outcome": "ok", "artifact": "experiments/E009_reliability", "notes": ""}
 {"ts": "2026-10-25T14:51:01Z", "cycle": "3", "step": "E007c_generate_modes:it", "kind": "exp", "wall_s": 958.3, "cpu_s": 695.1, "peak_rss_gb": 6.66, "outcome": "fail(rc=3)", "artifact": "experiments/E007c_generate_modes", "notes": ""}
 {"ts": "2026-10-25T15:50:53Z", "cycle": "3", "step": "E009_reliability:base", "kind": "exp", "wall_s": 3592.1, "cpu_s": 2379.5, "peak_rss_gb": 6.2, "outcome": "ok", "artifact": "experiments/E009_reliability", "notes": ""}
+{"ts": "2026-10-25T16:00:44Z", "cycle": "3", "step": "E006d_early_route:it", "kind": "exp", "wall_s": 591.0, "cpu_s": 464.0, "peak_rss_gb": 6.19, "outcome": "ok", "artifact": "experiments/E006d_early_route", "notes": ""}
