@@ -94,3 +94,25 @@ checks; REFUTED / INCONCLUSIVE as named.
 **Last verified.** 2026-10-25  
 **History.** 2026-10-25: created; 2026-10-25: corrected understated maximum deviation (AUDIT-001 major #2)
 
+## K-0005 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
+
+**Claim.** Under the logit lens (final RMSNorm → tied unembedding → softcap 30) applied to the final-position residual stream of Gemma 4 E2B-IT, the correct single-token answer to 60 correctly answered factual prompts first becomes top-1 at residual index 26-34 (median 28, bootstrap 95% CI [28, 29]); it stays top-1 at all subsequent layers (median fraction 1.0), and its median rank at indices 0-5 is ~1.1e5 of 262 144.
+
+**Scope.** google/gemma-4-E2B-it; 62 English factual prompts (32 landmark→city, 30 country→capital; 60 answered correctly); residual index k = input to layer k (35 = final residual); logit lens only (no tuned lens)
+
+**Conditions.** fp32 compute; BOS prepended; layers >= 15 computed on the final position only (exact for this metric, K-0002)
+
+**Verification.** Preregistered (E002 PREREG.md) logit-lens analysis; independent recomputation by AUDIT-001
+
+- supports: `experiments/E002_logit_lens/analysis.json` — P1-P3 of the preregistration passed; by kind: landmark median 28, capital 29
+- supports: `audits/AUDIT-001.md` — independent recomputation: median 28, CI [28,29]
+
+**Artifacts.** `experiments/E002_logit_lens/PREREG.md`, `experiments/E002_logit_lens/run.py`, `experiments/E002_logit_lens/result_it.json`, `experiments/E002_logit_lens/analysis.json`
+
+**Audit.** `audits/AUDIT-001.md`
+
+**Uncertainty / limits.** Logit lens is known to be biased for early layers (tuned lens not trained), so 'not top-1 before layer 26' does not imply the answer is not linearly decodable earlier. Single prompt template per kind; IT checkpoint only (base run pending).
+
+**Last verified.** 2026-10-25  
+**History.** 2026-10-25: created from E002 after AUDIT-001
+

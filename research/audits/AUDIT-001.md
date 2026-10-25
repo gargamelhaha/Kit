@@ -1,6 +1,6 @@
 # AUDIT-001 — independent audit of cycle-1 code, E001/E001b, E002, E004 and K-0001..K-0004
 
-- Auditor: subagent task `subagent_62dad3c4b6f33a23863d26af`, role Independent Auditor, model `gpt-6-astra` (OpenAI family — different from the
+- Auditor: subagent task `subagent_62dad3c4b6f33a23863d26af`, role Independent Auditor, model id `gpt-6-astra` (provider: OpenAI — a different family from the
   coordinator's Anthropic model), 2026-10-25. Given methods, code and data; not told the desired conclusions.
 - Provenance note: the auditor ran in read-only review mode and returned its findings as a final message instead of writing
   this file. The coordinator transcribed the message below **verbatim** (no edits), then recorded actions taken.
