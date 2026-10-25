@@ -1,0 +1,27 @@
+{
+  "task_id": "LIT-03",
+  "role": "Literature Scout + Tool Compatibility Analyst: Gemma family",
+  "objective": "Map Gemma 4 (arXiv 2607.02770, google/gemma-4-E2B-it card), Gemma 3n lineage, Gemma Scope / Gemma Scope 2, and tooling support (TransformerLens, nnsight, SAELens, circuit-tracer, pyvene) for Gemma 2/3/3n/4; published interpretability results on Gemma.",
+  "research_question": "Which interpretability methods and auxiliary models are verifiably compatible with Gemma 4 E2B, and which architectural features change how standard methods apply?",
+  "context": "Autonomous research lab, cycle 1 (2026-10-25). Primary target: Gemma 4 E2B internals on a 2 vCPU / 8 GiB CPU-only sandbox.",
+  "allowed_methods": [
+    "arXiv API (export.arxiv.org/api/query)",
+    "OpenAlex API (works search, referenced_works for backward, filter=cites:W... for forward citations)",
+    "Crossref API for DOI verification",
+    "Semantic Scholar API (rate-limited; backoff, sparing use)",
+    "WebSearch / WebFetch",
+    "GitHub pages of code repos (read only)"
+  ],
+  "evidence_requirements": "Every source row must have a resolvable URL or DOI/arXiv id verified by an actual API/web call in this task. read_depth must honestly reflect what was read: full_text | partial | abstract_only | metadata_only. Claims are attributed to authors ('authors report ...'), never asserted as established truth.",
+  "deliverables": [
+    "research/evidence/LIT-03_sources.csv",
+    "research/logs/search_LIT-03.jsonl",
+    "research/agents/reports/LIT-03.md"
+  ],
+  "dependencies": [],
+  "budget": "≈150 tool calls; target 40-90 deduplicated relevant sources; stop earlier at saturation",
+  "acceptance_criteria": "≥8 foundational + ≥10 recent (2024-2026) primary sources; backward AND forward citation search done for ≥3 anchor papers; ≥3 critical/negative/replication works if they exist; saturation statement with evidence (last N queries yielded <10% new relevant items); explicit gap list.",
+  "stop_condition": "Saturation criterion met or budget exhausted; report whichever happened.",
+  "limitations": "Do not run experiments, do not download model weights, do not write outside the three deliverable files, do not fabricate bibliographic data, do not upgrade abstract-level reading to full-text claims.",
+  "note": "Regenerated 2026-10-25T07:40Z after sandbox reset from the original generator (content identical in substance; objective texts condensed)."
+}
