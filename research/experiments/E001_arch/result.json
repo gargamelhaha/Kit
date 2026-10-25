@@ -1,0 +1,129 @@
+{
+ "load": {
+  "variant": "it",
+  "repo": "google/gemma-4-E2B-it",
+  "missing": [],
+  "unexpected": [],
+  "meta_leftover": [],
+  "load_s": 29.0
+ },
+ "equivalence": [
+  {
+   "prompt": "The Eiffel Tower is located in the city of",
+   "n": 10,
+   "runner_vs_hf_maxabs": 1.33514404296875e-05,
+   "lastonly_vs_full_maxabs": 3.62396240234375e-05,
+   "top1": " Paris"
+  },
+  {
+   "prompt": "When Mary and John went to the store, John gave a drink to",
+   "n": 15,
+   "runner_vs_hf_maxabs": 3.910064697265625e-05,
+   "lastonly_vs_full_maxabs": 3.0517578125e-05,
+   "top1": " Mary"
+  }
+ ],
+ "perturb": [
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 5,
+   "maxabs_delta_last_logits": 33.878902435302734
+  },
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 13,
+   "maxabs_delta_last_logits": 32.99421310424805
+  },
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 14,
+   "maxabs_delta_last_logits": 17.72165870666504
+  },
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 15,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 16,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 25,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "The Eiffel Tower is locat",
+   "layer": 34,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 5,
+   "maxabs_delta_last_logits": 36.426055908203125
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 13,
+   "maxabs_delta_last_logits": 28.31284523010254
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 14,
+   "maxabs_delta_last_logits": 23.15359115600586
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 15,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 16,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 25,
+   "maxabs_delta_last_logits": 0.0
+  },
+  {
+   "prompt": "When Mary and John went t",
+   "layer": 34,
+   "maxabs_delta_last_logits": 0.0
+  }
+ ],
+ "speed": {
+  "full": 64.32,
+  "last_only_15": 29.8
+ },
+ "ckpt_kproj_stats": {
+  "12": {
+   "std": 0.03101,
+   "absmax": 0.3516
+  },
+  "13": {
+   "std": 0.02995,
+   "absmax": 0.2256
+  },
+  "14": {
+   "std": 0.02739,
+   "absmax": 0.2344
+  },
+  "15": {
+   "std": 0.0243,
+   "absmax": 0.0552
+  },
+  "20": {
+   "std": 0.02668,
+   "absmax": 0.0605
+  },
+  "34": {
+   "std": 0.02631,
+   "absmax": 0.0598
+  }
+ },
+ "unused_ckpt_tensors_for_shared_layers": 60
+}

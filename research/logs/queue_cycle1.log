@@ -1,3 +1,5 @@
 [2026-10-25T06:39:33Z] start E000_smoke variant=it
 [2026-10-25T06:49:34Z] end E000_smoke variant=it exit=0
 [2026-10-25T06:49:34Z] start E001_arch variant=it
+[2026-10-25T06:59:48Z] end E001_arch variant=it exit=0
+[2026-10-25T06:59:48Z] start E002_logit_lens variant=it

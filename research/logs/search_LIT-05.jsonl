@@ -1,0 +1,11 @@
+{"ts": "2026-10-25T07:05:38Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:Mamba AND all:\"selective state space\" AND all:\"linear-time sequence modeling\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:05:41Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"structured state space duality\" AND all:\"Transformers are SSMs\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:05:45Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:RWKV AND all:\"reinventing RNNs\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:05:48Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:xLSTM AND all:\"extended long short-term memory\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:05:53Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"Repeat After Me\" AND all:transformers AND all:\"state space models\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:05:56Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"empirical study of Mamba-based language models\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:05:59Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"Retentive Network\" AND all:\"successor to Transformer\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:06:03Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:Jamba AND all:\"hybrid Transformer-Mamba\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:06:06Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"Samba\" AND all:\"hybrid state space\" AND all:\"unlimited context\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:06:10Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"Learning to (Learn at Test Time)\" AND all:RNNs AND all:\"expressive hidden states\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:06:14Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"Mamba\" AND all:\"in-context learning\" AND all:\"limitations\" AND all:\"transformers\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
