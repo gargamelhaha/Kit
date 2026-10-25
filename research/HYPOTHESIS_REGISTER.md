@@ -20,3 +20,4 @@ Preliminary hypotheses, ideas and open interpretations. Not verified knowledge. 
 | H-015 | A backup route carries subject information when block-25 subject content is mean-ablated | REFUTED (single-layer form): no second KV-shared layer matters (min 0.74); all-20-layer ablation retains 0.46 → H-016 | E006c |
 | H-016 | Half of the effect enters the final position via layers 0–14 attention and is read out without KV-shared attention | CANDIDATE | E006d: early+late final-position attention ablation |
 | H-017 | IT's final block shifts output from the factual token to chat-style formatting (' **', first names); absent in base | CANDIDATE (from E009 exploratory) | E009 on base checkpoint (prereg in E009_reliability/PREREG_base.md) |
+| H-018 | Internal stability signals detect errors better than softmax confidence | INCONCLUSIVE — prereg pass with iid bootstrap (0.807 vs 0.709), relation-clustered CI includes 0; metric mixes answer form | E009 |

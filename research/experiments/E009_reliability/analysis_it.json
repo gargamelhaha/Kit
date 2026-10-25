@@ -6,11 +6,11 @@
  "acc_test": 0.41414141414141414,
  "test_errors": 232,
  "auroc_test": {
-  "S0_maxprob": 0.7091568544995794,
+  "S0_maxprob": 0.7091174306139613,
   "S1_margin": 0.6652123633305299,
-  "S2_lens_agree": 0.7600925147182507,
-  "S3_neg_first_stable": 0.7773864592094197,
-  "S4_lens28_maxprob": 0.3941600084104289,
+  "S2_lens_agree": 0.7573722666105971,
+  "S3_neg_first_stable": 0.775323275862069,
+  "S4_lens28_maxprob": 0.3941337258200168,
   "S5_neg_attn25h0_entropy": 0.6146709419680404,
   "combined": 0.8066915475189235
  },
@@ -23,17 +23,21 @@
   "S5_neg_attn25h0_entropy": 0.542
  },
  "ci_combined_minus_S0": [
-  0.049514350370149326,
-  0.14693557187436765
+  0.049502230742512435,
+  0.1469100349440377
  ],
  "ci_S2_minus_S0": [
-  -0.016056041098525344,
-  0.11325761777987171
+  -0.016259871507173153,
+  0.11149866582622191
  ],
  "P_a1": true,
  "P_a2": true,
  "P_a3": true,
  "underpowered_a": false,
+ "plausible_truncation": {
+  "n_items_with_50_plausible_stored": 0,
+  "top1_missing_from_stored_set": 0
+ },
  "dola": {
   "dev_acc_by_bucket": {
    "16-20": 0.35768261964735515,

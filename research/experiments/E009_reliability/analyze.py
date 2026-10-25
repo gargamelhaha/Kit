@@ -1,6 +1,8 @@
 """Preregistered E009 analysis (PREREG.md): error detection AUROCs, DoLa-style contrast, early exit. DEV = even index, TEST = odd."""
 import json, os, math
-import numpy as np
+import numpy as np, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "lib"))
+from stats import auroc as auroc_tie
 D = os.path.dirname(os.path.abspath(__file__)); V = os.environ.get("VARIANT", "it")
 recs = [json.loads(l) for l in open(os.path.join(D, f"result_{V}.jsonl"))]
 order = {json.loads(l)["id"]: n for n, l in enumerate(open(os.path.join(D, "..", "..", "benchmarks", "factset_v1.jsonl")))}
@@ -10,12 +12,8 @@ dev, test = [r for r in recs if r["split"] == "dev"], [r for r in recs if r["spl
 rng = np.random.default_rng(0)
 
 
-def auroc(score, y):
-    s, y = np.asarray(score, float), np.asarray(y, bool)
-    pos, neg = s[y], s[~y]
-    if not len(pos) or not len(neg): return None
-    r = np.argsort(np.argsort(np.concatenate([pos, neg]))) + 1  # ties are rare for continuous signals
-    return float((r[:len(pos)].sum() - len(pos) * (len(pos) + 1) / 2) / (len(pos) * len(neg)))
+def auroc(score, y):  # AUDIT-004 fix: average ranks for ties
+    return auroc_tie(score, y)
 
 
 def signals(r):
@@ -74,6 +72,8 @@ g_ok = np.array([r["correct"] for r in test]); c_ok = np.array([contrast_pred(r,
 b01, b10 = int((g_ok & ~c_ok).sum()), int((~g_ok & c_ok).sum())
 n_ = b01 + b10
 p_mc = min(1.0, 2 * sum(math.comb(n_, i) for i in range(0, min(b01, b10) + 1)) / 2 ** n_) if n_ else 1.0
+trunc = [r for r in recs if len(r["plausible"]) >= 50]
+res["plausible_truncation"] = {"n_items_with_50_plausible_stored": len(trunc), "top1_missing_from_stored_set": sum(1 for r in recs if r["top1"] not in r["plausible"])}
 res["dola"] = {"dev_acc_by_bucket": dev_acc, "dev_acc_greedy": res["acc_dev"], "chosen_bucket": best,
                "test_acc_greedy": float(g_ok.mean()), "test_acc_contrast": float(c_ok.mean()), "fixed_by_contrast": b10,
                "broken_by_contrast": b01, "mcnemar_exact_p": p_mc}

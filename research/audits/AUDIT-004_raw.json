@@ -1,0 +1,316 @@
+{
+ "prompt_chars": 52568,
+ "experiments": [
+  "E009_reliability",
+  "E006c_backup_route"
+ ],
+ "claims": [
+  "K-0007"
+ ],
+ "deepseek": {
+  "implementation_bugs": [
+   {
+    "location": "E006c_backup_route/analyze.py, cboot()",
+    "problem": "The subject-cluster bootstrap deduplicates resampled subjects by converting the bootstrap sample to a set, destroying bootstrap multiplicities. This makes the reported cluster CIs invalid.",
+    "severity": "major",
+    "evidence": "`pick = set(rng.choice(subs[k], len(subs[k]), replace=True))` followed by inclusion only if `p[\"clean\"] in pick and p[\"corrupt\"] in pick`; repeated subjects are collapsed to one."
+   },
+   {
+    "location": "E009_reliability/run.py, plausible-set construction",
+    "problem": "The DoLa-style plausible set is truncated to the first 50 tokens, contrary to the preregistered full set {t: p_final(t) >= 0.1*max p_final}. This can change contrast predictions and P-b1/P-b2.",
+    "severity": "major",
+    "evidence": "`plausible_lp = lp[:, plaus[:50]].tolist()` and `\"plausible\": plaus.tolist()[:50]`."
+   },
+   {
+    "location": "E009_reliability/analyze.py, auroc()",
+    "problem": "AUROC tie handling is incorrect: double argsort assigns arbitrary ranks to ties instead of average ranks. This is especially problematic for discrete signals S2 and S3.",
+    "severity": "major",
+    "evidence": "`r = np.argsort(np.argsort(np.concatenate([pos, neg]))) + 1`; no tie-averaging is applied."
+   },
+   {
+    "location": "E009_reliability/analyze.py, boot_diff()",
+    "problem": "Bootstrap CIs resample items iid, ignoring relation/subject clustering in factset_v1. CIs may be too narrow.",
+    "severity": "minor",
+    "evidence": "`i = rng.integers(0, len(y), len(y))` resamples individual items, not clusters."
+   },
+   {
+    "location": "E006c_backup_route/analyze.py, head_mass_medians",
+    "problem": "Head count is hardcoded to 8 rather than read from model config. This is correct for the current model but fragile and could silently misreport if config changes.",
+    "severity": "minor",
+    "evidence": "`for h in range(8)` in `head_mass_medians`."
+   },
+   {
+    "location": "E009_reliability/analyze.py, logistic regression",
+    "problem": "Sigmoid computation is numerically unstable for large negative logits; no stable sigmoid or convergence check is used.",
+    "severity": "minor",
+    "evidence": "`p = 1 / (1 + np.exp(-(X @ w + b)))` can overflow."
+   }
+  ],
+  "prereg_deviations": [
+   "E009 run.py truncates the preregistered plausible set to 50 tokens instead of using all tokens with p_final >= 0.1*max p_final.",
+   "E009 was restarted with resume after a mid-run code change removing a redundant final unembedding; although documented as numerically equivalent, it is a mid-run code change.",
+   "E006c subject-cluster bootstrap does not implement the preregistered subject-clustered bootstrap correctly because resampled subjects are deduplicated via set()."
+  ],
+  "statistical_issues": [
+   "E006c cluster CIs are invalid due to the bootstrap set-deduplication bug; all CIs in K-0007 that rely on E006c are affected.",
+   "E006c reports 28/28 held-out pairs for the largest single-layer patch but provides no formal test that block 25 is larger than all other layers; selecting the maximum layer can inflate the apparent effect.",
+   "E006c head-level results are exploratory and have wide/heterogeneous effects: H0_NOISE median 0.366 with CI [0.275,0.708], and by relation R1=0.7148 vs R2=0.2923. The claim does not adequately reflect this heterogeneity.",
+   "E006c multiple comparisons across 20 layers and 8 heads are not adjusted; strong wording such as 'only head that matters' is not supported.",
+   "E009 AUROC tie handling is incorrect for discrete signals S2 and S3, biasing P-a2 and the combined detector.",
+   "E009 bootstrap CIs are iid over items rather than clustered by relation/subject.",
+   "E009 plausible-set truncation changes the DoLa contrast and can bias P-b1/P-b2.",
+   "factset_v1 has a known validity limit: first-token correctness mixes factual knowledge with answer form (names, initials, articles), so 'factual-recall assay' is overclaimed."
+  ],
+  "alternative_explanations": [
+   {
+    "explanation": "Block-25 head 0 may be a subject-token copying/detection mechanism rather than a factual-recall retrieval mechanism.",
+    "test_to_rule_out": "Use prompts where the subject is not the answer cue, patch only the subject token, or test relations where the answer is not associated with the subject token."
+   },
+   {
+    "explanation": "LATE_ALL_MEAN retaining 0.46 may reflect incomplete mean ablation rather than a true backup route independent of late attention.",
+    "test_to_rule_out": "Run LATE_ALL_ZERO (zero all late attention contributions) and combine with MLP ablations; compare retained logit difference."
+   },
+   {
+    "explanation": "Head 0 dominance may be relation-specific and confounded with other heads that have high subject-span attention mass (e.g., heads 2 and 6).",
+    "test_to_rule_out": "Run individual head corruptions for all heads across more relations, report per-relation CIs, and test multi-head interactions."
+   },
+   {
+    "explanation": "B25_ZERO retaining 0.94 may be due to the zero vector being out-of-distribution or to residual/MLP compensation, not because 'absent content is not harmful'.",
+    "test_to_rule_out": "Use random norm-matched vectors, shuffled means, and MLP ablations to test whether the model is using a backup route."
+   },
+   {
+    "explanation": "E009 error-detection signals may reflect answer form/tokenization rather than knowledge.",
+    "test_to_rule_out": "Evaluate on an answer-form-controlled dataset or use multi-token exact-match scoring and control for prompt length."
+   },
+   {
+    "explanation": "E009 DoLa gains may be due to plausible-set truncation or answer-form changes rather than factual knowledge.",
+    "test_to_rule_out": "Rerun with the full plausible set, exact-match scoring, and held-out relations."
+   },
+   {
+    "explanation": "E009 early-exit results may mask degradation on hard items.",
+    "test_to_rule_out": "Report per-difficulty and per-relation accuracy loss and worst-case loss, not only mean skipped layers."
+   },
+   {
+    "explanation": "Base-checkpoint results in K-0007 may not replicate; the base replication is described as running in cycle 3.",
+    "test_to_rule_out": "Complete and audit the base replication with the same preregistered protocol and report CIs."
+   }
+  ],
+  "claim_wording": [
+   {
+    "claim": "block-25 attention at the final position is the largest single-layer causal contributor among the 20 KV-shared layers; patching only its clean attention contribution into the corrupt run recovers median 0.757 (CI [0.654,0.826]; largest in 28/28 held-out pairs)",
+    "warranted": "partly",
+    "required_change": "Provide E006 raw per-layer sufficiency results and CIs; the provided E006c does not contain clean-into-corrupt sufficiency or per-layer single-layer patches. Avoid 'factual-recall' given the factset_v1 first-token form confound."
+   },
+   {
+    "claim": "substituting the corrupt run's contribution leaves median 0.227 at block 25 vs per-layer medians >=0.929 at every other KV-shared layer (individual pairs down to 0.85 at layer 31)",
+    "warranted": "partly",
+    "required_change": "Provide per-layer NOISE medians and CIs; E006c only reports B25_NOISE and JOINT_25_L. The B25_NOISE CI is wide [0.155,0.304]."
+   },
+   {
+    "claim": "Head 0 of block 25 had the strongest individual effect (single-head corruption leaves 0.37 vs >=0.98 for heads 1-7; multi-head interactions untested)",
+    "warranted": "partly",
+    "required_change": "Report individual head corruptions and per-relation CIs; do not state >=0.98 for heads 1-7 from the joint H1to7_NOISE result. Soften to 'median strongest in this sample'."
+   },
+   {
+    "claim": "puts a median 0.88 of its final-query attention on the positions where the two prompts differ",
+    "warranted": "partly",
+    "required_change": "Say 'verified subject token span' (median 0.873) and verify that the prompts differ only there; do not generalize to all differing positions."
+   },
+   {
+    "claim": "Block 25 is not necessary: LOO mean retains 0.80 [0.76,0.87], norm-matched mean 0.78, zeroing 0.94; wrong-subject content is harmful, absent content is not",
+    "warranted": "partly",
+    "required_change": "Fix the subject-cluster bootstrap before citing CIs; soften the causal interpretation to 'corrupt attention content reduces the logit difference; mean/zero replacement does not'."
+   },
+   {
+    "claim": "Head 0 is the only head that matters under corruption (heads 1-7 jointly corrupted retain 0.96) and attends with median mass 0.87 to the verified subject token span",
+    "warranted": "partly",
+    "required_change": "Change 'only head' to 'dominant single head in this sample'; note multi-head interactions are untested and H0_NOISE is wide/relation-heterogeneous."
+   },
+   {
+    "claim": "Mean-ablating the attention of all 20 KV-shared layers at the final position still retains 0.46 [0.40,0.51]: about half of the effect does not depend on late attention at the answer position",
+    "warranted": "partly",
+    "required_change": "Fix the CI; say 'is not eliminated by mean-ablating late attention contributions' rather than 'does not depend'; test zero-ablation and MLP ablation to rule out incomplete ablation."
+   },
+   {
+    "claim": "In the base checkpoint the same layer and head dominate; corruption of block 25 leaves more of the logit difference in base (0.337 [0.313,0.419]) than in IT (0.227)",
+    "warranted": "no",
+    "required_change": "Provide base raw results and CIs; E009-base prereg says base replication is running. Do not claim until audited."
+   }
+  ],
+  "recommended_followups": [
+   "Fix E006c cboot to preserve bootstrap multiplicities and recompute all subject-cluster CIs.",
+   "Provide E006 raw per-layer sufficiency and per-layer NOISE results with CIs.",
+   "Run individual head corruptions for heads 0-7 and multi-head interaction tests, reporting per-relation results.",
+   "Run LATE_ALL_ZERO and MLP ablations to test whether the residual 0.46 is a true backup route or incomplete ablation.",
+   "Complete and audit the base-checkpoint replication with the same preregistered protocol and CIs.",
+   "Fix E009 plausible-set truncation and AUROC tie handling, then rerun the analysis.",
+   "Use an answer-form-controlled factual-recall dataset or multi-token exact-match scoring to address factset_v1 validity limits.",
+   "Test the subject-token copying alternative by patching only subject tokens and using non-subject relations.",
+   "Report per-relation and per-difficulty results for E009 early exit and DoLa.",
+   "Pre-register layer/head selection if claiming block 25/head 0 are the largest contributors."
+  ],
+  "overall_verdict": "Partially supported; major revisions required. E006c point estimates support block-25 non-necessity and head-0 involvement in the IT checkpoint, but the subject-cluster CIs are invalid due to a bootstrap deduplication bug, several per-layer/head/base claims lack provided evidence, and causal wording overstates what mean/zero ablations show. E009 has a plausible-set truncation bug and AUROC tie-handling issue. Do not cite K-0007 as established until the bootstrap is fixed, missing raw results are provided, and the wording is softened."
+ },
+ "deepseek_usage": {
+  "prompt_tokens": 19190,
+  "total_tokens": 50332,
+  "completion_tokens": 31142,
+  "prompt_tokens_details": {
+   "cached_tokens": 19072,
+   "created_cache_tokens": 0
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 28543
+  }
+ },
+ "minimax": {
+  "implementation_bugs": [
+   {
+    "location": "E009_reliability/run.py, construction of plausible_lp",
+    "problem": "The preregistered plausible set is truncated to the first 50 token IDs, not the 50 highest-probability plausible tokens. This changes the candidate set for the DoLa-style contrast and can exclude the final top-1 or other high-probability candidates.",
+    "severity": "major",
+    "evidence": "The code uses `plaus = ...nonzero().flatten()` followed by `plausible: plaus.tolist()[:50]` and `plausible_lp: lp[:, plaus[:50]]`. Token IDs are not sorted by probability, and the preregistration specifies the full set `{t : p_final(t) >= 0.1*max p_final}`."
+   },
+   {
+    "location": "E009_reliability/analyze.py, auroc()",
+    "problem": "AUROC is computed by double argsort without averaging tied ranks. This yields invalid AUROC values for discrete signals, especially S2, whose values are proportions over only ten residual indices.",
+    "severity": "major",
+    "evidence": "The implementation is `r = np.argsort(np.argsort(np.concatenate([pos, neg]))) + 1`, with the comment that ties are rare. For example, if all positive and negative cases have the same score, this can assign all positives the lower ranks and return 1.0 rather than the tie-correct 0.5. The same function is used in the bootstrap comparisons."
+   },
+   {
+    "location": "E006c_backup_route/analysis.py, mass summaries",
+    "problem": "The preregistered MASS condition called for both head-averaged and per-head attention on the verified subject span, but the analysis reports only per-head masses and a uniform baseline; no head-averaged mass is calculated.",
+    "severity": "minor",
+    "evidence": "PREREG.md defines `MASS (eager): head-averaged and per-head attention`; analysis.json contains `head_mass_medians` and `head0_mass_median`, but no corresponding head-averaged statistic."
+   },
+   {
+    "location": "E009_reliability/run.py and exploratory_errors.py, base H-017 markdown-error analysis",
+    "problem": "The preregistered base markdown-token set and the exploratory implementation's set are inconsistent, so the stated H-017 metric may not be computed exactly as registered.",
+    "severity": "minor",
+    "evidence": "PREREG_base.md lists `' **'`, `'**'`, `' *'`, and `' #'`, whereas exploratory_errors.py uses `MD = {\"**\", \"*\", \"#\", \"##\"}` after stripping whitespace and does not implement the registered set literally."
+   },
+   {
+    "location": "E009_reliability/run.py, raw signal serialization",
+    "problem": "Some internal signals are rounded before being saved, contrary to the preregistration's statement that all raw per-item signals are saved.",
+    "severity": "minor",
+    "evidence": "`lens_maxprob` is stored with `round(x, 5)` and `jsd` with `round(x, 6)`, rather than at full floating-point precision."
+   }
+  ],
+  "prereg_deviations": [
+   "E009's implemented DoLa candidate set is not the preregistered plausible set: it is truncated to the first 50 plausible token IDs. This is a substantive analysis deviation and may affect P-b1 and P-b2.",
+   "E006c's preregistered head-averaged subject-span attention result was not produced; only per-head results were analyzed.",
+   "The E009 preregistration says all raw per-item signals are saved, but lens probabilities and JSD values are rounded before serialization.",
+   "K-0007 asserts base-checkpoint replication even though its scope says that replication was still running, and no base E006/E006c result excerpt is supplied to audit those numerical assertions.",
+   "E006c's preregistered backup-route prediction C4 failed: the minimum joint median was 0.7434 and LATE_ALL_MEAN was 0.4642, not the predicted <=0.5 and <=0.3. This is not a protocol deviation, but it must be disclosed and prevents strong claims about a late-attention backup route.",
+   "E009-base was registered after observing E009-IT. It is prospective for the base data but is not an independently preregistered replication and should not be described as such."
+  ],
+  "statistical_issues": [
+   "The E006c subject-cluster bootstrap does not preserve cluster multiplicities. For each draw it includes a pair once whenever both endpoint subjects are selected, rather than weighting the pair by the number of times its clusters were sampled. Because subjects recur across pairs, this is not the usual cluster bootstrap and may distort the reported CIs.",
+   "The E006c pooled medians are not relation-balanced: there are 12 R1 pairs and 16 R2 pairs. This is material for the head conclusions. H0_NOISE has median 0.7148 in R1 but 0.2923 in R2, so the pooled 0.3661 obscures strong relation heterogeneity.",
+   "The claim that block 25 is the largest contributor and wins in 28/28 pairs is not verifiable from the supplied E006c files: E006c contains B25_NOISE and joint mean-ablation conditions, but not the original complete per-layer corrupt-contribution results or the clean-into-corrupt patch results needed to audit 0.757, the >=0.929 per-layer medians, and the 0.85 layer-31 minimum.",
+   "No multiplicity adjustment or family-wise inferential procedure is provided for comparing 20 layers and eight heads. The layer and head rankings are therefore descriptive, and the marginal confidence intervals do not establish that block 25 differs from every other layer or head.",
+   "The normalized logit-margin retention metric is not an accuracy or probability-of-recovery measure. It is unbounded, as shown by B25_ZERO values above 1 and some negative values, so phrases such as 'retains 0.80' and 'recovers 0.757' need explicit metric definitions and should not be read as fractions of factual answers recovered.",
+   "The evidence comes from 28 subject pairs in only two relations and short templates. Repeated use of the same subjects and the limited relation set make broad mechanistic and architectural generalization unsafe.",
+   "The head-level results were exploratory and lack a preregistered multiplicity-aware comparison. The aggregate evidence does not establish that head 0 is uniquely important in every relation or template.",
+   "E009's AUROC implementation mishandles ties, making S2's point estimate and its bootstrap comparison with S0 unreliable. The discrete S3 signal may also be affected. A tie-correct Mann–Whitney implementation or rank-sum implementation is required.",
+   "E009's early-exit result reports the fraction of decoder layers skipped but not wall-clock or energy savings. In this architecture, KV creation and the prefix computation still occur, so layer fraction is only a proxy for realized compute economy."
+  ],
+  "alternative_explanations": [
+   {
+    "explanation": "The apparent block-25 effect may be a relation/template-specific phenomenon rather than a general late-layer mechanism. In particular, head-0 corruption behaves very differently in R1 and R2.",
+    "test_to_rule_out": "Run the preregistered interventions on a preregistered balanced sample of additional relations, templates, and subjects; report relation-by-condition effects and a relation-by-head interaction rather than only pooled medians."
+   },
+   {
+    "explanation": "The corruption effect may arise from a generic mismatch between the corrupt subject tokens and the answer-token logit margin, rather than from a subject-copying mechanism performed by head 0.",
+    "test_to_rule_out": "Use matched interventions that preserve token length, token identity statistics, and prompt structure while changing only whether the subject matches the queried relation; include random-token, shuffled-subject, and unrelated-subject controls and measure answer accuracy as well as logit margin."
+   },
+   {
+    "explanation": "Post-attention-RMSNorm interventions can shift the residual-stream direction and magnitude, making zeroing or substituting a layer contribution beneficial for the normalized margin even without representing factual recall.",
+    "test_to_rule_out": "Apply interventions before and after RMSNorm under explicitly matched norms, report raw clean/corrupt answer-token margins, and evaluate top-1 answer accuracy under every condition. A causal interpretation should require a consistent answer-level effect."
+   },
+   {
+    "explanation": "The large measured head-0 attention mass may be a consequence of the query and key geometry of the short template rather than evidence that head 0 retrieves the verified subject.",
+    "test_to_rule_out": "Vary prompt wording, subject length, tokenization, and the query while holding the fact fixed; compare verified-subject mass with a matched control span and test whether high mass predicts the measured causal effect."
+   },
+   {
+    "explanation": "The purported non-necessity of block 25 may reflect deletion-induced distribution shift or normalization by a large clean-versus-corrupt denominator, rather than robustness of factual recall.",
+    "test_to_rule_out": "Compare zeroing and mean replacement against norm-, direction-, and activation-matched random controls, report denominator distributions and uncertainty for the ratios, and confirm the result using absolute logit margins and top-1 factual accuracy."
+   },
+   {
+    "explanation": "The base-checkpoint result may not replicate if it comes from the same pair selection, templates, or post-hoc layer ranking rather than an independent base protocol.",
+    "test_to_rule_out": "Freeze the E006c preregistration and pair-selection procedure for base, run it before inspecting base outcomes, and report all per-layer and per-head results with relation-stratified uncertainty."
+   }
+  ],
+  "claim_wording": [
+   {
+    "claim": "Block 25 is the largest single-layer causal contributor among the 20 KV-shared layers, and clean-attention patching recovers a median 0.757 with block 25 winning all 28 held-out pairs.",
+    "warranted": "partly",
+    "required_change": "State that this ranking is specific to the tested two-relation IT prompt set and metric. Provide the complete E006b raw per-layer results and confirm that the ranking analysis was preregistered and relation-balanced. Do not imply statistical superiority over every other layer unless a multiplicity-aware comparison supports it."
+   },
+   {
+    "claim": "Substituting the corrupt block-25 contribution leaves a median 0.227, versus per-layer medians of at least 0.929 elsewhere.",
+    "warranted": "partly",
+    "required_change": "Define retained as the normalized clean-versus-corrupt answer-token logit margin, not factual accuracy. Supply the per-layer raw values supporting the >=0.929 comparison and report relation-stratified results and uncertainty."
+   },
+   {
+    "claim": "Head 0 has the strongest individual effect and is the only head that matters under corruption.",
+    "warranted": "partly",
+    "required_change": "Label this explicitly exploratory and scope it to the tested interventions: 'In the pooled IT test, corrupting head 0 produced the largest median decrease; jointly corrupting heads 1–7 had little effect.' Do not say head 0 is universally or uniquely causal, given the R1/R2 heterogeneity, untested multi-head interactions, and exploratory status."
+   },
+   {
+    "claim": "Head 0 places median attention mass 0.88 on the verified subject-token span.",
+    "warranted": "yes",
+    "required_change": "Say 'median summed attention probability over the verified clean-subject token span was 0.873' and state the uniform baseline and tokenization. If retaining the broader phrase 'positions where prompts differ,' verify that the span includes every differing position rather than only the verified subject tokens."
+   },
+   {
+    "claim": "Block 25 is not necessary: LOO-mean, norm-matched-mean, and zeroing controls retain 0.80, 0.78, and 0.94.",
+    "warranted": "yes",
+    "required_change": "Qualify this as non-necessity for the normalized answer-token logit margin in this assay, not non-necessity for factual recall generally. Explain that the controls are based on post-attention-RMSNorm contributions and that retention values can exceed one."
+   },
+   {
+    "claim": "Wrong-subject content is harmful, while absent content is not.",
+    "warranted": "partly",
+    "required_change": "Use the narrower statement: 'In the tested normalized logit-margin assay, replacing the clean block-25 contribution with the corrupt contribution reduced the margin, whereas removing it did not reduce it.' Add accuracy and norm/direction-matched random controls before making a general claim about harmful versus absent content."
+   },
+   {
+    "claim": "Mean-ablating all 20 KV-shared layers retains 0.46, so about half of the effect does not depend on late attention at the answer position.",
+    "warrant": "partly",
+    "required_change": "Replace the causal independence statement with: 'Replacing all 20 original KV-shared attention contributions with relation-matched means retained a median 46% of the normalized logit margin.' This does not establish that 54% of the effect is independent of late attention; the remaining result may still depend on transformed or residual pathways."
+   },
+   {
+    "claim": "The same layer and head dominate in the base checkpoint, with the quoted base medians.",
+    "warranted": "no",
+    "required_change": "Do not publish these numerical base claims until the base run is complete and independently auditable. If the run is still in progress, state only that base replication is underway; if subsequently confirmed, report the preregistered base protocol, all layer/head results, and relation-stratified uncertainty."
+   },
+   {
+    "claim": "The cited confidence intervals quantify the uncertainty of the headline effects.",
+    "warrant": "partly",
+    "required_change": "Recompute the E006c CIs with a cluster bootstrap that preserves subject-cluster multiplicities, and report sensitivity to relation weighting. Until then, describe the current intervals as approximate and potentially anticonservative."
+   }
+  ],
+  "recommended_followups": [
+   "Obtain and archive the complete E006/E006b raw outputs, analysis scripts, and immutable run metadata needed to reproduce the 0.757 clean-patch recovery, 28/28 ranking, and all per-layer medians.",
+   "Replace the E006c bootstrap with a standard subject-cluster bootstrap that retains cluster multiplicities, and add paired sign/rank tests and effect-size contrasts for block 25 versus the strongest alternatives.",
+   "Report all headline effects separately for R1 and R2, along with subject-level estimates and relation-stratified intervals; do not rely only on pooled medians.",
+   "Recompute retention alongside absolute logit margins, denominator distributions, and factual top-1 accuracy. Add norm-, direction-, and activation-matched random-vector controls.",
+   "Clarify that the post-RMSNorm 'norm-matched mean' restores the norm lost through averaging of already normalized vectors; it is not an independent test of whether attention magnitude causes the effect.",
+   "Run the frozen base protocol before inspecting or claiming base replication, and provide the base raw results rather than a summary assertion.",
+   "Repair E009's AUROC tie handling and rerun all AUROC and bootstrap outputs. Recompute the DoLa-style contrast using the complete preregistered plausible set, or preregister and clearly label a revised candidate-set rule.",
+   "For E009 early exit, report wall-clock latency, peak memory, total compute including the prefix, and energy/token in addition to skipped-layer fraction.",
+   "Keep E009 exploratory taxonomy and H-017 analyses separate from preregistered tests, and reconcile the registered markdown-token definition with the implementation."
+  ],
+  "overall_verdict": "The narrow IT result is reasonably supported by the supplied E006c artifacts: substituting or replacing block-25 attention can strongly change a normalized answer-token logit margin, head 0 is the strongest tested head in the pooled sample, and zeroing block 25 does not reduce that margin. However, the evidence does not justify broad claims that block 25 is a uniquely causal or general late-layer factual-recall mechanism, that head 0 universally dominates, or that half the effect is independent of late attention. Relation heterogeneity, an approximate bootstrap, absent original E006b ranking data, and the lack of auditable base results materially limit the claim. The supplied E009 code also has a preregistered candidate-set deviation and a major AUROC tie-handling bug. Overall verdict: partly supported for the narrow IT intervention findings; not warranted as written for the broad mechanistic, head-uniqueness, late-attention-independence, or base-replication claims."
+ },
+ "minimax_usage": {
+  "total_tokens": 29403,
+  "total_characters": 0,
+  "prompt_tokens": 18741,
+  "completion_tokens": 10662,
+  "completion_tokens_details": {
+   "reasoning_tokens": 7360
+  },
+  "prompt_tokens_details": {
+   "cached_tokens": 18688
+  }
+ }
+}

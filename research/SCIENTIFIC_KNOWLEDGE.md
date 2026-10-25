@@ -118,7 +118,7 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 ## K-0006 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** In Gemma 4 E2B-IT factual recall on short prompts, the subject information that determines the answer reaches the final position through the K/V stored by layer 13 (read by KV-shared layers 15-34), not through the K/V stored by layer 14: replacing the corrupt run's layer-13 stored K/V by the clean one recovers a median 0.986 of the logit difference (subject-cluster bootstrap 95% CI [0.947, 0.995]) vs 0.017 [0.011, 0.025] for layer 14 (28 held-out pairs); the effect is carried by the subject-span positions (0.980) and not by template positions (0.006). The same pattern holds in the pretrained base checkpoint google/gemma-4-E2B on a disjoint set of 28 held-out pairs (KV13_all 0.994 [cluster CI 0.963, 1.015] vs KV14_all -0.001), i.e. it is not a product of instruction tuning.
+**Claim.** In Gemma 4 E2B-IT factual recall on short prompts, the subject information that determines the answer reaches the final position through the K/V stored by layer 13 (read by KV-shared layers 15-34), not through the K/V stored by layer 14: replacing the corrupt run's layer-13 stored K/V by the clean one recovers a median 0.986 of the logit difference (relation-stratified subject-cluster bootstrap 95% CI [0.923, 1.014]) vs 0.017 [0.009, 0.027] for layer 14 (28 held-out pairs); the effect is carried by the subject-span positions (0.980) and not by template positions (0.006). The same pattern holds in the pretrained base checkpoint google/gemma-4-E2B on a disjoint set of 28 held-out pairs (KV13_all 0.994 [cluster CI 0.949, 1.022] vs KV14_all -0.001 [-0.040, 0.018]), i.e. it is not a product of instruction tuning.
 
 **Scope.** google/gemma-4-E2B-it and google/gemma-4-E2B (base); two relations (landmark->city 12 pairs, country->capital 16 pairs) with single-token answers; prompts 7-14 tokens (far below the 512-token sliding window, so this distinguishes the two stored K/V tensors, not sliding vs full attention); counterfactual patching with logit-difference recovery
 
@@ -133,16 +133,16 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/lib/runner.py`, `experiments/E006_kv_route/result_base.json`, `experiments/E006_kv_route/analysis_base.json`
 
-**Audit.** `audits/AUDIT-002.md`, `audits/NOVELTY-001.md`
+**Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-004.md`, `audits/NOVELTY-001.md`
 
 **Uncertainty / limits.** Two templates/relations only; short prompts; IT checkpoint only; R1 held-out pairs share subjects with in-sample pairs. Layer-14 K/V may matter for other tasks or beyond the sliding window (H-011). Novelty (NOVELTY-001, 7 full-text sources): no source reports the same result; analogues: Geva et al. 2023 attribute extraction by attention heads (LIT02-065), ROME-in-Mamba two-site pattern (LIT06-022), YOCO shared global KV (LIT03-019).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008); 2026-10-25: cycle 3: transfer to base checkpoint added (same lab code: not an independent replication); 2026-10-25: NOVELTY-001 added
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008); 2026-10-25: cycle 3: transfer to base checkpoint added (same lab code: not an independent replication); 2026-10-25: NOVELTY-001 added; 2026-10-25: AUDIT-004: cluster bootstrap fixed (multiplicities were collapsed by set()); CIs recomputed - wider, thresholds unaffected
 
 ## K-0007 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** In the tested factual-recall assay on Gemma 4 E2B-IT, block-25 attention at the final position is the largest single-layer causal contributor among the 20 KV-shared layers: patching only its clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]; largest of 20 single-layer patches in 28/28 held-out pairs), and substituting the corrupt run's contribution leaves a median 0.227 at block 25 vs per-layer medians >= 0.929 at every other KV-shared layer (individual pairs down to 0.85 at layer 31). Head 0 of block 25 had the strongest individual effect (single-head corruption leaves 0.37 vs >= 0.98 for heads 1-7; multi-head interactions untested) and puts a median 0.88 of its final-query attention on the positions where the two prompts differ. Block 25 is not necessary: replacing its contribution by a leave-one-out mean retains 0.80 [cluster CI 0.76, 0.87], by a norm-matched mean 0.78, and zeroing it retains 0.94 (E006c) - wrong-subject content is harmful, absent content is not. Head 0 is the only head that matters under corruption (heads 1-7 jointly corrupted retain 0.96) and attends with median mass 0.87 to the verified subject token span. Mean-ablating the attention of all 20 KV-shared layers at the final position still retains 0.46 [0.40, 0.51]: about half of the effect does not depend on late attention at the answer position. In the base checkpoint the same layer (block 25, largest in 28/28 pairs; sufficiency 0.654) and the same head (head 0: 0.423; other heads <= 0.06) dominate; corruption of block 25 leaves more of the logit difference in base (0.337 [0.313, 0.419]) than in IT (0.227).
+**Claim.** In the tested factual-recall assay on Gemma 4 E2B-IT, block-25 attention at the final position is the largest single-layer causal contributor among the 20 KV-shared layers: patching only its clean attention contribution into the corrupt run recovers a median 0.757 (relation-stratified subject-cluster CI [0.625, 0.826]; largest of 20 single-layer patches in 28/28 held-out pairs), and substituting the corrupt run's contribution leaves a median 0.227 at block 25 vs per-layer medians >= 0.929 at every other KV-shared layer (individual pairs down to 0.85 at layer 31). Head 0 of block 25 had the strongest individual effect (single-head corruption leaves 0.37 vs >= 0.98 for heads 1-7; multi-head interactions untested) and puts a median 0.88 of its final-query attention on the positions where the two prompts differ. Block 25 is not necessary: replacing its contribution by a leave-one-out mean retains 0.80 [cluster CI 0.75, 0.89], by a norm-matched mean 0.78, and zeroing it retains 0.94 (E006c) - wrong-subject content is harmful, absent content is not. Head 0 is the only head that matters under corruption (heads 1-7 jointly corrupted retain 0.96) and attends with median mass 0.87 to the verified subject token span. Mean-ablating the attention of all 20 KV-shared layers at the final position still retains 0.46 [0.34, 0.52]: about half of the effect does not depend on late attention at the answer position. In the base checkpoint the same layer (block 25, largest in 28/28 pairs; sufficiency 0.654) and the same head (head 0: 0.423; other heads <= 0.06) dominate; corruption of block 25 leaves more of the logit difference in base (0.337 [0.268, 0.453]) than in IT (0.227).
 
 **Scope.** as K-0006 (two relations, short prompts, IT checkpoint); head-level results from E006b (preregistered Q1, Q4 exploratory)
 
@@ -160,12 +160,12 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/E006b_route_controls/PREREG.md`, `experiments/E006b_route_controls/run.py`, `experiments/E006b_route_controls/result_it.json`, `experiments/E006b_route_controls/analysis.json`, `experiments/E006_kv_route/analysis_base.json`, `experiments/E006c_backup_route/PREREG.md`, `experiments/E006c_backup_route/run.py`, `experiments/E006c_backup_route/result_it.json`, `experiments/E006c_backup_route/analysis.json`
 
-**Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-003.md`, `audits/NOVELTY-001.md`
+**Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-003.md`, `audits/AUDIT-004.md`, `audits/NOVELTY-001.md`
 
-**Uncertainty / limits.** AUDIT-003 issues resolved in E006c (eager/SDPA diff 6e-5; verified spans; LOO/norm-matched means; relation-stratified clustering). Head-level results exploratory. Two relations, short templates, IT checkpoint (base replication running in cycle 3). Novelty (NOVELTY-001, 7 full-text sources): no source reports the same result; analogues: Geva et al. 2023 attribute extraction by attention heads (LIT02-065), ROME-in-Mamba two-site pattern (LIT06-022), YOCO shared global KV (LIT03-019).
+**Uncertainty / limits.** AUDIT-003 issues resolved in E006c (eager/SDPA diff 6e-5; verified spans; LOO/norm-matched means; relation-stratified clustering). Head-level results exploratory. Two relations, short templates, IT checkpoint (base replication running in cycle 3). Novelty (NOVELTY-001, 7 full-text sources): no source reports the same result; analogues: Geva et al. 2023 attribute extraction by attention heads (LIT02-065), ROME-in-Mamba two-site pattern (LIT06-022), YOCO shared global KV (LIT03-019). AUDIT-004: wording should not imply a unique or general late-layer mechanism; R1 vs R2 heterogeneity in head-0 noising (R1 0.71 vs R2 0.29 retained).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c; 2026-10-25: cycle 3: base-checkpoint transfer added; 2026-10-25: NOVELTY-001 added; 2026-10-25: E006c: corrected controls; non-necessity robust (zero ablation 0.94); head-0 role confirmed jointly; late-attention-independent half identified
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c; 2026-10-25: cycle 3: base-checkpoint transfer added; 2026-10-25: NOVELTY-001 added; 2026-10-25: E006c: corrected controls; non-necessity robust (zero ablation 0.94); head-0 role confirmed jointly; late-attention-independent half identified; 2026-10-25: AUDIT-004: cluster-bootstrap bug fixed, CIs recomputed (all thresholds still met); heterogeneity caveat
 
 ## K-0008 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
@@ -192,4 +192,55 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Last verified.** 2026-10-25  
 **History.** 2026-10-25: created from E007/E007b; 2026-10-25: AUDIT-003: removed unverified Google on-device statement; top-10 'set'; T=2048 marked exploratory with log references; numerical-equivalence wording; 2026-10-25: novelty check: principle attributed to YOCO (LIT03-019)
+
+## K-0009 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
+
+**Claim.** A DoLa-style layer contrast (final log-prob minus log-prob at the max-JSD premature residual in 26-30, plausibility filter 0.1) does not significantly improve Gemma 4 E2B-IT first-token factual accuracy: TEST 42.7% vs 41.4% greedy (12 items fixed, 7 broken, exact McNemar p = 0.36, n = 396).
+
+**Scope.** google/gemma-4-E2B-it; factset_v1 (793 single-word completions over 20 relations, generated and cross-verified by two API model families); raw completion prompts with BOS; first-token correctness (mixes knowledge with answer form, see E009 exploratory); bucket chosen on DEV half
+
+**Conditions.** fp32 compute; Runner(last_only_from=15) with keep_resid; plausible set stored for all items (0 items reached the 50-token storage cap, AUDIT-004 check)
+
+**Verification.** Preregistered E009 (DEV/TEST split by parity); AUDIT-004 dual-family audit (plausible-set truncation shown to affect 0 items)
+
+**Primary sources.** LIT07-001 (DoLa: Decoding by Contrasting Layers Improves Factuality in Large Language Models); LIT07-016 (A Controlled Study of Decoding-Time Truthfulness Methods on Instruction-Tuned LLMs)
+
+- supports: `experiments/E009_reliability/analysis_it.json` — preregistered P-b1 fails (gain +1.3 pp, p 0.36); P-b2 harm check passes (7/396 broken)
+- supports: `LIT07-016` — controlled study on instruction-tuned LLMs: no token-level decoding method significantly improves full TruthfulQA (-2.0 pp, p = .23) - same direction
+- contradicts: `LIT07-001` — DoLa paper reports +12-17 points TruthfulQA and +1-4% StrategyQA on LLaMA 7B-65B (different models, tasks and metrics)
+
+**Artifacts.** `experiments/E009_reliability/PREREG.md`, `experiments/E009_reliability/run.py`, `experiments/E009_reliability/result_it.jsonl`, `experiments/E009_reliability/analysis_it.json`, `experiments/E009_reliability/analyze.py`
+
+**Audit.** `audits/AUDIT-004.md`
+
+**Uncertainty / limits.** Single-token metric; one prompt style; a small true effect (< ~4 pp) cannot be excluded at n = 396; base checkpoint pending (E009-base).
+
+**Last verified.** 2026-10-25  
+**History.** 2026-10-25: created from E009 after AUDIT-004
+
+## K-0010 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
+
+**Claim.** In Gemma 4 E2B-IT the logit lens at the final position reaches answer-level first-token accuracy only late (factset DEV accuracy by residual index: <= 1% up to index 25, 10.6% at 27, 36.3% at 29, peak 47.6% at 33, 37.5% at the output). Consequently a confidence-threshold early exit (first index >= 20 whose lens max-prob >= tau, tau chosen on DEV) skips only 4.9% of decoder layers on TEST; it does not cost accuracy (47.2% vs 41.4%) because the last block lowers first-token accuracy on this metric.
+
+**Scope.** google/gemma-4-E2B-it; factset_v1 raw completions; first-token correctness (answer-form effects such as ' **' or first names count as errors); logit lens = final norm + tied unembedding + softcap
+
+**Conditions.** as K-0009
+
+**Verification.** Preregistered E009 (c); accuracy-by-index exploratory
+
+**Primary sources.** LIT07-041 (The Diminishing Returns of Early-Exit Decoding in Modern LLMs)
+
+- supports: `experiments/E009_reliability/analysis_it.json` — preregistered P-c1 fails: 4.9% of layers skipped (< 15% predicted)
+- supports: `experiments/E009_reliability/exploratory_errors_it.json` — post hoc: accuracy by residual index; 151/480 errors had the target top-1 at some index 20-34
+- supports: `LIT07-041` — early-exit potential diminishes in newer model generations and smaller models (consistent direction)
+- supports: `experiments/E002_logit_lens/analysis.json` — K-0005: answer emergence median index 28 on 60 easy prompts (consistent)
+
+**Artifacts.** `experiments/E009_reliability/result_it.jsonl`, `experiments/E009_reliability/analysis_it.json`, `experiments/E009_reliability/exploratory_errors.py`, `experiments/E009_reliability/exploratory_errors_it.json`
+
+**Audit.** `audits/AUDIT-004.md`
+
+**Uncertainty / limits.** The late-layer accuracy drop is post hoc and is partly an answer-form effect (H-017, base test running). Lens (not tuned lens) underestimates early decodability.
+
+**Last verified.** 2026-10-25  
+**History.** 2026-10-25: created from E009
 

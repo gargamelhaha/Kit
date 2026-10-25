@@ -1,6 +1,8 @@
 """Preregistered analysis for E006 (criteria fixed in PREREG.md before data). Writes analysis.json."""
 import json, os, statistics as st
-import numpy as np
+import numpy as np, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "lib"))
+from stats import pair_cluster_ci
 D = os.path.dirname(os.path.abspath(__file__))
 res = json.load(open(os.path.join(D, "result_" + os.environ.get("VARIANT", "it") + ".json")))
 pairs = res["pairs"]
@@ -54,13 +56,8 @@ elif P["underpowered"]:
 
 
 def cluster_boot(ps, cond, n=10000):
-    """AUDIT-002 robustness (exploratory): resample subjects, keep all held-out pairs whose clean AND corrupt subject were drawn."""
-    rng = np.random.default_rng(0); subs = sorted({p["clean"] for p in ps} | {p["corrupt"] for p in ps}); meds = []
-    for _ in range(n):
-        pick = set(rng.choice(subs, len(subs), replace=True))
-        w = [p["recovery"][cond] for p in ps if p["clean"] in pick and p["corrupt"] in pick]
-        if w: meds.append(np.median(w))
-    return [round(float(np.percentile(meds, 2.5)), 4), round(float(np.percentile(meds, 97.5)), 4)]
+    """AUDIT-004 fix: multiplicity-preserving subject bootstrap, stratified by relation."""
+    return pair_cluster_ci(ps, lambda p: p["recovery"][cond], strata=lambda p: p["relation"], n=n)
 
 
 a["subject_cluster_bootstrap_ci95_median"] = {c: cluster_boot(ho, c) for c in

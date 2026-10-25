@@ -1,22 +1,15 @@
 """Preregistered E006c analysis (PREREG.md)."""
 import json, os
-import numpy as np
+import numpy as np, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "lib"))
+from stats import pair_cluster_ci
 D = os.path.dirname(os.path.abspath(__file__)); r = json.load(open(os.path.join(D, "result_it.json"))); ps = r["pairs"]
 rng = np.random.default_rng(0)
 
 
 def cboot(cond, n=10000):
-    """subject-clustered bootstrap, stratified by relation"""
-    meds = []
-    rel = {k: [p for p in ps if p["relation"] == k] for k in ("R1", "R2")}
-    subs = {k: sorted({p["clean"] for p in v} | {p["corrupt"] for p in v}) for k, v in rel.items()}
-    for _ in range(n):
-        w = []
-        for k in rel:
-            pick = set(rng.choice(subs[k], len(subs[k]), replace=True))
-            w += [p["retained"][cond] for p in rel[k] if p["clean"] in pick and p["corrupt"] in pick]
-        if w: meds.append(np.median(w))
-    return [round(float(np.percentile(meds, 2.5)), 4), round(float(np.percentile(meds, 97.5)), 4)]
+    """AUDIT-004 fix: multiplicity-preserving subject bootstrap, stratified by relation."""
+    return pair_cluster_ci(ps, lambda p: p["retained"][cond], strata=lambda p: p["relation"], n=n)
 
 
 conds = list(ps[0]["retained"])
@@ -35,7 +28,7 @@ a = {"n_pairs": len(ps), "median": med, "cluster_ci": ci, "joint_min": jmin, "jo
      "C3": med["H1to7_NOISE"] >= 0.9 and med["H0_NOISE"] <= 0.6,
      "C4": jmin[1] <= 0.5 and med["LATE_ALL_MEAN"] <= 0.3,
      "C5": float(np.median(m0)) >= 0.5 and np.mean([x >= 3 for x in ratio]) >= 0.8,
-     "head0_mass_median": float(np.median(m0)), "head_mass_medians": [round(float(np.median([p["mass_h"][h] for p in ps])), 3) for h in range(8)],
+     "head0_mass_median": float(np.median(m0)), "head_avg_mass_median": round(float(np.median([np.mean(p["mass_h"]) for p in ps])), 3), "head_mass_medians": [round(float(np.median([p["mass_h"][h] for p in ps])), 3) for h in range(8)],
      "frac_ratio_ge3": float(np.mean([x >= 3 for x in ratio])),
      "by_relation": {k: {c: round(float(np.median([p["retained"][c] for p in ps if p["relation"] == k])), 4) for c in key} for k in ("R1", "R2")}}
 json.dump(a, open(os.path.join(D, "analysis.json"), "w"), indent=1, default=lambda o: o.item())
