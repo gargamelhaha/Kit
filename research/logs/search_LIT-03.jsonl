@@ -1,0 +1,19 @@
+{"ts": "2026-10-25T06:21:44Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Gemma Scope open sparse autoencoders Gemma 2 &sort=relevance_score:desc", "n_results": 851, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:21:46Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Gemma Scope 2 sparse autoencoders transcoders Gemma 3 &sort=relevance_score:desc", "n_results": 97, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:21:50Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Gemma 3 technical report &sort=relevance_score:desc", "n_results": 23958, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:21:53Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Gemma 2 improving open language models practical size &sort=relevance_score:desc", "n_results": 12394, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:21:56Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Gemma open models based on Gemini research &sort=relevance_score:desc", "n_results": 7813, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:21:59Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Gemma 4 technical report &sort=relevance_score:desc", "n_results": 23862, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:02Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=MatFormer nested transformer elastic inference &sort=relevance_score:desc", "n_results": 91, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:05Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=LAuReL learned augmented residual layer &sort=relevance_score:desc", "n_results": 227, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:08Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=alternating updates efficient transformers AltUp &sort=relevance_score:desc", "n_results": 7, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:11Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=per-layer embeddings language model &sort=relevance_score:desc", "n_results": 355199, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:14Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=transcoders find interpretable LLM feature circuits &sort=relevance_score:desc", "n_results": 252, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:17Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=circuit tracing attribution graphs language model &sort=relevance_score:desc", "n_results": 1736, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:20Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=cross-layer transcoders &sort=relevance_score:desc", "n_results": 608, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:22Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=sparse crosscoders model diffing &sort=relevance_score:desc", "n_results": 129, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:26Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=towards monosemanticity dictionary learning &sort=relevance_score:desc", "n_results": 1464, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:29Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=toy models of superposition &sort=relevance_score:desc", "n_results": 9609, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:32Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=sparse autoencoders find highly interpretable features language models &sort=relevance_score:desc", "n_results": 12304, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:35Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=scaling and evaluating sparse autoencoders &sort=relevance_score:desc", "n_results": 76424, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:38Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=JumpReLU sparse autoencoders reconstruction fidelity &sort=relevance_score:desc", "n_results": 272, "n_new_relevant": 0}

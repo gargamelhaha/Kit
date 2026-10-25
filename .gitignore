@@ -1,0 +1,6 @@
+.models/
+.venv/
+__pycache__/
+*.pyc
+research/papers/*.pdf
+research/state/knowledge.sqlite
