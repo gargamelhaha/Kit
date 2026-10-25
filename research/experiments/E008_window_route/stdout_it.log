@@ -5,3 +5,27 @@ A A 60 Tower of London -> Sagrada Familia ok True True LDs 24.5 -16.8 {'KV13_D':
 A A 60 CN Tower -> Charles Bridge ok True True LDs 16.8 -9.1 {'KV13_D': 0.782, 'KV14_D': 0.124, 'KVBOTH_D': 0.911, 'ATTN_25': 0.813, 'NULL': -0.0} 276 s
 A A 60 CN Tower -> Eiffel Tower ok True True LDs 16.0 -15.2 {'KV13_D': 0.467, 'KV14_D': 0.032, 'KVBOTH_D': 0.715, 'ATTN_25': 0.475, 'NULL': -0.0} 314 s
 A A 60 CN Tower -> Hollywood Sign ok True True LDs 16.5 -17.2 {'KV13_D': 0.88, 'KV14_D': 0.015, 'KVBOTH_D': 1.048, 'ATTN_25': 0.706, 'NULL': -0.0} 354 s
+A A 60 Petronas Towers -> Reichstag building ok True True LDs 21.4 -22.2 {'KV13_D': 1.017, 'KV14_D': 0.112, 'KVBOTH_D': 1.054, 'ATTN_25': 0.783, 'NULL': 0.0} 397 s
+A A 60 Alhambra -> CN Tower ok True True LDs 20.8 -25.9 {'KV13_D': 0.797, 'KV14_D': 0.157, 'KVBOTH_D': 0.917, 'ATTN_25': 0.477, 'NULL': -0.0} 437 s
+A A 60 Atomium -> Golden Temple ok True True LDs 23.5 -21.7 {'KV13_D': 0.903, 'KV14_D': 0.029, 'KVBOTH_D': 0.921, 'ATTN_25': 0.708, 'NULL': -0.0} 476 s
+A A 60 Space Needle -> Forbidden City ok True True LDs 24.2 -16.6 {'KV13_D': 0.589, 'KV14_D': 0.017, 'KVBOTH_D': 0.714, 'ATTN_25': 0.615, 'NULL': 0.0} 515 s
+A A 400 Petronas Towers -> Parthenon ok True True LDs 17.8 -19.2 {'KV13_D': 0.683, 'KV14_D': 0.162, 'KVBOTH_D': 0.876, 'ATTN_25': 0.707, 'NULL': -0.0} 555 s
+A A 400 Big Ben -> Space Needle ok False True LDs 14.5 -20.8 {'KV13_D': 0.699, 'KV14_D': 0.074, 'KVBOTH_D': 0.797, 'ATTN_25': 0.756, 'NULL': 0.0} 595 s
+A A 400 Tower of London -> Sagrada Familia ok True True LDs 19.0 -12.7 {'KV13_D': 0.692, 'KV14_D': 0.222, 'KVBOTH_D': 0.883, 'ATTN_25': 0.597, 'NULL': -0.0} 634 s
+A A 400 CN Tower -> Charles Bridge ok True False LDs 12.9 -7.4 {'KV13_D': 0.404, 'KV14_D': 0.148, 'KVBOTH_D': 0.586, 'ATTN_25': 0.692, 'NULL': -0.0} 674 s
+A A 400 CN Tower -> Eiffel Tower ok True True LDs 11.0 -12.2 {'KV13_D': 0.286, 'KV14_D': 0.065, 'KVBOTH_D': 0.58, 'ATTN_25': 0.566, 'NULL': -0.0} 713 s
+A A 400 CN Tower -> Hollywood Sign ok True False LDs 11.3 -7.4 {'KV13_D': 0.446, 'KV14_D': 0.057, 'KVBOTH_D': 0.715, 'ATTN_25': 0.607, 'NULL': -0.0} 754 s
+A A 400 Petronas Towers -> Reichstag building ok True True LDs 17.4 -20.5 {'KV13_D': 0.95, 'KV14_D': 0.146, 'KVBOTH_D': 1.04, 'ATTN_25': 0.762, 'NULL': -0.0} 788 s
+A A 400 Alhambra -> CN Tower ok False True LDs 15.4 -21.8 {'KV13_D': 0.67, 'KV14_D': 0.257, 'KVBOTH_D': 0.81, 'ATTN_25': 0.523, 'NULL': 0.0} 823 s
+A A 400 Atomium -> Golden Temple ok True False LDs 16.6 -14.9 {'KV13_D': 0.792, 'KV14_D': -0.006, 'KVBOTH_D': 0.782, 'ATTN_25': 0.816, 'NULL': 0.0} 856 s
+A A 400 Space Needle -> Forbidden City ok True False LDs 20.5 -15.9 {'KV13_D': 0.187, 'KV14_D': 0.013, 'KVBOTH_D': 0.277, 'ATTN_25': 0.546, 'NULL': -0.0} 896 s
+A A 505 Petronas Towers -> Parthenon ok True True LDs 19.7 -19.9 {'KV13_D': 0.629, 'KV14_D': 0.147, 'KVBOTH_D': 0.869, 'ATTN_25': 0.68, 'NULL': 0.0} 935 s
+A A 505 Big Ben -> Space Needle ok False True LDs 16.6 -22.5 {'KV13_D': 0.778, 'KV14_D': 0.088, 'KVBOTH_D': 0.912, 'ATTN_25': 0.757, 'NULL': 0.0} 982 s
+A A 505 Tower of London -> Sagrada Familia ok True True LDs 19.5 -13.1 {'KV13_D': 0.687, 'KV14_D': 0.287, 'KVBOTH_D': 0.879, 'ATTN_25': 0.591, 'NULL': 0.0} 1021 s
+A A 505 CN Tower -> Charles Bridge ok True False LDs 17.5 -10.3 {'KV13_D': 0.441, 'KV14_D': 0.122, 'KVBOTH_D': 0.614, 'ATTN_25': 0.732, 'NULL': -0.0} 1061 s
+A A 505 CN Tower -> Eiffel Tower ok True True LDs 15.6 -14.0 {'KV13_D': 0.122, 'KV14_D': 0.009, 'KVBOTH_D': 0.255, 'ATTN_25': 0.487, 'NULL': -0.0} 1100 s
+A A 505 CN Tower -> Hollywood Sign ok True False LDs 16.3 -12.8 {'KV13_D': 0.297, 'KV14_D': -0.003, 'KVBOTH_D': 0.539, 'ATTN_25': 0.645, 'NULL': -0.0} 1141 s
+A A 505 Petronas Towers -> Reichstag building ok True True LDs 19.4 -22.2 {'KV13_D': 0.934, 'KV14_D': 0.139, 'KVBOTH_D': 1.01, 'ATTN_25': 0.737, 'NULL': 0.0} 1180 s
+A A 505 Alhambra -> CN Tower ok False True LDs 16.7 -25.4 {'KV13_D': 0.81, 'KV14_D': 0.213, 'KVBOTH_D': 0.927, 'ATTN_25': 0.521, 'NULL': 0.0} 1219 s
+A A 505 Atomium -> Golden Temple ok True False LDs 17.6 -15.1 {'KV13_D': 0.867, 'KV14_D': -0.007, 'KVBOTH_D': 0.867, 'ATTN_25': 0.79, 'NULL': 0.0} 1260 s
+A A 505 Space Needle -> Forbidden City ok True False LDs 21.5 -12.6 {'KV13_D': 0.166, 'KV14_D': -0.002, 'KVBOTH_D': 0.312, 'ATTN_25': 0.47, 'NULL': 0.0} 1299 s
