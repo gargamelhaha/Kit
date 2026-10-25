@@ -1,0 +1,4 @@
+{
+ "deepseek": null,
+ "minimax": "Material correction is required. The layer-level corruption and mean-replacement results appear broadly consistent with the supplied E006c/E006d summaries, but the supplied head-attention extraction is inconsistent with the stored eight-head result and must be fixed and rerun before the head-0 attention claims can be accepted. The central routing interpretation is overclaimed: the experiments do not show that all subject information reaches the answer through KV-shared attention, and several assertions of equality, necessity, semantic specificity, and base-checkpoint generalization exceed the evidence or are not reproducible from the supplied package."
+}

@@ -1,0 +1,4 @@
+Part A pairs 10 [('Petronas Towers', 'Parthenon'), ('Big Ben', 'Space Needle'), ('Tower of London', 'Sagrada Familia'), ('CN Tower', 'Charles Bridge'), ('CN Tower', 'Eiffel Tower'), ('CN Tower', 'Hollywood Sign'), ('Petronas Towers', 'Reichstag building'), ('Alhambra', 'CN Tower'), ('Atomium', 'Golden Temple'), ('Space Needle', 'Forbidden City')]
+A A 60 Petronas Towers -> Parthenon ok True True LDs 21.8 -21.3 {'KV13_D': 0.882, 'KV14_D': 0.099, 'KVBOTH_D': 0.959, 'ATTN_25': 0.642, 'NULL': 0.0} 147 s
+A A 60 Big Ben -> Space Needle ok True True LDs 19.9 -25.3 {'KV13_D': 0.958, 'KV14_D': 0.041, 'KVBOTH_D': 0.988, 'ATTN_25': 0.689, 'NULL': -0.0} 191 s
+A A 60 Tower of London -> Sagrada Familia ok True True LDs 24.5 -16.8 {'KV13_D': 0.833, 'KV14_D': 0.133, 'KVBOTH_D': 0.936, 'ATTN_25': 0.624, 'NULL': -0.0} 232 s

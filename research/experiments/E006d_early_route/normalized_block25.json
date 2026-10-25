@@ -1,0 +1,12 @@
+{
+ "normalized_B25_MEAN_median": 0.6700318043225469,
+ "ci": [
+  0.5547,
+  0.7974
+ ],
+ "late_minus_all_median": 0.0017775148153305054,
+ "late_minus_all_ci": [
+  -0.0059,
+  0.0056
+ ]
+}
