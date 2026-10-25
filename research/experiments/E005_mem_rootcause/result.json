@@ -1,0 +1,9 @@
+{
+ "base_gb": 1.138,
+ "after_no_grad_call_live_logits_gb": 1.143,
+ "after_grad_call_live_logits_gb": 1.143,
+ "grad_fn": "<CatBackward0 object at 0x2ab5250b9d80>",
+ "after_del_gb": 1.143,
+ "after_requires_grad_false_call_gb": 1.143,
+ "rlimit_data_enforced": false
+}

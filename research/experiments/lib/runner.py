@@ -56,9 +56,12 @@ class Runner:
             return None if r is None else (r.reshape(b, t, hd),)
         return hook
 
+    @torch.no_grad()
     def unembed(self, h):
         x, W = self.tm.norm(h).float(), self.model.lm_head.weight
-        logits = torch.cat([torch.nn.functional.linear(x, W[r:r + 32768].float()) for r in range(0, W.shape[0], 32768)], dim=-1)
+        fw = getattr(self.model, "_fp32_weight", None)  # reuse use_fp32_compute's persistent buffer
+        logits = torch.cat([torch.nn.functional.linear(x, fw(W[r:r + 32768], 32768) if fw else W[r:r + 32768].float())
+                            for r in range(0, W.shape[0], 32768)], dim=-1)
         return torch.tanh(logits / self.cap) * self.cap if self.cap else logits
 
     @torch.no_grad()

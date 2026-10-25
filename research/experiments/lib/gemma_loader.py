@@ -53,9 +53,35 @@ def load(variant="it"):
     model.tie_weights()
     _rebuild_meta_buffers(model, cfg)
     leftover = [n for n, b in list(model.named_parameters()) + list(model.named_buffers()) if b.device.type == "meta"]
+    for p in model.parameters():
+        p.requires_grad_(False)
     model.eval()
+    start_rss_guard()
     return model, tok, {"variant": variant, "repo": MODELS[variant], "missing": [m for m in missing if m != "lm_head.weight"],
                         "unexpected": unexpected, "meta_leftover": leftover, "load_s": round(time.time() - t0, 1)}
+
+
+def start_rss_guard(limit_gb=float(os.environ.get("RSS_GUARD_GB", 6.8)), period=0.2):
+    """Exit this process before it can push the 8 GiB sandbox over its box limit (the sandbox does not
+    enforce RLIMIT_DATA, E005). Logs the event to research/logs/memwatch.log."""
+    import threading
+    if getattr(start_rss_guard, "started", False):
+        return
+    start_rss_guard.started = True
+    page = os.sysconf("SC_PAGE_SIZE")
+    log = os.path.join(os.path.dirname(__file__), "..", "..", "logs", "memwatch.log")
+    def loop():
+        peak = 0.0
+        while True:
+            rss = int(open("/proc/self/statm").read().split()[1]) * page / 1e9
+            peak = max(peak, rss)
+            start_rss_guard.peak = peak
+            if rss > limit_gb:
+                with open(log, "a") as f:
+                    f.write(f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} rss_guard: RSS {rss:.2f} GB > {limit_gb} GB, exiting pid {os.getpid()}\n")
+                os._exit(3)
+            time.sleep(period)
+    threading.Thread(target=loop, daemon=True).start()
 
 
 def _drop_page_cache(path):
@@ -95,17 +121,28 @@ def use_fp32_compute(model):
     if getattr(model, "_fp32_compute", False):
         return model
     model._fp32_compute = True
-    def chunked(m, x, rows=32768):  # avoids a 1.6 GB fp32 copy of the 262k-row unembedding
+    # Persistent fp32 buffers, one per weight shape: no per-call allocation churn (PL-6: repeated
+    # 75-200 MB allocate/free cycles are the leading suspect for whole-sandbox kills under gVisor).
+    bufs = {}
+    def fp32_weight(w, rows=None):
+        key = (rows or w.shape[0], w.shape[1])
+        if key not in bufs:
+            bufs[key] = torch.empty(key, dtype=torch.float32)
+        b = bufs[key][: w.shape[0]]
+        b.copy_(w)
+        return b
+    def chunked(m, x, rows=32768):  # 262k-row unembedding through one reused 200 MB buffer
         x = x.float()
-        return torch.cat([F.linear(x, m.weight[r:r + rows].float()) for r in range(0, m.weight.shape[0], rows)], dim=-1)
+        return torch.cat([F.linear(x, fp32_weight(m.weight[r:r + rows], rows)) for r in range(0, m.weight.shape[0], rows)], dim=-1)
     for mod in model.modules():
         if isinstance(mod, nn.Linear):
             if mod.weight.shape[0] > 65536:
                 mod.forward = (lambda m: (lambda x: chunked(m, x)))(mod)
             else:
-                mod.forward = (lambda m: (lambda x: F.linear(x.float(), m.weight.float())))(mod)
+                mod.forward = (lambda m: (lambda x: F.linear(x.float(), fp32_weight(m.weight))))(mod)
         elif isinstance(mod, nn.Embedding):
             mod.register_forward_hook(lambda m, i, o: o.float())
+    model._fp32_weight = fp32_weight
     for p in model.parameters():
         if p.dim() == 1:
             p.data = p.data.float()

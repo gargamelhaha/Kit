@@ -16,6 +16,8 @@ for prompt, city, kind in items:
         lg = R.unembed(h[:, -1])[0]
         ranks.append(int((lg > lg[aid]).sum().item()) + 1); probs.append(torch.softmax(lg, -1)[aid].item()); top1.append(tok.decode(lg.argmax()))
     out["items"].append({"prompt": prompt, "answer": city, "kind": kind, "correct": int(ranks[-1] == 1), "ranks": ranks, "probs": probs, "top1": top1})
+    json.dump(out, open(os.path.join(os.path.dirname(__file__), f"result_{V}.json"), "w"), indent=1, ensure_ascii=False)
+    print(len(out["items"]), round(time.time() - t0), flush=True)
 out["wall_s"] = round(time.time() - t0, 1)
 json.dump(out, open(os.path.join(os.path.dirname(__file__), f"result_{V}.json"), "w"), indent=1, ensure_ascii=False)
 print("done")
