@@ -3,3 +3,4 @@
 {"ts": "2026-10-25T06:59:48Z", "cycle": "1", "step": "E001_arch:it", "kind": "exp", "wall_s": 612.8, "cpu_s": 134.6, "peak_rss_gb": 5.61, "outcome": "ok", "artifact": "experiments/E001_arch", "notes": ""}
 {"ts": "2026-10-25T07:54:50Z", "cycle": "1", "step": "E001b_buffer_selftest:it", "kind": "exp", "wall_s": 55.1, "peak_rss_gb_process": 5.93, "outcome": "ok", "artifact": "experiments/E001b_buffer_selftest", "runner": "run_many"}
 {"ts": "2026-10-25T08:17:52Z", "cycle": "1", "step": "E002_logit_lens:it", "kind": "exp", "wall_s": 1380.3, "peak_rss_gb_process": 6.04, "outcome": "ok", "artifact": "experiments/E002_logit_lens", "runner": "run_many"}
+{"ts": "2026-10-25T08:39:44Z", "cycle": "1", "step": "E004_factual_patching:it", "kind": "exp", "wall_s": 1310.9, "peak_rss_gb_process": 6.59, "outcome": "ok", "artifact": "experiments/E004_factual_patching", "runner": "run_many"}
