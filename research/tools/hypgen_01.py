@@ -31,7 +31,7 @@ HYPOTHESES ALREADY REGISTERED:
 
 OPEN QUESTIONS:
 {oq}"""
-outs = Pool(tag="hypgen").map([{"model": m, "max_tokens": 24000, "meta": {"task": "hypgen"}, "messages": [{"role": "user", "content": P}]} for m in ("deepseek", "minimax")])
+outs = Pool(tag="hypgen").map([{"model": m, "max_tokens": 40000, "reasoning_effort": "medium", "meta": {"task": "hypgen"}, "messages": [{"role": "user", "content": P}]} for m in ("deepseek", "minimax")])
 rep = {}
 for m, o in zip(("deepseek", "minimax"), outs):
     mm = re.search(r"\[.*\]", o.get("content", ""), re.S)

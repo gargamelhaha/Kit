@@ -8,3 +8,4 @@
 {"ts": "2026-10-25T10:32:57Z", "cycle": "2", "step": "E007_prefill_skip:it", "kind": "exp", "wall_s": 815.0, "cpu_s": 561.8, "peak_rss_gb": 6.69, "outcome": "fail(rc=3)", "artifact": "experiments/E007_prefill_skip", "notes": ""}
 {"ts": "2026-10-25T10:36:51Z", "cycle": "2", "step": "E007_prefill_skip:b", "kind": "exp", "wall_s": 28.2, "cpu_s": 22.1, "peak_rss_gb": 5.24, "outcome": "fail(rc=1)", "artifact": "experiments/E007_prefill_skip", "notes": ""}
 {"ts": "2026-10-25T10:44:26Z", "cycle": "2", "step": "E007_prefill_skip:b", "kind": "exp", "wall_s": 221.4, "cpu_s": 135.8, "peak_rss_gb": 6.65, "outcome": "ok", "artifact": "experiments/E007_prefill_skip", "notes": ""}
+{"ts": "2026-10-25T10:58:03Z", "cycle": "2", "step": "E006b_route_controls:it", "kind": "exp", "wall_s": 757.3, "cpu_s": 556.4, "peak_rss_gb": 6.2, "outcome": "ok", "artifact": "experiments/E006b_route_controls", "notes": ""}

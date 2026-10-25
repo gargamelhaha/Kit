@@ -1,19 +1,36 @@
 {
-  "cycle": 2,
-  "updated": "2026-10-25",
-  "repo_note": "Cycle 1 lived in github.com/rapidsainov-cmyk/Axg (read-only for this session); cycle 2 continues with full history in gargamelhaha/Kit branch hoplite/ambrakia-a2a0753c.",
-  "environment": {"host": "Modal 2 vCPU / 8 GiB, no GPU", "venv": ".venv (torch 2.14.1+cpu, transformers 5.20.2)",
-                  "weights": "gemma-4-E2B-it rev 3e22461f sha256 verified (logs/download_c2.log)",
-                  "external_llm_api": "tools/llm_pool.py; cap 6 parallel (PL-7); creds in ~/.config/lab/api.env (never committed)"},
-  "running": ["E006_kv_route (H-008/H-009)", "deep_read --priority (25 sources, 2 models, quote verification)"],
-  "open_tasks": [
-    "E006 analysis + independent API audit (different families) -> update H-008/H-009, KB",
-    "E004b identity / answer-suppression controls (AUDIT-001)",
-    "H-006 PLE vs residual patching",
-    "H-007 untrained shared k/v remnants: compare with base checkpoint",
-    "Engineering: prefill cost saving from KV-sharing (layers 15-34 only needed at last position) - measure vs literature (Gemma 3n claims)",
-    "Literature: citation chasing LIT-01, LIT-05 saturation; cross-layer KV sharing / PLE novelty check",
-    "Gemma 2 2B control blocked: no HF token"
-  ],
-  "next_step": "Analyze E006 (analyze.py), audit via API, curate KB."
+ "cycle": 2,
+ "updated": "2026-10-25T11:05Z",
+ "repo_note": "Cycle 1 lived in github.com/rapidsainov-cmyk/Axg (read-only for this session); cycle 2 continues with full history in gargamelhaha/Kit branch hoplite/ambrakia-a2a0753c.",
+ "environment": {
+  "host": "Modal 2 vCPU / 8 GiB, no GPU",
+  "venv": ".venv (torch 2.14.1+cpu, transformers 5.20.2)",
+  "weights": "gemma-4-E2B-it rev 3e22461f sha256 verified (logs/download_c2.log)",
+  "external_llm_api": "tools/llm_pool.py; cap 6 parallel (PL-7); creds in ~/.config/lab/api.env (never committed)"
+ },
+ "running": [],
+ "open_tasks": [
+  "E008 (highest VOI): distance sweep across the 512-token sliding window + in-context associations -> H-011, H-013 (competing predictions). Run a pre-run dual-family audit of the PREREG first (cycle-3 process experiment).",
+  "E006c: backup route under block-25 mean ablation (H-015); head-level mean ablation (H-010 -> KB)",
+  "H-014: causal-effect spectroscopy re-analysis of E004/E006 matrices (no model run)",
+  "Audit E006b + E007 externally (AUDIT-003)",
+  "E004b identity / answer-suppression controls (AUDIT-001)",
+  "H-006 PLE vs residual patching; H-007 untrained shared k/v remnants (base checkpoint)",
+  "Base checkpoint replication of K-0006/K-0007 (transfer it -> base)",
+  "Literature: deep-read LIT-06 top candidates (LIT06-005 systematic cross-layer KV sharing, LIT06-022/023 Mamba factual flow) ; citation chasing LIT-01/LIT-05",
+  "Internal error-detector study needs a prompt set with natural errors",
+  "Gemma 2 2B control blocked: no HF token"
+ ],
+ "next_step": "Write E008 PREREG, run AUDIT of the PREREG with both API families, then run E008.",
+ "completed_this_cycle": [
+  "E006",
+  "E006b",
+  "E007",
+  "E007b",
+  "AUDIT-002",
+  "LIT-06",
+  "deep_read x25",
+  "HYPGEN-01",
+  "K-0006..K-0008"
+ ]
 }

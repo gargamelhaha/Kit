@@ -6,3 +6,5 @@
 [2026-10-25T10:36:51Z] end E007_prefill_skip variant=b exit=0
 [2026-10-25T10:40:44Z] start E007_prefill_skip variant=b
 [2026-10-25T10:44:26Z] end E007_prefill_skip variant=b exit=0
+[2026-10-25T10:45:26Z] start E006b_route_controls variant=it
+[2026-10-25T10:58:03Z] end E006b_route_controls variant=it exit=0

@@ -4,7 +4,7 @@
 provenance-tracked findings. (2) Improving the research process itself (see `.claude/skills/meta-research/SKILL.md`).
 (3) Survey of new architectures for autonomous / efficient learning (LIT-05; small-scale CPU tests planned).
 
-## Current configuration (cycle 1, 2026-10-25)
+## Current configuration (cycle 2, 2026-10-25)
 - Host: Modal sandbox, 2 vCPU (AVX-512F, no AVX512_BF16), 8 GiB RAM box (cannot be raised), no GPU, network available.
 - Python 3.12, torch 2.14.1+cpu, transformers 5.20.2 (`research/logs/install_*.log`).
 - Weights: `.models/` (gitignored) — revisions and sha256 in `models/MODELS.md`. Gemma 2 2B control model **not available**
@@ -20,8 +20,12 @@ cd research/experiments && python run_many.py E002_logit_lens:it E004_factual_pa
 python analyze_cycle1.py                                        # preregistered criteria → <exp>/analysis.json
 python ../tools/kb.py validate && python ../tools/kb.py render  # knowledge-base integrity + regenerate SCIENTIFIC_KNOWLEDGE.md
 ```
+External LLM API (two model families) through `tools/llm_pool.py` (cap 6 parallel, streaming, cache, `logs/llm_calls.jsonl`;
+credentials only in `~/.config/lab/api.env`): `tools/deep_read.py` (quote-verified full-text extraction), `tools/arxiv_scout.py`
+(logged search + dual screening), `tools/audit_e006.py` (independent audit template), `tools/hypgen_01.py`.
+
 Library: `experiments/lib/gemma_loader.py` (text-only loader, PLE table memory-mapped, `use_fp32_compute`, `encode` adds BOS,
-in-process RSS guard), `experiments/lib/runner.py` (hookable forward: resid/attn/mlp/PLE/head hooks, `last_only_from=15`).
+in-process RSS guard), `experiments/lib/runner.py` (hookable forward: resid/attn/mlp/PLE/head/kv_store hooks, `last_only_from=15`, `allow_long` for T > 512 — exact, K-0008).
 
 ## Layout
 | path | content |

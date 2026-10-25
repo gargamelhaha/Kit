@@ -116,3 +116,74 @@ checks; REFUTED / INCONCLUSIVE as named.
 **Last verified.** 2026-10-25  
 **History.** 2026-10-25: created from E002 after AUDIT-001
 
+## K-0006 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
+
+**Claim.** In Gemma 4 E2B-IT factual recall on short prompts, the subject information that determines the answer reaches the final position through the K/V stored by layer 13 (read by KV-shared layers 15-34), not through the K/V stored by layer 14: replacing the corrupt run's layer-13 stored K/V by the clean one recovers a median 0.986 of the logit difference (subject-cluster bootstrap 95% CI [0.947, 0.995]) vs 0.017 [0.011, 0.025] for layer 14 (28 held-out pairs); the effect is carried by the subject-span positions (0.980) and not by template positions (0.006).
+
+**Scope.** google/gemma-4-E2B-it; two relations (landmark->city 12 pairs, country->capital 16 pairs) with single-token answers; prompts 7-14 tokens (far below the 512-token sliding window, so this distinguishes the two stored K/V tensors, not sliding vs full attention); counterfactual patching with logit-difference recovery
+
+**Conditions.** fp32 compute, BOS, Runner(last_only_from=15) with kv_store hook replacing (key, value) tensors stored after layer 13/14 for all/selected positions; corrupt prompt = same template, different subject, equal length
+
+**Verification.** Preregistered held-out test (E006 PREREG.md) + subject-clustered bootstrap + independent dual-model audit
+
+- supports: `experiments/E006_kv_route/analysis.json` — preregistered P1-P3 pass on held-out pairs; NULL control max|r| 1.1e-6; R2-only (never used before) KV13_all 0.982 vs KV14_all 0.017
+- supports: `experiments/E004_factual_patching/analysis.json` — consistent precursor: last-subject resid patch recovery 0.595 at layer 13 vs 0.010 at layer 14
+- supports: `audits/AUDIT-002.md` — two non-Anthropic auditors: no implementation bug; conclusions bounded as here
+
+**Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/lib/runner.py`
+
+**Audit.** `audits/AUDIT-002.md`
+
+**Uncertainty / limits.** Two templates/relations only; short prompts; IT checkpoint only; R1 held-out pairs share subjects with in-sample pairs. Layer-14 K/V may matter for other tasks or beyond the sliding window (H-011).
+
+**Last verified.** 2026-10-25  
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008)
+
+## K-0007 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
+
+**Claim.** Among the 20 KV-shared layers of Gemma 4 E2B-IT, block-25 attention at the final position is the site where subject information enters the answer position in the tested factual-recall prompts, mainly via head 0: (i) sufficiency - patching only block 25's clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]) and is the largest of 20 single-layer attention patches in 28/28 held-out pairs; (ii) specificity - substituting the corrupt run's attention contribution leaves 0.227 of the logit difference at block 25 but >= 0.929 at every other KV-shared layer; (iii) head 0 of block 25 puts a median 0.88 of its final-query attention on the subject span (uniform baseline 0.17) and is the only head whose corruption matters (retained 0.37; other heads >= 0.98). It is NOT necessary in the ablation sense: replacing block 25's contribution by its mean over prompts retains 0.84 [0.815, 0.896], so the noising effect reflects conflicting (wrong-subject) content and a substantial backup route exists.
+
+**Scope.** as K-0006 (two relations, short prompts, IT checkpoint); head-level results from E006b (preregistered Q1, Q4 exploratory)
+
+**Conditions.** as K-0006; attention contribution = output of post_attention_layernorm at the final position
+
+**Verification.** Preregistered held-out tests E006 + E006b (specificity controls requested by AUDIT-002); independent dual-model audit of E006
+
+- supports: `experiments/E006_kv_route/analysis.json` — preregistered P4 (sufficiency, argmax 28/28) and P5 (noising retains <= 0.5) pass
+- supports: `experiments/E004_factual_patching/analysis.json` — final-position residual recovery 0.056 entering block 25 vs 0.846 entering block 26
+- supports: `experiments/E002_logit_lens/analysis.json` — logit-lens answer emergence median residual index 28 (after block 25), consistent
+- supports: `experiments/E006b_route_controls/analysis.json` — preregistered Q1 (head-0 subject attention), Q2 (layer specificity) pass; Q3 (mean ablation <= 0.6) FAILS -> necessity claim withdrawn
+- contradicts: `experiments/E006b_route_controls/analysis.json` — MEAN_ATTN25 retained 0.84: block-25 subject-specific content is not necessary for recall
+
+**Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/E006b_route_controls/PREREG.md`, `experiments/E006b_route_controls/run.py`, `experiments/E006b_route_controls/result_it.json`, `experiments/E006b_route_controls/analysis.json`
+
+**Audit.** `audits/AUDIT-002.md`
+
+**Uncertainty / limits.** Backup route under mean ablation unidentified (H-015). Single-head patching is non-additive through post-attention RMSNorm. Analogous to the attribute-extraction stage of Geva et al. 2023 (LIT02-065) but concentrated in one layer/head here; novelty vs prior Gemma 3n/4 analyses not established (LIT-06 abstract screening found no mechanistic study of shared-KV routing). E006b not yet externally audited.
+
+**Last verified.** 2026-10-25  
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3)
+
+## K-0008 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
+
+**Claim.** In the HF transformers 5.20.2 implementation (which runs all 35 decoder layers at every prompt position), computing Gemma 4 E2B-IT layers 15-34 only at the final position during a single-sequence prefill leaves the final-position logits unchanged within 3.1e-5 (identical top-1 and top-10) for T = 64-1024 tokens, including T = 1024 beyond the 512-token sliding window, and reduces wall time by 1.8x (T=64), 2.4x (256), 2.7x (512) and 2.6-3.3x (1024; depending on summary statistic) on a 2-vCPU CPU with fp32 compute. At T = 2048 the full computation exceeded a 6.8 GB process RSS guard while the reduced one completed (58 s, sampled peak RSS 6.34 GB).
+
+**Scope.** single sequence, batch 1, CPU (AVX-512F, no bf16 GEMM), fp32 compute with bf16 weights, final-position output only (first generated token); decode with KV cache, batching and GPU not measured; energy not measurable in this sandbox
+
+**Conditions.** Runner.forward(logits='last') vs Runner.forward(last_only_from=15, allow_long=True); 1 warm-up + 3 interleaved repeats; shared host (timing noise: FULL T=1024 runs 61-85 s)
+
+**Verification.** Preregistered E007 (PREREG.md); transformers source inspected (Gemma4TextModel loops all layers; logits_to_keep only slices lm_head)
+
+- supports: `experiments/E007_prefill_skip/analysis.json` — preregistered P1 exactness, P2 >=2x for T>=256, P4 trend pass; T=2048 FULL missing (RSS guard)
+- supports: `experiments/E007_prefill_skip/result_b_it.json` — exploratory: SKIP at T=2048 completes; FULL vs SKIP peak RSS growth at T=1024 0.35 vs 0.12 GB (allocator-order confounded)
+- supports: `experiments/E001_arch/result.json` — K-0001/K-0002: non-final positions inert after layer 14
+
+**Artifacts.** `experiments/E007_prefill_skip/PREREG.md`, `experiments/E007_prefill_skip/run.py`, `experiments/E007_prefill_skip/result_it.json`, `experiments/E007_prefill_skip/analysis.json`, `experiments/E007_prefill_skip/run_b.py`, `experiments/E007_prefill_skip/result_b_it.json`
+
+**Audit.** none yet
+
+**Uncertainty / limits.** Preregistered cost model was wrong in one respect (it ignored that SKIP also drops the TxT attention of layers 15-34), so the 3.30x 'bound' (P3) is not a valid test; timing variance is large on the shared host; the saving is an implementation property already exploited by Google's on-device runtimes per Gemma 3n materials (not verified against a primary source).
+
+**Last verified.** 2026-10-25  
+**History.** 2026-10-25: created from E007/E007b
+

@@ -144,3 +144,13 @@ Selection rule: source is `abstract_only` in the registry, and a pending or plan
 Runners-up (also abstract-only): LIT01-040 (are single-token SAE features causally necessary), LIT03-089 (SAE interventions unreliable), LIT02-008 / LIT01-090 (AtP* and attribution patching vs ACDC), LIT02-013 (when attribution patching lies), LIT05-080 (Muon), LIT05-022 (Gated DeltaNet), LIT05-112 (Mind the Gap), LIT04-016 (reward hacking in research agents).
 
 Already `partial` and still needing full reading: LIT01-046, LIT01-048, LIT01-049, LIT01-032, LIT02-005, LIT02-022, LIT02-038/-039, LIT05-081, LIT05-150, LIT05-152 (LIT-03 §8 item 4 also asks for AxBench, SAE sanity checks, random-init, SAEBench and patching best practices in full).
+
+## Cycle 2 update (2026-10-25)
+- **Reading debt (15 priority + 8 runners-up + LIT02-018 + LIT01-090):** all 25 machine-read in full text (`read_depth =
+  full_text_machine`): dual-model extraction (DeepSeek 4.1 Flash, MiniMax M3.1 Flash), every quote machine-verified against the
+  PDF text (pooled 96.4 % / 95.1 %). Outputs `evidence/deep_read/<id>.json`. This is *machine* reading: claims used for a KB
+  entry still need the coordinator to check the quoted passage. Texts > 110k chars were truncated (flagged per file).
+- **LIT-06** (cross-layer KV sharing, PLE, prefill savings, interpretability of MoE/SSM/MLA/sparse/TTT): 20 logged arXiv API
+  queries (`logs/search_LIT-06.jsonl`), 125 new candidates, dual screening κ = 0.733, 40 included by both → `LIT06-001…040`
+  (abstract_only). Not saturated (single database; no citation chasing). No abstract described a mechanistic study of
+  information routing through shared K/V in Gemma 3n/4, which bounds — but does not establish — the novelty of K-0006/K-0007.

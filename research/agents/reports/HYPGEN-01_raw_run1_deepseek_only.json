@@ -1,0 +1,113 @@
+{
+ "deepseek": [
+  {
+   "area": "mechanisms/circuits (attention heads, MLP, residual, KV-sharing)",
+   "statement": "In Gemma 4 E2B, the double-wide MLP in KV-shared layers 25-30 is the main per-position answer-formatting/readout circuit: patching its final-position mlp_out from a correct factual prompt to an incorrect one flips the top-1 answer more than patching equal-width MLP outputs in non-shared layers 0-14 or KV-shared layers 15-20.",
+   "why_plausible": "K-0005 places answer emergence at residual indices 26-34; K-0002 shows layers >=15 can be computed only at the final position; H-001 says layers 15-34 act per-position; H-009 identifies block-25 attention as the subject-to-final transfer. This leaves late per-position MLP as a plausible readout/formatting stage.",
+   "competing_explanations": [
+    "Attention readout at block 25 alone explains the flip, with MLP only amplifying.",
+    "The effect is distributed across all late layers rather than localized to layers 25-30.",
+    "PLE token-identity injection, not MLP, carries the answer at the final position (H-006)."
+   ],
+   "discriminating_experiment": "Use 30 factual prompts answered correctly. For each layer 15-34 and a control set 0-14, patch final-position mlp_out from a donor prompt with a different correct answer into the recipient, and measure top-1 flip and logit margin change. Compare to patching attn_out and ple_out at the same layers. Use last_only_from=15 for layers >=15.",
+   "numeric_prediction": "Supports if patching mlp_out at layers 25-30 flips top-1 in >50% of prompts and changes the target-answer logit by >2.0, while layers 15-20 and 0-14 flip <10%; refutes if flips are uniform across layers or <20% at layers 25-30.",
+   "cost_hours_cpu": 6,
+   "value": 4,
+   "novelty_risk": "Late-layer MLP readout is consistent with logit-lens dynamics in other LMs and may already be shown by standard MLP patching; the KV-shared double-wide localization is the novel part."
+  },
+  {
+   "area": "knowledge storage & retrieval (facts vs context vs association)",
+   "statement": "Parametric factual recall and in-context associative recall in E2B share the layer-13 K/V -> block-25 extraction route, but parametric facts additionally require late PLE token-identity injection, whereas in-context associations can be retrieved without it.",
+   "why_plausible": "H-008 shows subject info reaches the final position via layer-13 sliding K/V; H-009 shows block-25 attention is the transfer site; H-006 proposes PLE lets late layers re-read token identity. K-0005 shows late answer emergence, consistent with a late PLE-dependent readout for parametric facts.",
+   "competing_explanations": [
+    "In-context associations also require PLE, so PLE is a general late readout mechanism.",
+    "Parametric facts are stored in MLP weights and do not depend on layer-13 K/V; the KV route is only for context.",
+    "Both fact types use layer-14 full K/V rather than layer-13 sliding K/V."
+   ],
+   "discriminating_experiment": "Build 20 parametric fact prompts and 20 in-context association prompts with matched answer tokens. For each, replace layer-13 K/V (and separately layer-14 K/V) for layers 15-34 with donor K/V, and ablate PLE injection at layers 15-34. Measure answer accuracy and logit margin.",
+   "numeric_prediction": "Supports if layer-13 K/V replacement drops both prompt types by >0.5 accuracy, PLE ablation drops parametric accuracy by >0.5 but in-context by <0.1, and layer-14 replacement drops <0.2 for short prompts; refutes if PLE ablation affects both equally or layer-14 replacement dominates.",
+   "cost_hours_cpu": 8,
+   "value": 4,
+   "novelty_risk": "PLE role is already H-006; in-context vs parametric retrieval differences are known in other LMs, but the shared layer-13 route is architecture-specific."
+  },
+  {
+   "area": "generalization vs memorization / transfer",
+   "statement": "E2B generalizes factual recall across paraphrased templates through the same layer-13 K/V subject representation, but fails to transfer to novel entity-relation combinations because block-25 attention binds only relation-specific subject directions seen during pretraining.",
+   "why_plausible": "H-008 and H-009 give a concrete subject-to-final route; K-0005 shows late answer emergence; H-012 suggests multi-token subject information is spread in layer-13 K/V. This predicts template invariance if the subject K/V direction is stable, but relation-specific failure if the binding is memorized.",
+   "competing_explanations": [
+    "Paraphrase generalization is mediated by PLE token identity rather than layer-13 K/V.",
+    "Novel relation combinations succeed because block-25 attention implements a general relation-binding algorithm.",
+    "Memorization is localized in MLP weights, so K/V replacement should not affect paraphrase transfer."
+   ],
+   "discriminating_experiment": "Create 15 known facts in canonical and 3 paraphrases each, plus 15 novel relation-entity combinations using the same relation words. Measure accuracy, then replace layer-13 K/V from canonical to paraphrase and from known to novel prompts; also measure block-25 attention to subject tokens.",
+   "numeric_prediction": "Supports if paraphrase accuracy is >80% and layer-13 K/V replacement preserves >70% of paraphrase answers, while novel-combination accuracy is <20% and its layer-13 K/V causal effect is <0.2; refutes if novel-combination accuracy is >50% or paraphrase depends on PLE rather than K/V.",
+   "cost_hours_cpu": 10,
+   "value": 4,
+   "novelty_risk": "Paraphrase robustness and relation-specific recall are studied in other LMs; the KV-sharing route and block-25 binding are the novel claims."
+  },
+  {
+   "area": "computational efficiency without quality loss (prefill, decode, KV cache, precision)",
+   "statement": "The exact last_only_from=15 optimization extends to batched KV-cache decode: for prompts <=512 tokens, computing layers 15-34 only for the newly decoded final query position at each step yields identical next-token logits to full computation, because non-final positions after layer 14 are causally inert.",
+   "why_plausible": "K-0001 shows non-final positions entering layers 15/16/25/34 are causally inert for final-position logits; K-0002 shows last_only_from=15 reproduces full-sequence final-position logits and cuts CPU time; H-001 states layers 15-34 act per-position. The untested part is batched KV-cache decode.",
+   "competing_explanations": [
+    "KV-cache decode changes the effective attention mask or position handling, so the optimization is not exact under generation.",
+    "Batched sequences interact through padding or cache layout, causing logit drift even if single-sequence is exact.",
+    "The optimization is exact only for prefill, not for autoregressive decode."
+   ],
+   "discriminating_experiment": "Take 20 prompts of 12-30 tokens. Run full batched generation for 8 new tokens and a modified runner that computes layers 15-34 only for the current final position per decode step, using kv_store for layers 13/14. Compare next-token logits and top-1 at every step.",
+   "numeric_prediction": "Supports if max |Δlogit| <1e-4 and top-1 agreement is 100% across all steps and prompts; refutes if max |Δlogit| >0.01 or top-1 agreement <95% on any step.",
+   "cost_hours_cpu": 5,
+   "value": 4,
+   "novelty_risk": "K-0002 already shows single-sequence final-position exactness; batched KV-cache decode is the untested extension, but similar per-position optimizations may exist in inference engines."
+  },
+  {
+   "area": "knowledge editing & interference",
+   "statement": "Editing a factual association by replacing layer-13 K/V at the subject token changes the answer with high specificity, but produces more interference on same-relation facts than editing late final-position MLP/residual states, because layer-13 K/V is shared by all later layers and relation templates.",
+   "why_plausible": "H-008 identifies layer-13 K/V as the subject-information route; H-009 identifies block-25 attention as the transfer site; H-002's ROME two-site pattern suggests mid-layer subject and late final-token sites. KV sharing means a layer-13 edit is reused by layers 15-34, predicting broad but relation-coupled effects.",
+   "competing_explanations": [
+    "Late MLP/residual edits cause more interference because they affect answer formatting globally.",
+    "Layer-13 K/V edits are highly specific because they only affect the edited subject token, not relation templates.",
+    "Interference is dominated by PLE token-identity injection rather than K/V or MLP."
+   ],
+   "discriminating_experiment": "Select 10 facts in one relation (e.g., country->capital). Edit fact A to a new answer by replacing layer-13 K/V at the subject token with donor K/V, and separately by patching final-position mlp_out/resid_post at layers 25-30. Measure edit success on A and interference on the other 9 same-relation facts plus 10 unrelated facts.",
+   "numeric_prediction": "Supports if layer-13 K/V edit success is >0.8 and same-relation interference is >0.3, while late MLP/residual edit success is >0.6 and same-relation interference is <0.1; refutes if both edit types show similar interference or layer-13 edits are <0.5 successful.",
+   "cost_hours_cpu": 8,
+   "value": 5,
+   "novelty_risk": "ROME-style editing and interference are well studied; the KV-sharing-specific prediction that layer-13 edits are reused by 20 layers is novel."
+  },
+  {
+   "area": "confidence / calibration / error detection from internals",
+   "statement": "For factual prompts in E2B, the layer-28 logit-lens margin and block-25 attention entropy are better error detectors than final softmax confidence, because answer emergence occurs at residual indices 26-34 and subject-to-final transfer is concentrated in block 25.",
+   "why_plausible": "K-0005 shows the correct answer first becomes top-1 at residual index 26-34 (median 28); H-009 shows block-25 attention is the subject-to-final transfer site; H-010 suggests head 25.0 is dominant. These internal signals should separate correct from incorrect recalls before final calibration.",
+   "competing_explanations": [
+    "Final softmax confidence already captures all available uncertainty, so internal margins add nothing.",
+    "Errors are caused by PLE token-identity failures, so PLE gate norms rather than attention entropy predict errors.",
+    "Attention entropy is uninformative because block-25 attention is diffuse even on correct prompts."
+   ],
+   "discriminating_experiment": "Collect 100 factual prompts with known answers, including 30 likely errors. Compute final softmax confidence, layer-28 logit-lens margin, block-25 attention entropy, and PLE gate norm at the final position. Evaluate AUROC for predicting correctness and calibration error.",
+   "numeric_prediction": "Supports if layer-28 margin AUROC >0.75 and block-25 entropy AUROC >0.65, while final confidence AUROC <0.65; refutes if final confidence is the best detector (AUROC >0.75) or internal signals are <=0.6.",
+   "cost_hours_cpu": 6,
+   "value": 4,
+   "novelty_risk": "Logit-lens and attention-entropy confidence are known in other LMs; the specific layer-28/block-25 combination in a KV-shared model is novel."
+  },
+  {
+   "area": "radically new principle for discovering regularities beyond hypothesis enumeration",
+   "statement": "The effective final-position computation of E2B is low-dimensional in the layer-13/14 K/V subspace: unsupervised PCA/ridge on layer-13/14 K/V across diverse prompts recovers axes that predict answer category, correctness, and template without enumerating circuits, because all cross-position information reaching the final position is carried by those K/V tensors.",
+   "why_plausible": "K-0001 and H-001 state all cross-position information reaching the final position is carried by layer-13/14 K/V; K-0002 shows final-position computation can be isolated; H-008 and H-009 identify layer-13 K/V and block-25 attention as the main route. This makes the K/V subspace a natural low-dimensional causal state for discovery.",
+   "competing_explanations": [
+    "The K/V subspace is high-dimensional and no low-dimensional axes predict behavior better than random projections.",
+    "Final-position residual/PLE, not K/V, carries most predictable variance.",
+    "Answer category and correctness are encoded in attention patterns rather than K/V content."
+   ],
+   "discriminating_experiment": "Collect 200 diverse prompts (facts, paraphrases, in-context associations, errors). Extract layer-13 and layer-14 K/V at the subject and final positions. Fit PCA and ridge regression (CPU, no SAE) to predict answer token category, correctness, and template from 1-50 components. Compare to random projections and to final residual/PLE features.",
+   "numeric_prediction": "Supports if 20 PCA components of layer-13/14 K/V predict answer category with >70% accuracy and correctness with AUROC >0.7, versus <40% and <0.6 for random projections; refutes if K/V features do not beat random projections or final residual/PLE by a meaningful margin.",
+   "cost_hours_cpu": 12,
+   "value": 5,
+   "novelty_risk": "Linear probing and PCA of K/V are standard; the principle that the KV-shared subspace is the sufficient low-dimensional state for discovery is novel but may overlap with existing representation-probing work."
+  }
+ ],
+ "minimax": {
+  "raw": "",
+  "error": null
+ }
+}

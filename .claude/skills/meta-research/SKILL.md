@@ -48,6 +48,22 @@ Per subagent task: unique verified contributions, errors caught by audit, cost, 
 Same-model subagents are logical roles, not independent judges; for audits of important claims use a different model
 family and give it method + data, not the desired conclusion. Stop agents that repeat work or miss acceptance criteria.
 
+## 6b. External LLM API as a worker pool (cycle 2)
+- Use `research/tools/llm_pool.py` only: cross-process cap of 6 in-flight calls (server limit, PL-7), SSE streaming (300 s
+  gateway cut, PL-9), response cache, call log `logs/llm_calls.jsonl`. Credentials stay in `~/.config/lab/api.env`.
+- Budget hidden reasoning: long-input tasks need `max_tokens` ≥ 32k (extraction) / 60k + `reasoning_effort: medium` (audits).
+- Two families are available (DeepSeek, MiniMax) — use both for audits and screening and report agreement (κ); they are
+  different from the coordinator's family, so they count as independent *reviewers*, not as independent *evidence*.
+- Never let API models assert literature facts from memory: give them the source text and machine-verify every quote
+  (`tools/deep_read.py`). Abstract screening (`tools/arxiv_scout.py`) is triage only.
+- Agent-utility per task is computed from `llm_calls.jsonl` (calls, tokens, latency, error rate) plus verified-quote rate /
+  issues accepted after audit.
+
+## 3b. Root-cause heuristics learned
+- Same failure across independent agents/runs → suspect the shared input or pipeline (PL-8).
+- Failure at a suspiciously round number (300 s, exactly max_tokens) → a limit somewhere, find whose (PL-9).
+- A status line that never shows failure is itself a suspect (PL-10): cross-check with an independent log.
+
 ## 7. Process-change acceptance
 Accept a change only with (a) identical-workload before/after numbers, (b) output equivalence within a stated tolerance
 (or a deliberate correctness fix), (c) a PROCESS_LEDGER entry.

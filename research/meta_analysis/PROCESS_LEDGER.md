@@ -73,3 +73,34 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Second root cause found on first real task: both models spent the entire `max_tokens=8000` on hidden reasoning for a
   21k-token paper (completion_tokens = reasoning_tokens = 8000, empty answer). Fix: 32k budget for extraction tasks.
 - Status: accepted. Ceiling for the lab = 6 concurrent calls shared by all processes using the key.
+- PL-7b (same cycle): the first fix used a per-process semaphore, but three tools ran at once → up to 18 in flight → 78 × HTTP 429
+  in 10 min. Root cause: the cap is per key, the limiter per process. Fix: cross-process slots (`flock` on 6 lock files).
+  Verified: 3 processes × 20 threads → max 6 concurrent slots (test in session log); no 429 since.
+
+## PL-8 Deep-read quote verification failed for 5/25 papers for *both* extractors
+- Symptom: verified-quote fraction 0.05–0.37 for LIT02-065, LIT02-047, LIT02-128, LIT05-046, LIT01-040 for both models; others 0.86–1.0.
+- Key regularity: failure was per *paper*, not per model → suspect the shared input, not the agents.
+- Evidence: unverified quotes were correct sentences; in the `pdftotext -layout` text their words were interleaved with the
+  neighbouring column ("we analyze two auto-regressive decoder**normalization, aℓ,j ∈** only gpt lms…").
+- Root cause: layout mode preserves 2-column geometry line by line. Fix: reading-order extraction (no `-layout`) + verification
+  against both texts; no new API calls (`deep_read.py --reverify`). Effect: all 25 papers ≥ 0.76, pooled verified 0.964 (DeepSeek,
+  776 quotes) / 0.951 (MiniMax, 892 quotes). Status: accepted.
+- General rule: when independent agents fail on the same item, inspect the shared pipeline first.
+
+## PL-9 Long API generations failed at exactly ~300 s
+- Symptom: MiniMax hypgen/audit calls errored at 300.3–301 s even after raising the client timeout to 1800 s; a DeepSeek audit
+  returned an empty answer with completion_tokens = reasoning_tokens = 32 000.
+- Root causes: (a) server-side nginx gateway timeout of 300 s for non-streaming responses (HTTP 504 page); (b) hidden reasoning
+  consumes the whole `max_tokens` budget on 25k-token audit prompts.
+- Fixes: SSE streaming in `llm_pool` (connection stays alive; verified on both models); audits use 60k tokens + `reasoning_effort: medium`.
+- Status: accepted (streaming); budget rule added to the skill.
+
+## PL-10 Queue logged failed runs as exit=0
+- Symptom: E007 hit the RSS guard (rc=3 in process_metrics.jsonl) but `queue_cycle2.log` said `exit=0`.
+- Root cause: `echo "[$(date …)] … exit=$?"` — the command substitution runs first and resets `$?`.
+- Fix: `rc=$?` captured right after the run. Status: accepted (cycle-1 queue logs may contain the same error; process_metrics.jsonl is authoritative).
+
+## PL-11 RSS guard converted a would-be sandbox reset into a clean failure
+- E007 FULL at T=2048 grew past 6.8 GB; the in-process guard (PL-6) exited with rc=3, logged, and the queue continued. No reset
+  in cycle 2 (vs 4 in cycle 1) with up to 3 concurrent API tools + 1 model process. Evidence that the guard, not luck, prevented
+  the reset: the guard log line at 10:32:57Z with RSS 6.81 GB.
