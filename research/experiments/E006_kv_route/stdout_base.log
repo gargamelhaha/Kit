@@ -1,0 +1,15 @@
+correct R1 32 / 32 R2 27 / 30 plan 40
+R1 in_sample Tokyo Tower -> Burj Khalifa {'KV13_all': 0.94, 'KV14_all': 0.116, 'ATTN_25': 0.695, 'NULL': 0.0} 252 s
+R1 in_sample Prado Museum -> Atomium {'KV13_all': 0.986, 'KV14_all': 0.015, 'ATTN_25': 0.832, 'NULL': 0.0} 280 s
+R1 in_sample CN Tower -> Burj Khalifa {'KV13_all': 0.931, 'KV14_all': 0.019, 'ATTN_25': 0.635, 'NULL': 0.0} 301 s
+R1 in_sample CN Tower -> Tokyo Tower {'KV13_all': 0.924, 'KV14_all': 0.029, 'ATTN_25': 0.677, 'NULL': -0.0} 331 s
+R1 in_sample Reichstag building -> Sydney Opera House {'KV13_all': 0.901, 'KV14_all': 0.03, 'ATTN_25': 0.595, 'NULL': -0.0} 359 s
+R1 in_sample Eiffel Tower -> Charles Bridge {'KV13_all': 0.969, 'KV14_all': 0.022, 'ATTN_25': 0.546, 'NULL': -0.0} 380 s
+R1 in_sample Brandenburg Gate -> Atomium {'KV13_all': 1.014, 'KV14_all': 0.019, 'ATTN_25': 0.887, 'NULL': -0.0} 411 s
+R1 in_sample Hollywood Sign -> Tokyo Tower {'KV13_all': 0.856, 'KV14_all': 0.043, 'ATTN_25': 0.488, 'NULL': -0.0} 450 s
+R1 in_sample Tower of London -> Sydney Opera House {'KV13_all': 0.815, 'KV14_all': 0.046, 'ATTN_25': 0.538, 'NULL': -0.0} 479 s
+R1 in_sample Blue Mosque -> CN Tower {'KV13_all': 0.996, 'KV14_all': 0.006, 'ATTN_25': 0.717, 'NULL': -0.0} 507 s
+R1 in_sample Tokyo Tower -> Forbidden City {'KV13_all': 0.972, 'KV14_all': 0.046, 'ATTN_25': 0.766, 'NULL': 0.0} 535 s
+R1 in_sample Taj Mahal -> Burj Khalifa {'KV13_all': 0.981, 'KV14_all': 0.011, 'ATTN_25': 0.619, 'NULL': 0.0} 559 s
+R1 held_out Space Needle -> Big Ben {'KV13_all': 0.903, 'KV14_all': 0.025, 'ATTN_25': 0.502, 'NULL': -0.0} 581 s
+R1 held_out Tower of London -> Sagrada Familia {'KV13_all': 0.921, 'KV14_all': 0.018, 'ATTN_25': 0.522, 'NULL': 0.0} 610 s

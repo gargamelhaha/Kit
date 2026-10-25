@@ -1,0 +1,291 @@
+{
+ "prompt_chars": 54514,
+ "experiments": [
+  "E006b_route_controls",
+  "E007_prefill_skip"
+ ],
+ "claims": [
+  "K-0007",
+  "K-0008"
+ ],
+ "deepseek": {
+  "implementation_bugs": [
+   {
+    "location": "E006b_route_controls/run.py: capture() and run_specs()",
+    "problem": "Attention-implementation mismatch: clean/corrupt baselines and corrupt/mean vectors are captured with eager attention (probs=True forces attn='eager'), but all patched runs use the default SDPA. The retained ratios therefore mix eager and SDPA computations.",
+    "severity": "major",
+    "evidence": "capture() calls R.forward(..., attn='eager' if probs else 'sdpa'); run_specs() calls R.forward(...) without an attn argument, so it uses the default SDPA. la/lb are taken from eager logits, while patched logits are SDPA."
+   },
+   {
+    "location": "E006b_route_controls/run.py: Dp = [p for p in range(T) if a['ids'][p] != b['ids'][p]]",
+    "problem": "Dp is the set of token positions where clean and corrupt prompts differ, not necessarily the full subject span. If the two subjects share any tokens, those shared subject tokens are excluded from MASS25_h and from the uniform baseline, contradicting the claim's 'subject span' wording.",
+    "severity": "major",
+    "evidence": "PREREG.md defines MASS25_h on 'subject positions D'; K-0007 says 'subject span'. The code uses differing positions only. The uniform baseline is len(Dp)/T, so shared subject tokens are omitted."
+   },
+   {
+    "location": "E006b_route_controls/run.py: means = {rel: torch.stack([caps[a['subj']]['attn'][25] for r, (a, b) in plan if r == rel]).mean(0) ...}",
+    "problem": "The mean ablation is not norm-matched and includes the current prompt in the mean (leave-one-in). Averaging post-RMSNorm attention vectors reduces their norm, so MEAN_ATTN25 is a weaker perturbation than replacing with a single clean/corrupt vector. The retained 0.84 therefore does not cleanly test necessity.",
+    "severity": "major",
+    "evidence": "PREREG Q3 says 'removing subject-specific content without changing typical statistics'. The mean of normalized vectors changes the norm, and the current prompt is included in the mean. The analysis reports Q3=false (0.8404 > 0.6)."
+   },
+   {
+    "location": "E007_prefill_skip/result_b_it.json and analysis.json",
+    "problem": "The claim that the T=2048 FULL arm exceeded the 6.8 GB RSS guard is not supported by the provided raw result_b_it.json, which contains only the T=2048 SKIP success. The analysis note says 'see result_b_it.json', but the FULL failure record is absent.",
+    "severity": "minor",
+    "evidence": "result_b_it.json rows: T=256 FULL, T=256 SKIP, T=1024 FULL, T=1024 SKIP, T=2048 SKIP. No T=2048 FULL row or failure log is present."
+   }
+  ],
+  "prereg_deviations": [
+   "E007 input text path deviates from preregistration: PREREG.md specifies research/LITERATURE_MAP.md + research/meta_analysis/methods_table.md, but run.py reads LITERATURE_MAP.md + meta_analysis/methods_table.md relative to the repo root.",
+   "E007 T=2048 FULL arm is missing, so preregistered P1 exactness was not evaluated at T=2048 as specified in the T grid {64,256,512,1024,2048}.",
+   "E006b copied E006's item/pair selection code rather than importing it; the prereg says 'same selection code', and identity cannot be verified from the provided files.",
+   "E006b Q3 was a preregistered prediction that mean ablation would retain <=0.6; the observed median was 0.8404, so Q3 failed. The claim interprets this failed prediction post hoc as evidence that block 25 is not necessary."
+  ],
+  "statistical_issues": [
+   "E006b bootstrap treats the 28 pairs as independent, but the same subject can appear in multiple pairs (choose_pairs only enforces unique subject-pairs, not unique subjects). CIs should be clustered by subject and likely by relation.",
+   "E006b Q1 compares median MASS25_0 to 3x the median uniform baseline, rather than a paired per-pair comparison. The prereg wording '>= 3x the uniform baseline |D|/T' is better tested per pair or with a paired statistic.",
+   "E006b pools R1 and R2 without per-relation breakdown. The effect could be driven by one relation; the claim's scope mentions two relations but does not demonstrate consistency across them.",
+   "E006b mean ablation is confounded by norm reduction and leave-one-in averaging; retained 0.84 may reflect a weak intervention rather than a genuine backup route.",
+   "E007 timing variance is large (e.g., T=1024 FULL times 78.915, 60.987, 85.033 s). The median speedup 3.296 is very close to the invalid 3.30 bound; more repeats or CIs would strengthen the timing claim.",
+   "E007 P3 is reported as true, but the analysis correctly notes the preregistered cost model was invalid because SKIP also drops T x T attention in layers 15-34. P3 should not be interpreted as validating the cost model."
+  ],
+  "alternative_explanations": [
+   {
+    "explanation": "The corrupt attention vector may disrupt recall via distribution shift or norm/direction mismatch rather than subject-specific conflict.",
+    "test_to_rule_out": "Patch a norm-matched random clean attention vector from a different subject, or compare corrupt vectors with norm-matched clean vectors from the same relation."
+   },
+   {
+    "explanation": "The mean ablation retaining 0.84 may be because the mean vector is a weak perturbation (smaller norm, includes the target prompt), not because a substantial backup route exists.",
+    "test_to_rule_out": "Rerun MEAN_ATTN25 with a leave-one-out mean and rescale it to the average norm of individual clean attention vectors."
+   },
+   {
+    "explanation": "The block-25 effect may be specific to one relation (e.g., landmarks) and not generalize to the other relation or to other factual-recall prompts.",
+    "test_to_rule_out": "Report per-relation retained values and CIs, and add additional relations or prompt templates."
+   },
+   {
+    "explanation": "Head 0 may be the only head whose individual corruption matters, but other heads could matter in combination because single-head patching is non-additive through post-attention RMSNorm.",
+    "test_to_rule_out": "Run multi-head patching/ablation, including all non-zero heads together and leave-one-head-out combinations."
+   },
+   {
+    "explanation": "The exactness of SKIP at T=1024 may be within numerical tolerance but could fail on other inputs or at larger T.",
+    "test_to_rule_out": "Test exactness on multiple natural texts and random token sequences, and at T=2048 if memory permits."
+   }
+  ],
+  "claim_wording": [
+   {
+    "claim": "K-0007: 'block-25 attention at the final position is the site where subject information enters the answer position'",
+    "warranted": "partly",
+    "required_change": "Change to 'a major/sufficient site' or 'the largest single-layer site in this assay'. The mean ablation suggests block 25 is not necessary, so 'the site' overstates exclusivity."
+   },
+   {
+    "claim": "K-0007: 'a substantial backup route exists'",
+    "warranted": "no",
+    "required_change": "Change to 'mean ablation retained 0.84, consistent with a backup route, but the route is unidentified and the mean ablation may be a weak intervention.'"
+   },
+   {
+    "claim": "K-0007: '>= 0.929 at every other KV-shared layer'",
+    "warranted": "partly",
+    "required_change": "Specify that this is the median retained value per layer. Individual pairs can be lower (e.g., NOISE_ATTN_31 min = 0.8497)."
+   },
+   {
+    "claim": "K-0007: 'head 0 ... is the only head whose corruption matters'",
+    "warranted": "partly",
+    "required_change": "Change to 'the only head whose individual corruption substantially reduces retained logit difference in this single-head assay'; multi-head interactions were not tested."
+   },
+   {
+    "claim": "K-0007: 'head 0 ... puts a median 0.88 of its final-query attention on the subject span'",
+    "warranted": "partly",
+    "required_change": "Verify that Dp equals the full subject span. If Dp is only differing token positions, say 'differing subject-token positions' and recompute over the full subject span."
+   },
+   {
+    "claim": "K-0007 sufficiency: 'patching only block 25's clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]) and is the largest of 20 single-layer attention patches in 28/28 held-out pairs'",
+    "warranted": "partly",
+    "required_change": "This relies on E006, which is not included in the audited artifacts. Provide E006 code/results for independent audit, or explicitly mark the sufficiency claim as not audited here."
+   },
+   {
+    "claim": "K-0008: 'At T = 2048 the full computation exceeded a 6.8 GB process RSS guard while the reduced one completed'",
+    "warranted": "partly",
+    "required_change": "Include the T=2048 FULL failure log or cite the analysis note directly. The provided result_b_it.json only documents the T=2048 SKIP success."
+   },
+   {
+    "claim": "K-0008 overall timing and exactness claims for T=64-1024",
+    "warranted": "yes",
+    "required_change": "No substantive change needed, but report timing CIs or more repeats given the large variance."
+   }
+  ],
+  "recommended_followups": [
+   "Rerun E006b with a consistent attention implementation: either use eager for both capture and patched runs, or capture corrupt/mean vectors with SDPA and use SDPA for patched runs.",
+   "Rerun MEAN_ATTN25 with a leave-one-out mean and norm matching to the average clean attention-vector norm.",
+   "Recompute MASS25_h over the full subject span, not only differing token positions, and report both versions if they differ.",
+   "Report E006b results per relation and with subject-clustered bootstrap CIs.",
+   "Provide E006 code and raw results for independent audit of the sufficiency claim.",
+   "Test multi-head patching/ablation for block 25 to assess non-additivity and whether other heads matter in combination.",
+   "For E007, include the T=2048 FULL failure log, run more timing repeats with CIs, and test exactness at T=2048 if memory allows.",
+   "Verify the E007 input text path against the preregistered research/ paths and document any difference."
+  ],
+  "overall_verdict": "K-0008 is largely supported by E007, with minor evidence gaps (T=2048 FULL failure not in the raw excerpt, input-path deviation, large timing variance). K-0007 is only partly supported: E006b provides strong qualitative evidence that block 25 and head 0 are important in the tested prompts, but the core retained values are compromised by an eager-vs-SDPA mismatch, the mean-ablation necessity claim is confounded by non-norm-matched/leave-one-in averaging, and the sufficiency claim relies on unaudited E006. The claim wording overstates 'the site', 'only head', and 'substantial backup route'. Major revisions to E006b and claim wording are required before K-0007 can be considered fully warranted."
+ },
+ "deepseek_usage": {
+  "prompt_tokens": 20822,
+  "total_tokens": 59291,
+  "completion_tokens": 38469,
+  "prompt_tokens_details": {
+   "cached_tokens": 0,
+   "created_cache_tokens": 20736
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 35751
+  }
+ },
+ "minimax": {
+  "implementation_bugs": [
+   {
+    "location": "E006b_route_controls/run.py, construction of Dp",
+    "problem": "Dp is defined as positions where clean and corrupt token IDs differ, not as the actual subject-token span. If corresponding subjects share a token, that token is omitted; if tokenization boundaries differ, non-subject positions can be included. MASS25_h and MASS_L therefore do not necessarily measure attention on the subject span asserted by K-0007.",
+    "severity": "major",
+    "evidence": "The code uses `Dp = [p for p in range(T) if a[\"ids\"][p] != b[\"ids\"][p]]`, and the same Dp is used for all attention-mass calculations. The preregistration refers to subject positions D, while the claim refers to the subject span."
+   },
+   {
+    "location": "E006b_route_controls/analyze.py, Q1 test",
+    "problem": "The preregistered '3× the uniform baseline' criterion is operationalized as a comparison between separate medians rather than as the preregistration's natural paired within-prompt ratio mass_h/(len(D)/T). Because uniform mass varies across prompts, this is a different and potentially more permissive test.",
+    "severity": "minor",
+    "evidence": "Q1 uses `mass[\"MASS25_0\"][\"median\"] >= 3 * uni[\"median\"]`; it never computes per-pair mass-to-baseline ratios."
+   },
+   {
+    "location": "E006b_route_controls/analysis.json, Q3 and Q4 reporting",
+    "problem": "The machine-readable output exposes only Boolean Q3 and Q4 flags and omits explicit preregistered prediction labels and decision status. Q3 is false while Q4 is exploratory, but downstream consumers reading only the booleans could easily overlook that distinction.",
+    "severity": "minor",
+    "evidence": "The output contains `Q3: false` and `Q4: true` without a separate `Q4_exploratory` or prediction-status field."
+   },
+   {
+    "location": "E007_prefill_skip/analyze.py and analysis.json, P3",
+    "problem": "The output continues to report `P3_speedup_le_3.30: true`, even though the accompanying note correctly says P3 is not a valid test of the proposed cost model. The Boolean can be misread as corroboration of the cost model.",
+    "severity": "minor",
+    "evidence": "The analysis emits a true P3 flag and separately states that `3.30 is not an upper bound` and `P3 therefore is not a valid test`."
+   },
+   {
+    "location": "E007_prefill_skip/run.py, top-10 comparison",
+    "problem": "The code measures only the overlap of the top-10 token sets, not whether the ordered top-10 list is identical. A claim that top-10 output was 'identical' must not imply identical ordering or logits within the top ten.",
+    "severity": "minor",
+    "evidence": "The metric is `len(set(a.topk(10).indices.tolist()) & set(b.topk(10).indices.tolist()))`."
+   }
+  ],
+  "prereg_deviations": [
+   "E006b does not document a material protocol deviation, but its Q1 implementation differs from the natural paired interpretation of the preregistered threefold criterion by comparing medians rather than within-pair ratios.",
+   "E007's T=2048 SKIP timing and RSS measurement was added post hoc in E007b after the primary FULL arm hit the resource guard. It is exploratory and cannot count as preregistered confirmation of P1-P4.",
+   "The supplied files do not include E006's preregistration, execution code, or raw outputs, so E006b's assertion that its 28 pairs are the same held-out E006 pairs and the K-0007 sufficiency result cannot be independently verified from the audit package."
+  ],
+  "statistical_issues": [
+   "The E006b bootstrap resamples pairs as if they were independent, although subjects recur across pairs and the same clean subject can occur with multiple corrupt subjects. Pair bootstrap intervals can therefore understate uncertainty; a subject- or subject-pair-cluster bootstrap would be preferable.",
+   "Head 0 was identified from an earlier HEAD25 recovery analysis and is then evaluated in E006b. If that selection used the same 28 pairs, the head-0 result is exploratory selection-biased rather than an independent confirmation. Q4 is correctly labelled exploratory in the preregistration, but the main claim should not present it as preregistered validation.",
+   "The head-level comparisons are exploratory and unadjusted for multiplicity across eight heads, twenty layers, and two relations. The large separation of head 0 is persuasive descriptively, but 'only head' is stronger than the inferential design supports.",
+   "The sample is limited to two relations and templates, and clean items were selected conditional on being correctly answered. This supports a narrow mechanistic claim for successful recall in these templates, not broad factual-recall generalization.",
+   "Retained values are normalized effect sizes and may exceed 1 or be negative; they are not probabilities and should not be described as fractions of the original effect without that qualification.",
+   "The E006b intervals use percentile bootstrap medians with only 28 observations. There is no sensitivity analysis for cluster dependence, alternative confidence-interval methods, or the influence of individual relations/pairs.",
+   "E007 has only three timed repeats per arm on a shared host, with visibly large variation at T=1024. The preregistered thresholds are met in the reported summaries, but timing precision and rank ordering of the speedups are weakly established.",
+   "The E007 equivalence evidence is from one nested natural-English prefix and one checkpoint/configuration. It establishes numerical equivalence for the tested cases, not a general proof that every prompt, length, and implementation path is equivalent.",
+   "The T=2048 FULL failure is not accompanied by a preserved guard log or isolated-process diagnostic. The 6.34 GB SKIP peak is sampled VmRSS rather than VmHWM, and sequential measurements in one process can retain allocator memory, so memory comparisons should be interpreted cautiously."
+  ],
+  "alternative_explanations": [
+   {
+    "explanation": "The apparent head-0 subject reading may partly reflect attention to positions whose token IDs differ between clean and corrupt subjects rather than to the semantically defined subject span.",
+    "test_to_rule_out": "Record the exact clean subject-token start and end offsets from tokenizer offsets, use those positions for D, and recompute mass, uniform baselines, and paired ratios. Also report sensitivity to including shared subject tokens."
+   },
+   {
+    "explanation": "The block-25 effect may be driven by wrong-subject semantics or generic corrupt-run activation statistics rather than subject-specific information transfer.",
+    "test_to_rule_out": "Compare the corrupt contribution with unrelated-subject contributions, shuffled subject positions, same-category and different-category wrong subjects, and norm- or cosine-matched corrupt vectors. Test whether the effect tracks corrupt-subject identity rather than prompt identity."
+   },
+   {
+    "explanation": "The strong head-0 result may be partly due to selecting the best head from the same data used to describe its importance.",
+    "test_to_rule_out": "Predefine head 0 on an independent split and evaluate it on a new untouched set, or use nested cross-validation/leave-one-relation-out selection and evaluation."
+   },
+   {
+    "explanation": "The substantial retention under mean ablation may arise because the mean contribution still contains a relation-level answer or generic retrieval signal, rather than demonstrating a genuinely redundant subject-information route.",
+    "test_to_rule_out": "Trace information under the mean ablation and compare it with per-relation, per-template, and shuffled mean contributions. Search for downstream layers or heads carrying the subject identity and perform causal patching among them."
+   },
+   {
+    "explanation": "E007's measured speedup may be influenced by host-load drift, warm-cache effects, or ordering despite interleaving.",
+    "test_to_rule_out": "Repeat with randomized arm order, more repetitions, isolated processes, and per-run CPU affinity and load monitoring; report paired bootstrap intervals for the speedup ratio."
+   },
+   {
+    "explanation": "The observed speedup may reflect differences in memory allocation or cache pressure rather than only FLOP reduction, especially because SKIP also removes late-layer attention work and the asymptotic bound is invalid.",
+    "test_to_rule_out": "Report isolated-process peak RSS, allocator statistics, instruction/FLOP counts where available, and a separately implemented late-layer FLOP model that includes the dropped T×T attention terms."
+   }
+  ],
+  "claim_wording": [
+   {
+    "claim": "Block 25 is the site where subject information enters the answer position in the tested factual-recall prompts.",
+    "warranted": "partly",
+    "required_change": "Say that block-25 attention is a causally important contributor to subject-dependent answer-token logits in the two tested relations and templates. Avoid implying a unique anatomical or general site of entry across factual recall."
+   },
+   {
+    "claim": "Patching only block 25's clean attention contribution into the corrupt run recovers a median 0.757 with the stated CI and is the largest single-layer patch in 28/28 pairs.",
+    "warranted": "partly",
+    "required_change": "Retain only after supplying the E006 raw outputs and showing that the 28 pairs were held out from any layer or prompt-selection decisions. Label the CI as a subject-cluster CI and verify the reported 0.757 from raw data."
+   },
+   {
+    "claim": "Substituting the corrupt contribution leaves 0.227 at block 25 but at least 0.929 at every other KV-shared layer.",
+    "warranted": "partly",
+    "required_change": "State that the median retained values are 0.2268 for block 25 and 0.9293 or greater for each other layer. The minimum individual observation is 0.8497 at layer 31, so the current wording can be misread as a universal per-promise guarantee."
+   },
+   {
+    "claim": "Head 0 puts a median 0.88 of its final-query attention on the subject span and is the only head whose corruption matters.",
+    "warranted": "partly",
+    "required_change": "Use the audited value 0.8733, approximately 0.87, and call D the clean/corrupt differing-token set unless true subject-token offsets are recomputed. Say that head 0 had the lowest median retained value, 0.3661, while other heads had medians at least 0.9819. Identify this as exploratory rather than asserting that other heads had no effect."
+   },
+   {
+    "claim": "The route is not necessary in the ablation sense; mean substitution retains 0.84 and a substantial backup route exists.",
+    "warranted": "partly",
+    "required_change": "The mean-ablation result supports non-necessity and redundancy at the tested layer, but not the identity of a backup route. Say 'consistent with redundancy or a backup route' and avoid saying that the backup route has been demonstrated."
+   },
+   {
+    "claim": "The noising effect reflects conflicting wrong-subject content.",
+    "warranted": "partly",
+    "required_change": "The corrupt-versus-mean contrast is compatible with conflicting semantic content, but does not by itself exclude generic disruption. Use 'consistent with' and add shuffled, norm-matched, and unrelated-subject controls before making it definitive."
+   },
+   {
+    "claim": "In HF transformers 5.20.2, computing layers 15-34 only at the final position leaves final-position logits unchanged within 3.1e-5 for T=64-1024.",
+    "warranted": "yes",
+    "required_change": "Qualify as an empirical result for the tested checkpoint, one natural-English prefix, CPU/SDPA configuration, and listed lengths. Replace 'identical' with 'numerically equivalent within the reported maximum absolute difference'; say the top-10 token set was unchanged, not necessarily its ordering."
+   },
+   {
+    "claim": "The optimization reduces wall time by 1.8x, 2.4x, 2.7x, and 2.6-3.3x at the listed lengths.",
+    "warranted": "partly",
+    "required_change": "Say 'the FULL-to-SKIP median-time ratio was 1.84, 2.38, 2.73, and 3.30 at T=64, 256, 512, and 1024'; give the 1024 sensitivity range as 2.65-3.30 across the reported summaries and note the shared-host timing noise."
+   },
+   {
+    "claim": "At T=2048 the full computation exceeded a 6.8 GB process-RSS guard while the reduced computation completed in about 58 seconds with sampled peak RSS 6.34 GB.",
+    "warranted": "partly",
+    "required_change": "Label this as an exploratory E007b result. Preserve the guard and process-exit evidence and rerun both arms in isolated fresh processes for a defensible memory comparison; 'sampled peak VmRSS' should be retained rather than 'peak RSS'."
+   },
+   {
+    "claim": "The saving is an implementation property already exploited by Google's on-device runtimes per Gemma 3n materials.",
+    "warranted": "no",
+    "required_change": "Verify the statement against a primary Google source or remove it. The provided uncertainty text explicitly says that the primary source has not been checked."
+   }
+  ],
+  "recommended_followups": [
+   "Provide the complete E006 preregistration, selection code, raw per-patch outputs, and analysis so the sufficiency result and 28/28 ranking can be independently reproduced.",
+   "Replace mismatch-position D with tokenizer-derived subject spans and publish token-level span metadata; recompute all attention-mass statistics using paired per-prompt mass-to-uniform ratios.",
+   "Recompute confidence intervals with a subject-cluster or subject-pair-cluster bootstrap and report leave-one-relation-out and leave-one-pair-out sensitivity.",
+   "Evaluate head 0 on a genuinely untouched test set, or use nested selection so that the reported head is not chosen and evaluated on the same observations.",
+   "Add unrelated-subject, shuffled-position, norm-matched, and same-category corrupt controls, plus causal tracing of the backup route under mean ablation.",
+   "Reproduce E007 against stock HF transformers 5.20.2, not only the repository's Runner, and use fresh isolated processes for timing and memory measurements.",
+   "Increase timing repetitions and report paired uncertainty intervals and host-load diagnostics; retain all raw timings rather than only three values per arm.",
+   "Preserve the T=2048 guard log, process exit code, and a fresh-process FULL attempt, and obtain a primary source for the Google runtime comparison."
+  ],
+  "overall_verdict": "The E007 engineering result is broadly internally consistent but narrowly scoped and should be presented as a tested CPU optimization rather than a general or exact performance law. E006b provides strong descriptive evidence for block-25 specificity and a large head-0 effect on the supplied prompts, but the subject-span construction is not faithful to the claim's wording, the head analysis is exploratory and potentially selection-contaminated, and the K-0007 sufficiency portion cannot be audited because E006 artifacts are missing. K-0007 should be substantially narrowed and qualified; K-0008 is largely warranted after specifying summary statistics, ordering, environment, and the exploratory status of the T=2048 memory result."
+ },
+ "minimax_usage": {
+  "total_tokens": 29467,
+  "total_characters": 0,
+  "prompt_tokens": 20416,
+  "completion_tokens": 9051,
+  "completion_tokens_details": {
+   "reasoning_tokens": 6011
+  },
+  "prompt_tokens_details": {
+   "cached_tokens": 200
+  }
+ }
+}

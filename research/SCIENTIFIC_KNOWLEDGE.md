@@ -141,7 +141,7 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 ## K-0007 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** Among the 20 KV-shared layers of Gemma 4 E2B-IT, block-25 attention at the final position is the site where subject information enters the answer position in the tested factual-recall prompts, mainly via head 0: (i) sufficiency - patching only block 25's clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]) and is the largest of 20 single-layer attention patches in 28/28 held-out pairs; (ii) specificity - substituting the corrupt run's attention contribution leaves 0.227 of the logit difference at block 25 but >= 0.929 at every other KV-shared layer; (iii) head 0 of block 25 puts a median 0.88 of its final-query attention on the subject span (uniform baseline 0.17) and is the only head whose corruption matters (retained 0.37; other heads >= 0.98). It is NOT necessary in the ablation sense: replacing block 25's contribution by its mean over prompts retains 0.84 [0.815, 0.896], so the noising effect reflects conflicting (wrong-subject) content and a substantial backup route exists.
+**Claim.** In the tested factual-recall assay on Gemma 4 E2B-IT, block-25 attention at the final position is the largest single-layer causal contributor among the 20 KV-shared layers: patching only its clean attention contribution into the corrupt run recovers a median 0.757 (subject-cluster CI [0.654, 0.826]; largest of 20 single-layer patches in 28/28 held-out pairs), and substituting the corrupt run's contribution leaves a median 0.227 at block 25 vs per-layer medians >= 0.929 at every other KV-shared layer (individual pairs down to 0.85 at layer 31). Head 0 of block 25 had the strongest individual effect (single-head corruption leaves 0.37 vs >= 0.98 for heads 1-7; multi-head interactions untested) and puts a median 0.88 of its final-query attention on the positions where the two prompts differ. Replacing block 25's contribution by a (leave-one-in, not norm-matched) mean over prompts retains 0.84, so block 25 is not necessary in that sense; redundancy or a backup route is consistent with this but unidentified.
 
 **Scope.** as K-0006 (two relations, short prompts, IT checkpoint); head-level results from E006b (preregistered Q1, Q4 exploratory)
 
@@ -157,16 +157,16 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/E006b_route_controls/PREREG.md`, `experiments/E006b_route_controls/run.py`, `experiments/E006b_route_controls/result_it.json`, `experiments/E006b_route_controls/analysis.json`
 
-**Audit.** `audits/AUDIT-002.md`
+**Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-003.md`
 
-**Uncertainty / limits.** Backup route under mean ablation unidentified (H-015). Single-head patching is non-additive through post-attention RMSNorm. Analogous to the attribute-extraction stage of Geva et al. 2023 (LIT02-065) but concentrated in one layer/head here; novelty vs prior Gemma 3n/4 analyses not established (LIT-06 abstract screening found no mechanistic study of shared-KV routing). E006b not yet externally audited.
+**Uncertainty / limits.** AUDIT-003: E006b captured reference vectors with eager attention but ran patched conditions with SDPA (numerical mismatch expected ~1e-5, to be quantified in E006c); 'subject span' = token positions differing between paired prompts, not verified subject offsets; mean ablation was leave-one-in and not norm-matched; bootstrap clustering by subject only. Head-level results exploratory. Two relations, short templates, IT checkpoint (base replication running in cycle 3).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3)
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c
 
 ## K-0008 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** In the HF transformers 5.20.2 implementation (which runs all 35 decoder layers at every prompt position), computing Gemma 4 E2B-IT layers 15-34 only at the final position during a single-sequence prefill leaves the final-position logits unchanged within 3.1e-5 (identical top-1 and top-10) for T = 64-1024 tokens, including T = 1024 beyond the 512-token sliding window, and reduces wall time by 1.8x (T=64), 2.4x (256), 2.7x (512) and 2.6-3.3x (1024; depending on summary statistic) on a 2-vCPU CPU with fp32 compute. At T = 2048 the full computation exceeded a 6.8 GB process RSS guard while the reduced one completed (58 s, sampled peak RSS 6.34 GB).
+**Claim.** In the HF transformers 5.20.2 implementation (all 35 decoder layers run at every prompt position), computing Gemma 4 E2B-IT layers 15-34 only at the final position during a single-sequence forward leaves the final-position logits numerically equivalent (max |diff| <= 3.1e-5; same top-1 and same top-10 set) for T = 64-1024 tokens, including T = 1024 beyond the 512-token sliding window, and reduces wall time by a median 1.8x (T=64), 2.4x (256), 2.7x (512) and 3.3x (1024; 2.6x by min/min) over 3 interleaved repeats on a shared 2-vCPU host with fp32 compute. Exploratory (post hoc): at T = 2048 the full computation exceeded a 6.8 GB RSS guard (logs/memwatch.log 10:32:57Z, process_metrics rc=3) while the reduced one completed (58 s).
 
 **Scope.** single sequence, batch 1, CPU (AVX-512F, no bf16 GEMM), fp32 compute with bf16 weights, final-position output only (first generated token); decode with KV cache, batching and GPU not measured; energy not measurable in this sandbox
 
@@ -180,10 +180,10 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E007_prefill_skip/PREREG.md`, `experiments/E007_prefill_skip/run.py`, `experiments/E007_prefill_skip/result_it.json`, `experiments/E007_prefill_skip/analysis.json`, `experiments/E007_prefill_skip/run_b.py`, `experiments/E007_prefill_skip/result_b_it.json`
 
-**Audit.** none yet
+**Audit.** `audits/AUDIT-003.md`
 
-**Uncertainty / limits.** Preregistered cost model was wrong in one respect (it ignored that SKIP also drops the TxT attention of layers 15-34), so the 3.30x 'bound' (P3) is not a valid test; timing variance is large on the shared host; the saving is an implementation property already exploited by Google's on-device runtimes per Gemma 3n materials (not verified against a primary source).
+**Uncertainty / limits.** Timing: 3 repeats, noisy host (FULL T=1024 61-85 s). Preregistered cost-model bound invalid (it ignored the skipped TxT attention of layers 15-34). Inputs were repository prose, not exactly the files named in the prereg order (AUDIT-003). Real generation modes (KV-cache decode, batching, chat, multi-turn) tested separately in E007c.
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E007/E007b
+**History.** 2026-10-25: created from E007/E007b; 2026-10-25: AUDIT-003: removed unverified Google on-device statement; top-10 'set'; T=2048 marked exploratory with log references; numerical-equivalence wording
 

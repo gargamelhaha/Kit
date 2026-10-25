@@ -1,4 +1,5 @@
-"""AUDIT-002: independent audit of E006 by two non-Anthropic model families (method + code + data, no desired conclusion)."""
+"""Generic independent audit (AUDIT-00N): python audit_exp.py AUDIT-003 E006b_route_controls E007_prefill_skip
+Originally AUDIT-002 of E006 by two non-Anthropic model families (method + code + data, no desired conclusion)."""
 import json, os, re, sys
 sys.path.insert(0, os.path.dirname(__file__)); from llm_pool import Pool
 E = "experiments/E006_kv_route/"

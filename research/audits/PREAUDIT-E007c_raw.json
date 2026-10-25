@@ -1,0 +1,253 @@
+{
+ "prereg": "experiments/E007c_generate_modes/PREREG.md",
+ "deepseek": {
+  "flaws": [
+   {
+    "issue": "C5 multi-turn uses each arm's own C4 answer as context",
+    "severity": "critical",
+    "consequence": "If SKIP diverges in C4, C5 compares different contexts, confounding skip exactness with input differences.",
+    "fix": "Use a fixed REF-generated answer for both arms, or only run C5 if C4 is token-identical."
+   },
+   {
+    "issue": "P1 requires exact token identity under fp32",
+    "severity": "critical",
+    "consequence": "Floating-point non-associativity from changed computation order can flip argmax when top-2 logits are close, causing spurious divergences that are not algorithmic errors.",
+    "fix": "Compare logits with tolerance and only count divergence when top-2 margin exceeds numerical noise; use double-precision reference or deterministic tie-breaking."
+   },
+   {
+    "issue": "P4 bf16 quality uses token identity to REF and conflates skip and bf16",
+    "severity": "critical",
+    "consequence": "Token identity is not a quality metric; if SKIP diverges, bf16 quality is contaminated; different but correct answers are penalized.",
+    "fix": "Compare SKIP+BF16 to SKIP for bf16 effect, and use task-specific accuracy or human evaluation for quality."
+   },
+   {
+    "issue": "Timing predictions are underpowered and unspecified",
+    "severity": "critical",
+    "consequence": "Single-run timings without warmup, synchronization, repetitions, or hardware/software details are noisy and non-reproducible; speedup thresholds may be met or missed by chance.",
+    "fix": "Specify hardware/software, use warmup, torch.cuda.synchronize, multiple repetitions, report medians and CIs, randomize arm order."
+   },
+   {
+    "issue": "C1 vs C3 confounds batch size with prompt length",
+    "severity": "major",
+    "consequence": "TTFT speedup difference between C1 and C3 cannot be attributed to batching vs prompt length; P2/P3 comparisons are confounded.",
+    "fix": "Add conditions with same prompt at batch=1 and batch=4, and same batch with different lengths."
+   },
+   {
+    "issue": "No no-op hook control",
+    "severity": "major",
+    "consequence": "Hook overhead may mask or exaggerate speedup; cannot isolate algorithmic gain from Python hook cost.",
+    "fix": "Add a control with no-op forward pre-hooks on the same layers."
+   },
+   {
+    "issue": "No no-op adaptive bf16 forward control",
+    "severity": "major",
+    "consequence": "The modified forward adds Python overhead; bf16 speedup may be underestimated or confounded.",
+    "fix": "Add a control with the same adaptive forward but always fp32."
+   },
+   {
+    "issue": "Only left padding tested",
+    "severity": "major",
+    "consequence": "Skip may be incorrect with right padding because it slices to the last position, which would be padding; results may not generalize to common right-padded batching.",
+    "fix": "Add right-padded conditions and verify exactness."
+   },
+   {
+    "issue": "No control for multi-turn cache continuation vs full re-prefill",
+    "severity": "major",
+    "consequence": "If REF with past_key_values differs from full prefill, skip exactness could pass for the wrong reason or be masked.",
+    "fix": "Compare REF multi-turn with past_key_values to REF full re-prefill of the entire conversation."
+   },
+   {
+    "issue": "In-place model modifications without specified reset",
+    "severity": "major",
+    "consequence": "Running arms sequentially can contaminate later arms (skip handles, bf16 forward) and invalidate comparisons.",
+    "fix": "Use a fresh model per arm or specify and verify complete reset/disable between arms."
+   },
+   {
+    "issue": "bf16 implementation omits bias and weight cast",
+    "severity": "critical",
+    "consequence": "F.linear with bf16 input and fp32 weight will error; omitting bias produces wrong outputs. The bf16 arm cannot run as written.",
+    "fix": "Cast both weight and bias to bf16 and include bias in F.linear, then cast output to float."
+   },
+   {
+    "issue": "Skip hook assumptions about argument order and mask shape are unverified",
+    "severity": "critical",
+    "consequence": "The hook may crash or slice the wrong dimension if position_embeddings/position_ids/attention_mask shapes differ from assumptions, especially in batched generation.",
+    "fix": "Add unit tests for the hook on the exact model forward signatures and mask shapes used in each condition; handle both positional and keyword arguments."
+   },
+   {
+    "issue": "P3 C1 total-time speedup ≤1.5 is trivially true",
+    "severity": "major",
+    "consequence": "Because decode dominates and skip cannot accelerate decode, this upper bound is mechanically guaranteed and provides no evidence.",
+    "fix": "Replace with a non-trivial prediction, e.g., total-time speedup ≥ some lower bound, or compare to a control that also skips decode."
+   },
+   {
+    "issue": "Prompts and chat template not preregistered",
+    "severity": "major",
+    "consequence": "Selection effects: prompts may be chosen to favor exactness or speed; results not reproducible.",
+    "fix": "Preregister exact prompts, chat template, and question set."
+   },
+   {
+    "issue": "Underpowered quality and multi-turn cells",
+    "severity": "major",
+    "consequence": "C4 has only 3 questions and C5 only one additional turn; quality and multi-turn exactness estimates are noisy and may not generalize.",
+    "fix": "Increase number of questions/turns, report confidence intervals."
+   },
+   {
+    "issue": "TTFT metric ambiguous",
+    "severity": "major",
+    "consequence": "Measuring 'time of first model call' may exclude token selection and overhead, not true time-to-first-token; comparisons may be misleading.",
+    "fix": "Define TTFT as time from generate start to first generated token, with synchronization and warmup."
+   },
+   {
+    "issue": "No control for model eval mode, no_grad, seeds, determinism",
+    "severity": "major",
+    "consequence": "Dropout or gradient tracking could cause nondeterminism and spurious divergences; results not reproducible.",
+    "fix": "Specify model.eval(), torch.no_grad(), fixed seeds, and deterministic algorithms where possible."
+   },
+   {
+    "issue": "C2 sliding window size not verified",
+    "severity": "minor",
+    "consequence": "If window >1024, C2 is not beyond sliding window, so the intended condition is not tested.",
+    "fix": "Verify model config sliding window size and choose T accordingly."
+   },
+   {
+    "issue": "Peak RSS metric vague",
+    "severity": "minor",
+    "consequence": "Sampled CPU RSS may not reflect GPU memory or peak usage; not useful for inference speed/memory claims.",
+    "fix": "Specify sampling method, include GPU memory, or drop if not central."
+   }
+  ],
+  "missing_controls": [
+   "No-op forward pre-hooks on same layers to measure hook overhead",
+   "No-op adaptive bf16 forward (always fp32) to measure forward-patch overhead",
+   "Right-padded batching condition",
+   "REF multi-turn with past_key_values vs REF full re-prefill",
+   "Fresh model or verified reset between arms",
+   "Model.eval(), torch.no_grad(), fixed seeds, deterministic settings",
+   "Same prompt at batch=1 and batch=4 to isolate batching effect",
+   "Task-specific quality evaluation for bf16 (not just token identity)",
+   "Warmup and repeated timing runs with synchronization",
+   "Verification of sliding window size for C2"
+  ],
+  "trivially_true_predictions": [
+   "P3 C1 total-time speedup ≤1.5× is mechanically guaranteed because decode dominates and skip cannot accelerate decode.",
+   "P1 exact token identity may be trivially true if the skip is mathematically exact and floating-point differences are below argmax margin, but it is not a strong test of real-world exactness due to numerical noise.",
+   "P2 TTFT speedup ≥1.5× in C1 may be mechanically guaranteed by the layer count and sequence length, but not necessarily."
+  ],
+  "suggested_additional_predictions": [
+   "SKIP+BF16 should be compared to SKIP for bf16 quality, with a prediction on task accuracy drop.",
+   "Total-time speedup should be predicted as a function of decode/prefill ratio, e.g., using a model of layer compute.",
+   "Hook overhead should be measured and predicted to be <X% of TTFT.",
+   "Right-padded batching should be exact if the hook correctly identifies the last real token; predict exactness or specify expected failure.",
+   "Multi-turn with past_key_values should match full re-prefill for REF; predict exactness of cache continuation.",
+   "bf16 quality should be evaluated on factual questions with accuracy, predicting ≥X% accuracy vs REF."
+  ],
+  "verdict": "The experiment has critical design and implementation flaws that would make results uninterpretable or misleading. The bf16 arm cannot run as written due to missing bias/weight cast. C5 is confounded by using each arm's own C4 answer. P1's exact token identity is too strict for fp32. P4's quality metric is not a quality metric. Timing is underpowered and lacks controls. The experiment should not be run without major revisions."
+ },
+ "minimax": {
+  "flaws": [
+   {
+    "issue": "The BF16 quality comparison is confounded by the prefill skip: SKIP+BF16 is compared with REF, so any SKIP divergence is attributed to BF16 even though the stated quality metric is intended to isolate the precision change.",
+    "severity": "critical",
+    "consequence": "A reported quality loss or quality parity cannot be interpreted as an effect of bf16 decode numerics; the two interventions are not separately identified.",
+    "fix": "Compare SKIP+BF16 directly with SKIP for the primary BF16 quality and decode-speed effect, while also reporting SKIP versus REF as a separate exactness analysis. If BF16 is compared with REF, report both the total effect and the additional BF16-only effect."
+   },
+   {
+    "issue": "Timing is specified for only one execution per cell, with no warm-up, repeated runs, confidence intervals, clock-synchronisation requirement, or explicit statistic for the speedup.",
+    "severity": "critical",
+    "consequence": "GPU timings can be dominated by asynchronous execution, kernel selection, cache allocation, or transient host noise. A single favourable run can mechanically produce or miss the 1.3x/1.5x/2x thresholds, making the conclusions unstable and non-reproducible.",
+    "fix": "Pre-warm each configuration, synchronise CUDA around timed regions, randomise or counterbalance arm order, run multiple independent repetitions, and preregister a summary statistic and uncertainty criterion. Separate cold-start and steady-state measurements."
+   },
+   {
+    "issue": "C5 does not specify whether all arms receive exactly the same prior answer, chat template, token history, cache state, and continuation boundary.",
+    "severity": "critical",
+    "consequence": "If each arm continues from its own generated C4 output or cache, later differences can result from divergent histories rather than from the experimental intervention. The comparison is then path-dependent and not interpretable as an arm effect.",
+    "fix": "Construct one immutable C5 context and, where feasible, one immutable initial cache that is cloned for every arm. Explicitly record the token IDs, cache contents, chunk boundaries, and continuation position used by every arm."
+   },
+   {
+    "issue": "The claimed exactness relies on the unverified architectural premise that every skipped layer writes no key or value tensors; the implementation does not test that premise or compare cache contents.",
+    "severity": "major",
+    "consequence": "If any skipped layer contributes to the KV cache, the skip can alter future decoding while still looking plausible in short tests. A final-token logit match alone would not detect all cache corruption.",
+    "fix": "Before the experiment, inspect or instrument the skipped layers to verify that they do not write K/V. For each mode, compare complete cache keys and values, position IDs, attention masks, final logits, and generated tokens between REF and SKIP."
+   },
+   {
+    "issue": "The quality metric is token identity to REF rather than task quality, and the phrase 'before first divergence' leaves the denominator and treatment of the divergent token and all subsequent tokens ambiguous.",
+    "severity": "major",
+    "consequence": "A metric based only on a common prefix can omit most of a failed continuation, and exact-token disagreement is not equivalent to factual, coherence, instruction-following, or safety degradation. The 90% criterion can therefore pass or fail for reasons unrelated to the scientific quality claim.",
+    "fix": "Preregister a precise all-token metric, such as the fraction of all generated positions equal to the paired reference output, and report divergence position and post-divergence agreement separately. Add independent semantic, factual, and task-success evaluations with human or validated automatic scoring."
+   },
+   {
+    "issue": "Greedy decoding with min_new_tokens=max_new_tokens forces exactly G tokens and prevents natural EOS termination.",
+    "severity": "major",
+    "consequence": "The test does not represent normal chat or continuation generation: tokens that would follow EOS or end of answer are forced, so quality and divergence statistics can be distorted, especially for chat and multi-turn conditions.",
+    "fix": "Evaluate both a realistic stopping configuration and a fixed-length paired control. For the fixed-length arm, define how forced post-EOS tokens are handled and exclude or separately report them in semantic quality analyses."
+   },
+   {
+    "issue": "The condition set contains only a few hand-picked prompts, one four-item batch, and three chat questions, with no representative prompt or workload distribution.",
+    "severity": "major",
+    "consequence": "Performance and quality conclusions may reflect favourable prompt lengths, padding ratios, and easy factual questions rather than real generation modes. Results from C1-C5 cannot support broad claims about real workloads.",
+    "fix": "Add preregistered prompt strata and multiple independent prompts per mode, report results by length and padding ratio, and include a held-out representative workload. Treat C1-C5 as targeted mechanism tests rather than workload-level evidence."
+   },
+   {
+    "issue": "C3 confounds batching, padding, and prompt-length heterogeneity: one batch of four unequal-length prompts is used for both timing and per-row exactness.",
+    "severity": "major",
+    "consequence": "The apparent speedup may be driven by a favourable padded-token count and batch geometry, while individual rows have different effective context lengths. It is unclear whether the result reflects token skipping, batching efficiency, or workload composition.",
+    "fix": "Include equal-length and unequal-length batches, unpadded single-prompt runs with matched token totals, and several batch compositions. Report throughput and per-row latency separately, and test whether the skip benefit scales with total prefill tokens rather than merely batch size."
+   },
+   {
+    "issue": "The claimed TTFT metric is defined as the time of the first model call rather than user-observed time to first emitted token.",
+    "severity": "major",
+    "consequence": "It can omit tokenisation, chat-template application, CPU-to-GPU transfer, scheduling, output handling, and other user-visible costs. Calling it TTFT can overstate practical benefit, while total wall time may include unrelated instrumentation overhead.",
+    "fix": "Measure end-to-end TTFT from request receipt to availability of the first decoded token, including templating and postprocessing, and separately report isolated prefill latency. Define exactly which components enter total wall time."
+   },
+   {
+    "issue": "The experiment does not isolate the overhead or correctness of the patch infrastructure from the intended fast path.",
+    "severity": "minor",
+    "consequence": "Hook dispatch, altered tensor shapes, cache behaviour, or other patch costs may be included in SKIP timings, making the comparison less attributable to fewer shared-layer positions. Conversely, REF may exercise different HF kernels due to changed shapes.",
+    "fix": "Add a no-op-hook or disabled-skip control using the same patched model and harness, and verify that REF and SKIP use equivalent attention/cache implementations apart from the intended computation."
+   },
+   {
+    "issue": "The C2 prompt length is described as beyond the sliding window without specifying the model's actual context, cache-eviction behaviour, or whether REF and SKIP undergo identical truncation and eviction.",
+    "severity": "major",
+    "consequence": "The condition may primarily test an implementation-specific sliding-window path, may truncate the prompt, or may cause one arm to follow a different effective context. Its speedup cannot then be attributed cleanly to prefill skipping.",
+    "fix": "Record the configured context and sliding-window limits, state the effective input after truncation, and assert that both arms start from identical effective token IDs and cache state. Add an in-window long-context control."
+   },
+   {
+    "issue": "The score-difference metric is under-specified and uses an absolute 1e-3 threshold without stating whether the compared values are raw logits, processed scores, or normalised values.",
+    "severity": "minor",
+    "consequence": "Different score conventions produce incomparable thresholds, and a small absolute logit difference can be irrelevant when the argmax margin is large, or consequential when it is small. The metric may fail for numerically harmless implementation differences or miss meaningful near-ties.",
+    "fix": "Specify the exact score tensor and processing, compare logits at identical positions, and report argmax identity, top-1/top-2 margins, absolute and relative error, and cache-state checks. Use an equivalence criterion justified by the model's numerical precision rather than an unexplained fixed threshold."
+   }
+  ],
+  "missing_controls": [
+   "A BF16-only control that compares SKIP+BF16 with SKIP rather than only with REF.",
+   "An identical-history, identical-cache control for C5, with token IDs and cache contents recorded for every arm.",
+   "A no-op-hook or skip-disabled control in the same patched harness to quantify patch and shape-change overhead.",
+   "Repeated, warmed-up, CUDA-synchronised timing runs with randomised or counterbalanced arm order and preregistered uncertainty statistics.",
+   "A cache-equivalence control comparing K/V tensors, cache lengths, position IDs, attention masks, and chunk boundaries between REF and SKIP.",
+   "An architectural validation that all layers affected by the skip are genuinely KV-writing-free.",
+   "Equal-length, unequal-length, unpadded, and multiple batch-composition controls for C3.",
+   "Separate timing with and without output_scores=True, since score collection can materially affect end-to-end latency.",
+   "An in-window long-prompt control for C2 and explicit verification of truncation or sliding-window eviction behaviour.",
+   "Independent semantic, factual, instruction-following, and human-preference quality measures rather than reference-token identity alone.",
+   "A realistic EOS-enabled generation condition in addition to the fixed-length condition.",
+   "A representative prompt or workload sample with results stratified by prompt length, padding fraction, and task type."
+  ],
+  "trivially_true_predictions": [
+   "The token-identity component of P1 is nearly guaranteed by construction under the stated premise that all skipped layers write no K/V; it mainly tests implementation correctness such as masks and position handling, rather than providing independent evidence that the method is generally safe.",
+   "P1 cannot validate non-final logits or scoring/perplexity because the skip explicitly discards non-final positions; any extension of the exactness claim beyond final-token generation would pass for the wrong reason."
+  ],
+  "suggested_additional_predictions": [
+   "Within measurement noise, SKIP should leave decode-step latency unchanged while reducing prefill compute approximately in proportion to the number of shared-layer positions removed.",
+   "Total-time speedup should be predicted from the measured prefill fraction and per-token decode cost rather than from fixed universal thresholds; changing G at fixed prompt length should systematically reduce the speedup as decode becomes dominant.",
+   "REF and SKIP should produce identical effective token IDs, cache lengths, cache tensors, position IDs, and final-position logits in every mode where the skip is claimed applicable.",
+   "The prefill benefit should scale with effective prompt tokens and the proportion of layers skipped, and should remain present after controlling for batch size and padding.",
+   "SKIP+BF16 should differ from SKIP only through numerics in eligible decode-time linear operations; prefill outputs and eligible non-decode computations should remain unchanged.",
+   "The BF16-only quality effect should be measured relative to SKIP and should agree with independent semantic or task-quality metrics, not merely prefix token identity.",
+   "For the same effective context, C5 should give the same outputs regardless of whether the history is supplied as one prompt or reconstructed from an identical cache.",
+   "If the skipped layers are truly KV-writing-free, skipping should preserve not only generated tokens but all cached K/V tensors exactly up to the model's numerical tolerances.",
+   "Peak memory and cache-memory use should be reported separately for prefill and decode, since the skip changes computation shape but is not expected by itself to reduce the final token cache size."
+  ],
+  "verdict": "Major redesign is required before the experiment is run. The central causal comparison for the BF16 arm is confounded, the timing protocol is too weak for threshold-based speed claims, C5 may not use identical histories, and the proposed quality metric does not measure semantic quality. These issues can be addressed with paired same-cache controls, repeated synchronised benchmarks, explicit all-token and independent quality metrics, and direct validation of the KV-writing-free premise."
+ }
+}
