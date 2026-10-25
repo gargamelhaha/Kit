@@ -29,7 +29,7 @@
 {"ts": "2026-10-25T07:15:20Z", "catalog": "Crossref/DataCite DOI verification", "query_or_endpoint": "10.1016/j.patter.2023.100804 | direct GET /works/{doi}; crossref", "n_results": 1, "n_new_relevant": 0}
 {"ts": "2026-10-25T07:15:22Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2408.06292 | n_refs_parsed=116; n_with_arxiv_id=32", "n_results": 32, "n_new_relevant": 4}
 {"ts": "2026-10-25T07:15:30Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2503.13657 | n_refs_parsed=84; n_with_arxiv_id=51", "n_results": 51, "n_new_relevant": 14}
-{"ts": "2026-10-25T07:15:38Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2505.22954 | n_refs_parsed=184; n_with_arxiv_id=61", "n_results": 61, "n_new_relevant": 7}
+{"ts": "2026-10-25T07:15:38Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2505.22954 | n_refs_parsed=184; n_with_arxiv_id=61", "n_results": 61, "n_new_relevant": 6}
 {"ts": "2026-10-25T07:15:46Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2504.08066 | n_refs_parsed=31; n_with_arxiv_id=10", "n_results": 10, "n_new_relevant": 4}
 {"ts": "2026-10-25T07:15:54Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2509.08713 | n_refs_parsed=30; n_with_arxiv_id=10", "n_results": 10, "n_new_relevant": 1}
 {"ts": "2026-10-25T07:16:02Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2601.03315 | n_refs_parsed=28; n_with_arxiv_id=21", "n_results": 21, "n_new_relevant": 6}
@@ -37,5 +37,12 @@
 {"ts": "2026-10-25T07:16:08Z", "catalog": "Crossref/DataCite DOI verification", "query_or_endpoint": "10.1002/jrsm.1715 | DOI supplied by arXiv record; direct GET /works/{doi}", "n_results": 1, "n_new_relevant": 0}
 {"ts": "2026-10-25T07:16:08Z", "catalog": "Crossref/DataCite DOI verification", "query_or_endpoint": "10.1017/rsm.2025.10066 | DOI supplied by arXiv record; direct GET /works/{doi}", "n_results": 1, "n_new_relevant": 0}
 {"ts": "2026-10-25T07:16:10Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2407.01502 | n_refs_parsed=66; n_with_arxiv_id=44", "n_results": 44, "n_new_relevant": 7}
-{"ts": "2026-10-25T07:16:15Z", "catalog": "WebFetch", "query_or_endpoint": "https://www.anthropic.com/engineering/multi-agent-research-system", "n_results": 1, "n_new_relevant": 1}
-{"ts": "2026-10-25T07:16:15Z", "catalog": "WebFetch", "query_or_endpoint": "https://cognition.com/blog/dont-build-multi-agents", "n_results": 1, "n_new_relevant": 1}
+{"ts": "2026-10-25T07:16:18Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2502.14297 | n_refs_parsed=20; n_with_arxiv_id=8", "n_results": 8, "n_new_relevant": 0}
+{"ts": "2026-10-25T07:16:26Z", "catalog": "arXiv HTML bibliography parse (backward citations)", "query_or_endpoint": "2506.01372 | n_refs_parsed=98; n_with_arxiv_id=64", "n_results": 64, "n_new_relevant": 8}
+{"ts": "2026-10-25T07:16:34Z", "catalog": "arXiv API search", "query_or_endpoint": "https://export.arxiv.org/api/query?search_query=all%3A%22AI+Scientist%22+AND+all%3Aautomated+AND+all%3Adiscovery", "n_results": 6, "n_new_relevant": 5}
+{"ts": "2026-10-25T07:16:42Z", "catalog": "arXiv API search", "query_or_endpoint": "https://export.arxiv.org/api/query?search_query=all%3A%22AI+co-scientist%22+OR+all%3A%22AI+Co-Scientist%22", "n_results": 6, "n_new_relevant": 0}
+{"ts": "2026-10-25T07:16:50Z", "catalog": "arXiv API search", "query_or_endpoint": "https://export.arxiv.org/api/query?search_query=all%3A%22automated+scientific+discovery%22+AND+all%3ALLM+AND+all%3Aagents", "n_results": 6, "n_new_relevant": 1}
+{"ts": "2026-10-25T07:16:58Z", "catalog": "arXiv API search", "query_or_endpoint": "https://export.arxiv.org/api/query?search_query=all%3A%22autonomous+research%22+AND+all%3Aagent+AND+all%3A%22end-to-end%22", "n_results": 6, "n_new_relevant": 1}
+{"ts": "2026-10-25T07:17:06Z", "catalog": "arXiv API search", "query_or_endpoint": "https://export.arxiv.org/api/query?search_query=all%3A%22hypothesis+generation%22+AND+all%3ALLM+AND+all%3Anovelty", "n_results": 6, "n_new_relevant": 0}
+{"ts": "2026-10-25T07:19:41Z", "catalog": "WebFetch", "query_or_endpoint": "https://www.anthropic.com/engineering/multi-agent-research-system", "n_results": 1, "n_new_relevant": 1}
+{"ts": "2026-10-25T07:19:41Z", "catalog": "WebFetch", "query_or_endpoint": "https://cognition.com/blog/dont-build-multi-agents", "n_results": 1, "n_new_relevant": 1}
