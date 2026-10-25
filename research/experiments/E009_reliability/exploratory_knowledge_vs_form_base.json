@@ -1,0 +1,15 @@
+{
+ "n_test": 396,
+ "form_errors": 78,
+ "knowledge_errors": 128,
+ "n_kept": 318,
+ "auroc_knowledge_only": {
+  "S0_maxprob": 0.7833470394736842,
+  "S1_margin": 0.6853207236842105,
+  "S2_lens_agree": 0.6452302631578948,
+  "S3_neg_first_stable": 0.7703947368421052,
+  "S4_lens28_maxprob": 0.5038240131578947,
+  "S5_neg_attn25h0_entropy": 0.4735608552631579,
+  "combined_devfit": 0.8189967105263158
+ }
+}

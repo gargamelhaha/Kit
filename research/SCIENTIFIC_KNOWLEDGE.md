@@ -195,9 +195,9 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 ## K-0009 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** A DoLa-style layer contrast (final log-prob minus log-prob at the max-JSD premature residual in 26-30, plausibility filter 0.1) does not significantly improve Gemma 4 E2B-IT first-token factual accuracy: TEST 42.7% vs 41.4% greedy (12 items fixed, 7 broken, exact McNemar p = 0.36, n = 396).
+**Claim.** A DoLa-style layer contrast (final log-prob minus log-prob at the max-JSD premature residual in 26-30, plausibility filter 0.1) does not significantly improve Gemma 4 E2B-IT first-token factual accuracy: TEST 42.7% vs 41.4% greedy (12 items fixed, 7 broken, exact McNemar p = 0.36, n = 396). In the base checkpoint google/gemma-4-E2B the same procedure lowers accuracy (TEST 44.7% vs 48.0% greedy; 15 fixed, 28 broken, exact McNemar p = 0.066; 7% of items broken, above the preregistered 3% harm bound).
 
-**Scope.** google/gemma-4-E2B-it; factset_v1 (793 single-word completions over 20 relations, generated and cross-verified by two API model families); raw completion prompts with BOS; first-token correctness (mixes knowledge with answer form, see E009 exploratory); bucket chosen on DEV half
+**Scope.** google/gemma-4-E2B-it and google/gemma-4-E2B (base); factset_v1 (793 single-word completions over 20 relations, generated and cross-verified by two API model families); raw completion prompts with BOS; first-token correctness (mixes knowledge with answer form, see E009 exploratory); bucket chosen on DEV half
 
 **Conditions.** fp32 compute; Runner(last_only_from=15) with keep_resid; plausible set stored for all items (0 items reached the 50-token storage cap, AUDIT-004 check)
 
@@ -207,22 +207,23 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 - supports: `experiments/E009_reliability/analysis_it.json` — preregistered P-b1 fails (gain +1.3 pp, p 0.36); P-b2 harm check passes (7/396 broken)
 - supports: `LIT07-016` — controlled study on instruction-tuned LLMs: no token-level decoding method significantly improves full TruthfulQA (-2.0 pp, p = .23) - same direction
+- supports: `experiments/E009_reliability/analysis_base.json` — base: P-b1 fails, P-b2 (harm) fails: 28/396 broken
 - contradicts: `LIT07-001` — DoLa paper reports +12-17 points TruthfulQA and +1-4% StrategyQA on LLaMA 7B-65B (different models, tasks and metrics)
 
-**Artifacts.** `experiments/E009_reliability/PREREG.md`, `experiments/E009_reliability/run.py`, `experiments/E009_reliability/result_it.jsonl`, `experiments/E009_reliability/analysis_it.json`, `experiments/E009_reliability/analyze.py`
+**Artifacts.** `experiments/E009_reliability/PREREG.md`, `experiments/E009_reliability/run.py`, `experiments/E009_reliability/result_it.jsonl`, `experiments/E009_reliability/analysis_it.json`, `experiments/E009_reliability/analyze.py`, `experiments/E009_reliability/result_base.jsonl`, `experiments/E009_reliability/analysis_base.json`, `experiments/E009_reliability/PREREG_base.md`
 
 **Audit.** `audits/AUDIT-004.md`
 
 **Uncertainty / limits.** Single-token metric; one prompt style; a small true effect (< ~4 pp) cannot be excluded at n = 396; base checkpoint pending (E009-base).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E009 after AUDIT-004
+**History.** 2026-10-25: created from E009 after AUDIT-004; 2026-10-25: base checkpoint added (harmful trend)
 
 ## K-0010 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
-**Claim.** In Gemma 4 E2B-IT the logit lens at the final position reaches answer-level first-token accuracy only late (factset DEV accuracy by residual index: <= 1% up to index 25, 10.6% at 27, 36.3% at 29, peak 47.6% at 33, 37.5% at the output). Consequently a confidence-threshold early exit (first index >= 20 whose lens max-prob >= tau, tau chosen on DEV) skips only 4.9% of decoder layers on TEST; it does not cost accuracy (47.2% vs 41.4%) because the last block lowers first-token accuracy on this metric.
+**Claim.** In Gemma 4 E2B-IT the logit lens at the final position reaches answer-level first-token accuracy only late (factset DEV accuracy by residual index: <= 1% up to index 25, 10.6% at 27, 36.3% at 29, peak 47.6% at 33, 37.5% at the output). Consequently a confidence-threshold early exit (first index >= 20 whose lens max-prob >= tau, tau chosen on DEV) skips only 4.9% of decoder layers on TEST; it does not cost accuracy (47.2% vs 41.4%) because the last block lowers first-token accuracy on this metric. The base checkpoint shows the same pattern: best lens index 33 on DEV, TEST accuracy at index 33 exceeds the output by 3.3 points (IT 6.1), 148 errors with the target top-1 at some index 20-34 (IT 151), and early exit at the DEV-chosen threshold skips 0.5% of layers.
 
-**Scope.** google/gemma-4-E2B-it; factset_v1 raw completions; first-token correctness (answer-form effects such as ' **' or first names count as errors); logit lens = final norm + tied unembedding + softcap
+**Scope.** google/gemma-4-E2B-it and google/gemma-4-E2B (base); factset_v1 raw completions; first-token correctness (answer-form effects such as ' **' or first names count as errors); logit lens = final norm + tied unembedding + softcap
 
 **Conditions.** as K-0009
 
@@ -234,13 +235,14 @@ checks; REFUTED / INCONCLUSIVE as named.
 - supports: `experiments/E009_reliability/exploratory_errors_it.json` — post hoc: accuracy by residual index; 151/480 errors had the target top-1 at some index 20-34
 - supports: `LIT07-041` — early-exit potential diminishes in newer model generations and smaller models (consistent direction)
 - supports: `experiments/E002_logit_lens/analysis.json` — K-0005: answer emergence median index 28 on 60 easy prompts (consistent)
+- supports: `experiments/E009_reliability/exploratory_errors_base.json` — base: lost answers 148, markdown top-1 errors 0, idx33 - final +3.3 pp
 
-**Artifacts.** `experiments/E009_reliability/result_it.jsonl`, `experiments/E009_reliability/analysis_it.json`, `experiments/E009_reliability/exploratory_errors.py`, `experiments/E009_reliability/exploratory_errors_it.json`
+**Artifacts.** `experiments/E009_reliability/result_it.jsonl`, `experiments/E009_reliability/analysis_it.json`, `experiments/E009_reliability/exploratory_errors.py`, `experiments/E009_reliability/exploratory_errors_it.json`, `experiments/E009_reliability/exploratory_errors_base.json`, `experiments/E009_reliability/analysis_base.json`
 
 **Audit.** `audits/AUDIT-004.md`
 
-**Uncertainty / limits.** The late-layer accuracy drop is post hoc and is partly an answer-form effect (H-017, base test running). Lens (not tuned lens) underestimates early decodability.
+**Uncertainty / limits.** The late-layer accuracy drop is post hoc; the base test (H-017) showed it is not an instruction-tuning artefact (only the markdown variant is IT-specific); it may partly reflect logit-lens miscalibration at index 33. Lens (not tuned lens) underestimates early decodability.
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E009
+**History.** 2026-10-25: created from E009; 2026-10-25: base checkpoint added; H-017 refuted
 

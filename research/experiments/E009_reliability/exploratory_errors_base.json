@@ -1,0 +1,189 @@
+{
+ "markdown_top1_errors": 0,
+ "markdown_share_of_errors": 0.0,
+ "n": 793,
+ "n_errors": 408,
+ "error_taxonomy": {
+  "content, other": 110,
+  "punct/whitespace": 52,
+  "function word": 185,
+  "content, target rank<=2": 61
+ },
+ "errors_with_target_top1_at_some_layer_20_34": 148,
+ "of_which_final_is_function_or_punct": 89,
+ "layer_where_target_peaks_in_lost": {
+  "30": 1,
+  "31": 1,
+  "32": 15,
+  "33": 27,
+  "34": 104
+ },
+ "dev_acc_by_residual_index": {
+  "20": 0.0,
+  "21": 0.0,
+  "22": 0.0,
+  "23": 0.003,
+  "24": 0.003,
+  "25": 0.02,
+  "26": 0.093,
+  "27": 0.174,
+  "28": 0.287,
+  "29": 0.388,
+  "30": 0.421,
+  "31": 0.436,
+  "32": 0.489,
+  "33": 0.542,
+  "34": 0.496,
+  "35": 0.491
+ },
+ "best_index_on_dev": 33,
+ "test_acc_final": 0.4797979797979798,
+ "test_acc_best_index": 0.5126262626262627,
+ "test_acc_index33": 0.5126262626262627,
+ "examples_lost": [
+  [
+   "F0022",
+   "Palikir",
+   " ",
+   [
+    34
+   ]
+  ],
+  [
+   "F0026",
+   "Warsaw",
+   " a",
+   [
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0072",
+   "Ag",
+   ":",
+   [
+    34
+   ]
+  ],
+  [
+   "F0093",
+   "Hemingway",
+   " Ernest",
+   [
+    31
+   ]
+  ],
+  [
+   "F0105",
+   "Shakespeare",
+   " a",
+   [
+    29,
+    30,
+    31,
+    32,
+    33
+   ]
+  ],
+  [
+   "F0106",
+   "Dickens",
+   " Charles",
+   [
+    29,
+    30,
+    31,
+    32,
+    33
+   ]
+  ],
+  [
+   "F0118",
+   "Faulkner",
+   " William",
+   [
+    32,
+    33
+   ]
+  ],
+  [
+   "F0144",
+   "Vermeer",
+   " Johannes",
+   [
+    31,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0148",
+   "Monet",
+   " Claude",
+   [
+    31,
+    32,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0149",
+   "Picasso",
+   " Pablo",
+   [
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ]
+  ],
+  [
+   "F0152",
+   "Botticelli",
+   " Sandro",
+   [
+    34
+   ]
+  ],
+  [
+   "F0169",
+   "Germany",
+   " Munich",
+   [
+    27,
+    28,
+    34
+   ]
+  ]
+ ],
+ "acc_by_relation": {
+  "US state -> capital city": 0.91,
+  "animal -> class (mammal, bird, reptile, fish, amphibian, insect)": 0.0,
+  "chemical element -> chemical symbol (answer is the symbol)": 0.7,
+  "city -> country": 0.95,
+  "company -> country of headquarters": 0.24,
+  "composer -> nationality adjective": 0.0,
+  "country -> capital city": 0.84,
+  "currency -> country": 0.7,
+  "dish -> country of origin": 0.69,
+  "famous book -> author surname": 0.03,
+  "inventor -> invention (one word)": 0.47,
+  "language -> country where it is most spoken": 0.89,
+  "mountain -> continent": 0.44,
+  "musical instrument -> instrument family (e.g. string)": 0.42,
+  "painting or sculpture -> artist surname": 0.45,
+  "planet or moon -> planet it orbits / or star system object": 0.38,
+  "river -> continent": 0.4,
+  "scientist -> field (one word, e.g. physics)": 0.38,
+  "sport -> number of players per team (as a word)": 0.15,
+  "university -> city": 0.53
+ }
+}
