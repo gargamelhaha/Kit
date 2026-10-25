@@ -1,1 +1,2 @@
 {"ts": "2026-10-25T07:54:50Z", "cycle": "1", "step": "E001b_buffer_selftest:it", "kind": "exp", "wall_s": 55.1, "peak_rss_gb_process": 5.93, "outcome": "ok", "artifact": "experiments/E001b_buffer_selftest", "runner": "run_many"}
+pushed

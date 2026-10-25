@@ -25,8 +25,11 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Root cause: the tokenizer config does not add BOS (`add_bos_token` unset); Gemma is trained with BOS.
 - Fix: `encode()` helper prepends BOS. Status: accepted (same pitfall independently reported for Gemma 4 12B-it, LIT-03).
 
-## PL-4 Work lost to sandbox resets (×3)
-- Symptom: sandbox generations lost at ~06:13, ~07:04, ~07:13 UTC; all unpushed files gone each time.
+## PL-4 Work lost to sandbox resets (×4)
+- Symptom: sandbox generations lost at ~06:13, ~07:04, ~07:13, ~07:47 UTC; all unpushed files gone each time.
+- Key regularity (found on reset #4): **every** reset happened while E002 (logit lens) was running — E000/E001 never
+  triggered one. Reset #4 came ≈9 min into E002 (mid-run, not at load). The sandbox box is 8 GiB and cannot be raised
+  (resize refused: "exceeds current resource ceilings").
 - Evidence: uptime reset; empty worktree; each loss 1–4 min after starting a 5–7 GB model process while 3–5 subagents ran
   in the same 8 GiB sandbox. Hypothesis "memory accumulates across successive model processes" was refuted by reset #3
   (first model process in a fresh sandbox).
@@ -36,10 +39,26 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Fixes: (1) push after every step + auto-push per experiment (`run_many.py`); (2) single long-lived model process;
   (3) run model work only when no subagents are active; (4) request 16 GiB once subagent leases clear.
 - Measured cost: ≈ 70 min of rework across three resets (re-download 3–5 min, reinstall ~2 min, re-running experiments).
-- Status: mitigations (1)–(3) in place; (4) pending.
+- Status: mitigations (1)–(3) in place; (4) impossible (ceiling). See PL-6 for the E002-specific analysis.
+- Also observed: the platform's headless Chrome (agent-browser, 17 processes when subagents use web tools) shares the
+  box; it is stopped before model runs (its true memory share is not measurable here: no PSS under gVisor).
 
 ## PL-5 Memory-mapping all weights regressed speed
 - Evidence: E000 attempt with all weights memory-mapped: 616 s wall, 70.9 s CPU (≈11% CPU utilization).
 - Root cause: weight pages repeatedly faulted from the sandbox filesystem (I/O-bound).
 - Fix: only the PLE table stays mapped (row lookups); decoder + embedding copied to RAM; unembedding computed in 32k-row
   chunks to avoid a 1.6 GB fp32 transient. Status: accepted.
+
+## PL-6 E002-specific resets: hypotheses tested
+- H-a "unembedding outside no_grad retains fp32 weight copies for autograd" — **refuted** by E005 (RSS unchanged:
+  1.143 GB with and without grad; linear's weight-grad needs only the input). Kept fix anyway: params `requires_grad=False`.
+- Side finding (E005): RLIMIT_DATA is not enforced in this sandbox → OS-level per-process limits cannot protect it.
+- H-b (leading, unconfirmed): allocation churn. E002 performs ≈18k allocate/free cycles of 200 MB (fp32 unembedding
+  chunks: 62 items × 36 layers × 8 chunks) plus ≈15k cycles of ≤75 MB; E001 ≈2 orders of magnitude fewer. Under gVisor
+  freed anonymous memory may not be returned to the host promptly, so host-level usage can exceed the box while in-sandbox
+  RSS looks fine.
+- Fix (removes the suspected mechanism and bounds memory): one persistent fp32 buffer per weight shape (~0.5 GB total) —
+  zero per-call allocations for weights; in-process RSS guard thread (exit at 6.8 GB, logs to memwatch.log); E002 writes
+  results after every item. Equivalence of the buffered path is tested in E001b (must be bit-identical).
+- Status: mitigated; root cause remains a hypothesis unless E002 now completes repeatedly (weak evidence) — a direct
+  churn test would risk another reset and is deferred.
