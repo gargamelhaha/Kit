@@ -27,8 +27,11 @@ model.forward = timed_forward
 assert model._supports_logits_to_keep(), "timing wrapper hides logits_to_keep"
 
 
+import ctypes
+_libc = ctypes.CDLL("libc.so.6")
 def gen(ids, mask, G, past=None):
-    calls.clear(); peak = [rss()]; run = [True]
+    _libc.malloc_trim(0)  # PL-17: return freed heap pages before each generation (fragmentation hypothesis)
+    rss0 = rss(); calls.clear(); peak = [rss0]; run = [True]
     def mon():
         while run[0]: peak[0] = max(peak[0], rss()); time.sleep(0.01)
     th = threading.Thread(target=mon, daemon=True); th.start()
@@ -38,7 +41,7 @@ def gen(ids, mask, G, past=None):
     wall = time.perf_counter() - t0; run[0] = False; th.join()
     return {"seq": o.sequences[:, ids.shape[1]:], "scores": torch.stack(o.logits, 1).float(), "wall": wall,
             "ttft": calls[0] if calls else None, "decode_per_tok": (sum(calls[1:]) / max(1, len(calls) - 1)) if calls else None,
-            "peak_rss": peak[0], "past": o.past_key_values, "full_seq": o.sequences}
+            "peak_rss": peak[0], "rss_before": rss0, "past": o.past_key_values, "full_seq": o.sequences}
 
 
 def set_arm(arm):
@@ -80,7 +83,6 @@ def chat_ids(msgs):
 
 conds = {}
 conds["C1"] = [(torch.tensor([[tok.bos_token_id] + base[s0:s0 + 127]]), None, 32) for s0 in (1,)]  # cost cut (see PREREG)
-conds["C2"] = [(torch.tensor([base[:1024]]), None, 24)]
 lens = [90, 160, 230, 300]; starts = [2000, 4000, 6000, 8000]
 seqs = [[tok.bos_token_id] + base[s:s + n - 1] for s, n in zip(starts, lens)]
 M = max(lens); ids3 = torch.tensor([[PAD] * (M - len(s)) + s for s in seqs]); mask3 = (torch.arange(M)[None] >= (M - torch.tensor(lens))[:, None]).long()
@@ -89,6 +91,7 @@ conds["C3b"] = [(torch.tensor([[tok.bos_token_id] + base[s0:s0 + 199] for s0 in 
 QS = ["What is the capital of Australia? Answer in one sentence.", "Explain in two sentences what a transformer attention head does.",
       "Name three noble gases."]
 conds["C4"] = [(torch.tensor([chat_ids([{"role": "user", "content": q}])]), None, 32) for q in QS]
+conds["C2"] = [(torch.tensor([base[:1024]]), None, 24)]  # last: largest memory transient (PL-17)
 prev = json.load(open(OUT))["rows"] if os.path.exists(OUT) else []
 res = {"info": info, "rows": prev, "changes": "after PREAUDIT-E007c: warm-up, 2 interleaved repeats, BF16 vs SKIP, cache diff, immutable C5 context"}
 ARMS = ("REF", "SKIP", "SKIP+BF16")
@@ -99,6 +102,7 @@ def summarize(cname, k, ids, G, outs, times, extra=None):
         row = {"cond": cname, "item": k, "arm": arm, "T": ids.shape[1], "batch": ids.shape[0], "G": G,
                "wall_s": [round(t["wall"], 2) for t in times[arm]], "prefill_s": [round(t["ttft"], 3) for t in times[arm]],
                "decode_s_per_step": [round(t["decode_per_tok"], 3) for t in times[arm]], "peak_rss_gb": round(o["peak_rss"], 3),
+               "rss_before_gb": [round(t["rss_before"], 3) for t in times[arm]],
                "text": tok.decode(o["seq"][0])[:200]}
         if arm == "SKIP": row["vs_ref"] = compare(outs["REF"], o); row["cache_maxdiff_vs_ref"] = cache_diff(outs["REF"]["past"], o["past"])
         if arm == "SKIP+BF16": row["vs_skip"] = compare(outs["SKIP"], o); row["vs_ref"] = compare(outs["REF"], o)

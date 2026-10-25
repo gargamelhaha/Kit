@@ -54,3 +54,4 @@ and this is stated). P3's C1 bound is uninformative (pre-audit): reported descri
   `(*a, **k)`, hiding `logits_to_keep` from `generate()`, which then computed logits for all prompt positions (+1.07 GB at T=1024;
   REF prefill also paid ≈ 3% extra time at T=128). Fixed with functools.wraps + assertion; all rows so far moved to
   `biased_run1/` (kept, not analysed); E007c is rerun from scratch after E008.
+- PL-17 (14:52Z): second RSS-guard exit in C2 REF (6.80 GB) after the PL-15 fix. Changes: malloc_trim(0) + RSS logged before each generate (tests heap-fragmentation hypothesis), C2 moved last, RSS guard 7.2 GB for this run only (memwatch 1 GB floor remains). Completed C1 rows kept (resume).

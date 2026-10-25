@@ -16,3 +16,4 @@
 {"ts": "2026-10-25T13:05:59Z", "cycle": "3", "step": "E007c_generate_modes:it", "kind": "exp", "wall_s": 128.7, "cpu_s": 95.9, "peak_rss_gb": 6.69, "outcome": "fail(rc=3)", "artifact": "experiments/E007c_generate_modes", "notes": ""}
 {"ts": "2026-10-25T13:21:37Z", "cycle": "3", "step": "E006c_backup_route:it", "kind": "exp", "wall_s": 937.9, "cpu_s": 832.7, "peak_rss_gb": 6.29, "outcome": "ok", "artifact": "experiments/E006c_backup_route", "notes": ""}
 {"ts": "2026-10-25T14:23:37Z", "cycle": "3", "step": "E009_reliability:it", "kind": "exp", "wall_s": 3322.9, "cpu_s": 2308.7, "peak_rss_gb": 6.21, "outcome": "ok", "artifact": "experiments/E009_reliability", "notes": ""}
+{"ts": "2026-10-25T14:51:01Z", "cycle": "3", "step": "E007c_generate_modes:it", "kind": "exp", "wall_s": 958.3, "cpu_s": 695.1, "peak_rss_gb": 6.66, "outcome": "fail(rc=3)", "artifact": "experiments/E007c_generate_modes", "notes": ""}
