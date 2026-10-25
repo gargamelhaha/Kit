@@ -33,3 +33,4 @@
 {"ts": "2026-10-25T07:08:00Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"diffusion language models\" AND all:\"autoregressive\" AND all:\"data-constrained\" AND all:\"super data learners\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
 {"ts": "2026-10-25T07:08:04Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"Coconut\" AND all:\"continuous latent space\" AND all:reasoning&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
 {"ts": "2026-10-25T07:08:08Z", "catalog": "arXiv", "query_or_endpoint": "search_query=all:\"byte latent transformer\" AND all:\"patches scale better than tokens\"&sortBy=relevance", "n_results": 0, "n_new_relevant": null}
+{"ts": "2026-10-25T07:17:04Z", "catalog": "arXiv", "query_or_endpoint": "ti:\"Illusion of Thinking\"", "n_results": 0, "n_new_relevant": null}
