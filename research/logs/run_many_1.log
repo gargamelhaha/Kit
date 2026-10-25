@@ -1,2 +1,3 @@
 {"ts": "2026-10-25T07:54:50Z", "cycle": "1", "step": "E001b_buffer_selftest:it", "kind": "exp", "wall_s": 55.1, "peak_rss_gb_process": 5.93, "outcome": "ok", "artifact": "experiments/E001b_buffer_selftest", "runner": "run_many"}
 pushed
+{"ts": "2026-10-25T08:17:52Z", "cycle": "1", "step": "E002_logit_lens:it", "kind": "exp", "wall_s": 1380.3, "peak_rss_gb_process": 6.04, "outcome": "ok", "artifact": "experiments/E002_logit_lens", "runner": "run_many"}
