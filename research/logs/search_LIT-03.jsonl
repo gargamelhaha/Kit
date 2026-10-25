@@ -17,3 +17,38 @@
 {"ts": "2026-10-25T06:22:32Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=sparse autoencoders find highly interpretable features language models &sort=relevance_score:desc", "n_results": 12304, "n_new_relevant": 0}
 {"ts": "2026-10-25T06:22:35Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=scaling and evaluating sparse autoencoders &sort=relevance_score:desc", "n_results": 76424, "n_new_relevant": 0}
 {"ts": "2026-10-25T06:22:38Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=JumpReLU sparse autoencoders reconstruction fidelity &sort=relevance_score:desc", "n_results": 272, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:41Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=gated sparse autoencoders improving dictionary learning &sort=relevance_score:desc", "n_results": 3202, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:44Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=BatchTopK sparse autoencoders &sort=relevance_score:desc", "n_results": 222, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:47Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=Matryoshka sparse autoencoders multi-level features &sort=relevance_score:desc", "n_results": 227, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:50Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=SAEBench benchmark sparse autoencoders &sort=relevance_score:desc", "n_results": 138, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:53Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=AxBench steering simple baselines outperform sparse autoencoders &sort=relevance_score:desc", "n_results": 204, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:56Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=dark matter of sparse autoencoders &sort=relevance_score:desc", "n_results": 2711, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:22:59Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=sanity checks sparse autoencoders random baselines &sort=relevance_score:desc", "n_results": 861, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:02Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=sparse autoencoders interpret randomly initialized transformers &sort=relevance_score:desc", "n_results": 16184, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:05Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=are sparse autoencoders useful sparse probing &sort=relevance_score:desc", "n_results": 6745, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:09Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=refusal in language models mediated by a single direction &sort=relevance_score:desc", "n_results": 22160, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:12Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=in-context learning and induction heads &sort=relevance_score:desc", "n_results": 73387, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:15Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=interpretability in the wild indirect object identification circuit &sort=relevance_score:desc", "n_results": 5085, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:18Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=activation patching best practices metrics methods &sort=relevance_score:desc", "n_results": 37079, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:21Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=tuned lens eliciting latent predictions &sort=relevance_score:desc", "n_results": 5928, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:24Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=logit lens interpreting GPT &sort=relevance_score:desc", "n_results": 2934, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:27Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=attribution patching &sort=relevance_score:desc", "n_results": 76583, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:30Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=sparse feature circuits editing causal graphs &sort=relevance_score:desc", "n_results": 2692, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:33Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=TransformerLens library mechanistic interpretability &sort=relevance_score:desc", "n_results": 186, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:36Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=NNsight and NDIF open-weight foundation model internals &sort=relevance_score:desc", "n_results": 74, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:39Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=pyvene library interventions &sort=relevance_score:desc", "n_results": 66, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:23:44Z", "catalog": "OpenAlex", "query_or_endpoint": "works?search=mechanistic interpretability open problems &sort=relevance_score:desc", "n_results": 104072, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:27:50Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W4404783416 (anchor record GemmaScope)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:27:51Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W4404783416 (GemmaScope) sort=cited_by_count:desc", "n_results": 35, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:27:53Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W4402502788 (anchor record GemmaScope)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:27:54Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W4402502788 (GemmaScope) sort=cited_by_count:desc", "n_results": 2, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:27:57Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W4415798500 (anchor record Transcoders)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:27:58Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W4415798500 (Transcoders) sort=cited_by_count:desc", "n_results": 16, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:01Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W6947991961 (anchor record Gemma3)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:02Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W6947991961 (Gemma3) sort=cited_by_count:desc", "n_results": 70, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:05Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W7167604932 (anchor record Gemma4)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:06Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W7167604932 (Gemma4) sort=cited_by_count:desc", "n_results": 8, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:08Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W4415800382 (anchor record MatFormer)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:09Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W4415800382 (MatFormer) sort=cited_by_count:desc", "n_results": 9, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:12Z", "catalog": "OpenAlex", "query_or_endpoint": "works/W4387596623 (anchor record MatFormer)", "n_results": 1, "n_new_relevant": 0}
+{"ts": "2026-10-25T06:28:13Z", "catalog": "OpenAlex", "query_or_endpoint": "FORWARD filter=cites:W4387596623 (MatFormer) sort=cited_by_count:desc", "n_results": 3, "n_new_relevant": 0}

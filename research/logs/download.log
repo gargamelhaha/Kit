@@ -1,2 +1,8 @@
 2026-10-25T06:16:07Z
 google/gemma-4-E2B-it exit=0 271s 271s
+google/gemma-4-E2B exit=0 566s 295s
+sha256 google/gemma-4-E2B-it/model.safetensors 2db5482b20d746879bb3ef79b5203e9075a2e2b98f54ec7c2f281c1477ddc550
+sha256 google/gemma-4-E2B-it/tokenizer.json cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f
+sha256 google/gemma-4-E2B/model.safetensors 76dc84a5a805a2c8b91e9ccc00b8dbf8f4a99bf0d56ab25832f6e6addd4f7f57
+sha256 google/gemma-4-E2B/tokenizer.json 12bac982b793c44b03d52a250a9f0d0b666813da566b910c24a6da0695fd11e6
+2026-10-25T06:27:55Z
