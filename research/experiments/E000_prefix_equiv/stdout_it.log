@@ -1,0 +1,2 @@
+{"case": "short", "T": 10, "max_abs_diff": 4.863739013671875e-05, "top1_same": true, "row_effects": [38.44643020629883, 36.860809326171875], "forward_3cond_s": 4.194, "prefix_s": 0.882, "suffix_3cond_s": 3.889}
+{"case": "long700", "T": 700, "max_abs_diff": 0.0, "top1_same": true, "row_effects": [10.457837104797363, 2.0891153812408447], "forward_3cond_s": 46.936, "prefix_s": 13.031, "suffix_3cond_s": 2.982}

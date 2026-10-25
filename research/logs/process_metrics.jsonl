@@ -9,3 +9,6 @@
 {"ts": "2026-10-25T10:36:51Z", "cycle": "2", "step": "E007_prefill_skip:b", "kind": "exp", "wall_s": 28.2, "cpu_s": 22.1, "peak_rss_gb": 5.24, "outcome": "fail(rc=1)", "artifact": "experiments/E007_prefill_skip", "notes": ""}
 {"ts": "2026-10-25T10:44:26Z", "cycle": "2", "step": "E007_prefill_skip:b", "kind": "exp", "wall_s": 221.4, "cpu_s": 135.8, "peak_rss_gb": 6.65, "outcome": "ok", "artifact": "experiments/E007_prefill_skip", "notes": ""}
 {"ts": "2026-10-25T10:58:03Z", "cycle": "2", "step": "E006b_route_controls:it", "kind": "exp", "wall_s": 757.3, "cpu_s": 556.4, "peak_rss_gb": 6.2, "outcome": "ok", "artifact": "experiments/E006b_route_controls", "notes": ""}
+{"ts": "2026-10-25T11:56:13Z", "cycle": "3", "step": "E000_prefix_equiv:it", "kind": "exp", "wall_s": 78.0, "cpu_s": 13.3, "peak_rss_gb": 10.11, "outcome": "fail(rc=3)", "artifact": "experiments/E000_prefix_equiv", "notes": ""}
+{"ts": "2026-10-25T12:07:04Z", "cycle": "3", "step": "E000_prefix_equiv:it", "kind": "exp", "wall_s": 34.8, "cpu_s": 24.9, "peak_rss_gb": 10.12, "outcome": "fail(rc=3)", "artifact": "experiments/E000_prefix_equiv", "notes": ""}
+{"ts": "2026-10-25T12:12:40Z", "cycle": "3", "step": "E000_prefix_equiv:it", "kind": "exp", "wall_s": 150.5, "cpu_s": 133.6, "peak_rss_gb": 6.43, "outcome": "ok", "artifact": "experiments/E000_prefix_equiv", "notes": ""}

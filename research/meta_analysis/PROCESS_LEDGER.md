@@ -104,3 +104,20 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - E007 FULL at T=2048 grew past 6.8 GB; the in-process guard (PL-6) exited with rc=3, logged, and the queue continued. No reset
   in cycle 2 (vs 4 in cycle 1) with up to 3 concurrent API tools + 1 model process. Evidence that the guard, not luck, prevented
   the reset: the guard log line at 10:32:57Z with RSS 6.81 GB.
+
+## PL-12 Prefix cache for suffix-only interventions (cycle 3)
+- Change: `Runner.prefix()` computes layers 0–14 once; `Runner.suffix(st, n, hooks)` evaluates n conditions on layers 15–34 at
+  the final position (kv_store / resid / attn hooks). Valid for any intervention at layer ≥ 15 or on the stored K/V.
+- Equivalence (E000_prefix_equiv): max|Δlogit| 4.9e-5 (T=10), 0 (T=700) vs `forward(last_only_from=15)`; intervention effects 2–38 logits.
+- Speed (identical workload, 3 conditions): T=10 4.19 s → 0.88 + 3.89 s (no gain: suffix dominated by per-call fp32 weight upcast);
+  T=700 46.9 s → 13.0 s once + 3.0 s (≈ 1 s/condition vs 15.6 s). Status: accepted for long-context experiments (E008).
+
+## PL-13 First forward after sandbox restart: RSS 10.35 GB → RSS guard (root cause: whole-file mmap residency)
+- Symptom: E000 died twice at the first forward (RSS 10.35/10.36 GB, 13–25 s CPU); same code peaked at 6.15 GB in cycle 2.
+- Hypothesis 1 "concurrent 10 GB base download" — **refuted** (reproduced with nothing else running).
+- Bisection: load 5.61 GB → first forward → 10.31 GB. 10.3 ≈ 5.6 + 4.7 GB (PLE table). Microtest: np.memmap of the PLE
+  tensor, reading **one** row: RSS 0.07 → 4.77 GB in 13 ms (no real I/O).
+- Root cause: in the restored sandbox (overlay root FS under gVisor) a file mmap becomes fully resident on first touch; the
+  loader's design assumption (mmap materialises only touched rows) is a property of the host FS, not guaranteed.
+- Fix: `PreadEmbedding` — PLE rows read with `os.pread` (17.9 KB/token). Verified bit-identical (E006 pair ld 37.920166015625 /
+  −35.74284744262695 before = after); RSS after forward 6.19 GB. Status: accepted. Lesson: don't rely on mmap laziness in sandboxes.

@@ -36,6 +36,28 @@ def _tensor(path, info, base, mmap=True):
     return t if mmap else t.clone()
 
 
+class PreadEmbedding(torch.nn.Module):
+    """PLE token table read row-by-row with os.pread instead of a memory map (PL-13).
+    In the restored sandbox (overlay FS under gVisor) touching one row of an mmapped file made the *whole* 4.7 GB
+    mapping resident (RSS 0.07 -> 4.77 GB after a single-row read), which tripped the RSS guard on the first forward.
+    pread only ever materialises the rows of the tokens present (17.9 KB per token)."""
+    def __init__(self, path, offset, shape, scale):
+        super().__init__()
+        self.path, self.offset, self.shape, self.scalar_embed_scale = path, offset, tuple(shape), scale
+        self.fd = os.open(path, os.O_RDONLY)
+        self.row_bytes = self.shape[1] * 2
+        self.embed_scale = torch.tensor(scale)
+        self.weight = torch.empty(0, self.shape[1], dtype=torch.bfloat16)  # placeholder: dtype/device queries only
+
+    def forward(self, ids):
+        uniq, inv = torch.unique(ids, return_inverse=True)
+        buf = bytearray(len(uniq) * self.row_bytes)
+        for j, t in enumerate(uniq.tolist()):
+            buf[j * self.row_bytes:(j + 1) * self.row_bytes] = os.pread(self.fd, self.row_bytes, self.offset + t * self.row_bytes)
+        rows = torch.frombuffer(buf, dtype=torch.bfloat16).view(len(uniq), self.shape[1])
+        return rows[inv] * self.embed_scale.to(torch.bfloat16)
+
+
 def load(variant="it"):
     t0 = time.time()
     path = os.path.join(ROOT, MODELS[variant])
@@ -46,9 +68,14 @@ def load(variant="it"):
         model = Gemma4ForCausalLM(cfg)
     st = os.path.join(path, "model.safetensors")
     h, base = _header(st)
-    sd = {k: _tensor(st, h["model.language_model." + k[len("model."):]], base, k in MMAP_KEYS)
-          for k in model.state_dict() if k != "lm_head.weight"}
+    sd = {k: _tensor(st, h["model.language_model." + k[len("model."):]], base, mmap=False)
+          for k in model.state_dict() if k != "lm_head.weight" and k not in MMAP_KEYS}
     missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
+    ple_info = h["model.language_model.embed_tokens_per_layer.weight"]
+    old = model.model.embed_tokens_per_layer
+    model.model.embed_tokens_per_layer = PreadEmbedding(st, base + ple_info["data_offsets"][0], ple_info["shape"],
+                                                        float(old.scalar_embed_scale))
+    missing = [m for m in missing if m not in MMAP_KEYS]
     _drop_page_cache(st)
     model.tie_weights()
     _rebuild_meta_buffers(model, cfg)

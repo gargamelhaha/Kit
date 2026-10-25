@@ -1,0 +1,8 @@
+/tmp/hoplite/workspace/.venv/lib/python3.12/site-packages/huggingface_hub/constants.py:302: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:01,  4.33it/s]Fetching 8 files:  88%|████████▊ | 7/8 [00:01<00:00,  6.48it/s]Fetching 8 files: 100%|██████████| 8/8 [02:31<00:00, 26.63s/it]Fetching 8 files: 100%|██████████| 8/8 [02:31<00:00, 18.99s/it]
+[32m✓ Downloaded[0m
+  path: /tmp/hoplite/workspace/.models/google/gemma-4-E2B
+base exit=0 158s
+76dc84a5a805a2c8b91e9ccc00b8dbf8f4a99bf0d56ab25832f6e6addd4f7f57  .models/google/gemma-4-E2B/model.safetensors

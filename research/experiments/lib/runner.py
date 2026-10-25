@@ -59,6 +59,69 @@ class Runner:
         return hook
 
     @torch.no_grad()
+    def prefix(self, ids, hooks=None, attn="sdpa"):
+        """Run layers 0..first_shared-1 on all positions once; return the state the KV-shared suffix needs.
+        Every intervention at layers >= 15 or on the stored K/V only changes the suffix, so it can be evaluated with
+        suffix() for many conditions without recomputing layers 0-14 (PL-12)."""
+        self.cfg._attn_implementation = attn
+        self._active = dict(hooks or {})
+        tm = self.tm
+        emb = tm.embed_tokens(ids)
+        ple = tm.project_per_layer_inputs(emb, tm.get_per_layer_inputs(ids, emb))
+        pos = torch.arange(ids.shape[1]).unsqueeze(0)
+        mk = dict(config=self.cfg, inputs_embeds=emb, attention_mask=None, past_key_values=None, position_ids=pos)
+        masks = {"full_attention": create_causal_mask(**mk), "sliding_attention": create_sliding_window_causal_mask(**mk)}
+        pe = {lt: tm.rotary_emb(emb, pos, lt) for lt in tm.unique_layer_types}
+        h, shared = emb, {}
+        for i in range(self.first_shared):
+            lt = self.cfg.layer_types[i]
+            fn = self._active.get(("resid_pre", i))
+            if fn is not None:
+                r = fn(h, i); h = h if r is None else r
+            h = tm.layers[i](h, ple[:, :, i, :], shared_kv_states=shared, position_embeddings=pe[lt],
+                             attention_mask=masks[lt], position_ids=pos)
+            fn = self._active.get(("resid_post", i))
+            if fn is not None:
+                r = fn(h, i); h = h if r is None else r
+        self._active = {}
+        return {"h": h[:, -1:].clone(), "shared": {k: tuple(t.clone() for t in v) for k, v in shared.items()},
+                "ple": ple[:, -1:].clone(), "pe": {k: tuple(x[:, -1:] for x in v) for k, v in pe.items()},
+                "masks": {k: (None if v is None else v[..., -1:, :]) for k, v in masks.items()}, "pos": pos, "T": ids.shape[1]}
+
+    @torch.no_grad()
+    def suffix(self, st, n, hooks=None, attn="sdpa", keep_resid=False):
+        """Run layers first_shared..L-1 at the final position for n copies of prefix state `st` (batch rows = conditions).
+        kv_store hooks for layers 13/14 are applied to the (expanded) stored K/V before the suffix runs."""
+        self.cfg._attn_implementation = attn
+        self._active = dict(hooks or {})
+        shared = {}
+        for i in range(self.first_shared):
+            if self.tm.layers[i].self_attn.store_full_length_kv:
+                lt = self.cfg.layer_types[i]
+                kv = tuple(t.expand(n, *t.shape[1:]).clone() for t in st["shared"][lt])
+                fn = self._active.get(("kv_store", i))
+                r = fn(kv, i) if fn is not None else None
+                shared[lt] = kv if r is None else r
+        h, resid = st["h"].expand(n, -1, -1).clone(), []
+        for i in range(self.first_shared, self.L):
+            lt = self.cfg.layer_types[i]
+            fn = self._active.get(("resid_pre", i))
+            if fn is not None:
+                r = fn(h, i); h = h if r is None else r
+            if keep_resid:
+                resid.append(h[:, 0].clone())
+            h = self.tm.layers[i](h, st["ple"][:, :, i, :].expand(n, -1, -1), shared_kv_states=shared,
+                                  position_embeddings=st["pe"][lt], attention_mask=st["masks"][lt], position_ids=st["pos"])
+            fn = self._active.get(("resid_post", i))
+            if fn is not None:
+                r = fn(h, i); h = h if r is None else r
+        self._active = {}
+        out = {"logits": self.unembed(h[:, -1]), "final_h": h}
+        if keep_resid:
+            out["resid"] = resid + [h[:, 0].clone()]
+        return out
+
+    @torch.no_grad()
     def unembed(self, h):
         x, W = self.tm.norm(h).float(), self.model.lm_head.weight
         fw = getattr(self.model, "_fp32_weight", None)  # reuse use_fp32_compute's persistent buffer
