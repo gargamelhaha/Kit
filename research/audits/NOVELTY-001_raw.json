@@ -1,0 +1,365 @@
+[
+ {
+  "source": "LIT03-019",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper describes YOCO's shared KV-cache architecture but does not report factual-recall assays, Gemma models, layer-13/14 KV patching, subject-span effects, or instruction-tuning comparisons.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not analyze block-25 attention, head 0, causal patching, single-layer contributions, or factual-recall logit differences.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT03-019",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "analogous",
+    "explanation": "The paper provides an architectural analogue of KV sharing across upper layers: YOCO produces one global KV cache at the self-decoder/cross-decoder boundary and reuses it in every cross-decoder layer. However, it does not test Gemma factual recall, distinguish two adjacent cache-production layers, perform clean/corrupt KV patching, or report subject-versus-template effects or instruction-tuned/base comparisons.",
+    "quotes": [
+     "First, the output of the self-decoder X L/2 generates global KV caches K̂, V̂ for cross-decoder:",
+     "The KV caches are reused by all the L2 cross-decoder modules:"
+    ],
+    "quote_checks": [
+     "exact",
+     "unverified"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not identify block 25 as a causal contributor, patch individual attention layers or heads, analyze final-query attention over differing subject positions, test redundancy or mean-substitution interventions, or compare causal effects between Gemma base and instruction-tuned checkpoints.",
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT06-005",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper studies cross-layer KV sharing architectures and their throughput/performance in Llama-style models, but it does not report factual-recall mechanistic experiments, Gemma 4 E2B-IT, layer-13 vs layer-14 KV patching, subject-span effects, or base-checkpoint replication.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not analyze block-25 attention, head-0 causal effects, attention patching, or factual-recall logit differences in Gemma 4 E2B-IT or any analogous model; its KV-sharing experiments concern architecture configurations and language-modeling/downstream performance.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT06-005",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper studies architectural configurations for cross-layer KV sharing and evaluates throughput, perplexity, and downstream-task performance. It does not test Gemma 4 E2B factual recall, corrupt-versus-clean KV patching, subject-versus-template positions, or attribute information transport to layer 13 rather than layer 14, including in a base checkpoint.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper contains no factual-recall causal-contribution analysis of individual attention blocks or heads. It does not identify block 25 or head 0 as dominant, compare single-layer and single-head corruption, measure final-position attention over differing prompt positions, or perform leave-one-in mean-substitution and redundancy tests.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT06-016",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper proposes layer-condensed KV caching and evaluates throughput/performance on Llama/TinyLlama-style models. It does not study Gemma 4 E2B-IT, factual recall, layer-13 vs layer-14 stored K/V, KV-shared layers, subject-span positions, or causal patching of clean/corrupt runs.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not analyze block-25 attention, head 0, single-layer or single-head causal contributions, attention to prompt-difference positions, or factual-recall assays. Its layer analysis concerns warmup-layer placement and KV convergence, not causal attribution in Gemma.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT06-016",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "related",
+    "explanation": "The paper studies cross-layer reuse of KVs and finds that upper layers tend to carry semantic information, but it does not perform factual-recall experiments, compare Gemma layer 13 versus layer 14, patch corrupt/clean KVs, or analyze subject versus template positions. Its layer-condensed architecture is only conceptually related to the claim's KV-shared-layer mechanism.",
+    "quotes": [
+     "we pair the queries of all layers with KVs of only the top layer",
+     "It has been previously observed that transformers tend to attend to syntactic information in lower layers and semantic information in higher layers"
+    ],
+    "quote_checks": [
+     "exact",
+     "exact"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "related",
+    "explanation": "The paper discusses attention heads and differences in the functions of upper and lower layers, but it does not conduct causal clean/corrupt contribution patching, identify a dominant layer or head at a final position, measure attention to prompt-difference positions, or test redundancy or backup routes. Thus, it provides only broad mechanistic context rather than the claimed layer-25/head-0 analysis.",
+    "quotes": [
+     "top and bottom layers serve different functionalities (e.g., semantic vs. syntactic)",
+     "Ge et al. (2023) argue that the attention heads could be classified into different types and propose to apply different KV pruning strategies to different types of attention heads."
+    ],
+    "quote_checks": [
+     "unverified",
+     "exact"
+    ]
+   }
+  ]
+ },
+ {
+  "source": "LIT06-012",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper studies YOCO++ cross-layer KV compression and KV residual connections in a TinyLlama-style model; it does not report Gemma factual-recall experiments, layer-13/14 KV patching, subject-span effects, or base-vs-IT comparisons.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not analyze block-25 attention, head-0 causal effects, final-position attention, or single-layer/head patching in factual recall; its attention/KV discussion is architectural and performance-focused.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT06-012",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper does not study Gemma 4, factual recall, subject-span information flow, clean/corrupt prompt pairs, or causal patching of layers 13 and 14. Its discussion of cross-layer KV sharing concerns YOCO/YOCO++ architecture and cache efficiency rather than identifying where subject information enters the final-position output.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not conduct factual-recall causal patching, compare per-layer or per-head attention contributions, analyze final-position attention distributions, or test redundancy/backup routes. It evaluates TinyLlama-based YOCO++ variants using validation loss and commonsense benchmark accuracy, so it does not provide a direct analogue to the claimed block-25 or head-0 findings.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ },
+ {
+  "source": "LIT02-065",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "related",
+    "explanation": "Related but not same/analogous: the paper finds in GPT-2/GPT-J that critical subject information propagates to the final position via attention from subject positions in middle-upper layers, and that the last subject position is critical. It does not study Gemma 4, KV-shared layers, layer-13 vs layer-14 K/V replacement, logit-difference recovery, or base vs IT.",
+    "quotes": [
+     "blocking attention to the subject tokens (solid green lines) in the middle-upper layers causes a dramatic decrease in the prediction probability of up to 60%.",
+     "This suggests that critical information from the subject positions moves directly to the last position at these layers."
+    ],
+    "quote_checks": [
+     "exact",
+     "exact"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "related",
+    "explanation": "Related but not same/analogous: the paper reports that upper MHSA sublayers and attention heads at the final position extract the attribute and can encode subject-attribute mappings. It does not identify block 25, head 0, KV-shared layers, single-layer causal ranking, or Gemma 4.",
+    "quotes": [
+     "attribute extraction is typically carried out by the MHSA sublayers",
+     "the upper MHSA sublayers promote the attribute to the prediction",
+     "the relevant subject-attribute mappings are often stored in the MHSA parameters",
+     "these heads often encode subject-attribute mappings in their parameters"
+    ],
+    "quote_checks": [
+     "exact",
+     "exact",
+     "exact",
+     "exact"
+    ]
+   }
+  ]
+ },
+ {
+  "source": "LIT02-065",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "related",
+    "explanation": "The paper studies the same general mechanism—transfer of subject information to the final prediction position—and identifies the upper-layer subject-to-prediction flow in GPT-2 and GPT-J. However, it does not perform the claimed adjacent-layer KV-cache ablation, distinguish layers 13 and 14, identify layer 13 as the carrier rather than layer 14, or test the effect in Gemma 4. Its attention-edge knockout is therefore only a broad conceptual analogue, not a direct analogue of the specific KV-localization result.",
+    "quotes": [
+     "With interventions on attention edges, we first identify two critical points where information propagates to the prediction: one from the relation positions followed by another from the subject positions.",
+     "The layers at which extraction happens coincide with those where critical subject information propagates to the last position (Fig. 2), which further explains why this information is critical for the prediction."
+    ],
+    "quote_checks": [
+     "exact",
+     "exact"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "analogous",
+    "explanation": "The paper directly reports the broad analogue that the final position extracts the attribute through upper-layer MHSA and that particular attention heads carry subject–attribute mappings. It also shows that extraction depends on subject information and attention to relevant positions. It does not identify block 25 or head 0, rank 20 KV-shared layers by causal contribution, provide the claimed logit-difference statistics, test head interactions, or perform the leave-one-in redundancy test; moreover, its models are GPT-2 and GPT-J rather than Gemma 4.",
+    "quotes": [
+     "Finally, the prediction representation “queries” the enriched subject to extract the attribute.",
+     "Moreover, extraction is performed by attention heads, and our analysis shows that these heads often encode subject-attribute mappings in their parameters.",
+     "For a successful extraction, these sublayers rely on information from both the subject representation and the last position."
+    ],
+    "quote_checks": [
+     "near",
+     "exact",
+     "exact"
+    ]
+   }
+  ]
+ },
+ {
+  "source": "LIT06-022",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "related",
+    "explanation": "The paper studies Mamba-2.8b/Pythia-2.8b, not Gemma 4 E2B-IT, and does not test KV-shared layers, layer-13 vs layer-14 stored K/V, or the base Gemma checkpoint. It does report related factual-recall localization and subject-to-later-token information flow through specific layers.",
+    "quotes": [
+     "specific components within middle layers show strong causal effects at the last token of the subject, while the causal effect of intervening on later layers is most pronounced at the last token of the prompt",
+     "Mamba uses Conv + SSM paths in those layers to propagate critical information from the subject to later tokens."
+    ],
+    "quote_checks": [
+     "exact",
+     "exact"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "related",
+    "explanation": "The paper discusses attention modules at the final token and attention knockout, but it does not identify block 25, head 0, KV-shared layers, or a single-layer/head causal ranking in Gemma 4 E2B-IT or its base checkpoint.",
+    "quotes": [
+     "attention modules perform a query on the enriched s to extract the answer to the prompt x = (s, r)",
+     "These findings align with how factual information flows through attention modules in autoregressive transformer LMs, as observed by Geva et al. (2023) in GPT."
+    ],
+    "quote_checks": [
+     "near",
+     "exact"
+    ]
+   }
+  ]
+ },
+ {
+  "source": "LIT06-022",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "analogous",
+    "explanation": "The paper reports the analogous architectural pattern in Mamba: middle-layer components have strong causal effects at the subject's last token, while later layers are most causally important at the final prompt token. This is conceptually analogous to subject information being routed to the answer position through a particular middle-layer mechanism. However, the paper does not test Gemma 4, transformer K/V caches, layers 13 versus 14, instruction versus base checkpoints, or the reported recovery ratios and confidence intervals.",
+    "quotes": [
+     "specific components within middle layers show strong causal effects at the last token of the subject, while the causal effect of intervening on later layers is most pronounced at the last token of the prompt",
+     "The high IE observed at the late site (later layers at the last token) position is natural, as restoring a clean hi there will restore most of the model computation from G."
+    ],
+    "quote_checks": [
+     "exact",
+     "near"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "analogous",
+    "explanation": "In Mamba, the paper identifies localized causal contributors, with the strongest mediation at the late site corresponding to the final prompt position. It also identifies a dominant component within that site, making this a high-level analogue of a particularly important late block. It does not report transformer attention-block or head-level patching, block 25, head 0, attention weights, single-layer sufficiency/corruption scores, mean-substitution redundancy tests, or Gemma-specific quantitative results.",
+    "quotes": [
+     "Taken together (a) and (b) show a clear separation roles between early-mid and later layers in Mamba-2.8b.",
+     "At the early site at the subject last token, both the Conv + SSM and Wg have a strong role, but Wo plays an even larger role than either. Yet the strongest mediator at the late site is also Wo."
+    ],
+    "quote_checks": [
+     "exact",
+     "near"
+    ]
+   }
+  ]
+ },
+ {
+  "source": "LIT06-023",
+  "model": "deepseek",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "related",
+    "explanation": "The paper studies subject-token information flow to the final token in Mamba and Transformer models via attention knockout, but it does not test Gemma 4 E2B-IT, KV-shared layers, or layer-13 vs layer-14 stored K/V. Thus it is related to the broad subject-to-final-position flow, not a direct analogue of the specific K/V layer claim.",
+    "quotes": [
+     "Across all models, inhibiting the final token’s attention to subject tokens in late-intermediate layers consistently causes a notable drop in correct-token probability",
+     "all models show a reliance on direct information flow from the subject tokens to the last token in the late-intermediate layers."
+    ],
+    "quote_checks": [
+     "near",
+     "exact"
+    ]
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "related",
+    "explanation": "The paper reports layer-wise attention-knockout effects and late-intermediate subject-to-final-token flow, but it does not identify block 25 as a single-layer causal contributor among KV-shared layers, nor does it report head 0 or the specific sufficiency/corruption metrics in Gemma 4 E2B-IT.",
+    "quotes": [
+     "Intuitively, critical attention connections are those whose disruption results in a marked decline in prediction quality.",
+     "factual predictions are constructed in stages, with essential information reaching the prediction position at specific layers during inference."
+    ],
+    "quote_checks": [
+     "exact",
+     "exact"
+    ]
+   }
+  ]
+ },
+ {
+  "source": "LIT06-023",
+  "model": "minimax",
+  "per_claim": [
+   {
+    "claim": "K-0006",
+    "overlap": "none",
+    "explanation": "The paper does not examine Gemma 4, layer-13 versus layer-14 KV caches, clean/corrupt KV patching, logit-difference recovery, subject/template position decomposition, or instruction-tuned versus base checkpoints. Its token-to-token attention-knockout experiments on Mamba and GPT-2 are methodologically related but do not constitute a direct analogue of the specified KV-storage claim.",
+    "quotes": [],
+    "quote_checks": []
+   },
+   {
+    "claim": "K-0007",
+    "overlap": "none",
+    "explanation": "The paper does not analyze Gemma 4 block 25, compare 20 KV-shared layers, patch individual attention contributions, test attention heads 0–7, measure final-query attention over differing positions, or perform leave-one-in mean replacement. Its factual-recall knockout analysis concerns token sources and broader layer windows, not the layer- and head-specific causal claims asserted here.",
+    "quotes": [],
+    "quote_checks": []
+   }
+  ]
+ }
+]

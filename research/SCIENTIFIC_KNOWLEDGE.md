@@ -133,12 +133,12 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/lib/runner.py`, `experiments/E006_kv_route/result_base.json`, `experiments/E006_kv_route/analysis_base.json`
 
-**Audit.** `audits/AUDIT-002.md`
+**Audit.** `audits/AUDIT-002.md`, `audits/NOVELTY-001.md`
 
-**Uncertainty / limits.** Two templates/relations only; short prompts; IT checkpoint only; R1 held-out pairs share subjects with in-sample pairs. Layer-14 K/V may matter for other tasks or beyond the sliding window (H-011).
+**Uncertainty / limits.** Two templates/relations only; short prompts; IT checkpoint only; R1 held-out pairs share subjects with in-sample pairs. Layer-14 K/V may matter for other tasks or beyond the sliding window (H-011). Novelty (NOVELTY-001, 7 full-text sources): no source reports the same result; analogues: Geva et al. 2023 attribute extraction by attention heads (LIT02-065), ROME-in-Mamba two-site pattern (LIT06-022), YOCO shared global KV (LIT03-019).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008); 2026-10-25: cycle 3: transfer to base checkpoint added (same lab code: not an independent replication)
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-008); 2026-10-25: cycle 3: transfer to base checkpoint added (same lab code: not an independent replication); 2026-10-25: NOVELTY-001 added
 
 ## K-0007 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
@@ -159,12 +159,12 @@ checks; REFUTED / INCONCLUSIVE as named.
 
 **Artifacts.** `experiments/E006_kv_route/PREREG.md`, `experiments/E006_kv_route/run.py`, `experiments/E006_kv_route/result_it.json`, `experiments/E006_kv_route/analysis.json`, `experiments/E006b_route_controls/PREREG.md`, `experiments/E006b_route_controls/run.py`, `experiments/E006b_route_controls/result_it.json`, `experiments/E006b_route_controls/analysis.json`, `experiments/E006_kv_route/analysis_base.json`
 
-**Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-003.md`
+**Audit.** `audits/AUDIT-002.md`, `audits/AUDIT-003.md`, `audits/NOVELTY-001.md`
 
-**Uncertainty / limits.** AUDIT-003: E006b captured reference vectors with eager attention but ran patched conditions with SDPA (numerical mismatch expected ~1e-5, to be quantified in E006c); 'subject span' = token positions differing between paired prompts, not verified subject offsets; mean ablation was leave-one-in and not norm-matched; bootstrap clustering by subject only. Head-level results exploratory. Two relations, short templates, IT checkpoint (base replication running in cycle 3).
+**Uncertainty / limits.** AUDIT-003: E006b captured reference vectors with eager attention but ran patched conditions with SDPA (numerical mismatch expected ~1e-5, to be quantified in E006c); 'subject span' = token positions differing between paired prompts, not verified subject offsets; mean ablation was leave-one-in and not norm-matched; bootstrap clustering by subject only. Head-level results exploratory. Two relations, short templates, IT checkpoint (base replication running in cycle 3). Novelty (NOVELTY-001, 7 full-text sources): no source reports the same result; analogues: Geva et al. 2023 attribute extraction by attention heads (LIT02-065), ROME-in-Mamba two-site pattern (LIT06-022), YOCO shared global KV (LIT03-019).
 
 **Last verified.** 2026-10-25  
-**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c; 2026-10-25: cycle 3: base-checkpoint transfer added
+**History.** 2026-10-25: created from E006 after AUDIT-002 (from H-009); 2026-10-25: E006b: added head-level + specificity evidence; withdrew 'necessary' reading of noising after mean-ablation control failed (Q3); 2026-10-25: AUDIT-003: narrowed wording ('largest single-layer contributor in this assay', head result exploratory, mean ablation caveats); methodological fixes scheduled in E006c; 2026-10-25: cycle 3: base-checkpoint transfer added; 2026-10-25: NOVELTY-001 added
 
 ## K-0008 — EXPERIMENTALLY_SUPPORTED (experimental_observation)
 
