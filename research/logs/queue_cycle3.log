@@ -23,3 +23,4 @@
 [2026-10-25T14:35:03Z] start E007c_generate_modes variant=it
 [2026-10-25T14:35:04Z] start E009_reliability variant=base
 [2026-10-25T14:49:23Z] start E010_quant_quality variant=it
+[2026-10-25T14:50:10Z] start E006d_early_route variant=it
