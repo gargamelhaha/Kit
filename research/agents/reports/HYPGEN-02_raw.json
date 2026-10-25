@@ -1,0 +1,244 @@
+{
+ "deepseek": [
+  {
+   "area": "mechanism: why one layer (25) and one head (0) among 20 KV-shared layers; what computes the late-attention-independent half",
+   "statement": "Layer 25 and head 25.0 dominate because layer 25 uniquely combines a high-gain PLE gate that re-injects subject token identity into the final-position residual with a double-wide MLP whose final-position output is aligned with the answer direction; head 25.0 is the only head whose q/k RMSNorm-normalized final query has high attention mass on the subject span. The late-attention-independent half is computed by the per-position MLP/PLE path in KV-shared layers 26-34, not by a backup attention route.",
+   "why_plausible": "K-0007 shows block 25 is the largest single-layer contributor, head 25.0 is the strongest head, and mean-ablating all 20 KV-shared attention layers still retains 0.46; K-0006 localizes subject information to layer-13 K/V; H-006 proposes PLE token-identity re-injection; H-016 is the competing early/late-attention account of the late-independent half.",
+   "competing_explanations": [
+    "Layer 25 is a depth/scale artifact: layer_scalar and residual norm make it look dominant without a special PLE/MLP mechanism.",
+    "Head 25.0 is just the largest-norm or highest-entropy head and attends to high-frequency template tokens rather than subject content.",
+    "The late-attention-independent half is early-layer attention (H-016) or layer-14 full K/V backup, not MLP/PLE readout in layers 26-34."
+   ],
+   "discriminating_experiment": "On held-out factual pairs, use Runner hooks at the final position to patch clean-vs-corrupt mlp_out and ple_out for each KV-shared layer 15-34, and attn_out/head_in for head 25.0. Then mean-ablate all 20 KV-shared attention layers at the final position as in E006c and patch mlp_out/ple_out at layers 26-34 from clean to corrupt to test recovery of the remaining half.",
+   "numeric_prediction": {
+    "supports": "Layer-25 mlp_out patch recovers >=0.5 and is top-2 among KV-shared layers; PLE_out at layers 25-34 recovers >=0.3; after all late attention is mean-ablated, mlp_out/ple_out patch recovers >=0.3 of the remaining effect; head-25.0 attn_out recovers >=0.6.",
+    "refutes": "Layer-25 mlp_out or PLE_out effects are <0.1, layer 25 is not top-5 among KV-shared layers, or late MLP/PLE patch recovers <0.1 after late attention ablation."
+   },
+   "cost_hours_cpu": 12,
+   "value": 5,
+   "novelty_risk": "MLP factual-recall and PLE mechanisms are studied in other models, but the specific layer-25/head-25.0 PLE+double-wide-MLP account in Gemma 4 E2B is not established."
+  },
+  {
+   "area": "IT vs base: late-block answer-form shift (H-017) and what instruction tuning changed in the circuit",
+   "statement": "Instruction tuning changes the late-block readout, not the layer-13 K/V subject representation: IT's final layers 29-34 MLP outputs and PLE gates upweight chat-format tokens such as ' **' or first names relative to the factual token, while base's same layers do not. Patching base mlp_out/ple_out into IT at layers 29-34 reduces answer-form errors and increases factual first-token accuracy; patching IT into base induces formatting errors.",
+   "why_plausible": "K-0006 shows the layer-13 K/V subject route is present in base as well as IT; K-0007 shows block 25/head 25.0 dominance in both checkpoints; H-017 proposes a late-block answer-form shift; K-0010 notes the late-layer accuracy drop is partly an answer-form effect.",
+   "competing_explanations": [
+    "IT changes early subject extraction or layer-13 K/V content, so the circuit difference is upstream rather than in late readout.",
+    "The answer-form shift is caused by tokenizer/chat-template or BOS handling rather than learned weights.",
+    "The shift is due to final logit softcap or layer_scalar differences, not late MLP/PLE outputs."
+   ],
+   "discriminating_experiment": "Run IT and base on the same raw BOS-prefixed factset_v1 prompts. Use Runner hooks to cross-patch base->IT and IT->base mlp_out, ple_out, and attn_out at layers 26-34 at the final position, and separately patch layer-13 kv_store. Measure exact factual-token accuracy, formatting-token rate, and factual-vs-top-format logit margin.",
+   "numeric_prediction": {
+    "supports": "Base->IT mlp/ple patch at layers 29-34 reduces IT formatting rate by >=30% relative and increases factual accuracy by >=5 pp; layer-13 KV patch changes factual logit difference by >=0.8 but changes formatting rate by <10%.",
+    "refutes": "Layer-13 KV patch changes formatting rate by >=30%, or late MLP/PLE cross-patching changes factual accuracy by <2 pp."
+   },
+   "cost_hours_cpu": 10,
+   "value": 5,
+   "novelty_risk": "Instruction-tuning formatting effects are known, but the specific late-block MLP/PLE localization in Gemma 4 E2B and separation from layer-13 K/V is not established."
+  },
+  {
+   "area": "efficiency without quality loss: prefill/decode/memory on CPU for this architecture (each proposal MUST include a cost model showing the saving is physically possible, e.g. decode already processes one position)",
+   "statement": "A decode implementation that caches K/V only for layers 0-14 and recomputes layers 15-34 final-position queries from the shared layer-13/14 K/V will match full-cache logits within 1e-4 and save 57% KV-cache memory (49,152 bytes/token) and >=20% decode time at 512-token context on CPU. Cost model: naive 35-layer cache per token = 28 sliding layers * 2*1*256*4 B + 7 full layers * 2*1*512*4 B = 86,016 B; shared-only cache = 12 sliding * 2,048 B + 3 full * 4,096 B = 36,864 B; saving = 49,152 B/token (57.1%). Decode already processes one position, so layers 15-34 need only one query per layer and no new K/V writes; the saved memory is physically possible because those layers have no k/v projections and read shared K/V (K-0001, K-0006).",
+   "why_plausible": "K-0001 shows non-final positions after layer 14 are causally inert for final-position outputs; K-0002 shows last_only_from=15 is exact for final-position logits; K-0008 shows prefill skipping works; the architecture facts state layers 15-34 have no k/v projections and reuse layer-13/14 K/V.",
+   "competing_explanations": [
+    "HF allocates unused k/v tensors for layers 15-34, so memory is not saved without a custom cache implementation.",
+    "Recomputing 20 layers' final-position queries costs more than the saved memory bandwidth, so decode is not faster.",
+    "The sliding window already caps memory at long context, so the practical saving is small."
+   ],
+   "discriminating_experiment": "Implement a custom decode cache in Runner/HF that stores K/V only for layers 0-14; at each decode step run layers 0-14 normally, then run layers 15-34 with last_only_from=15 using the shared K/V. Compare logits to full HF cache for 128 generated tokens at contexts 64, 512, and 1024; measure peak RSS and tokens/s.",
+   "numeric_prediction": {
+    "supports": "Max |Δlogit| <=1e-4, peak RSS reduction >=40% at 512-token context, and decode speed >=1.2x.",
+    "refutes": "Max |Δlogit| >1e-3, peak RSS reduction <20%, or decode speed <1.05x."
+   },
+   "cost_hours_cpu": 8,
+   "value": 4,
+   "novelty_risk": "YOCO (LIT03-019) and KV-sharing prior art cover the principle; the specific Gemma 4 E2B CPU decode-cache measurement is not published."
+  },
+  {
+   "area": "reliability: knowing when the model is wrong, with metrics robust to answer-form artefacts",
+   "statement": "Answer-form-robust error detection is possible by decomposing final-position errors into knowledge errors, where the factual token is never top-1 at residual indices 20-34, and answer-form errors, where the factual token is top-1 at some index 20-34 but a formatting token wins at the final output. A late-block factual-vs-format margin (factual logit at the best intermediate index minus final top formatting logit) detects answer-form errors with AUROC >=0.8 and knowledge errors with AUROC >=0.7, outperforming final softmax confidence on the answer-form-robust correctness label.",
+   "why_plausible": "K-0010 reports 151/480 errors had the target top-1 at some index 20-34; H-017 proposes a late-block answer-form shift; H-018 found internal stability signals inconclusive partly because the metric mixes answer form; K-0009 shows DoLa-style contrast did not improve first-token accuracy.",
+   "competing_explanations": [
+    "Late-layer formatting is just noise and intermediate top-1 is an unreliable signal.",
+    "Final softmax confidence already captures both knowledge and answer-form errors.",
+    "Relation clusters drive apparent error-detection signal rather than a real late-block margin."
+   ],
+   "discriminating_experiment": "Use existing E009 factset_v1 IT residuals/logit-lens outputs. Define exact first-token correctness and answer-form-robust correctness (factual token top-1 at any residual index 20-34). Compute final softmax confidence, max intermediate factual probability, factual-vs-format margin, and first factual-top-1 layer; evaluate AUROC with relation-clustered bootstrap.",
+   "numeric_prediction": {
+    "supports": "Answer-form error AUROC >=0.8, knowledge error AUROC >=0.7, and selective accuracy at 20% coverage on robust correctness is >=5 pp above exact-label selective accuracy.",
+    "refutes": "AUROC <=0.6 for either error type, or relation-clustered CI includes 0.5."
+   },
+   "cost_hours_cpu": 6,
+   "value": 5,
+   "novelty_risk": "Answer-form/formatting errors and logit-lens error detection are known; the specific decomposition into knowledge vs answer-form errors in Gemma 4 E2B is not established."
+  },
+  {
+   "area": "transfer of mechanisms to other architectures (MoE, SSM/Mamba, MLA, sliding-window/KV-sharing models) testable on CPU with small public models",
+   "statement": "The shared-state write/read invariant transfers: in any small public architecture with cross-position shared state (KV-sharing/sliding-window, MLA latent cache, or SSM/Mamba state), the earliest layer whose state is shared by later layers carries subject information, and the latest shared-reader layer with the largest attention/state-read entropy drop extracts it. In MoE models the extraction is routed through a small number of experts rather than a single head. This predicts that patching the shared state at the first shared layer recovers >=0.8 of the factual logit difference in KV-sharing/MLA models, and patching the analogous SSM state at the same relative depth recovers >=0.5 in Mamba.",
+   "why_plausible": "K-0006 localizes subject information to layer-13 shared K/V; K-0007 localizes extraction to block 25/head 25.0; H-011 asks about sliding-window rerouting; H-013 asks whether in-context associations share the parametric route; K-0006 novelty notes ROME-in-Mamba two-site pattern (LIT06-022) and YOCO shared global KV (LIT03-019).",
+   "competing_explanations": [
+    "The route is Gemma-specific because of PLE and double-wide MLPs, so it will not transfer.",
+    "SSM/Mamba has no attention head, so there is no analogous extraction site and the invariant fails.",
+    "Layer depth alone explains the effect, not cross-position state sharing."
+   ],
+   "discriminating_experiment": "Use small public CPU models of each class that fit 8 GiB fp32 (<=1B parameters): one KV-sharing/sliding-window model, one MLA model, one Mamba/SSM model, and one small MoE model. Run the same two-relation factual prompts with subject-cluster patching: replace shared state at the first shared layer and at the late reader layer; for MoE also ablate the top experts.",
+   "numeric_prediction": {
+    "supports": "KV-sharing/MLA shared-state patch recovery >=0.8 and late-reader patch >=0.5; Mamba state patch >=0.5; MoE top-expert ablation reduces recovery by >=50%.",
+    "refutes": "All cross-architecture recoveries <=0.2, or only the Gemma checkpoint shows the effect."
+   },
+   "cost_hours_cpu": 24,
+   "value": 5,
+   "novelty_risk": "ROME-in-Mamba (LIT06-022), YOCO (LIT03-019), and attribute-extraction work (LIT02-065) cover analogues; a cross-architecture shared-state invariant is not established."
+  },
+  {
+   "area": "knowledge editing/forgetting localized to the layer-13 K/V subject representation",
+   "statement": "Knowledge editing/forgetting localized to layer-13 K/V subject representation is composable and specific: replacing the layer-13 K/V at the subject span with a counterfactual subject changes the target fact's logit difference by >=0.8 and leaves unrelated facts within 0.1; zeroing or mean-ablating that subject-span K/V reduces the target fact by >=0.7 while preserving template/format and other subjects. Layer-14 K/V edits and late MLP edits produce smaller target effects or larger collateral.",
+   "why_plausible": "K-0006 shows layer-13 K/V recovers 0.986 of the logit difference vs 0.017 for layer 14; K-0007 shows head 25.0 attends to the subject span; H-012 proposes multi-token subject information is spread over the subject span; H-006 warns that PLE token-identity re-injection may provide a backup.",
+   "competing_explanations": [
+    "Edits leak through layer-14 full K/V or PLE token identity, so layer-13 K/V editing is not specific.",
+    "MLP stores a backup copy, so K/V ablation is not sufficient for forgetting.",
+    "Multi-token subjects require distributed edits and are not composable."
+   ],
+   "discriminating_experiment": "Use E006 held-out pairs plus a new multi-token subject set. With kv_store hooks, replace layer-13 subject-span K/V with a counterfactual, do the same at layer 14, zero/mean-ablate layer-13 subject K/V, and combine two subject edits in one forward. Measure target logit-difference recovery, collateral on 20 unrelated facts, and format-token rate.",
+   "numeric_prediction": {
+    "supports": "Layer-13 edit target recovery >=0.8, collateral <=0.1, two-edit composition error <=10%; layer-14 recovery <=0.2.",
+    "refutes": "Layer-13 recovery <0.5, collateral >0.3, or PLE patch restores >0.5 after K/V ablation."
+   },
+   "cost_hours_cpu": 12,
+   "value": 5,
+   "novelty_risk": "ROME/MEMIT and KV-cache editing are prior art; the specific layer-13 shared-K/V localization and composability in Gemma 4 E2B are not established."
+  },
+  {
+   "area": "a radically new discovery principle (not enumerating hypotheses) that can be tested on existing data first",
+   "statement": "Discovery principle: shared-state intervention aliasing. For KV-shared architectures, two interventions are causally equivalent downstream iff they produce the same delta in the shared K/V state at layers 13/14 and the same final-position query state; therefore circuits can be discovered by hashing shared-state deltas and clustering interventions, rather than enumerating layer/head hypotheses. Test on existing E006/E006b/E006c data first: cluster all patching conditions by their layer-13/14 K/V delta and final-query delta; predict that within-cluster logit recovery variance is <0.05 and between-cluster separation >0.2.",
+   "why_plausible": "K-0001 shows non-final positions after layer 14 are causally inert for final-position outputs; K-0006 localizes the subject route to layer-13 K/V; K-0007 localizes extraction to block 25/head 25.0; H-001 states cross-position information reaching the final position is carried by layer-13/14 K/V; H-016 is the competing late-independent-half account.",
+   "competing_explanations": [
+    "Downstream MLP/PLE and layer_scalar make the same K/V delta insufficient, so aliasing fails.",
+    "Attention-head interactions create many equivalence classes, not a small set.",
+    "The clustering is trivial because clean and corrupt conditions differ in many dimensions."
+   ],
+   "discriminating_experiment": "Use existing E006/E006b/E006c result files and Runner to recompute shared K/V deltas for each condition (clean, corrupt, KV13, KV14, ATTN25, HEAD25_0, mean/zero ablations). Compute delta vectors at layers 13/14 and the final query at layer 25; cluster by cosine distance; compare within-cluster and between-cluster logit recovery.",
+   "numeric_prediction": {
+    "supports": "<=3 clusters explain >=80% of recovery variance, within-cluster recovery SD <0.05, and between-cluster separation >0.2.",
+    "refutes": "Within-cluster recovery SD >0.15, or conditions with the same K/V delta differ in recovery by >0.2."
+   },
+   "cost_hours_cpu": 4,
+   "value": 5,
+   "novelty_risk": "Causal abstraction and equivalence classes are prior art; the specific shared-state aliasing principle for KV-shared transformers is not established."
+  }
+ ],
+ "minimax": [
+  {
+   "area": "mechanism: why one layer (25) and one head (0) among 20 KV-shared layers; what computes the late-attention-independent half",
+   "statement": "Block 25 head 0 is a phase-aligned subject decoder: its final-position query is the first late-layer query to selectively match subject-token keys stored from layer 13, while the double-wide MLPs in blocks 26-34 transform evidence already present in the final-position residual into answer form. Thus the late-attention-independent remainder is early-routed evidence processed by late MLPs, rather than a second KV-reading route.",
+   "why_plausible": "K-0007 identifies block 25 as the largest single-layer contributor and head 25.0 as the strongest head, while mean-ablation of all 20 late attention layers still retains about half the effect. K-0006 places the relevant cross-position substrate in layer-13 K/V, and K-0005 places answer emergence around residual indices 26-34, consistent with a late MLP readout stage. This hypothesis extends H-009/H-010 by proposing temporal phase alignment as the reason for the layer/head concentration and extending H-016 by assigning a computation to the independent remainder.",
+   "competing_explanations": [
+    "Layer 25 head 0 is a generic retrieval head whose subject selectivity is incidental to the particular factual templates.",
+    "The apparent layer/head concentration reflects a small-sample or high-variance effect rather than a reproducible phase-alignment boundary.",
+    "The late-attention-independent remainder is encoded primarily by PLE injection or late residual scaling rather than late MLP transformation.",
+    "Another KV-shared layer contains a comparable redundant subject reader that the aggregate controls failed to resolve."
+   ],
+   "discriminating_experiment": "For each held-out corrupt/clean pair, collect attention probabilities for all eight heads in blocks 15-34 and compute, at every layer, the subject-minus-template attention margin at the final query. Then patch layer-13 subject-position V independently at layers 25, 26, 27, and 28 while holding K fixed, and separately patch or zero the corresponding MLP outputs. Test whether the first large subject-attention margin and the first strong V-only recovery coincide at block 25. Finally, after ablating all late final-query attention, compare factual-token and formatting-token logits with late MLP outputs intact versus replaced by norm-matched means.",
+   "numeric_prediction": "Support requires block 25 head 0 to be the first layer-head with a held-out subject-minus-template attention margin of at least 0.50, a V-only recovery median of at least 0.70, and recovery of at most 0.30 in every other block. After all late attention is ablated, late-MLP mean ablation should reduce the factual logit difference by no more than 0.10 but reduce the probability of IT formatting tokens by at least 50%. Refutation is a first-crossing layer earlier or later than 25, another head with comparable recovery, or a late-MLP ablation that changes factual recovery by more than 0.20.",
+   "cost_hours_cpu": 24,
+   "value": 5,
+   "novelty_risk": "This risks being a task-specific extension of known attention-head attribution and ROME-style two-site analyses. Unlike H-009/H-010, its distinctive claim is the quantitative phase-alignment boundary and the explicit late-MLP readout account of the independent remainder."
+  },
+  {
+   "area": "IT vs base: late-block answer-form shift (H-017) and what instruction tuning changed in the circuit",
+   "statement": "Instruction tuning primarily altered the late PLE-gated MLP pathway that formats an already retrieved answer, rather than the layer-13-to-block-25 subject-retrieval pathway. Consequently, suppressing late PLE injection in IT should move output toward the base model's factual-token form while leaving layer-25 subject extraction largely intact.",
+   "why_plausible": "H-017 proposes an IT-specific late answer-form shift. K-0006 finds the same layer-13 subject K/V route in IT and base, and K-0007 finds the same dominant block 25 and head 25.0 in base and IT. The double-wide MLP and per-layer PLE begin at the KV-shared boundary, providing a plausible architecture-specific locus for IT formatting changes without changing the earlier retrieval substrate.",
+   "competing_explanations": [
+    "The IT/base difference is concentrated in the late residual stream or layer scaling rather than PLE injection.",
+    "IT changes the layer-25 reader itself, with the similar block/head location arising from a different learned computation.",
+    "The apparent IT formatting shift is mainly caused by different chat-template or BOS handling rather than instruction tuning of model weights.",
+    "Late MLPs format the answer, but PLE is merely correlated with formatting rather than causally responsible."
+   ],
+   "discetermining_experiment": "Run matched raw-completion and chat-template prompts in both checkpoints. In IT, ablate PLE outputs separately in blocks 15-24, 25, and 26-34 using norm-matched zero or mean replacements, then measure the logit probability of factual answer aliases versus formatting tokens such as ' **'. In both checkpoints, patch layer-13 subject K/V and block-25 head-0 outputs to quantify retrieval independently. If the format shift is PLE-mediated, the late-PLE intervention should move IT output probabilities toward base while causing little change in clean-block-25 recovery.",
+   "numeric_prediction": "Support requires late-block PLE ablation in IT to reduce the formatting-token probability by at least 50%, change the factual-token probability by less than 10%, and move the formatting-token logit gap relative to base by at least 50% toward base. Clean layer-13 K/V recovery and block-25/head-0 recovery must remain within 0.10 of their unablated IT values. Refutation is a formatting reduction below 20%, a factual-token change above 20%, or a base/IT recovery difference after late-PLE ablation that remains above 0.20.",
+   "cost_hours_cpu": 20,
+   "value": 5,
+   "novelty_risk": "Prior work on instruction tuning and PLE may already attribute formatting to late layers. The novel claim is the causal decomposition separating an IT-modified late PLE/MLP formatter from the base-preserved layer-13/block-25 factual route."
+  },
+  {
+   "area": "efficiency without quality loss: prefill/decode/memory on CPU for this architecture (each proposal MUST include a cost model showing the saving is physically possible, e.g. decode already processes one position)",
+   "statement": "The 4.7 GB per-layer embedding lookup table can be replaced by exact, memory-mapped, row-sliced access without changing model outputs: retain only the PLE rows for token IDs present in the prompt or generated cache, while preserving the existing PLE projection and gate.",
+   "why_plausible": "The architecture specifies a 262144 x (35 x 256) PLE table totaling 4.7 GB, but each forward pass uses only rows indexed by input token IDs. K-0003 shows that tokenization and BOS handling can materially change outputs, so the optimization must preserve the exact token-ID-to-row mapping rather than re-tokenize or approximate it. The proposed change is exact because it retrieves the same stored vectors and uses the unchanged projection, gate, normalization, and addition.",
+   "competing_explanations": [
+    "The complete PLE table must remain resident because every layer samples a different vocabulary distribution or because safe-tensor row slicing cannot preserve exact tensor layout.",
+    "Memory-mapped pages will be brought wholesale into residency, eliminating the expected RSS saving.",
+    "I/O and page-fault latency will erase the CPU time saving or make generation substantially slower.",
+    "Most of the apparent 4.7 GB cost is model weights other than PLE, so removing PLE residency cannot lower total RSS by the predicted amount."
+   ],
+   "discetermining_experiment": "Implement a runner variant that loads the PLE tensor through a read-only memory map or safe-tensor row slice, caches rows by token ID, and replaces the ordinary embedding lookup. Compare logits and top-10 tokens against the unmodified runner for 12-30 token prompts and for iterative decode with KV cache. Measure peak RSS, page-fault count, prefill latency, per-token decode latency, and resident PLE bytes at lengths 32, 128, and 1024.",
+   "numeric_prediction": "Cost model: the full fp32 PLE footprint is 262144 x 35 x 256 x 4 = 9.40 GB, while the checkpoint's two-byte representation is 4.70 GB. Exact cached rows require n x 35 x 256 x 2 bytes: 0.56 MB at n=32, 2.25 MB at n=128, 18.35 MB at n=1024, and decode adds only 17,920 bytes per new token. Support requires max absolute logit difference no greater than 1e-4, identical top-10 sets, peak-RSS reduction of at least 3.5 GB for a 32-token prompt, and prefill/decode overhead below 10%. Refutation is a logit difference above 1e-3, top-10 disagreement, less than 1 GB RSS reduction, or median overhead above 20%.",
+   "cost_hours_cpu": 32,
+   "value": 4,
+   "novelty_risk": "Lazy embedding storage and memory-mapped parameter loading are standard systems techniques, so the contribution is architecture-specific feasibility and measurement rather than a new general mechanism. This does not duplicate H-001/H-008 or K-0008, which concern skipping inert late computation rather than PLE residency."
+  },
+  {
+   "area": "reliability: knowing when the model is wrong, with metrics robust to answer-form artefacts",
+   "statement": "The routing fidelity of head 25.0 to the subject span, rather than output softmax confidence, predicts semantic factual correctness when correctness is scored independently of answer form. Models that route little probability to the relevant subject token should be flagged as unreliable even when their output distribution is confident.",
+   "why_plausible": "K-0007 shows that head 25.0 concentrates attention on subject-token positions and that corrupting it selectively damages factual recall. H-018 found only inconclusive evidence for generic internal stability signals and explicitly noted contamination by answer form. A circuit-specific routing-fidelity signal could detect failure before the answer token is formed, while multi-template answer-set matching can remove formatting confounds.",
+   "competing_explanations": [
+    "Subject attention mass is high for both correct and incorrect answers and carries no incremental reliability information.",
+    "Any apparent predictive power is caused by relation or answer-length imbalance rather than subject routing.",
+    "The signal merely proxies for output confidence after conditioning on the answer token.",
+    "Layer-25 routing is specific to the tested single-token factual format and will not generalize to paraphrases or multi-token answers."
+   ],
+   "disceterminating_experiment": "Build a balanced reliability set from multiple raw-completion templates and paraphrases. Canonicalize each item to an answer-alias set, and score correctness by exact alias membership rather than by first-token identity or formatting markers. For every item, extract head-25.0 attention mass on verified subject positions, maximum attention to any subject token, subject-to-template margin, output entropy, and top-1 margin. Fit thresholds on one split and evaluate AUROC, Brier score, and risk-coverage curves on relation-clustered held-out data. Compare with confidence-only and length-only baselines, and repeat with attention mass causally corrupted.",
+   "numeric_prediction": "Support requires the routing signal to improve held-out semantic-error AUROC over output confidence by at least 0.05, improve Brier score by at least 0.02, and retain an AUROC of at least 0.65 after relation-clustered cross-validation. At a 20% false-alarm rate, it should flag at least 30% more semantic errors than confidence. Refutation is an AUROC gain of at most 0.01, a Brier change of less than 0.01, or loss of predictive power when answer-form tokens are excluded.",
+   "cost_hours_cpu": 28,
+   "value": 4,
+   "novelty_risk": "Attention-based confidence and probe-based uncertainty are broadly studied. The novelty is the specific, circuit-grounded subject-routing signal and an answer-form-controlled evaluation; H-018 only tested generic internal stability signals."
+  },
+  {
+   "area": "transfer of mechanisms to other architectures (MoE, SSM/Mamba, MLA, sliding-window/KV-sharing models) testable on CPU with small public models",
+   "statement": "The transferable principle is not a fixed layer number or head index but localization at a change in the model's memory interface: factual evidence is written at the last layer or module that can alter shared state, and a later reader extracts it. KV-sharing, MLA, and SSM/Mamba models should therefore show causal subject recovery concentrated at their memory-write boundary, whereas a conventional MoE without a distinguished shared-state boundary should not show one dominant layer analogous to layer 25.",
+   "why_plausible": "K-0006 and K-0007 show that the Gemma mechanism is tied to a specific memory-writing boundary at layer 13/14 and a reader at layer 25, not merely to absolute depth. K-0001 explains why all later layers act per position. K-0006 mentions ROME-in-Mamba as an analogue and YOCO-style shared KV as prior art, while H-014 concerns low-rank effect structure rather than cross-architecture boundary transfer.",
+   "competing_explanations": [
+    "Layer 25/head 0 is a Gemma-specific coincidence and no localized reader exists in the other architectures.",
+    "All architectures localize factual retrieval in an absolute depth region because answer formation intrinsically occurs late, regardless of memory design.",
+    "The apparent Gemma localization is an artifact of counterfactual subject swapping rather than a general property of factual recall.",
+    "MoE expert routing, SSM state updates, and compressed KV caches implement fundamentally different retrieval mechanisms that cannot be compared by causal patch recovery."
+   ],
+   "discetermining_experiment": "For CPU-sized public variants of each architecture, construct a small synthetic associative-recall set with known subject and answer spans and equal-length corruptions. Locate the last module that writes or updates persistent state: shared K/V or compressed KV for KV-sharing/MLA, recurrent state for SSM/Mamba, and all attention K/V writers for MoE. Patch or corrupt only the subject representation at that boundary, then measure final-answer recovery while ablating candidate reader modules. Preregister that KV-sharing, MLA, and SSM/Mamba should have a concentrated boundary-local effect, while MoE serves as a boundary-diversity control.",
+   "numeric_prediction": "Support requires, in each KV-sharing, MLA, and SSM/Mamba model, median recovery of at least 0.60 from the identified memory-boundary patch, no other single module exceeding 0.40, and a drop of at least 0.30 in recovery when that boundary is corrupted. The MoE control should show no single layer with median recovery above 0.40 or should distribute recovery across multiple writers, failing the unique-boundary prediction. Refutation is boundary recovery below 0.40, domination by a fixed absolute-depth layer across all families, or evidence that an off-boundary module is the unique largest contributor.",
+   "cost_hours_cpu": 80,
+   "value": 4,
+   "novelty_risk": "YOCO, ROME-in-Mamba, and recurrent-state patching provide close precedents. The distinctive test is a controlled boundary-versus-depth comparison across KV-sharing, MLA, SSM/Mamba, and MoE under one causal patching protocol."
+  },
+  {
+   "area": "knowledge editing/forgetting localized to the layer-13 K/V subject representation",
+   "statement": "Targeted factual forgetting in Gemma 4 E2B can be produced by a sparse, low-rank edit to the layer-13 value path at subject representations: a rank-one edit that shifts the subject-token value should suppress the associated answer while leaving unrelated factual recall and general language modelling nearly unchanged. A matched edit to the key path should be less effective if values, rather than keys, carry the answer-relevant content.",
+   "why_plausible": "K-0006 establishes that subject information reaches the final answer through layer-13 K/V and that replacing the clean layer-13 K/V recovers 98.6% of the logit difference. K-0007 further identifies block 25/head 25.0 as the downstream reader. This predicts a strong causal bottleneck at layer 13 and suggests that editing the value component should change what is read, whereas editing keys should primarily change where attention is directed.",
+   "competing_explanations": [
+    "Layer-14 K/V or another early pathway provides a redundant subject route and prevents localized forgetting.",
+    "Any useful edit necessarily causes broad factual or language-quality damage because the edited value direction is used by many subjects.",
+    "The key path carries most of the subject-specific factual content, contrary to the proposed value-path intervention.",
+    "Apparent localization results from the narrow evaluation set rather than genuine subject selectivity."
+   ],
+   "discetermining_experiment": "Select 20 target facts with distinct subjects and construct 100 unrelated neighboring facts plus 100 general-text prompts. Optimize small constrained edits to layer-13 K and V projections separately on CPU, with rank-one and rank-five budgets and an L2 penalty on unrelated outputs. Evaluate target-answer probability, unrelated factual accuracy, prompt perplexity, and clean-block-25 recovery. Also apply the chosen edit while restoring the original layer-14 K/V to test redundancy.",
+   "numeric_prediction": "Support requires the best rank-one value-path edit to reduce target-answer probability by at least 80%, while changing unrelated factual accuracy by no more than 5 percentage points and general-text perplexity by no more than 5%. It must outperform the matched rank-one key edit by at least 30 percentage points in target suppression. Restoring layer-14 K/V should not restore the forgotten answer, indicating little redundancy. Refutation is target suppression below 50%, unrelated degradation above 15 points, key edits outperforming value edits, or recovery of the answer after layer-14 restoration.",
+   "cost_hours_cpu": 48,
+   "value": 5,
+   "novelty_risk": "ROME/MEMIT-style editing and the ROME-in-Mamba two-site analogue already localize edits to mid-layer representations. The novel test is a matched K-versus-V causal edit at Gemma 4's specifically identified layer-13 shared-K/V bottleneck."
+  },
+  {
+   "area": "a radically new discovery principle (not enumerating hypotheses) that can be tested on existing data first",
+   "statement": "Mechanisms can be discovered without task labels by clustering prompts by their causal intervention fingerprints: each prompt is represented by the vector of layer- and head-specific logit-difference recoveries, and clusters reveal which subjects or relations share a circuit before any mechanistic hypothesis is proposed. The resulting fingerprint should predict behaviour on unseen relations and expose circuit-level task structure rather than merely reproduce prompt similarity.",
+   "why_plausible": "K-0007 provides a 20-layer recovery vector plus head-25 effects for many factual prompts, and K-0006 provides clean/corrupt pairs across two relations in both checkpoints. H-014 tested low-rank structure of effect matrices but found that structure was not robustly low-rank; causal fingerprint clustering instead asks whether the vectors occupy repeatable semantic clusters. It also addresses H-018's concern that labels and answer-form artefacts can make conventional analyses appear reliable for the wrong reasons.",
+   "competing_explanations": [
+    "The clusters merely encode prompt length, token frequency, or relation identity rather than a shared mechanism.",
+    "They reproduce lexical similarity between subjects and provide no prediction for held-out relations.",
+    "Any apparent clustering is caused by the shared recovery of the universally dominant block-25/head-0 column rather than a distributed fingerprint.",
+    "Clustering is unstable under bootstrap resampling and is therefore an artefact of the small number of prompts."
+   ],
+   "discetermining_experiment": "Using only existing E006 result files, construct one fingerprint vector per corrupt/clean pair from the 20 layer-recovery values and available head-level recoveries. Cluster the vectors with labels hidden, using a fixed linkage and distance. Test cluster stability under subject-cluster bootstrap, permutation of vectors, and controls based only on prompt length or token overlap. Then use the discovered clusters to predict which layer/head patches will transfer to a held-out relation before examining those patches' outcomes.",
+   "numeric_prediction": "Support requires a clustering solution with silhouette above 0.25 and bootstrap assignment stability above 0.70, a permutation-test p-value below 0.01, and improved held-out patch-transfer prediction over length-only and token-overlap baselines by at least 10 percentage points. Removing the block-25/head-0 dominant feature must preserve meaningful cluster separation with silhouette above 0.15. Refutation is silhouette below 0.10, stability below 0.50, p-value above 0.05, or no improvement over lexical or length controls on held-out relations.",
+   "cost_hours_cpu": 8,
+   "value": 4,
+   "novelty_risk": "Clustering intervention effects resembles causal representation similarity, task-vector clustering, and circuit-similarity analyses. Its distinctive proposal is unsupervised discovery and prospective prediction from causal fingerprints, not enumeration of individual head hypotheses; it is also distinct from H-014's low-rank hypothesis."
+  }
+ ]
+}

@@ -21,3 +21,5 @@ Preliminary hypotheses, ideas and open interpretations. Not verified knowledge. 
 | H-016 | Half of the effect enters the final position via layers 0–14 attention and is read out without KV-shared attention | CANDIDATE | E006d: early+late final-position attention ablation |
 | H-017 | IT's final block shifts output from the factual token to chat-style formatting (' **', first names); absent in base | CANDIDATE (from E009 exploratory) | E009 on base checkpoint (prereg in E009_reliability/PREREG_base.md) |
 | H-018 | Internal stability signals detect errors better than softmax confidence | INCONCLUSIVE — prereg pass with iid bootstrap (0.807 vs 0.709), relation-clustered CI includes 0; metric mixes answer form | E009 |
+| H-019 | IT answer-form shift lives in late MLP/PLE outputs (blocks 26–34), not the retrieval route; base→IT late cross-patch restores the factual token | CANDIDATE | cross-checkpoint patching |
+| H-020 | Transfer: subject evidence is written at the last writer of shared state (KV source / MLA latent / SSM state) and read later | CANDIDATE | small public MLA/SSM/MoE models on CPU |

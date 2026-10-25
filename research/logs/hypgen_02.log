@@ -1,0 +1,2 @@
+deepseek {'prompt_tokens': 9892, 'total_tokens': 22305, 'completion_tokens': 12413, 'prompt_tokens_details': {'cached_tokens': 0, 'created_cache_tokens': 9856}, 'completion_tokens_details': {'reasoning_tokens': 8160}} list 7
+minimax {'total_tokens': 19831, 'total_characters': 0, 'prompt_tokens': 9683, 'completion_tokens': 10148, 'completion_tokens_details': {'reasoning_tokens': 5560}, 'prompt_tokens_details': {'cached_tokens': 0}} list 7

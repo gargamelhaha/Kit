@@ -27,3 +27,5 @@
 [2026-10-25T14:51:01Z] end E007c_generate_modes variant=it exit=3
 [2026-10-25T14:51:01Z] start E008_window_route variant=it
 [2026-10-25T15:02:19Z] start E007c_generate_modes variant=it
+[2026-10-25T15:08:51Z] start E006d_early_route variant=it
+[2026-10-25T15:09:13Z] start E006d_early_route variant=it

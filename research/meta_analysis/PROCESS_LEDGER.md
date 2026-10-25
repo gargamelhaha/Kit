@@ -148,3 +148,5 @@ Format: symptom → evidence → root cause → fix → measured effect → stat
 - Fix: `queue.sh` wraps every model run in `flock /tmp/lab_model.lock` — any number of queues may be started; model runs serialise.
   Rule: never chain model runs with waiters again; push immediately after every result file is produced.
 - Status: accepted.
+- PL-16 addendum: `flock` serialises but is not FIFO — several waiting queues start in arbitrary order (E009-base jumped ahead of
+  E006d/E007c). Rule: one ordered queue per batch (`queue.sh A B C D`); flock is only the safety net against concurrency.
