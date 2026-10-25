@@ -31,9 +31,9 @@ def gen(ids, mask, G, past=None):
     th = threading.Thread(target=mon, daemon=True); th.start()
     t0 = time.perf_counter()
     o = model.generate(input_ids=ids, attention_mask=mask, max_new_tokens=G, min_new_tokens=G, do_sample=False,
-                       output_scores=True, return_dict_in_generate=True, pad_token_id=PAD, past_key_values=past, use_cache=True)
+                       output_logits=True, return_dict_in_generate=True, pad_token_id=PAD, past_key_values=past, use_cache=True)
     wall = time.perf_counter() - t0; run[0] = False; th.join()
-    return {"seq": o.sequences[:, ids.shape[1]:], "scores": torch.stack(o.scores, 1).float(), "wall": wall,
+    return {"seq": o.sequences[:, ids.shape[1]:], "scores": torch.stack(o.logits, 1).float(), "wall": wall,
             "ttft": calls[0] if calls else None, "decode_per_tok": (sum(calls[1:]) / max(1, len(calls) - 1)) if calls else None,
             "peak_rss": peak[0], "past": o.past_key_values, "full_seq": o.sequences}
 

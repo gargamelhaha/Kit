@@ -18,3 +18,4 @@
 'all:"speculative decoding" AND all:"self-speculative"': 25 results, 23 new
 'all:"per-layer embeddings" AND all:offloading': 0 results, 0 new
 'all:"knowledge conflict" AND all:"context" AND all:"parametric" AND all:mechanism': 9 results, 8 new
+{"n_candidates": 207, "n_screened_both": 207, "include_deepseek": 181, "include_minimax": 185, "include_both": 179, "kappa": 0.812}

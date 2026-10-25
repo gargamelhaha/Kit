@@ -46,3 +46,4 @@ batching from padding). (6) Assert bias-free linears for the bf16 path. (7) Metr
 mode); no-op-hook arm (hook overhead = 20 Python calls per prefill, negligible vs seconds); human quality evaluation (greedy
 token identity is a stricter criterion than task quality for the exactness claim; for the bf16 arm task quality is not measured
 and this is stated). P3's C1 bound is uninformative (pre-audit): reported descriptively only.
+- Run restarted ~12:48Z: first run compared processed scores (EOS = -inf under min_new_tokens -> NaN diffs); now raw logits (output_logits). Aborted partial output kept as *_aborted_nan.*
